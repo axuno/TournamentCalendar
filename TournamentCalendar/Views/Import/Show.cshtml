@@ -1,0 +1,72 @@
+﻿@using TournamentCalendar.Controllers
+@model TournamentCalendar.Models.TournamentImport.ListModel
+<div class="row">
+    <div class="col">
+        <div class="text-right">Authentifiziert: @Context.User.Identity.Name</div>
+        <h2 class="h2">Turniere in anderen Volleyball-Turnierkalendern</h2>
+        @if (Model.Errors.Any())
+        {
+            <div class="col-12">
+                <h3 style="color: red">Beim Import sind Fehler aufgetreten:</h3>
+                @foreach (var err in Model.Errors)
+                {
+                    <div>Provider-Id: @err.Key</div>
+                    <div>@err.Value.Message</div>
+                    <div>@err.Value.StackTrace</div>
+                }
+            </div>
+        }
+
+        <div class="mb-4">
+            @if (Model.ImportDates.Length > 0)
+            {
+                <h4 class="h4">Verwendete Importdaten im Vergleich zu den Einträgen jetzt</h4>
+                <a class="btn btn-primary mr-2 mb-3@(DateTime.MinValue == Model.LastImportDate ? " active" : "")" href="@Url.Action(nameof(Import.Show), nameof(Import), new {id = DateTime.MinValue.ToString("yyyy-MM-dd")})" role="button">keine</a>
+                foreach (var date in Model.ImportDates)
+                {
+                    <a class="btn btn-primary mr-2 mb-3@(date == Model.LastImportDate ? " active" : "")" href="@Url.Action(nameof(Import.Show), nameof(Import), new {id = date.ToString("yyyy-MM-dd")})" role="button">@date.ToString("dd.MM.yyyy")</a>
+                }
+            }
+        </div>
+
+        @foreach (var provider in Model.AllTournamentsProviders)
+        {
+            <div class="mb-4">
+                @{
+                    var currentProvider = provider;
+                    var newProviderEntries = Model.NewTournaments.Where(p => p.Provider == currentProvider).ToArray();
+                }
+                <h4 class="h4">@provider.ToString()</h4>
+                <h5>Insgesamt @newProviderEntries.Length neue Einträge</h5>
+                @if (Model.LastImportDate != DateTime.MinValue)
+                {
+                    <div><b>Seit dem letzten Import am @Model.LastImportDate.ToString("dd.MM.yyyy"):</b>
+                    </div>
+                }
+                @{
+                    if (!newProviderEntries.Any())
+                    {
+                        <div>Keine Einträge</div>
+                    }
+
+                    foreach (var entry in newProviderEntries)
+                    {
+                        <div>
+                            @entry.Date.ToString("dd.MM.yyyy") <a href="@entry.Url" target="_blank" class="link">@entry.Url</a>
+                        </div>
+                    }
+                }
+            </div>
+        }
+    </div>
+</div>
+@section CssSection {}
+@section MetaSection {<meta name="referrer" content="no-referrer" />}
+@section ScriptStandardSection {
+<script type="text/javascript">
+    //<![CDATA[
+    Object.defineProperty(document, "referer", { get: function() { return "http://volleyball-turnier.de/"; } });
+    Object.defineProperty(document, "referrer", { get: function() { return "http://volleyball-turnier.de/"; } });
+    //]]>
+</script>
+}

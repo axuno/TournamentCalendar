@@ -1,0 +1,67 @@
+<MailMergeMessage>
+  <Info>
+    <Id>1</Id>
+    <Category>ContactForm</Category>
+    <Description></Description>
+    <Comments />
+    <Data><![CDATA[]]></Data>
+  </Info>
+  <MailMergeAddresses>
+    <MailMergeAddress>
+      <AddrType>To</AddrType>
+      <Address>info@volleyball-turnier.de</Address>
+      <DisplayName>Volleyball-Turnier.de</DisplayName>
+      <DisplayNameCharacterEncoding>utf-8</DisplayNameCharacterEncoding>
+    </MailMergeAddress>
+    <MailMergeAddress>
+      <AddrType>From</AddrType>
+      <Address>info@volleyball-turnier.de</Address>
+      <DisplayName>Volleyball-Turnier.de</DisplayName>
+      <DisplayNameCharacterEncoding>utf-8</DisplayNameCharacterEncoding>
+    </MailMergeAddress>
+    <MailMergeAddress>
+      <AddrType>CC</AddrType>
+      <Address>{Email}</Address>
+      <DisplayName>{FirstName} {LastName}</DisplayName>
+      <DisplayNameCharacterEncoding>utf-8</DisplayNameCharacterEncoding>
+    </MailMergeAddress>
+  </MailMergeAddresses>
+  <Headers />
+  <Subject>{Subject}</Subject>
+  <PlainText><![CDATA[Nachricht an {DomainName}
+über das Kontaktformular {Protocol}://{DomainName}{ContactFormUrl}
+
+{Gender:choose(m|f):Herr|Frau} {Title}
+{FirstName} {LastName}
+Adresse: {Street:choose(null|):-|-|{}}  {PostalCode:choose(null|):-|-|{}} {City:choose(null|):-|-|{}}
+Telefon: {Fone:choose(null|):-|-|{}}
+E-Mail:  {Email}
+
+Nachricht:
+----------------------------------------
+{Message}
+
+]]></PlainText>
+  <HtmlText><![CDATA[]]></HtmlText>
+  <Templates />
+  <Config>
+    <TextTransferEncoding>SevenBit</TextTransferEncoding>
+    <BinaryTransferEncoding>Base64</BinaryTransferEncoding>
+    <CharacterEncoding>utf-8</CharacterEncoding>
+    <CultureInfo>de-DE</CultureInfo>
+    <FileBaseDirectory></FileBaseDirectory>
+    <IgnoreIllegalRecipientAddresses>True</IgnoreIllegalRecipientAddresses>
+    <IgnoreMissingInlineAttachments>False</IgnoreMissingInlineAttachments>
+    <IgnoreMissingFileAttachments>False</IgnoreMissingFileAttachments>
+    <Priority>Normal</Priority>
+    <SmartFormatterConfig>
+      <ParseErrorAction>Ignore</ParseErrorAction>
+      <FormatErrorAction>Ignore</FormatErrorAction>
+      <CaseSensitivity>CaseSensitive</CaseSensitivity>
+      <ConvertCharacterStringLiterals>True</ConvertCharacterStringLiterals>
+    </SmartFormatterConfig>
+  </Config>
+  <FileAttachments />
+  <StringAttachments />
+  <ExternalInlineAttachments />
+</MailMergeMessage>

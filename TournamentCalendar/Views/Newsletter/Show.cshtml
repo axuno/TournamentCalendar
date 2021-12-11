@@ -1,0 +1,37 @@
+﻿@using TournamentCalendar.Controllers
+@model TournamentCalendar.Models.Newsletter.NewsletterModel
+<div class="row">
+    <div class="col">
+        <div class="text-right">Authentifiziert: @Context.User.Identity.Name</div>
+        <h2 class="h2">Newsletter</h2>
+
+        <div class="mb-4">
+            <h4 class="h4">Turniere seit letztem Newsletter</h4>
+            <span class="btn btn-primary mr-2 mb-3">
+                @Model.CalendarDisplayModel.Count
+            </span>
+            <span>@((await Model.GetRecipients()).Count) aktive Abonnenten</span>
+        </div>
+
+        <div class="mb-4">
+            @if (Model.Newsletters.Count > 0)
+            {
+                <h4 class="h4">Zuletzt versendete Newsletter</h4>
+                foreach (var nl in Model.Newsletters)
+                {
+                    <a class="btn btn-primary mr-2 mb-3" href="@Url.Action(nameof(Newsletter.Send), nameof(Newsletter), new {id = nl.StartedOn.ToString("yyyy-MM-dd")})" role="button">@nl.StartedOn.ToString("dd.MM.yyyy")</a>
+                    <span class="mr-2">@nl.NumOfTournaments Turniere</span>
+                    <span class="mr-2">@nl.NumOfRecipients Empfänger</span>
+                }
+            }
+        </div>
+    </div>
+</div>
+@section CssSection {}
+@section MetaSection {}
+@section ScriptStandardSection {
+<script type="text/javascript">
+    //<![CDATA[
+    //]]>
+</script>
+}

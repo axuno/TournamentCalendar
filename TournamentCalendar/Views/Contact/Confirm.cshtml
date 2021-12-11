@@ -1,0 +1,20 @@
+﻿@model TournamentCalendar.Models.Contact.ContactBaseModel
+<div class="row">
+    <article class="col-md-12 pb-3">
+        <h3 class="h3">Danke für die Nachricht.</h3>
+        @if (Model.EmailSuccessFul)
+        {
+            <div class="msg-success rounded">
+                <p>Die Nachricht von @Model.Email wurde verschickt.</p>
+            </div>
+        }
+        else
+        {
+            <div class="msg-error rounded">
+                <p>Beim Versenden der Nachricht ist ein Fehler aufgetreten.</p>
+           </div>
+        }
+    </article>
+</div>
+@section CssSection {}
+@section ScriptStandardSection {}

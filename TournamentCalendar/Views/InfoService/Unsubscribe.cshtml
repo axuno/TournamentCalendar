@@ -1,0 +1,25 @@
+﻿@model TournamentCalendar.Models.InfoService.UnsubscribeModel
+<div class="pb-2">
+    @if (!Model.IsEntityFound)
+    {
+        <div class="msg-error rounded pb-2">
+            <span>Der Eintrag für die Registrierung bei Volley-News wurde nicht gefunden. Die Abmeldung konnte nicht durchgeführt werden.</span>
+        </div>
+    }
+    else
+    {
+        if (Model.SaveSuccessFul)
+        {
+            <div class="msg-success rounded">
+                <span>Der Eintrag bei Volley-News für die E-Mail <strong>@Model.Entity.Email</strong> wurde <strong>gelöscht</strong>.</span>
+            </div>
+        }
+        else
+        {
+            <div class="msg-error rounded">
+                <span>Fehler beim Löschen des Eintrags bei Volley-News. Die Abmeldung konnte nicht durchgeführt werden.</span>
+            </div>
+        }
+    }
+</div>
+@section CssSection {}

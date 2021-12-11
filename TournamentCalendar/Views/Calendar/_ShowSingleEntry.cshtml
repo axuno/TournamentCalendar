@@ -1,0 +1,157 @@
+﻿@model TournamentCalendar.Models.Calendar.CalendarEntityDisplayModel
+@using TournamentCalendar.Controllers
+    <table id="single-tournament-table" class="table-striped table-bordered rounded col-12 shadow">
+        @if (ViewContext.HttpContext.User.IsInRole(TournamentCalendar.Library.Authentication.Constants.RoleName.Editor))
+        {
+            <tr>
+                <td colspan="2" style="vertical-align: top">
+                    <a class="btn btn-primary" href="@Url.Action(nameof(Calendar.Entry), nameof(Calendar), new {id = Model.Guid})" role="button">Bearbeiten</a>
+                </td>
+            </tr>
+        }
+        @if (!string.IsNullOrWhiteSpace(Model.Special))
+        {
+            <tr>
+                <td colspan="2" style="vertical-align: top">
+                    @Model.Special
+                </td>
+            </tr>
+        }
+        <tr>
+            <th>
+                Turniername:
+            </th>
+            <td>
+                <a href="@Url.Action(nameof(Calendar.Id), nameof(Calendar), new {id = Model.Id})" style="text-decoration: none; color: #000; display: block">@Model.TournamentName</a>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Datum:
+            </th>
+            <td>
+                <b>@Model.GetDates()</b>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Uhrzeit:
+            </th>
+            <td>
+                @Model.GetTimes()
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Anmeldeschluss:
+            </th>
+            <td>
+                @Model.ClosingDate.ToString("ddd, dd.MM.yyyy")
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Besetzung:
+            </th>
+            <td>
+                @Model.GetTournamentTypeAndPlayers()
+                @if (Model.NumOfTeams > 0)
+                {
+                    <br />
+                    @Html.Raw($"{Model.NumOfTeams} Mannschaften")
+                }
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Spielstärke:
+            </th>
+            <td>
+                @Model.GetPlayingAbility()
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Belag:
+            </th>
+            <td>
+                @Model.GetSurface()
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Ort:
+            </th>
+            <td>
+                @Model.GetVenueAddress()
+                @if (Model.Longitude.HasValue && Model.Latitude.HasValue)
+                {
+                    <div>
+                        <a href="#" class="link" title="zur Karte scrollen" onclick="document.getElementById('mapPlaceholder').scrollIntoView();return false;">zur Karte scrollen</a>
+                    </div>
+                }
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Halle/Platz:
+            </th>
+            <td>
+                @Model.Venue
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Veranstalter:
+            </th>
+            <td>
+                @Model.Organizer
+                @if (Model.Email.Length > 0)
+                {
+                    <a href="mailto:@Model.Email" class="link" style="margin-left: 1rem">E-Mail</a>
+                }
+                @if (Model.Website.Length > 0)
+                {
+                    <a href="@Model.Website" class="link" style="margin-left: 1rem">Web</a>
+                }
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Kontaktadresse:
+            </th>
+            <td>
+                @Html.Raw(Model.GetContactAddr())
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Startgebühr:
+            </th>
+            <td>
+                @Model.GetEntryFee()
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Weitere Infos:
+            </th>
+            <td>
+                @Html.Raw(Model.GetInfo())
+            </td>
+        </tr>
+    </table>
+@if (Model.Longitude.HasValue && Model.Latitude.HasValue)
+{
+    <div class="rounded pb-3 col-12 shadow">
+        <div class="py-2">
+            <a href="@Model.GetVenueGoogleMapsLink()" class="link" title="Karte auf Google Maps Website anzeigen"
+               onclick="window.open(this.href, this.target).focus();return false;">Karte auf Google Maps Website anzeigen</a>
+        </div>
+        <div id="mapPlaceholder" class="rounded" style="border: 1px solid #979797; background-color: #e5e3df; width: 100%; height: 400px">
+            <div style="padding: 1rem; color: gray">
+                Karte wird mit JavaScript geladen...
+            </div>
+        </div>
+    </div>
+}

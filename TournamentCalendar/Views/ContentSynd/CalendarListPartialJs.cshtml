@@ -1,0 +1,69 @@
+﻿@using TournamentCalendar.Controllers
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
+@{
+    Layout = null;
+}
+@*<script type="text/javascript">*@
+function createCORSRequest(method, url) {
+    @* https://www.nczonline.net/blog/2010/05/25/cross-domain-ajax-with-cross-origin-resource-sharing/ *@
+    var xmlHttp = new XMLHttpRequest();
+    if ('withCredentials' in xmlHttp) {
+        xmlHttp.open(method, url, true);
+    } else if (typeof XDomainRequest != 'undefined') {
+        xmlHttp = new XDomainRequest();
+        xmlHttp.open(method, url);
+    } else {
+        xmlHttp = null;
+    }
+    return xmlHttp;
+}
+
+function loadTournamentCalendar() {
+    var headTag = document.getElementsByTagName("head")[0];
+    if (!headTag) {
+        return;
+    }
+
+    var cssTag = document.createElement('link');
+    cssTag.type = 'text/css';
+    cssTag.rel = 'stylesheet';
+    cssTag.href = 'https://@Configuration["DomainName"]@Url.Action(nameof(ContentSynd.CalendarListCss), nameof(ContentSynd))';
+    if (headTag.firstChild)  {
+        headTag.insertBefore(cssTag, headTag.firstChild)
+    }  else  {
+        headTag.appendChild(cssTag);
+    }
+
+    var messageDiv = document.createElement('div');
+    messageDiv.id = 'PoZpU6XD';
+    var contentTarget = document.getElementById('calendar-target-PoZpU6XD');
+    if (!contentTarget) {
+        return;
+    }
+    messageDiv.innerText = 'Turnierkalender wird geladen...';
+    contentTarget.appendChild(messageDiv);
+    var request = createCORSRequest("get", "https://@Configuration["DomainName"]@Url.Action(nameof(ContentSynd.CalendarList), nameof(ContentSynd))");
+    if (request) {
+        request.onload = function() {
+            var content = request.responseText;
+            if (content && content.length > 1 && request.status === 200) {
+                setTimeout(function () {
+                    contentTarget.innerHTML = content;
+                }, 0);
+            } else {
+                messageDiv.innerText = 'Fehler beim Laden des Turnierkalenders. ' + request.status;
+            }
+        };
+        request.onerror = function () {
+            messageDiv.innerText = 'CORS Fehler beim Laden des Turnierkalenders.';
+        }
+        request.onabort = function () {
+            messageDiv.innerText = 'Laden des Turnierkalenders wurde abgebrochen.';
+        }
+        request.send();
+    }
+}
+document.write('<div id="calendar-target-PoZpU6XD"></div>');
+loadTournamentCalendar();
+@*</script>*@
+

@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<downloads>
+	<download id="turnier-ausw-12-2.xlsm">
+		<filename>download-files/turnierauswertung_12_2.xlsm</filename>
+		<contenttype>application/ms-excel</contenttype>
+		<isprotected>false</isprotected>
+	</download>
+	<download id="turnier-ausw-16-4.xlsm">
+		<filename>download-files/turnierauswertung_16_4.xlsm</filename>
+		<contenttype>application/ms-excel</contenttype>
+		<isprotected>false</isprotected>
+	</download>
+	<download id="turnierplaner-rmm-beispiel.pdf">
+		<filename>download-files/excel-turnierplaner-rmm.pdf</filename>
+		<contenttype>application/pdf</contenttype>
+		<isprotected>false</isprotected>
+	</download>
+</downloads>

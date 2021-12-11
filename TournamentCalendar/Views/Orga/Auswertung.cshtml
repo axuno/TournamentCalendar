@@ -1,0 +1,107 @@
+﻿@using AngleSharp.Media.Dom
+@using TournamentCalendar.Controllers
+@model IEnumerable<Orga.DownloadFile>
+<section class="pb-2">
+    <div class="row">
+        <article class="col-sm-9">
+            <h3 class="h3">Turnierauswertung</h3>
+            <p>
+                Turniere kann man selbstverständlich mit Papier, Bleistift und Radiergummi organisieren und auswerten.
+                Deutlich bequemer geht es aber mit entsprechender Software.
+            </p>
+            <p>
+                Meistens handelt es sich bei der Software um Excel-Tabellenkalkulationen, die sich dafür recht gut eignen.
+                Es gibt viele solcher fertigen Excel-Kalkulationen. 
+            </p>
+            <p>
+                Die Excel-Tabellen auf dieser Seite wurden bereits vielfach erfolgreich in Turnieren eingesetzt,
+                und sie sind einfach zu bedienen.
+            </p>
+        </article>
+        <article class="col-6 col-sm-3">
+            <img src="@Url.Content("~/images/excel-turnier.png")" class="text-right img-fluid" alt="Turnierauswertung"/>
+        </article>
+    </div>
+    <div class="card shadow p-2">
+        <div class="row">
+
+            <article class="col-sm-8">
+                <h5 class="h5">
+                    Turnierauswertung
+                    für Microsoft Excel 2007-2016<br />
+                    (12 Mannschaften auf 2 Spielfeldern)
+                </h5>
+                Spielmodus:
+                <ul>
+                    <li>Vorrunde: 2 Gruppen zu 6 Mannschaften - jeder gegen jeden</li>
+                    <li>Zwischenrunde: Überkreuz der Gruppenersten/-zweiten, Gruppendritten/-vierten, usw.</li>
+                    <li>Endrunde: Die Sieger der Zwischenrunde spielen um die Plätze 1, 5, 9 - die Verlierer um die Plätze 3, 7 und 11.</li>
+                </ul>
+            </article>
+            <article class="col-sm-4">
+                @{var file1 = Model.First(m => m.Id == "turnier-ausw-12-2.xlsm"); }
+                <i class="fa fa-arrow-circle-down fa-2x ax-color" aria-hidden="true"></i>
+                @Html.ActionLink("Download", nameof(Orga.Download), nameof(Orga), new { id = file1.Id }, null)
+                <br />(@file1.Size Bytes)
+            </article>
+
+        </div>
+    </div>
+    <div class="card shadow p-2 my-4">
+        <div class="row">
+            <article class="col-sm-8">
+                <h5 class="h5">
+                    Turnierauswertung
+                    für Microsoft Excel 2007-2016<br />
+                    (16 Mannschaften auf 4 Spielfeldern)
+                </h5>
+                Spielmodus:
+                <ul>
+                    <li>Vorrunde: 4 Gruppen zu 4 Mannschaften - jeder gegen jeden</li>
+                    <li>Zwischenrunde 1: Überkreuz der Gruppenersten/-zweiten, Gruppendritten/-vierten.</li>
+                    <li>Zwischenrunde 2: Sieger gg. Sieger, Verlierer gg. Verlierer der Zwischenrunde</li>
+                    <li>Endrunde: Die Sieger der Zwischenrunde 2 spielen um die Plätze 1, 5, 9, 13 - die Verlierer um die Plätze 3, 7, 11 und 15.</li>
+                </ul>
+            </article>
+            <article class="col-sm-4">
+                @{var file2 = Model.First(m => m.Id == "turnier-ausw-16-4.xlsm"); }
+                <i class="fa fa-arrow-circle-down fa-2x ax-color" aria-hidden="true"></i>
+                @Html.ActionLink("Download", nameof(Orga.Download), nameof(Orga), new { id = file2.Id }, null)
+                <br />(@file2.Size Bytes)
+            </article>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            Die beiden obengenannten Lösungen sind praxiserprobt und können jederzeit selbst an eigene Bedürfnisse angepasst werden.
+            Sie unterliegen der &quot;<a href="https://creativecommons.org/publicdomain/zero/1.0/deed.de">CC0 1.0 Universell Lizenz</a>&quot;,
+            dürfen also frei kopiert, verändert und verbreitet werden.
+        </div>
+    </div>
+    <div class="card shadow p-2 my-4">
+        <div class="row">
+            <article class="col-sm-8">
+                <h5 class="h5">
+                    Turnierprogramm des Volleyballverbands Rheinland
+                </h5>
+                <p>
+                    Auch hier handelt es sich um Excel-Kalkulationen mit Makros. Je nach Anzahl der teilnehmenden Mannschaften gibt es eine speziell dafür angepasste Version.
+                </p>
+                <p>
+                    Unter welcher Lizenz diese Software verbreitet wird, ist den Exceldateien und der Website des Entwicklers nicht zu entnehmen.
+                </p>
+            </article>
+            <article class="col-sm-4">
+                <a href="http://www.volleyballturniere.de/"><i class="fa fa-arrow-circle-down fa-2x ax-color" aria-hidden="true"></i> Download von der Website des Programmierers</a>
+                <p>
+                    <i class="fa fa-arrow-circle-down fa-2x ax-color" aria-hidden="true"></i>
+                    @{var file3 = Model.First(m => m.Id == "turnierplaner-rmm-beispiel.pdf"); }
+                    @Html.ActionLink("Beispiel-Kalk. als PDF-Dokument", nameof(Orga.Download), nameof(Orga), new { id = file3.Id }, null)
+                    <br />(@file3.Size Bytes)
+                </p>
+            </article>
+        </div>
+    </div>
+</section>
+@section MetaSection {}
+@section CssSection {}

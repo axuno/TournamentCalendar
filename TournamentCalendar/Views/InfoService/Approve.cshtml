@@ -1,0 +1,32 @@
+﻿@model TournamentCalendar.Models.Shared.ApproveModelTournamentCalendar<TournamentCalendarDAL.EntityClasses.InfoServiceEntity>
+<div class="pb-2">
+    @if (!Model.IsEntityFound)
+    {
+        <div class="msg-error rounded">
+            <span>
+                Die Anmeldung zu Volley-News ist in der Datenbank nicht zu finden. 
+                Möglicherweise wurde nicht der vollständige Link von der Bestätigungs-E-Mail verwendet.
+            </span>
+        </div>
+    }
+    else
+    {
+        if (Model.SaveSuccessFul)
+        {
+            <div class="msg-success rounded">
+                <span>
+                    Die Anmeldung zu Volley-News wurde in der Datenbank als <strong>bestätigt</strong> gespeichert. Vielen Dank!
+                </span>
+            </div>
+        }
+        else
+        {
+            <div class="msg-error rounded">
+                <span>
+                    Beim Bestätigen der Anmeldung zu Volley-News ist ein Fehler aufgetreten.
+                </span>
+            </div>
+        }
+    }
+</div>
+@section CssSection {}

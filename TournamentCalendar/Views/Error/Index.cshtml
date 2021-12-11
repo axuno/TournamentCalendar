@@ -1,0 +1,24 @@
+@using Microsoft.AspNetCore.Http
+@model TournamentCalendar.Models.Error.ErrorModel
+<h2>@Model.Status.GermanText</h2>
+<div class="pb-4">
+    @if (Model.Exception == null)
+    {
+        @Model.Status.GermanDescription <text> (@Model.Status.Code)</text>
+    }
+    else
+    {
+        @Model.Status.GermanDescription <text> (@Model.Exception?.GetType().ToString())</text>
+    }
+    @if (Model.Exception != null || Model.Status.Code == "500")
+    {
+        <div>
+            Wir bitten, die Unannehmlichkeiten zu entschuldigen.
+        </div>
+    }
+</div>
+<div class="pb-4">
+    <strong>@(ViewContext.HttpContext.Request.IsHttps ? "https" : "http" )://@ViewContext.HttpContext.Request.Host@Model.OrigPath</strong>
+</div>
+
+

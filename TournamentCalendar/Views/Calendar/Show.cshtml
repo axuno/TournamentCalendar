@@ -1,0 +1,73 @@
+﻿@inject IWebHostEnvironment WebHostEnvironment
+@inject IConfiguration Configuration
+@model TournamentCalendar.Models.Calendar.BrowseModel
+@using System.Globalization
+@using Microsoft.AspNetCore.Hosting
+@using Microsoft.Extensions.Configuration
+@using TournamentCalendar.Views
+@using Calendar = TournamentCalendar.Controllers.Calendar
+@{
+    var googleConfig = new NB.Tools.GeoSpatial.GoogleConfig();
+    Configuration.Bind("GoogleConfig", googleConfig);
+}
+<div class="row">
+    <article class="col">
+        @if (Model.IsFiltered && Model.Count == 1)
+        {
+            <h3 class="h3">
+                Informationen<br />zum ausgewählten Turnier
+            </h3>
+            <p>@Html.ActionLink("Alle aktuellen Turniere im Kalender anzeigen", nameof(Calendar.Kalender), nameof(Calendar), null, new { @class="link" })</p>}
+        else
+        {
+            <p>
+                @(Model.Count > 0 ? string.Format("{0} Turniere sind im Kalender eingetragen (sortiert nach Datum):", Model.Count) : "Leider keine Turniere im Kalender gefunden.")
+            </p>}
+    </article>
+    <article class="col d-none d-sm-block text-right">
+        <img src="@Url.Content("~/images/turniere_annahme.jpg")" height="120" alt="Turniere" class="rounded" />
+    </article>
+</div>
+<div class="row">
+    <div class="col-12 pb-4">
+        @{ var partialModel = Model.DisplayModel.First();}
+        @await Html.PartialAsync(ViewName.Calendar._ShowSingleEntry, partialModel)
+    </div>
+</div>
+@section MetaSection {<meta name="robots" content="noindex, nofollow">}
+@section ScriptStandardSection {
+    @* Note: Google requires an API key for all requests since 11 June 2018 - using account of axuno gGmbH *@
+    <script type="text/javascript" src="@string.Format("https://maps.googleapis.com/maps/api/js?key={0}", googleConfig.WebApiKey)"></script>
+    <script type="text/javascript">
+        //<![CDATA[
+        $(document).ready(function () {
+            @if (partialModel.Latitude.HasValue && partialModel.Longitude.HasValue)
+            {
+                <text>ShowLocationOnGoogleMaps(@partialModel.Latitude.Value.ToString(CultureInfo.InvariantCulture), @partialModel.Longitude.Value.ToString(CultureInfo.InvariantCulture));</text>
+            }
+        });
+
+        function ShowLocationOnGoogleMaps(latitude, longitude) {
+            // requires https://maps.googleapis.com/maps/api/js
+            var coords = new google.maps.LatLng(latitude, longitude);
+
+            var mapOptions = {
+                zoom: 14,
+                center: coords,
+                mapTypeControl: true,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+
+            //create the map, and place it in the HTML map div
+            var map = new google.maps.Map(document.getElementById("mapPlaceholder"), mapOptions);
+
+            //place the initial marker
+            var marker = new google.maps.Marker({
+                position: coords,
+                map: map,
+                title: "Angegebener Standort"
+            });
+        }
+        //]]>
+    </script>
+}

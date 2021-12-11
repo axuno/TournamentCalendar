@@ -1,0 +1,17 @@
+﻿@using TournamentCalendar.Controllers
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Test</title>
+    <style type="text/css">#PoZpU6XD table { background-color: rgb(178, 222, 178) }
+     </style>
+</head>
+<body>
+<script type="text/javascript" src="https://@Configuration["DomainName"]@Url.Action(nameof(ContentSynd.CalendarListJs), nameof(ContentSynd))"></script>
+</body>
+</html>

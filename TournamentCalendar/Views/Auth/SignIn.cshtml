@@ -1,0 +1,57 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@using TournamentCalendar.Views
+@using TournamentCalendar.Controllers
+@model TournamentCalendar.Models.AccountViewModels.SignInViewModel
+@inject IViewLocalizer Localizer
+@{
+    ViewData["Title"] = "Anmelden";
+}
+<h2 class="h2">@ViewData["Title"]</h2>
+<div class="col-md-8 col-sm-10 col-12 pl-0 pb-3">
+    <form asp-controller="@nameof(Auth)" asp-action="@nameof(Auth.SignIn)" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" role="form" class="pl-0">
+        <asp-validation-summary></asp-validation-summary>
+        <div asp-validation-summary="All" class="validation-summary-errors msg-validation rounded">
+            <b>Die Eingaben enthalten Fehler:</b>
+        </div>
+        <div class="form-group">
+            <label asp-for="EmailOrUsername"></label>
+            <div class="input-group">
+                <input asp-for="EmailOrUsername" class="form-control" required="required" />
+                <span class="input-group-append input-group-text">
+                    <i class="fa fa-user"></i>
+                </span>
+            </div>
+            <span asp-validation-for="EmailOrUsername" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Password"></label>
+            <div class="input-group">
+                <input asp-for="Password" class="form-control" required="required" type="password" />
+                <span class="input-group-append input-group-text">
+                    <i class="fa fa-unlock"></i>
+                </span>
+            </div>
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <div class="form-check">
+                <input asp-for="RememberMe" class="form-check-input" />
+                <label asp-for="RememberMe" class="form-check-label"></label>
+            </div>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-lg btn-primary col-10">Anmelden</button>
+        </div>
+    </form>
+</div>
+@section ScriptStandardSection
+{
+<script src="@Url.Content(ScriptName.Lib.JqueryValidationAllJs)"></script>
+<script type="text/javascript">
+    //<![CDATA[
+    $(document).ready(function() {
+        $('#@Html.NameFor(m => m.EmailOrUsername)').focus();
+    });
+    //]]>
+</script>
+}

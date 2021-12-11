@@ -1,0 +1,52 @@
+﻿@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
+@model TournamentCalendar.Models.Calendar.BrowseModel
+@using TournamentCalendar.Controllers
+<div id="PoZpU6XD">
+    <table>
+        <thead>
+        <tr>
+            <th>Datum</th>
+            <th>Turniername</th>
+            @*<th>Ausrichter</th>*@
+            <th>Art</th>
+            <th>Belag</th>
+            <th>PLZ</th>
+            <th>&#x1f6c8;</th>
+        </tr>
+        </thead>
+        <tbody>
+        @if (Model.DisplayModel.Any())
+        {
+            foreach (var m in Model.DisplayModel)
+            {
+                // use local variable because action and controller are used twice in this loop
+                const string actionName = nameof(Calendar.Id);
+                const string controllerName = nameof(Calendar);
+                <tr title="Organisator: @m.Organizer, Ort: @m.City" style="cursor: pointer" onclick="document.location = 'https://@Configuration["DomainName"]@Url.Action(actionName, controllerName, new {id = m.Id})';return false;">
+                    <td>@m.DateFrom.ToString("dd.MM.yy")</td>
+                    <td>@m.GetTournamentNameShort(60)</td>
+                    @*<td>@m.GetOrganizerShort(20)</td>*@
+                    <td>@m.GetTournamentTypeShort()</td>
+                    <td>@m.GetSurface()</td>
+                    <td>@m.CountryId-@m.PostalCode</td>
+                    <td><a href="https://@Configuration["DomainName"]@Url.Action(actionName, controllerName, new {id = m.Id})">&#x1f6c8;</a></td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="6">Im Moment wurden keine Turniere gefunden</td>
+            </tr>
+        }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="6">
+                    <div><a href="https://@Configuration["DomainName"]@Url.Action(nameof(Calendar.Entry), nameof(Calendar))">Neues Turnier eintragen</a></div>
+                    <div>Ein Service von <a href="https://@Configuration["DomainName"]">Volleyball-Turnier.de</a></div>
+                </td>                
+            </tr>
+        </tfoot>
+    </table>
+</div>

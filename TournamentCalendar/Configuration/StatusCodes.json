@@ -1,0 +1,167 @@
+﻿{
+    "statuscodes": {
+        "statuscode": [
+            {
+                "code": "400",
+                "text": "Request",
+                "description": "Bad request.",
+                "germantext": "Anforderung",
+                "germandescription": "Ungültige Anforderung."
+            },
+            {
+                "code": "401",
+                "text": "Authentification",
+                "description": "Authentification Required.",
+                "germantext": "Authentifizierung",
+                "germandescription": "Authentifizierung erforderlich."
+            },
+            {
+                "code": "403",
+                "text": "Unauthorized",
+                "description": "Access Denied.",
+                "germantext": "Authorisierung",
+                "germandescription": "Zugriff verweigert."
+            },
+            {
+                "code": "404",
+                "text": "Not found.",
+                "description": "Requested resource was not found.",
+                "germantext": "Nicht gefunden.",
+                "germandescription": "Die angeforderte Ressource wurde nicht gefunden."
+            },
+            {
+                "code": "404-13",
+                "text": "File size",
+                "description": "Maximum file size exceeded.",
+                "germantext": "Dateigröße",
+                "germandescription": "Die maximal erlaubte Dateigröße wurde überschritten."
+            },
+            {
+                "code": "405",
+                "text": "Method",
+                "description": "Http Method Not Allowed.",
+                "germantext": "Methode.",
+                "germandescription": "Http-Methode nicht erlaubt."
+            },
+            {
+                "code": "406",
+                "text": "Request",
+                "description": "Browser does not accept the MIME type of the requested page.",
+                "germantext": "Anforderung",
+                "germandescription": "Der Browser akzeptiert den MIME-Typ der angeforderten Seite nicht."
+            },
+            {
+                "code": "407",
+                "text": "Request",
+                "description": "Proxy Authentication Requested",
+                "germantext": "Anforderung",
+                "germandescription": "Ein Proxy-Server fordert Authentifizierung an."
+            },
+            {
+                "code": "412",
+                "text": "Request",
+                "description": "Precondition failed.",
+                "germantext": "Anforderung",
+                "germandescription": "Vorbedingung fehlgeschlagen."
+            },
+            {
+                "code": "413",
+                "text": "Request",
+                "description": "Request Entity Too Long.",
+                "germantext": "Anforderung",
+                "germandescription": "Anforderungseinheit ist zu groß."
+            },
+            {
+                "code": "414",
+                "text": "Request",
+                "description": "Request-URI Too Long.",
+                "germantext": "Anforderung",
+                "germandescription": "Anforderungs-URI ist zu lang."
+            },
+            {
+                "code": "415",
+                "text": "Request",
+                "description": "Unsupported Media Type.",
+                "germantext": "Anforderung",
+                "germandescription": "Nicht unterstützter Medientyp."
+            },
+            {
+                "code": "416",
+                "text": "Request",
+                "description": "Request Range Not Satisfiable",
+                "germantext": "Anforderung",
+                "germandescription": "Angeforderter Bereich kann nicht erfüllt werden."
+            },
+            {
+                "code": "417",
+                "text": "Expectation",
+                "description": "Expectation Failed",
+                "germantext": "Erwartung",
+                "germandescription": "Eine Erwartung aus dem Expect-Header konnte nicht erfüllt werden."
+            },
+            {
+                "code": "423",
+                "text": "Request",
+                "description": "Locked Error.",
+                "germantext": "Anforderung",
+                "germandescription": "Fehler durch Sperre."
+            },
+            {
+                "code": "500",
+                "text": "Server",
+                "description": "Internal Server Error",
+                "germantext": "Server",
+                "germandescription": "Fehler in einem serverseitigen Programm."
+            },
+            {
+                "code": "501",
+                "text": "Server",
+                "description": "Header values specify a configuration that is not implemented.",
+                "germantext": "Server",
+                "germandescription": "Headerwerte geben nicht implementierte Konfiguration an."
+            },
+            {
+                "code": "502",
+                "text": "Server",
+                "description": "Bad Gateway.",
+                "germantext": "Server",
+                "germandescription": "Fehlerhafte Server- oder Proxy-Antwort."
+            },
+            {
+                "code": "503",
+                "text": "Server",
+                "description": "Service Unavailable.",
+                "germantext": "Server",
+                "germandescription": "Ein Dienst steht zurzeit nicht zur Verfügung."
+            },
+            {
+                "code": "504",
+                "text": "Server",
+                "description": "Gateway Timeout.",
+                "germantext": "Server",
+                "germandescription": "Timeout einer Proxy-Anfrage."
+            },
+            {
+                "code": "505",
+                "text": "Server",
+                "description": "HTTP Version Not Supported.",
+                "germantext": "Server",
+                "germandescription": "Der Server unterstützt die angegebene HTTP-Version nicht."
+            },
+            {
+                "code": "1",
+                "text": "Application error",
+                "description": "Sorry, an error occurred while processing your request.",
+                "germantext": "Software-Fehler",
+                "germandescription": "Die Anforderung konnte aufgrund eines Fehlers nicht verarbeitet werden."
+            },
+            {
+                "code": "2",
+                "text": "Maintenance",
+                "description": "We are performing some maintenance. Please try again in a few minutes.",
+                "germantext": "Wartungsarbeiten",
+                "germandescription": "Derzeit laufen einige Wartungsarbeiten. Bitte versuchen Sie es in ein paar Minuten nochmals."
+            }
+        ]
+    }
+}

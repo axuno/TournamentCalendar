@@ -1,0 +1,37 @@
+.ui-timepicker-table td a {
+  display: block;
+  width: 2em !important;
+  cursor: pointer;
+  text-align: center !important;
+  text-decoration: none; }
+
+.ui-widget-header {
+  background: #3299BB !important;
+  background: rgba(50, 153, 187, 0.3) !important; }
+
+.ui-state-active {
+  background: #3299BB !important;
+  background: rgba(50, 153, 187, 0.3) !important; }
+
+.ui-state-default.ui-state-active  {
+  color: #000 !important;
+}
+.ui-state-hover,
+.ui-widget-content .ui-state-hover,
+.ui-widget-header .ui-state-hover,
+.ui-state-focus,
+.ui-widget-content .ui-state-focus,
+.ui-widget-header .ui-state-focus,
+.ui-button:hover,
+.ui-button:focus {
+	border: 1px solid #cccccc;
+	background: #ced4da;  /* modified */
+	font-weight: normal;
+	color: #2b2b2b;
+}
+
+.ui-datepicker th {
+    text-align: center;
+    font-weight: bold;
+    background-color: #f1fbf9; /* modified */
+}

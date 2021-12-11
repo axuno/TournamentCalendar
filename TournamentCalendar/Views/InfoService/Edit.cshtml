@@ -1,0 +1,236 @@
+﻿@inject IWebHostEnvironment WebHostEnvironment
+@inject IConfiguration Configuration
+@model EditModel
+@using System.Globalization
+@using Microsoft.AspNetCore.Hosting
+@using Microsoft.Extensions.Configuration
+@using TournamentCalendar.Controllers
+@using TournamentCalendar.Models.InfoService
+@using TournamentCalendar.Views
+@using TournamentCalendarDAL.HelperClasses
+@{
+    var googleConfig = new NB.Tools.GeoSpatial.GoogleConfig();
+    Configuration.Bind("GoogleConfig", googleConfig);
+}
+<div class="row">
+    <article class="col-sm-6">
+        @if (string.IsNullOrEmpty(Model.Guid))
+        {
+            <h3 class="h3">Jetzt bei Volley-News anmelden!</h3>
+            <p>
+                Aktuelle Volleyballinfos zu Turnieren und Veranstaltungen
+                bequem per E-Mail erhalten.
+            </p>}
+        else
+        {
+            <h3 class="h3">Registrierung ändern</h3>
+            <p>
+                Aktuelle Volleyballinfos zu Turnieren und Veranstaltungen
+                weiter bequem per E-Mail erhalten.
+            </p>}
+    </article>
+    <article class="col-sm-6">
+        <img src="@Url.Content("~/images/volleynews-anmeldung.jpg")" alt="" class="rounded img-fluid" style="width: 100%" />
+    </article>
+</div>
+@using (Model.EditMode == EditMode.New ? Html.BeginForm(nameof(InfoService.Eintrag), nameof(InfoService), new { id = string.Empty }, FormMethod.Post, null, new { @class = "pb-2" }) : Html.BeginForm(nameof(InfoService.Eintrag), nameof(InfoService), new { id = Model.Guid }, FormMethod.Post, null, new { @class = "pb-2" }))
+{
+    @* Validation summary must be insinde BeginForm block *@
+    @Html.ValidationSummary(false, "Es sind Fehler aufgetreten. Bitte korrigieren und erneut speichern.", new { @class = "validation-summary-errors msg-validation rounded" })
+
+    if (Model.EditMode == EditMode.Change)
+    {
+        @Html.HiddenFor(m => m.Guid)
+    }
+
+    <fieldset class="rounded">
+
+        <legend class="rounded">
+            Persönliche Angaben
+        </legend>
+        <div class="row">
+            <div class="col-sm-12">
+                @Html.LabelFor(m => m.Email)
+                @Html.TextBoxFor(m => m.Email, new { maxlength = InfoServiceFields.Email.MaxLength, @class = "form-control input-required" })
+                @Html.ValidationMessageFor(m => m.Email, null, new { @class = "msg-error-text" })
+                @Html.LabelFor(m => m.Gender)
+                @Html.DropDownListFor(m => m.Gender, Model.GetGenderList(), new { @class = "input-required selectpicker", data_width = "auto" })
+                @Html.ValidationMessageFor(m => m.Gender, null, new { @class = "msg-error-text" })
+                @Html.LabelFor(m => m.Title)
+                @Html.TextBoxFor(m => m.Title, new { maxlength = InfoServiceFields.Title.MaxLength, @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Title, null, new { @class = "msg-error-text" })
+                @Html.LabelFor(m => m.FirstName)
+                @Html.TextBoxFor(m => m.FirstName, new { maxlength = InfoServiceFields.FirstName.MaxLength, @class = "form-control input-required" })
+                @Html.ValidationMessageFor(m => m.FirstName, null, new { @class = "msg-error-text" })
+                @Html.LabelFor(m => m.Nickname)
+                @Html.TextBoxFor(m => m.Nickname, new { maxlength = InfoServiceFields.Nickname.MaxLength, @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Nickname, null, new { @class = "msg-error-text" })
+                @Html.LabelFor(m => m.LastName)
+                @Html.TextBoxFor(m => m.LastName, new { maxlength = InfoServiceFields.LastName.MaxLength, @class = "form-control input-required" })
+                @Html.ValidationMessageFor(m => m.LastName, null, new { @class = "msg-error-text" })
+                @Html.LabelFor(m => m.ClubName)
+                @Html.TextBoxFor(m => m.ClubName, new { maxlength = InfoServiceFields.ClubName.MaxLength, @class = "form-control" })
+                @Html.LabelFor(m => m.TeamName)
+                @Html.TextBoxFor(m => m.TeamName, new { maxlength = InfoServiceFields.TeamName.MaxLength, @class = "form-control" })
+            </div>
+        </div>
+    </fieldset>
+    <fieldset class="rounded">
+        <legend class="rounded">
+            Ich möchte nur Turnierinformationen rund um folgenden Standort
+        </legend>
+        <div class="row">
+            <div class="col">
+                @Html.CheckBoxFor(m => m.IsAddressEntered)
+                @Html.LabelFor(m => m.IsAddressEntered, null, new { @class = "form-check-label", style = "display: inline" })
+                @Html.ValidationMessageFor(m => m.IsAddressEntered, null, new { @class = "msg-error-text" })
+                <section id="AddressSection">
+                    <label for="@Html.NameFor(m => m.MaxDistance)">Maximale Entfernung in Kilometern von nachfolgendem Standort (ab 50 km)</label>
+                    @Html.TextBoxFor(m => m.MaxDistance, new { maxlength = 4, @class = "form-control", style = "width: 5rem" })
+                    @Html.ValidationMessageFor(m => m.MaxDistance, null, new { @class = "msg-error-text" })
+                    @Html.LabelFor(m => m.CountryId)
+                    @Html.DropDownListFor(m => m.CountryId, Model.GetCountriesList(), new { @class = "selectpicker", data_width = "auto" })
+                    @Html.LabelFor(m => m.ZipCode)
+                    @Html.TextBoxFor(m => m.ZipCode, new { maxlength = InfoServiceFields.ZipCode.MaxLength, @class = "form-control", style = "width:6rem" })
+                    @Html.LabelFor(m => m.City)
+                    @Html.TextBoxFor(m => m.City, new { maxlength = InfoServiceFields.City.MaxLength, @class = "form-control" })
+                    @Html.LabelFor(m => m.Street)
+                    @Html.TextBoxFor(m => m.Street, new { maxlength = InfoServiceFields.Street.MaxLength, @class = "form-control" })
+                    <div style="margin-top: 15px; cursor: pointer" onclick="ShowHideLocation()">
+                        <i class="fa fa-info-circle"></i> Karte mit Standort in Google Maps
+                    </div>
+                    <div id="mapPlaceholder" style="@if (!Model.Longitude.HasValue && !Model.Latitude.HasValue)
+                                                        {
+                                                            <text>display: none; </text>
+                                                        }; border: 1px solid #979797; background-color: #e5e3df; width: 100%; height: 400px; margin-top: 15px">
+                        <div style="padding: 1rem; color: gray">
+                            Karte wird mit JavaScript geladen...
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </fieldset>
+
+    <fieldset class="rounded">
+
+        <legend class="rounded">
+            Speichern
+        </legend>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div>
+                    Letzte Änderung:
+                    @if (Model.EditMode == EditMode.New)
+                    {
+                        <text>keine</text>
+                    }
+                    else
+                    {
+                        @Model.ModifiedOn.ToString("dd.MM.yyyy - HH:mm:ss")
+                    }
+                    @if (Model.UnSubscribedOn.HasValue)
+                    {
+                        <strong> - abgemeldet</strong>
+                    }
+                </div>
+
+                <div>
+                    <img id="CaptchaImage" class="rounded" src="@Url.Action(nameof(Captcha.Index), nameof(Captcha))@("?guid=" + Guid.NewGuid())" alt="Captcha" style="vertical-align: bottom; width: 12rem" />
+                    <span onclick="javascript:if (document.images) document.images.CaptchaImage.src = '@Url.Action(nameof(Captcha.Index), nameof(Captcha))?new=1&amp;time=' + new Date().getTime();" style="cursor: pointer"><i class="fa fa-refresh fa-2x" style="margin: 0 5px 0 5px" title="Bild neu laden"></i>Bild neu laden</span><br />
+
+                    @Html.LabelFor(m => m.Captcha)
+                </div>
+                @Html.TextBoxFor(m => m.Captcha, new { maxlength = "7", @class = "form-control input-required", style = "width:12rem" })
+                @Html.ValidationMessageFor(m => m.Captcha, null, new { @class = "msg-error-text" })
+            </div>
+            <div class="col-md-7 col-sm-7 mt-3">
+                @* class="cancel" will stop jquery.validate from validation *@
+                <input type="submit" name="save" value="Eintrag speichern" class="col-12 btn btn-lg btn-success" />
+            </div>
+            <div class="col-md-5 col-sm-5 mt-3">
+                <input type="submit" formaction="@Url.Action(nameof(InfoService.Unsubscribe), nameof(InfoService)))" name="unsubscribe" value="Von Volley-News abmelden" @if ((Model.EditMode == EditMode.New) || (Model.ConfirmedOn.HasValue && Model.UnSubscribedOn.HasValue)) { <text> disabled="disabled" </text> } class="cancel col-12 btn btn-lg btn-success" />
+            </div>
+
+        </div>
+    </fieldset>
+}
+@section CssSection {}
+@section ScriptStandardSection {
+    @* Note: Google requires an API key for all requests since 11 June 2018 - using account of axuno gGmbH *@
+    <script type="text/javascript" src="@string.Format("https://maps.googleapis.com/maps/api/js?key={0}", googleConfig.WebApiKey)"></script>
+    <script src="@Url.Content(ScriptName.Lib.JqueryValidationAllJs)"></script>
+    <script type="text/javascript">
+    //<![CDATA[
+    $(document).ready(function () {
+        $('#@Html.NameFor(m => m.IsAddressEntered)').on('change', EnableDisableAddressFields);
+        EnableDisableAddressFields();
+        @if (Model.Latitude.HasValue && Model.Longitude.HasValue)
+        {
+            <text>ShowLocationOnGoogleMaps(@Model.Latitude.Value.ToString(CultureInfo.InvariantCulture), @Model.Longitude.Value.ToString(CultureInfo.InvariantCulture));</text>
+        }
+
+        $('#@Html.NameFor(m => m.Email)').focus();
+    });
+
+    function EnableDisableAddressFields() {
+        if ($('#@Html.NameFor(m => m.IsAddressEntered)').is(':checked')) {
+            $('#@Html.NameFor(m => m.MaxDistance), #@Html.NameFor(m => m.CountryId), #@Html.NameFor(m => m.ZipCode), #@Html.NameFor(m => m.City), #@Html.NameFor(m => m.Street)').removeAttr('disabled');
+            $('#AddressSection').show();
+        }
+        else {
+            $('#@Html.NameFor(m => m.MaxDistance), #@Html.NameFor(m => m.CountryId), #@Html.NameFor(m => m.ZipCode), #@Html.NameFor(m => m.City), #@Html.NameFor(m => m.Street)').attr('disabled', 'disabled');
+            $('#AddressSection').hide();
+        }
+    }
+
+    function ShowHideLocation() {
+        if( $("#mapPlaceholder").css('display') === 'none' ) {
+            GetLocation();
+            $("#mapPlaceholder").show();
+        } else {
+            $("#mapPlaceholder").hide();
+        }
+    }
+
+    function GetLocation() {
+        // requires https://maps.googleapis.com/maps/api/js
+        var geocoder = new google.maps.Geocoder();
+        var address = [$('#@Html.NameFor(m => m.CountryId)').val(), $('#@Html.NameFor(m => m.ZipCode)').val(), $('#@Html.NameFor(m => m.City)').val(), $('#@Html.NameFor(m => m.Street)').val()].join();
+        geocoder.geocode({ 'address': address }, function (results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+                var latitude = results[0].geometry.location.lat();
+                var longitude = results[0].geometry.location.lng();
+                ShowLocationOnGoogleMaps(latitude, longitude);
+                $("#mapPlaceholder").show();
+            } else {
+                $("#mapPlaceholder").hide();
+            }
+        });
+    }
+
+    function ShowLocationOnGoogleMaps(latitude, longitude) {
+        // requires https://maps.googleapis.com/maps/api/js
+        var coords = new google.maps.LatLng(latitude, longitude);
+
+        var mapOptions = {
+            zoom: 14,
+            center: coords,
+            mapTypeControl: true,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+
+        //create the map, and place it in the HTML map div
+        var map = new google.maps.Map(document.getElementById("mapPlaceholder"), mapOptions);
+
+        //place the initial marker
+        var marker = new google.maps.Marker({
+            position: coords,
+            map: map,
+            title: "Angegebener Standort"
+        });
+    }
+    //]]>
+    </script>
+}

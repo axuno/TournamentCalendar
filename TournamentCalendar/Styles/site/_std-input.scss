@@ -1,0 +1,159 @@
+// **************************************
+// Variables used locally
+// **************************************
+@import '../bootstrap/custom';
+
+$label-color: theme-color("success");
+$label-bgcolor: transparent;
+
+$error-color: theme-color("danger");
+$error-bgcolor: lighten($error-color,50%);
+
+$info-color: theme-color("info");
+$info-bgcolor: lighten($info-color,50%);
+
+$success-color: theme-color("success");
+$success-bgcolor: lighten($success-color,50%);
+
+$warning-color: theme-color("warning");
+$warning-bgcolor: lighten($warning-color,50%);
+
+$question-color: theme-color("info");
+$question-bgcolor: lighten($question-color,50%);
+
+$validation-color: theme-color("danger");
+$validation-bgcolor: lighten($validation-color,50%);
+
+// **************************************
+// Styles
+// **************************************
+
+//start: css classes coming from MVC
+
+label {
+	font-weight: normal;
+    color: $label-color;
+    background-color: $label-bgcolor;
+	margin-top: .75rem;
+    margin-bottom: 0rem;
+    display: block;
+}
+
+
+.input-validation-error {
+	border: 2px solid $error-color !important;
+}
+
+.input-required {
+    border-left: .5rem solid theme-color("success");
+}
+
+.field-validation-error {
+	display: block;
+	font-size: 1rem; // 10pt
+	color: $error-color;
+}
+
+.validation-summary-errors {
+    font-size: 1rem; // 10pt
+    border: 2px solid;
+    margin: 10px 0px;
+    padding: 10px 10px 10px 50px;
+    color: $error-color;
+}
+
+.validation-summary-valid  {
+    display: none;
+}
+
+// end: css classes coming from MVC
+.msg-info, .msg-success, .msg-warning, .msg-question, .msg-error, .msg-validation {
+    border: 2px solid;
+    // margin: 13px 0 13px 0;
+    padding: 10px 10px 10px 50px;
+    position: relative;
+
+    &:before {
+        font-family: FontAwesome;
+        font-size: 2.25rem; // 36px
+        content: '';
+        display: inline-block;
+        vertical-align: middle;
+        position: absolute;
+        top: -5px;
+        left: 5px;
+    }
+
+    ul, p {
+        margin-bottom: 0;
+    }
+}
+
+.msg-error-text {
+	color: $error-color;
+}
+
+
+.msg-info {
+	color: $info-color;
+	background-color: $info-bgcolor;
+    &:before {
+		content: '\f05a';
+	}
+}
+
+
+.msg-success {
+	color: $success-color;
+	background-color: $success-bgcolor;
+    &:before {
+		content: '\f058';
+	}
+}
+
+.msg-warning {
+	color: $warning-color;
+	background-color: $warning-bgcolor;
+    &:before {
+		content: '\f06a';
+	}
+}
+
+.msg-question {
+	color: $question-color;
+	background-color: $question-bgcolor;
+    &:before {
+		content: '\f059';
+	}
+}
+
+.msg-error {
+	color: $error-color;
+	background-color: $error-bgcolor;
+    &:before {
+		content: '\f057';
+	}
+}
+
+.msg-validation {
+	color: $validation-color;
+	background-color: $validation-bgcolor;
+    &:before {
+		content: '\f05e';
+	}
+}
+
+
+// Override Bootstrap
+.form-control {
+    font-size: 1.25rem;
+    padding: 0.25rem 0.5rem;
+}
+
+// Override Boodstrap-Select
+.bootstrap-select > button.btn {
+    background-color: $white !important;
+    border-color: $gray-400;
+    font-family: $font-family-sans-serif;
+}
+

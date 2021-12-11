@@ -1,0 +1,69 @@
+<MailMergeMessage>
+  <Info>
+    <Id>3</Id>
+    <Category>InfoServiceEntry</Category>
+    <Description></Description>
+    <Comments />
+    <Data><![CDATA[]]></Data>
+  </Info>
+  <MailMergeAddresses>
+    <MailMergeAddress>
+      <AddrType>To</AddrType>
+      <Address>{Email}</Address>
+      <DisplayName>{FirstName} {LastName}</DisplayName>
+      <DisplayNameCharacterEncoding>utf-8</DisplayNameCharacterEncoding>
+    </MailMergeAddress>
+    <MailMergeAddress>
+      <AddrType>From</AddrType>
+      <Address>info@volleyball-turnier.de</Address>
+      <DisplayName>Volleyball-Turnier.de</DisplayName>
+      <DisplayNameCharacterEncoding>utf-8</DisplayNameCharacterEncoding>
+    </MailMergeAddress>
+    <MailMergeAddress>
+      <AddrType>Bcc</AddrType>
+      <Address>info@volleyball-turnier.de</Address>
+      <DisplayName>Volleyball-Turnier.de</DisplayName>
+      <DisplayNameCharacterEncoding>utf-8</DisplayNameCharacterEncoding>
+    </MailMergeAddress>
+  </MailMergeAddresses>
+  <Headers />
+  <Subject>Registrierung bei den Volley-News von {DomainName}</Subject>
+  <PlainText><![CDATA[Vielen Dank für die Registrierung bei Volley-News
+
+E-Mail: {Email}
+Registrierungsdatum: {SubscribedOn:dd.MM.yyyy}
+
+Um die Registrierung abzuschließen, ist eine einmalige
+Bestätigung der E-Mail-Adresse über folgenden Link erforderlich:
+{Protocol}://{DomainName}{ApproveUrl}
+
+Über folgenden Link kann die Registrierung jederzeit
+geändert oder gelöscht werden:
+{Protocol}://{DomainName}{EditUrl}
+
+Sportliche Grüße
+{DomainName}
+]]></PlainText>
+  <HtmlText><![CDATA[]]></HtmlText>
+  <Templates />
+  <Config>
+    <TextTransferEncoding>SevenBit</TextTransferEncoding>
+    <BinaryTransferEncoding>Base64</BinaryTransferEncoding>
+    <CharacterEncoding>utf-8</CharacterEncoding>
+    <CultureInfo>de-DE</CultureInfo>
+    <FileBaseDirectory></FileBaseDirectory>
+    <IgnoreIllegalRecipientAddresses>True</IgnoreIllegalRecipientAddresses>
+    <IgnoreMissingInlineAttachments>False</IgnoreMissingInlineAttachments>
+    <IgnoreMissingFileAttachments>False</IgnoreMissingFileAttachments>
+    <Priority>Normal</Priority>
+    <SmartFormatterConfig>
+      <ParseErrorAction>ThrowError</ParseErrorAction>
+      <FormatErrorAction>ThrowError</FormatErrorAction>
+      <CaseSensitivity>CaseSensitive</CaseSensitivity>
+      <ConvertCharacterStringLiterals>True</ConvertCharacterStringLiterals>
+    </SmartFormatterConfig>
+  </Config>
+  <FileAttachments />
+  <StringAttachments />
+  <ExternalInlineAttachments />
+</MailMergeMessage>

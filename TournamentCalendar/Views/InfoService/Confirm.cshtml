@@ -1,0 +1,35 @@
+﻿@model TournamentCalendar.Models.Shared.ConfirmModel<TournamentCalendarDAL.EntityClasses.InfoServiceEntity>
+<div class="pb-2">
+    @if (Model.SaveSuccessful)
+    {
+        <div class="msg-success rounded mb-2"> @* span inside div is necessary to display :before FontAwsome *@
+            <span>Die Anmeldung wurde in der Datenbank @(Model.Entity.ConfirmedOn.HasValue ? " als bestätigt " : "") gespeichert. Vielen Dank.</span>
+        </div>
+    }
+    else
+    {
+        <div class="msg-error rounded mb-2">
+            <span>
+                Beim Speichern der Anmeldung ist ein Fehler aufgetreten.<br />
+                Wir sind für eine Information per E-Mail oder Telefon sehr dankbar.
+            </span>
+        </div>
+    }
+    @if (Model.EmailSuccessful.HasValue && Model.EmailSuccessful.Value)
+    {
+        <div class="msg-success rounded">
+            <span>
+                Bitte die E-Mail beachten, die wir soeben an @Model?.Entity.Email geschickt haben
+                @if (!Model.Entity.ConfirmedOn.HasValue)
+                {<text><br/>und die Anmeldung <strong>über den Link in der E-Mail bestätgen</strong>.</text>}
+            </span>
+        </div>
+    }
+    @if (Model.EmailSuccessful.HasValue && !Model.EmailSuccessful.Value)
+    {
+        <div class="msg-error rounded">
+            <span>Beim Versenden der E-Mail an @Model?.Entity.Email ist ein Fehler aufgetreten.</span>
+        </div>
+    }
+</div>
+@section CssSection {}

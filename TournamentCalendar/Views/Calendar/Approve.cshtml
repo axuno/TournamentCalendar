@@ -1,0 +1,55 @@
+﻿@using TournamentCalendar
+@using TournamentCalendar.Controllers
+@model TournamentCalendar.Models.Shared.ApproveModelTournamentCalendar<TournamentCalendarDAL.EntityClasses.CalendarEntity>
+<div class="pb-2">
+    @if (!Model.IsEntityFound)
+    {
+        <div class="msg-error rounded pb-2">
+            <span>
+                @if (Model.Exception == null)
+                {
+                    <text>
+                        Die Turnierkalender-Eintrag ist in der Datenbank nicht zu finden.
+                        Möglicherweise wurde nicht der vollständige Link von der Bestätigungs-E-Mail verwendet.
+                    </text>
+                }
+                else
+                {
+                    <text>
+                        Beim Verarbeiten der Turnierbestätigung ist ein Fehler aufgetreten.<br />
+                        Bitte wenden Sie sich per E-Mail an uns.
+                    </text>
+                }
+            </span>
+        </div>
+    }
+    else
+    {
+        if (Model.SaveSuccessFul)
+        {
+            <div class="msg-success rounded">
+                <span>
+                    Das Turnier wurde in der
+                    @Html.ActionLink("Datenbank", nameof(Calendar.Id), nameof(Calendar), new { id = Model.Entity.Id }, new { @class = "link" })
+                    als <strong>aktiv</strong> gespeichert. Vielen Dank!
+                </span>
+            </div>
+        }
+        else
+        {
+            if (Model.PossibleDuplicateFound != null)
+            {
+                <div class="msg-error rounded">
+                    Ein identischer Eintrag für dieses Turnier ist bereits im @(Html.ActionLink("Kalender", nameof(Calendar.Id), nameof(Calendar), new { id = Model.PossibleDuplicateFound.Id }, new { @class = "link" })) freigeschaltet.
+                </div>
+            }
+            else
+            {
+                <div class="msg-error rounded">
+                    <span>Beim Freischalten des Turniers ist ein Fehler aufgetreten.</span>
+                </div>
+            }
+        }
+    }
+</div>
+@section CssSection {}

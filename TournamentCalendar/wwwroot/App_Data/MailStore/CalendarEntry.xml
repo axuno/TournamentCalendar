@@ -1,0 +1,73 @@
+<MailMergeMessage>
+  <Info>
+    <Id>2</Id>
+    <Category>CalenderEntry</Category>
+    <Description></Description>
+    <Comments />
+    <Data><![CDATA[]]></Data>
+  </Info>
+  <MailMergeAddresses>
+    <MailMergeAddress>
+      <AddrType>To</AddrType>
+      <Address>{PostedByEmail}</Address>
+      <DisplayName>{PostedByName}</DisplayName>
+      <DisplayNameCharacterEncoding>utf-8</DisplayNameCharacterEncoding>
+    </MailMergeAddress>
+    <MailMergeAddress>
+      <AddrType>From</AddrType>
+      <Address>info@volleyball-turnier.de</Address>
+      <DisplayName>Volleyball-Turnier.de</DisplayName>
+      <DisplayNameCharacterEncoding>utf-8</DisplayNameCharacterEncoding>
+    </MailMergeAddress>
+    <MailMergeAddress>
+      <AddrType>Bcc</AddrType>
+      <Address>info@volleyball-turnier.de</Address>
+      <DisplayName>Volleyball-Turnier.de</DisplayName>
+      <DisplayNameCharacterEncoding>utf-8</DisplayNameCharacterEncoding>
+    </MailMergeAddress>
+  </MailMergeAddresses>
+  <Headers />
+  <Subject>Turnierkalender-Eintrag auf {DomainName}</Subject>
+  <PlainText><![CDATA[Vielen Dank für folgenden Turnierkalender-Eintrag auf {DomainName}:
+
+Turniername: {TournamentName}
+Datum: {DateFrom:dd.MM.yyyy}
+
+Damit das Turnier im Kalender angezeigt wird, ist eine einmalige
+Freischaltung des Eintrags über folgenden Link erforderlich:
+{Protocol}://{DomainName}{ApproveUrl}
+
+Über den folgenden Link kann das Turnier jederzeit geändert oder deaktiviert
+werden. Es ist daher ratsam, ihn nicht an andere weiter zu geben:
+{Protocol}://{DomainName}{EditUrl}
+
+Das Turnier ist im Turnierkalender nach dem Freischalten des Eintrags
+über folgenden Link erreichbar:
+{Protocol}://{DomainName}{ShowUrl}
+
+Sportliche Grüße
+{DomainName}
+]]></PlainText>
+  <HtmlText><![CDATA[]]></HtmlText>
+  <Templates />
+  <Config>
+    <TextTransferEncoding>SevenBit</TextTransferEncoding>
+    <BinaryTransferEncoding>Base64</BinaryTransferEncoding>
+    <CharacterEncoding>utf-8</CharacterEncoding>
+    <CultureInfo>de-DE</CultureInfo>
+    <FileBaseDirectory></FileBaseDirectory>
+    <IgnoreIllegalRecipientAddresses>True</IgnoreIllegalRecipientAddresses>
+    <IgnoreMissingInlineAttachments>False</IgnoreMissingInlineAttachments>
+    <IgnoreMissingFileAttachments>False</IgnoreMissingFileAttachments>
+    <Priority>Normal</Priority>
+    <SmartFormatterConfig>
+      <ParseErrorAction>ThrowError</ParseErrorAction>
+      <FormatErrorAction>ThrowError</FormatErrorAction>
+      <CaseSensitivity>CaseSensitive</CaseSensitivity>
+      <ConvertCharacterStringLiterals>True</ConvertCharacterStringLiterals>
+    </SmartFormatterConfig>
+  </Config>
+  <FileAttachments />
+  <StringAttachments />
+  <ExternalInlineAttachments />
+</MailMergeMessage>

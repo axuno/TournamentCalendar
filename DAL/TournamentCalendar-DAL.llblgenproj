@@ -1,0 +1,620 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--LLBLGen Pro v5.7 project file. Do not manually edit this file. Incorrect references could lead to an unloadable project file.-->
+<Project Version="5.7" TargetFrameworkName="LLBLGen Pro Runtime Framework">
+  <Properties>
+    <Abbreviations />
+    <Property Name="AdditionalTaskPerformerFolder" Value="" />
+    <Property Name="AdditionalTasksFolder" Value="" />
+    <Property Name="AdditionalTemplatesFolder" Value="" />
+    <Property Name="AdditionalTypeConverterFolder" Value="" />
+    <Property Name="AddNewElementsAfterRefresh_v5" Value="false" />
+    <Property Name="AddNewElementsAfterRelationalModelDataSync_v5" Value="false" />
+    <Property Name="AddNewFieldsAfterRefresh_v5" Value="true" />
+    <Property Name="AddNewFieldsAfterRelationalModelDataSync_v5" Value="true" />
+    <Property Name="AddNewViewsAsEntitiesAfterRefresh_v5" Value="false" />
+    <Property Name="AddNewViewsAsEntitiesAfterRelationalModelDataSync_v5" Value="false" />
+    <Property Name="AutoAddManyToManyRelationships" Value="false" />
+    <Property Name="AutoAssignSequencesToIntegerPks" Value="true" />
+    <Property Name="AutoAssignTypeConverterToFieldMapping" Value="true" />
+    <Property Name="AutomaticallyGenerateSourceCodeOnProjectSave" Value="false" />
+    <Property Name="ConnectionStringKeyNamePattern" Value="ConnectionString.{$ProviderName}" />
+    <Property Name="DefaultDDLSQLScriptDestinationFolder" Value=".\DDLSQLScripts" />
+    <Property Name="DefaultDeleteRuleAction" Value="1" />
+    <Property Name="DefaultSourceCodeDestinationFolder" Value=".\Code" />
+    <Property Name="DefaultUpdateRuleAction" Value="0" />
+    <Property Name="DeleteObsoleteFiles" Value="true" />
+    <Property Name="ElementNamePrefixPattern" Value="{$SchemaName}" />
+    <Property Name="ElementNamePrefixPatternIsAppliedWhen" Value="1" />
+    <Property Name="EncodingToUse" Value="0" />
+    <Property Name="EntityActionCombinationDefaultForTable" Value="0" />
+    <Property Name="EntityActionCombinationDefaultForView" Value="4" />
+    <Property Name="EntityFieldNameStripPattern" Value="{}{}" />
+    <Property Name="EntityNameStripPattern" Value="{vbt_}{}" />
+    <Property Name="ExcludableOrphanedElementDetectedAction" Value="3" />
+    <Property Name="FailCodeGenerationOnWriteError" Value="true" />
+    <Property Name="FieldMappedOntoRelatedFieldPattern" Value="{$RelatedFieldName}" />
+    <Property Name="FkFieldsAreNamedAfterTargetField" Value="true" />
+    <Property Name="ForeignKeyConstraintPattern" Value="FK_{$Guid}" />
+    <Property Name="ForeignKeyFieldPattern" Value="{$NavigatorName}{$RelatedFieldName}" />
+    <Property Name="GroupUsage" Value="0" />
+    <Property Name="IdentifyingFieldsFollowDBPrimaryKeyConstraints_v5" Value="true" />
+    <Property Name="InsertUnderscoreAtWordBreakCaseInsensitiveDBs" Value="false" />
+    <Property Name="InsertUnderscoreAtWordBreakCaseSensitiveDBs" Value="false" />
+    <Property Name="LengthPrecisionScaleFollowDBLengthPrecisionScale_v5" Value="true" />
+    <Property Name="MakeElementNamePascalCasing" Value="true" />
+    <Property Name="NavigatorMappedOntoManyToManyPattern" Value="{$EndEntityName}CollectionVia{$IntermediateEntityName$S}" />
+    <Property Name="NavigatorMappedOntoOneManyToOnePattern" Value="{$EndEntityName$S}" />
+    <Property Name="NavigatorMappedOntoOneToManyPattern" Value="{$EndEntityName$P}" />
+    <Property Name="NonExcludableOrphanedElementDetectedAction" Value="3" />
+    <Property Name="PreferDecimalOverCurrencyTypes" Value="true" />
+    <Property Name="PreferNaturalCharacterTypes" Value="true" />
+    <Property Name="PreferSystemSequencesOverSchemaSequencesIfApplicable" Value="true" />
+    <Property Name="PreferVariableLengthTypes" Value="true" />
+    <Property Name="PrimaryKeyConstraintPattern" Value="PK_{$Guid}" />
+    <Property Name="ProjectCreator" Value="axuno gGmbH" />
+    <Property Name="ProjectName" Value="Tournament-DAL" />
+    <Property Name="ReflectNullabilityOfElementFieldInTargetField_v5" Value="false" />
+    <Property Name="ReflectTypeOfElementFieldInTargetField_v5" Value="true" />
+    <Property Name="RelationalModelDataElementNameCasingCaseInsensitiveDBs" Value="3" />
+    <Property Name="RelationalModelDataElementNameCasingCaseSensitiveDBs" Value="3" />
+    <Property Name="RelationshipsFollowDBForeignKeyConstraints_v5" Value="true" />
+    <Property Name="RemoveUnderscoresFromElementName" Value="true" />
+    <Property Name="RemoveUnmappedElementsAfterRefresh_v5" Value="false" />
+    <Property Name="RemoveUnmappedElementsAfterRelationalModelDataSync_v5" Value="false" />
+    <Property Name="ResetFieldOrderBasedOnTargetOrderAtRefresh" Value="false" />
+    <Property Name="ResetFieldOrderBasedOnTargetOrderAtRelationalModelDataSync" Value="false" />
+    <Property Name="RetrieveDBCustomProperties" Value="false" />
+    <Property Name="RootNamespace" Value="TournamentCalendarDAL" />
+    <Property Name="SequenceNameMatchingPattern" Value="SEQ_{$TableName}" />
+    <Property Name="SequencePattern" Value="SEQ_{$EntityName}" />
+    <Property Name="SetGroupNameAfterSchemaName" Value="true" />
+    <Property Name="SetSchemaNameAfterGroupName" Value="true" />
+    <Property Name="SingularizeElementNames" Value="true" />
+    <Property Name="StoredProcNameStripPattern" Value="{pr_, sp_}{}" />
+    <Property Name="StoreTimeLastGeneratedIntoProject" Value="true" />
+    <Property Name="StoreTimeLastSyncIntoProject" Value="true" />
+    <Property Name="SyncCustomFieldOrderingWithTableFieldIndex" Value="false" />
+    <Property Name="SyncMappedElementNamesAfterRefresh_v5" Value="false" />
+    <Property Name="SyncMappedElementNamesAfterRelationalModelDataSync_v5" Value="false" />
+    <Property Name="SyncRelationalModelDataElementNameWithModelElementName_v5" Value="false" />
+    <Property Name="SyncRenamedMappedElementNamesAfterRefresh_v5" Value="false" />
+    <Property Name="SyncRenamedMappedElementNamesAfterRelationalModelDataSync_v5" Value="false" />
+    <Property Name="TableValuedFunctionNameStripPattern" Value="{fn_, pr_, sp_}{}" />
+    <Property Name="TargetPerEntityEdgesRequireBackingFkConstraint" Value="true" />
+    <Property Name="TypedViewFieldNameStripPattern" Value="{vbt_}{}" />
+    <Property Name="TypedViewMappedOnResultsetPattern" Value="{$ProcFunctionName}{$ResultsetName}Result" />
+    <Property Name="TypedViewNameStripPattern" Value="{vw_}{}" />
+    <Property Name="UniqueConstraintPattern" Value="UC_{$Guid}" />
+    <Property Name="UniqueConstraintsFollowDBUniqueConstraints_v5" Value="true" />
+    <Property Name="UpdateCustomPropertiesAfterRefresh_v5" Value="false" />
+    <Property Name="UpdateCustomPropertiesAfterRelationalModelDataSync_v5" Value="false" />
+    <Property Name="UseCustomFieldOrderingOnNewElements" Value="false" />
+  </Properties>
+  <TypeShortcuts />
+  <IgnoredWarnings />
+  <SavedSearchQueries />
+  <CodeGenerationCyclePreferences>
+    <OutputType Value="2">
+      <LastUsedPreferences>
+        <DestinationRootFolder Value="c:\temp\test2" />
+        <FrameworkName Value="DDL SQL" />
+        <LanguageName Value="SQL" />
+        <PlatformName Value="RDBMS" />
+        <PresetName Value="SD.Presets.DDLSQL.UpdateScript" />
+        <RootNamespace Value="" />
+        <TemplateGroup Value="Update DDL SQL" />
+        <LastGenerationCycleStartedOn Value="2017-11-18T17:07:53.433618Z" />
+        <TemplateBindings>
+          <Binding Name="SD.TemplateBindings.MySqlSpecific.DDLSQL" />
+          <Binding Name="SD.TemplateBindings.SharedTemplates.DDLSQL" />
+        </TemplateBindings>
+        <AdhocTemplateSets />
+      </LastUsedPreferences>
+    </OutputType>
+    <OutputType Value="3">
+      <LastUsedPreferences>
+        <DestinationRootFolder Value=".\" />
+        <FrameworkName Value="LLBLGen Pro Runtime Framework" />
+        <LanguageName Value="C#" />
+        <PlatformName Value=".NET Standard 2.0" />
+        <PresetName Value="SD.Presets.Adapter.General.Netstandard" />
+        <RootNamespace Value="TournamentCalendarDAL" />
+        <TemplateGroup Value="Adapter" />
+        <LastGenerationCycleStartedOn Value="2020-07-05T19:47:09.4775258Z" />
+        <TemplateBindings>
+          <Binding Name="SD.TemplateBindings.MySqlSpecific" />
+          <Binding Name="SD.TemplateBindings.SharedTemplates.Netstandard20" />
+          <Binding Name="SD.TemplateBindings.SharedTemplates" />
+          <Binding Name="SD.TemplateBindings.General" />
+        </TemplateBindings>
+        <AdhocTemplateSets />
+      </LastUsedPreferences>
+    </OutputType>
+    <OutputType Value="1">
+      <LastUsedPreferences>
+        <DestinationRootFolder Value=".\SqlDDL" />
+        <FrameworkName Value="DDL SQL" />
+        <LanguageName Value="SQL" />
+        <PlatformName Value="RDBMS" />
+        <PresetName Value="SD.Presets.DDLSQL.CreateScript" />
+        <RootNamespace Value="" />
+        <TemplateGroup Value="Create DDL SQL" />
+        <LastGenerationCycleStartedOn Value="2018-04-22T14:58:26.7569636Z" />
+        <TemplateBindings>
+          <Binding Name="SD.TemplateBindings.MySqlSpecific.DDLSQL" />
+          <Binding Name="SD.TemplateBindings.SqlServerSpecific.DDLSQL" />
+          <Binding Name="SD.TemplateBindings.SharedTemplates.DDLSQL" />
+        </TemplateBindings>
+        <AdhocTemplateSets />
+      </LastUsedPreferences>
+    </OutputType>
+  </CodeGenerationCyclePreferences>
+  <OutputSettingValues>
+    <SettingValues>
+      <SettingValue Name="1:AdapterDbGenericProjectFileSuffix" Value=".DbGeneric" Type="18" />
+      <SettingValue Name="1:AdapterDbGenericSubFolderName" Value="DatabaseGeneric" Type="18" />
+      <SettingValue Name="1:AdapterDbSpecificNamespaceSuffix" Value="DatabaseSpecific" Type="18" />
+      <SettingValue Name="1:AdapterDbSpecificProjectFileSuffix" Value=".DbSpecific" Type="18" />
+      <SettingValue Name="1:AdapterDbSpecificSubFolderName" Value="DatabaseSpecific" Type="18" />
+      <SettingValue Name="1:ConvertNulledReferenceTypesToDefaultValue" Value="true" Type="3" />
+      <SettingValue Name="1:EntityBaseClassNameDefault" Value="CommonEntityBase" Type="18" />
+      <SettingValue Name="1:FieldPropertyIsPublicDefault" Value="true" Type="3" />
+      <SettingValue Name="1:GenerateAsNullableTypeDefault" Value="true" Type="3" />
+      <SettingValue Name="1:GenerateEntityFieldFactory" Value="false" Type="3" />
+      <SettingValue Name="1:GenerateEntityFieldsFactory" Value="false" Type="3" />
+      <SettingValue Name="1:InlineValueTypedFields" Value="true" Type="3" />
+      <SettingValue Name="1:LazyLoadingWithoutResultReturnsNew" Value="false" Type="3" />
+      <SettingValue Name="1:NavigatorPropertyIsPublicDefault" Value="true" Type="3" />
+      <SettingValue Name="1:SupportedActionCombinations" Value="0,1,2,3,4,5,6,7" Type="18" />
+      <SettingValue Name="1:TdlEmitTimeDateInOutputFiles" Value="false" Type="3" />
+      <SettingValue Name="1:TypedListOutputTypeDefault" Value="TypedDataTable" Type="18" />
+      <SettingValue Name="1:TypedViewOutputTypeDefault" Value="TypedDataTable" Type="18" />
+    </SettingValues>
+  </OutputSettingValues>
+  <CodeGenerationMetaDataDefaults>
+    <TargetElement Type="256">
+      <Defaults>
+        <Attributes>
+          <Attribute Value="Browsable($false)" />
+        </Attributes>
+      </Defaults>
+    </TargetElement>
+  </CodeGenerationMetaDataDefaults>
+  <EntityModel>
+    <ValueTypeDefinitions />
+    <EntityDefinitions>
+      <EntityDefinition Name="Calendar" ObjectID="4743b60c-d66e-4fd7-a303-2169b07b1258">
+        <Fields>
+          <Field Name="ApprovedOn" Type="datetime" IsOptional="true" />
+          <Field Name="AttachmentFile" Type="string" IsOptional="true" MaxLength="512" />
+          <Field Name="Bond" Type="decimal" Precision="5" Scale="2" />
+          <Field Name="City" Type="string" IsOptional="true" MaxLength="100" />
+          <Field Name="ClosingDate" Type="datetime" />
+          <Field Name="ContactAddress" Type="string" IsOptional="true" MaxLength="1024" />
+          <Field Name="CountryId" Type="string" MaxLength="2" />
+          <Field Name="CreatedByUser" Type="string" IsOptional="true" MaxLength="50" />
+          <Field Name="CreatedOn" Type="datetime" />
+          <Field Name="DateFrom" Type="datetime" />
+          <Field Name="DateTo" Type="datetime" />
+          <Field Name="DeletedOn" Type="datetime" IsOptional="true" />
+          <Field Name="Email" Type="string" IsOptional="true" MaxLength="255" />
+          <Field Name="EntryFee" Type="decimal" Precision="5" Scale="2" />
+          <Field Name="Guid" Type="string" IsOptional="true" MaxLength="50" />
+          <Field Name="Id" Type="long" IsReadOnly="true" Precision="11" IsPrimaryKey="true" />
+          <Field Name="Info" Type="string" IsOptional="true" MaxLength="1024" />
+          <Field Name="IsMinPlayersFemale" Type="bool" Precision="1" />
+          <Field Name="IsMinPlayersMale" Type="bool" Precision="1" />
+          <Field Name="Latitude" Type="double" IsOptional="true" Precision="38" />
+          <Field Name="Longitude" Type="double" IsOptional="true" Precision="38" />
+          <Field Name="ModifiedOn" Type="datetime" />
+          <Field Name="NumOfTeams" Type="int" Precision="3" />
+          <Field Name="NumPlayersFemale" Type="int" Precision="2" />
+          <Field Name="NumPlayersMale" Type="int" Precision="2" />
+          <Field Name="Organizer" Type="string" IsOptional="true" MaxLength="255" />
+          <Field Name="PlayingAbilityFrom" Type="long" Precision="2" />
+          <Field Name="PlayingAbilityTo" Type="long" Precision="2" />
+          <Field Name="PostalCode" Type="string" IsOptional="true" MaxLength="10" />
+          <Field Name="PostedByEmail" Type="string" IsOptional="true" MaxLength="255" />
+          <Field Name="PostedByName" Type="string" IsOptional="true" MaxLength="50" />
+          <Field Name="PostedByPassword" Type="string" IsOptional="true" MaxLength="64" />
+          <Field Name="Special" Type="string" IsOptional="true" MaxLength="512" />
+          <Field Name="Street" Type="string" IsOptional="true" MaxLength="100" />
+          <Field Name="Surface" Type="long" />
+          <Field Name="TournamentName" Type="string" MaxLength="255" />
+          <Field Name="Venue" Type="string" IsOptional="true" MaxLength="100" />
+          <Field Name="Website" Type="string" IsOptional="true" MaxLength="255" />
+        </Fields>
+      </EntityDefinition>
+      <EntityDefinition Name="Country" ObjectID="ea5e254b-3546-4d23-af87-b4d86aade56f">
+        <Fields>
+          <Field Name="CreatedOn" Type="datetime" />
+          <Field Name="Id" Type="string" MaxLength="2" IsPrimaryKey="true" />
+          <Field Name="Iso3" Type="string" MaxLength="3" />
+          <Field Name="ModifiedOn" Type="datetime" />
+          <Field Name="Name" Type="string" MaxLength="255" />
+        </Fields>
+        <UniqueConstraints>
+          <UniqueConstraint Name="Iso3">
+            <Field Name="Iso3" />
+          </UniqueConstraint>
+        </UniqueConstraints>
+      </EntityDefinition>
+      <EntityDefinition Name="InfoService" ObjectID="e1623b1b-783f-43b0-aa43-d78bf85e0146">
+        <Fields>
+          <Field Name="City" Type="string" MaxLength="50" />
+          <Field Name="ClubName" Type="string" MaxLength="255" />
+          <Field Name="Comments" Type="string" MaxLength="255" />
+          <Field Name="ConfirmedOn" Type="datetime" IsOptional="true" />
+          <Field Name="CountryId" Type="string" IsOptional="true" MaxLength="2" />
+          <Field Name="Email" Type="string" MaxLength="50" />
+          <Field Name="FirstName" Type="string" MaxLength="50" />
+          <Field Name="Gender" Type="string" MaxLength="50" />
+          <Field Name="Guid" Type="string" IsOptional="true" MaxLength="64" />
+          <Field Name="Id" Type="int" IsReadOnly="true" Precision="11" IsPrimaryKey="true" />
+          <Field Name="LastName" Type="string" MaxLength="50" />
+          <Field Name="Latitude" Type="double" IsOptional="true" Precision="38" />
+          <Field Name="Longitude" Type="double" IsOptional="true" Precision="38" />
+          <Field Name="MaxDistance" Type="int" IsOptional="true" Precision="4" />
+          <Field Name="ModifiedOn" Type="datetime" />
+          <Field Name="Nickname" Type="string" MaxLength="50" />
+          <Field Name="Street" Type="string" MaxLength="255" />
+          <Field Name="SubscribedOn" Type="datetime" />
+          <Field Name="TeamName" Type="string" MaxLength="255" />
+          <Field Name="Title" Type="string" MaxLength="30" />
+          <Field Name="UnSubscribedOn" Type="datetime" IsOptional="true" />
+          <Field Name="UserName" Type="string" MaxLength="50" />
+          <Field Name="UserPassword" Type="string" MaxLength="10" />
+          <Field Name="ZipCode" Type="string" MaxLength="6" />
+        </Fields>
+      </EntityDefinition>
+      <EntityDefinition Name="PlayingAbility" ObjectID="be3085c6-554d-411c-a609-64f3528d09de">
+        <Fields>
+          <Field Name="CreatedOn" Type="datetime" />
+          <Field Name="Description" Type="string" MaxLength="255" />
+          <Field Name="Id" Type="long" IsReadOnly="true" Precision="11" />
+          <Field Name="ModifiedOn" Type="datetime" />
+          <Field Name="Strength" Type="long" Precision="2" IsPrimaryKey="true" />
+        </Fields>
+        <UniqueConstraints>
+          <UniqueConstraint Name="Id">
+            <Field Name="Id" />
+          </UniqueConstraint>
+        </UniqueConstraints>
+      </EntityDefinition>
+      <EntityDefinition Name="SentNewsletter" ObjectID="8ac65a20-c251-4697-b800-ed294afe92fb">
+        <Fields>
+          <Field Name="CompletedOn" Type="datetime" IsOptional="true" />
+          <Field Name="Id" Type="long" IsReadOnly="true" Precision="19" IsPrimaryKey="true" />
+          <Field Name="NumOfRecipients" Type="int" Precision="10" />
+          <Field Name="NumOfTournaments" Type="int" Precision="10" />
+          <Field Name="StartedOn" Type="datetime" />
+        </Fields>
+      </EntityDefinition>
+      <EntityDefinition Name="Surface" ObjectID="66ce1af4-7461-4b98-801f-f9bcb82b408a">
+        <Fields>
+          <Field Name="CreatedOn" Type="datetime" FieldIndex="2" />
+          <Field Name="Description" Type="string" MaxLength="3" FieldIndex="1" />
+          <Field Name="Id" Type="long" IsReadOnly="true" IsPrimaryKey="true" FieldIndex="0" />
+          <Field Name="ModifiedOn" Type="datetime" FieldIndex="3" />
+        </Fields>
+      </EntityDefinition>
+    </EntityDefinitions>
+    <Relationships>
+      <NormalRelationship Name="Calendar.Country-Country.TournamentCalendars" Start=":Calendar" End=":Country" StartNavigator="Country" EndNavigator="TournamentCalendars" Type="4">
+        <FieldRelationships>
+          <FieldFieldRelationship FkField="CountryId" PkField="Id" />
+        </FieldRelationships>
+      </NormalRelationship>
+      <NormalRelationship Name="Calendar.TournamentPlayingAbilityFrom-PlayingAbility.TournamentCalendars" Start=":Calendar" End=":PlayingAbility" StartNavigator="TournamentPlayingAbilityFrom" EndNavigator="TournamentCalendars" Type="4">
+        <FieldRelationships>
+          <FieldFieldRelationship FkField="PlayingAbilityFrom" PkField="Strength" />
+        </FieldRelationships>
+      </NormalRelationship>
+      <NormalRelationship Name="Calendar.TournamentPlayingAbilityTo-PlayingAbility.TournamentCalendars_" Start=":Calendar" End=":PlayingAbility" StartNavigator="TournamentPlayingAbilityTo" EndNavigator="TournamentCalendars_" Type="4">
+        <FieldRelationships>
+          <FieldFieldRelationship FkField="PlayingAbilityTo" PkField="Strength" />
+        </FieldRelationships>
+      </NormalRelationship>
+      <NormalRelationship Name="Calendar.TournamentSurface-Surface.TournamentCalendars" Start=":Calendar" End=":Surface" StartNavigator="TournamentSurface" EndNavigator="TournamentCalendars" Type="4">
+        <FieldRelationships>
+          <FieldFieldRelationship FkField="Surface" PkField="Id" />
+        </FieldRelationships>
+      </NormalRelationship>
+      <NormalRelationship Name="InfoService.Country-Country.InfoServices" Start=":InfoService" End=":Country" StartNavigator="Country" EndNavigator="InfoServices" Type="4" EndIsOptional="true">
+        <FieldRelationships>
+          <FieldFieldRelationship FkField="CountryId" PkField="Id" />
+        </FieldRelationships>
+      </NormalRelationship>
+    </Relationships>
+    <InheritanceHierarchies />
+  </EntityModel>
+  <TargetDatabases>
+    <TargetDatabase Type="2D18D138-1DD2-467E-86CC-4838250611AE" SyncSource="2">
+      <ConnectionElements>
+        <ConnectionElement Name="ServerName" Value="(LocalDB)\MSSQLLocalDB" />
+        <ConnectionElement Name="CatalogName" Value="master" />
+        <ConnectionElement Name="UseWindowsAuthentication" Value="true" />
+        <ConnectionElement Name="UserID" Value="" />
+        <ConnectionElement Name="Password" Value="" />
+      </ConnectionElements>
+      <SystemSequences>
+        <Sequence Name="SCOPE_IDENTITY()" />
+        <Sequence Name="@@IDENTITY" />
+      </SystemSequences>
+      <Catalogs>
+        <Catalog Name="TournamentCalendar">
+          <Schemas>
+            <Schema Name="dbo" SyncSource="2" LastSyncWithDatabase="2019-06-20T15:14:38.3906416Z">
+              <Tables>
+                <Table Name="Calendar">
+                  <PkConstraintName Name="PK_1fc3031419c9a8125ae1a8b4f02" />
+                  <Fields>
+                    <Field Name="Id" Ordinal="1" IsIdentity="true" IsPrimaryKey="true" DbType="0" Precision="19" />
+                    <Field Name="Guid" Ordinal="2" IsOptional="true" DbType="12" Length="50" />
+                    <Field Name="TournamentName" Ordinal="3" HasDefaultValue="true" DefaultValue="''" DbType="12" Length="255" />
+                    <Field Name="DateFrom" Ordinal="4" DbType="4" />
+                    <Field Name="DateTo" Ordinal="5" DbType="4" />
+                    <Field Name="ClosingDate" Ordinal="6" DbType="4" />
+                    <Field Name="Venue" Ordinal="7" IsOptional="true" HasDefaultValue="true" DefaultValue="''" DbType="12" Length="100" />
+                    <Field Name="CountryId" Ordinal="8" DbType="12" Length="2" />
+                    <Field Name="PostalCode" Ordinal="9" IsOptional="true" HasDefaultValue="true" DefaultValue="''" DbType="12" Length="10" />
+                    <Field Name="City" Ordinal="10" IsOptional="true" HasDefaultValue="true" DefaultValue="''" DbType="12" Length="100" />
+                    <Field Name="Street" Ordinal="11" IsOptional="true" HasDefaultValue="true" DefaultValue="''" DbType="12" Length="100" />
+                    <Field Name="Longitude" Ordinal="12" IsOptional="true" DbType="6" Precision="38" />
+                    <Field Name="Latitude" Ordinal="13" IsOptional="true" DbType="6" Precision="38" />
+                    <Field Name="NumOfTeams" Ordinal="14" DbType="8" Precision="10" />
+                    <Field Name="NumPlayersMale" Ordinal="15" DbType="8" Precision="10" />
+                    <Field Name="IsMinPlayersMale" Ordinal="16" DbType="2" />
+                    <Field Name="NumPlayersFemale" Ordinal="17" DbType="8" Precision="10" />
+                    <Field Name="IsMinPlayersFemale" Ordinal="18" DbType="2" />
+                    <Field Name="Surface" Ordinal="19" DbType="0" Precision="19" />
+                    <Field Name="PlayingAbilityFrom" Ordinal="20" DbType="0" Precision="19" />
+                    <Field Name="PlayingAbilityTo" Ordinal="21" DbType="0" Precision="19" />
+                    <Field Name="EntryFee" Ordinal="22" DbType="5" Precision="5" Scale="2" />
+                    <Field Name="Bond" Ordinal="23" DbType="5" Precision="5" Scale="2" />
+                    <Field Name="Info" Ordinal="24" IsOptional="true" HasDefaultValue="true" DefaultValue="''" DbType="12" Length="1024" />
+                    <Field Name="Organizer" Ordinal="25" IsOptional="true" HasDefaultValue="true" DefaultValue="''" DbType="12" Length="255" />
+                    <Field Name="ContactAddress" Ordinal="26" IsOptional="true" HasDefaultValue="true" DefaultValue="''" DbType="12" Length="1024" />
+                    <Field Name="Email" Ordinal="27" IsOptional="true" HasDefaultValue="true" DefaultValue="''" DbType="12" Length="255" />
+                    <Field Name="Website" Ordinal="28" IsOptional="true" HasDefaultValue="true" DefaultValue="''" DbType="12" Length="255" />
+                    <Field Name="PostedByName" Ordinal="29" IsOptional="true" HasDefaultValue="true" DefaultValue="''" DbType="12" Length="50" />
+                    <Field Name="PostedByEmail" Ordinal="30" IsOptional="true" HasDefaultValue="true" DefaultValue="''" DbType="12" Length="255" />
+                    <Field Name="PostedByPassword" Ordinal="31" IsOptional="true" HasDefaultValue="true" DefaultValue="''" DbType="12" Length="64" />
+                    <Field Name="CreatedByUser" Ordinal="32" IsOptional="true" HasDefaultValue="true" DefaultValue="''" DbType="12" Length="50" />
+                    <Field Name="AttachmentFile" Ordinal="33" IsOptional="true" HasDefaultValue="true" DefaultValue="''" DbType="12" Length="512" />
+                    <Field Name="Special" Ordinal="34" IsOptional="true" HasDefaultValue="true" DefaultValue="''" DbType="12" Length="512" />
+                    <Field Name="CreatedOn" Ordinal="35" DbType="4" />
+                    <Field Name="ModifiedOn" Ordinal="36" DbType="4" />
+                    <Field Name="DeletedOn" Ordinal="37" IsOptional="true" DbType="4" />
+                    <Field Name="ApprovedOn" Ordinal="38" IsOptional="true" DbType="4" />
+                  </Fields>
+                </Table>
+                <Table Name="Country">
+                  <PkConstraintName Name="PK_99262ae40258db0d9b2a36f29ad" />
+                  <Fields>
+                    <Field Name="Id" Ordinal="1" IsPrimaryKey="true" DbType="12" Length="2" />
+                    <Field Name="Name" Ordinal="2" DbType="12" Length="255" />
+                    <Field Name="Iso3" Ordinal="3" DbType="12" Length="3" />
+                    <Field Name="CreatedOn" Ordinal="4" DbType="4" />
+                    <Field Name="ModifiedOn" Ordinal="5" DbType="4" />
+                  </Fields>
+                  <UniqueConstraints>
+                    <UniqueConstraint Name="UC_6a283784ae9a06be73f61031c43">
+                      <Field Name="Iso3" />
+                    </UniqueConstraint>
+                  </UniqueConstraints>
+                </Table>
+                <Table Name="InfoService">
+                  <PkConstraintName Name="PK_c4d440042eb8dfdd13c5e7200d0" />
+                  <Fields>
+                    <Field Name="Id" Ordinal="1" IsIdentity="true" IsPrimaryKey="true" DbType="8" Precision="10" />
+                    <Field Name="TeamName" Ordinal="2" HasDefaultValue="true" DefaultValue="''" DbType="12" Length="255" />
+                    <Field Name="ClubName" Ordinal="3" HasDefaultValue="true" DefaultValue="''" DbType="12" Length="255" />
+                    <Field Name="Gender" Ordinal="4" HasDefaultValue="true" DefaultValue="''" DbType="12" Length="50" />
+                    <Field Name="Title" Ordinal="5" HasDefaultValue="true" DefaultValue="''" DbType="12" Length="30" />
+                    <Field Name="FirstName" Ordinal="6" HasDefaultValue="true" DefaultValue="''" DbType="12" Length="50" />
+                    <Field Name="LastName" Ordinal="7" HasDefaultValue="true" DefaultValue="''" DbType="12" Length="50" />
+                    <Field Name="Nickname" Ordinal="8" HasDefaultValue="true" DefaultValue="''" DbType="12" Length="50" />
+                    <Field Name="CountryId" Ordinal="9" IsOptional="true" DbType="12" Length="2" />
+                    <Field Name="ZipCode" Ordinal="10" HasDefaultValue="true" DefaultValue="''" DbType="12" Length="6" />
+                    <Field Name="City" Ordinal="11" HasDefaultValue="true" DefaultValue="''" DbType="12" Length="50" />
+                    <Field Name="Street" Ordinal="12" HasDefaultValue="true" DefaultValue="''" DbType="12" Length="255" />
+                    <Field Name="Longitude" Ordinal="13" IsOptional="true" DbType="6" Precision="38" />
+                    <Field Name="Latitude" Ordinal="14" IsOptional="true" DbType="6" Precision="38" />
+                    <Field Name="MaxDistance" Ordinal="15" IsOptional="true" DbType="8" Precision="10" />
+                    <Field Name="Email" Ordinal="16" HasDefaultValue="true" DefaultValue="''" DbType="12" Length="50" />
+                    <Field Name="UserName" Ordinal="17" HasDefaultValue="true" DefaultValue="''" DbType="12" Length="50" />
+                    <Field Name="UserPassword" Ordinal="18" HasDefaultValue="true" DefaultValue="''" DbType="12" Length="10" />
+                    <Field Name="Guid" Ordinal="19" IsOptional="true" HasDefaultValue="true" DefaultValue="''" DbType="12" Length="64" />
+                    <Field Name="Comments" Ordinal="20" HasDefaultValue="true" DefaultValue="''" DbType="12" Length="255" />
+                    <Field Name="SubscribedOn" Ordinal="21" DbType="4" />
+                    <Field Name="ModifiedOn" Ordinal="22" DbType="4" />
+                    <Field Name="ConfirmedOn" Ordinal="23" IsOptional="true" DbType="4" />
+                    <Field Name="UnSubscribedOn" Ordinal="24" IsOptional="true" DbType="4" />
+                  </Fields>
+                </Table>
+                <Table Name="PlayingAbility">
+                  <PkConstraintName Name="PK_ef96466400f929b0b99f896682b" />
+                  <Fields>
+                    <Field Name="Id" Ordinal="1" IsIdentity="true" DbType="0" Precision="19" />
+                    <Field Name="Description" Ordinal="2" DbType="12" Length="255" />
+                    <Field Name="Strength" Ordinal="3" IsPrimaryKey="true" DbType="0" Precision="19" />
+                    <Field Name="CreatedOn" Ordinal="4" DbType="4" />
+                    <Field Name="ModifiedOn" Ordinal="5" DbType="4" />
+                  </Fields>
+                  <UniqueConstraints>
+                    <UniqueConstraint Name="UC_cf2387e466aa1259db699dd071d">
+                      <Field Name="Id" />
+                    </UniqueConstraint>
+                  </UniqueConstraints>
+                </Table>
+                <Table Name="SentNewsletters">
+                  <PkConstraintName Name="PK__SentNews__3214EC07BF351E96" />
+                  <Fields>
+                    <Field Name="Id" Ordinal="1" IsIdentity="true" IsPrimaryKey="true" DbType="0" Precision="19" />
+                    <Field Name="NumOfTournaments" Ordinal="2" DbType="8" Precision="10" />
+                    <Field Name="NumOfRecipients" Ordinal="3" DbType="8" Precision="10" />
+                    <Field Name="StartedOn" Ordinal="4" DbType="4" />
+                    <Field Name="CompletedOn" Ordinal="5" IsOptional="true" DbType="4" />
+                  </Fields>
+                </Table>
+                <Table Name="Surface">
+                  <PkConstraintName Name="PK_b779ee9469da9b52e7282721329" />
+                  <Fields>
+                    <Field Name="Id" Ordinal="1" IsIdentity="true" IsPrimaryKey="true" DbType="0" Precision="19" />
+                    <Field Name="Description" Ordinal="2" DbType="12" Length="255" />
+                    <Field Name="CreatedOn" Ordinal="3" DbType="4" />
+                    <Field Name="ModifiedOn" Ordinal="4" DbType="4" />
+                  </Fields>
+                </Table>
+              </Tables>
+            </Schema>
+          </Schemas>
+          <ForeignKeyConstraints>
+            <ForeignKeyConstraint Name="dbo:Calendar:FK_21b4638438eb5ed29dc461cb581">
+              <FieldPairs>
+                <FieldPair PkField="dbo:Surface:Id" FkField="dbo:Calendar:Surface" />
+              </FieldPairs>
+            </ForeignKeyConstraint>
+            <ForeignKeyConstraint Name="dbo:Calendar:FK_c472c3f45069be32b1b75ef81e6">
+              <FieldPairs>
+                <FieldPair PkField="dbo:Country:Id" FkField="dbo:Calendar:CountryId" />
+              </FieldPairs>
+            </ForeignKeyConstraint>
+            <ForeignKeyConstraint Name="dbo:Calendar:FK_d0f94394de0b6ef2a0b5646b689">
+              <FieldPairs>
+                <FieldPair PkField="dbo:PlayingAbility:Strength" FkField="dbo:Calendar:PlayingAbilityFrom" />
+              </FieldPairs>
+            </ForeignKeyConstraint>
+            <ForeignKeyConstraint Name="dbo:Calendar:FK_e43c35b45018bb920ab19e67bf8">
+              <FieldPairs>
+                <FieldPair PkField="dbo:PlayingAbility:Strength" FkField="dbo:Calendar:PlayingAbilityTo" />
+              </FieldPairs>
+            </ForeignKeyConstraint>
+            <ForeignKeyConstraint Name="dbo:InfoService:FK_f41ddf54294b7d713f434223d67">
+              <FieldPairs>
+                <FieldPair PkField="dbo:Country:Id" FkField="dbo:InfoService:CountryId" />
+              </FieldPairs>
+            </ForeignKeyConstraint>
+          </ForeignKeyConstraints>
+        </Catalog>
+      </Catalogs>
+    </TargetDatabase>
+  </TargetDatabases>
+  <MappingStores>
+    <MappingStore Type="2D18D138-1DD2-467E-86CC-4838250611AE">
+      <EntityMappings>
+        <EntityMapping EntityName=":Calendar" TargetName="TournamentCalendar:dbo:Calendar">
+          <FieldMappings>
+            <FieldMapping FieldName="ApprovedOn" TargetFieldName="ApprovedOn" />
+            <FieldMapping FieldName="AttachmentFile" TargetFieldName="AttachmentFile" />
+            <FieldMapping FieldName="Bond" TargetFieldName="Bond" />
+            <FieldMapping FieldName="City" TargetFieldName="City" />
+            <FieldMapping FieldName="ClosingDate" TargetFieldName="ClosingDate" />
+            <FieldMapping FieldName="ContactAddress" TargetFieldName="ContactAddress" />
+            <FieldMapping FieldName="CountryId" TargetFieldName="CountryId" />
+            <FieldMapping FieldName="CreatedByUser" TargetFieldName="CreatedByUser" />
+            <FieldMapping FieldName="CreatedOn" TargetFieldName="CreatedOn" />
+            <FieldMapping FieldName="DateFrom" TargetFieldName="DateFrom" />
+            <FieldMapping FieldName="DateTo" TargetFieldName="DateTo" />
+            <FieldMapping FieldName="DeletedOn" TargetFieldName="DeletedOn" />
+            <FieldMapping FieldName="Email" TargetFieldName="Email" />
+            <FieldMapping FieldName="EntryFee" TargetFieldName="EntryFee" />
+            <FieldMapping FieldName="Guid" TargetFieldName="Guid" />
+            <FieldMapping FieldName="Id" TargetFieldName="Id" SequenceToUse="SCOPE_IDENTITY()" />
+            <FieldMapping FieldName="Info" TargetFieldName="Info" />
+            <FieldMapping FieldName="IsMinPlayersFemale" TargetFieldName="IsMinPlayersFemale" />
+            <FieldMapping FieldName="IsMinPlayersMale" TargetFieldName="IsMinPlayersMale" />
+            <FieldMapping FieldName="Latitude" TargetFieldName="Latitude" />
+            <FieldMapping FieldName="Longitude" TargetFieldName="Longitude" />
+            <FieldMapping FieldName="ModifiedOn" TargetFieldName="ModifiedOn" />
+            <FieldMapping FieldName="NumOfTeams" TargetFieldName="NumOfTeams" />
+            <FieldMapping FieldName="NumPlayersFemale" TargetFieldName="NumPlayersFemale" />
+            <FieldMapping FieldName="NumPlayersMale" TargetFieldName="NumPlayersMale" />
+            <FieldMapping FieldName="Organizer" TargetFieldName="Organizer" />
+            <FieldMapping FieldName="PlayingAbilityFrom" TargetFieldName="PlayingAbilityFrom" />
+            <FieldMapping FieldName="PlayingAbilityTo" TargetFieldName="PlayingAbilityTo" />
+            <FieldMapping FieldName="PostalCode" TargetFieldName="PostalCode" />
+            <FieldMapping FieldName="PostedByEmail" TargetFieldName="PostedByEmail" />
+            <FieldMapping FieldName="PostedByName" TargetFieldName="PostedByName" />
+            <FieldMapping FieldName="PostedByPassword" TargetFieldName="PostedByPassword" />
+            <FieldMapping FieldName="Special" TargetFieldName="Special" />
+            <FieldMapping FieldName="Street" TargetFieldName="Street" />
+            <FieldMapping FieldName="Surface" TargetFieldName="Surface" />
+            <FieldMapping FieldName="TournamentName" TargetFieldName="TournamentName" />
+            <FieldMapping FieldName="Venue" TargetFieldName="Venue" />
+            <FieldMapping FieldName="Website" TargetFieldName="Website" />
+          </FieldMappings>
+        </EntityMapping>
+        <EntityMapping EntityName=":Country" TargetName="TournamentCalendar:dbo:Country">
+          <FieldMappings>
+            <FieldMapping FieldName="CreatedOn" TargetFieldName="CreatedOn" />
+            <FieldMapping FieldName="Id" TargetFieldName="Id" />
+            <FieldMapping FieldName="Iso3" TargetFieldName="Iso3" />
+            <FieldMapping FieldName="ModifiedOn" TargetFieldName="ModifiedOn" />
+            <FieldMapping FieldName="Name" TargetFieldName="Name" />
+          </FieldMappings>
+        </EntityMapping>
+        <EntityMapping EntityName=":InfoService" TargetName="TournamentCalendar:dbo:InfoService">
+          <FieldMappings>
+            <FieldMapping FieldName="City" TargetFieldName="City" />
+            <FieldMapping FieldName="ClubName" TargetFieldName="ClubName" />
+            <FieldMapping FieldName="Comments" TargetFieldName="Comments" />
+            <FieldMapping FieldName="ConfirmedOn" TargetFieldName="ConfirmedOn" />
+            <FieldMapping FieldName="CountryId" TargetFieldName="CountryId" />
+            <FieldMapping FieldName="Email" TargetFieldName="Email" />
+            <FieldMapping FieldName="FirstName" TargetFieldName="FirstName" />
+            <FieldMapping FieldName="Gender" TargetFieldName="Gender" />
+            <FieldMapping FieldName="Guid" TargetFieldName="Guid" />
+            <FieldMapping FieldName="Id" TargetFieldName="Id" SequenceToUse="SCOPE_IDENTITY()" />
+            <FieldMapping FieldName="LastName" TargetFieldName="LastName" />
+            <FieldMapping FieldName="Latitude" TargetFieldName="Latitude" />
+            <FieldMapping FieldName="Longitude" TargetFieldName="Longitude" />
+            <FieldMapping FieldName="MaxDistance" TargetFieldName="MaxDistance" />
+            <FieldMapping FieldName="ModifiedOn" TargetFieldName="ModifiedOn" />
+            <FieldMapping FieldName="Nickname" TargetFieldName="Nickname" />
+            <FieldMapping FieldName="Street" TargetFieldName="Street" />
+            <FieldMapping FieldName="SubscribedOn" TargetFieldName="SubscribedOn" />
+            <FieldMapping FieldName="TeamName" TargetFieldName="TeamName" />
+            <FieldMapping FieldName="Title" TargetFieldName="Title" />
+            <FieldMapping FieldName="UnSubscribedOn" TargetFieldName="UnSubscribedOn" />
+            <FieldMapping FieldName="UserName" TargetFieldName="UserName" />
+            <FieldMapping FieldName="UserPassword" TargetFieldName="UserPassword" />
+            <FieldMapping FieldName="ZipCode" TargetFieldName="ZipCode" />
+          </FieldMappings>
+        </EntityMapping>
+        <EntityMapping EntityName=":PlayingAbility" TargetName="TournamentCalendar:dbo:PlayingAbility">
+          <FieldMappings>
+            <FieldMapping FieldName="CreatedOn" TargetFieldName="CreatedOn" />
+            <FieldMapping FieldName="Description" TargetFieldName="Description" />
+            <FieldMapping FieldName="Id" TargetFieldName="Id" SequenceToUse="SCOPE_IDENTITY()" />
+            <FieldMapping FieldName="ModifiedOn" TargetFieldName="ModifiedOn" />
+            <FieldMapping FieldName="Strength" TargetFieldName="Strength" />
+          </FieldMappings>
+        </EntityMapping>
+        <EntityMapping EntityName=":SentNewsletter" TargetName="TournamentCalendar:dbo:SentNewsletters">
+          <FieldMappings>
+            <FieldMapping FieldName="CompletedOn" TargetFieldName="CompletedOn" />
+            <FieldMapping FieldName="Id" TargetFieldName="Id" SequenceToUse="SCOPE_IDENTITY()" />
+            <FieldMapping FieldName="NumOfRecipients" TargetFieldName="NumOfRecipients" />
+            <FieldMapping FieldName="NumOfTournaments" TargetFieldName="NumOfTournaments" />
+            <FieldMapping FieldName="StartedOn" TargetFieldName="StartedOn" />
+          </FieldMappings>
+        </EntityMapping>
+        <EntityMapping EntityName=":Surface" TargetName="TournamentCalendar:dbo:Surface">
+          <FieldMappings>
+            <FieldMapping FieldName="CreatedOn" TargetFieldName="CreatedOn" />
+            <FieldMapping FieldName="Description" TargetFieldName="Description" />
+            <FieldMapping FieldName="Id" TargetFieldName="Id" SequenceToUse="SCOPE_IDENTITY()" />
+            <FieldMapping FieldName="ModifiedOn" TargetFieldName="ModifiedOn" />
+          </FieldMappings>
+        </EntityMapping>
+      </EntityMappings>
+      <TypedViewMappings />
+      <SPCallMappings />
+      <TvfCallMappings />
+      <TypeConversionDefinitions />
+    </MappingStore>
+  </MappingStores>
+  <ModelViews />
+</Project>

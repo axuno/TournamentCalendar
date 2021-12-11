@@ -1,0 +1,407 @@
+﻿@model EditModel
+@using Microsoft.AspNetCore.Authentication
+@using TournamentCalendar.Models.Calendar
+@using TournamentCalendar.Controllers
+@using TournamentCalendar.Views
+@using TournamentCalendarDAL.HelperClasses
+<article>
+    @if (Model.EditMode == EditMode.New)
+    {
+        <h3 class="h3">Neuer Turniereintrag</h3>
+    }
+    else
+    {
+        <h3 class="h3">Turniereintrag ändern</h3>
+    }
+    <p>Über dieses Formular kann ein neues Turnier im Turnierkalender angelegt, bzw. ein gespeichertes Turnier bearbeitet werden.</p>
+    @if (Model.PossibleDuplicateFound != null)
+    {
+        <div class="msg-error">
+            Dieses Turnier ist bereits im Turnierkalender @(Html.ActionLink("eingetragen", nameof(Calendar.Id), nameof(Calendar), new { id = Model.PossibleDuplicateFound.Id }, null))).
+        </div>
+    }
+</article>
+@using (Model.EditMode == EditMode.New ? Html.BeginForm(nameof(Calendar.Entry), nameof(Calendar), new {id = string.Empty}, FormMethod.Post, null, new{id = "CalendarForm", @class = "pb-2" }) : Html.BeginForm(nameof(Calendar.Entry), nameof(Calendar), new {id = Model.Guid}, FormMethod.Post, null, new { id = "CalendarForm", @class="pb-2" }))
+{
+    @* Validation summary must be insinde BeginForm block *@
+    @Html.ValidationSummary(false, "Es sind Fehler aufgetreten. Bitte die markierten Felder korrigieren und erneut speichern.", new { @class = "validation-summary-errors msg-validation rounded" })
+
+    if (Model.EditMode != EditMode.New)
+    {
+        @Html.HiddenFor(m => m.Guid)
+    }
+
+    <fieldset class="rounded">
+        <legend class="rounded">
+            Bezeichnung
+        </legend>
+        <div class="row">
+            <div class="col-12">
+                @Html.LabelFor(m => m.TournamentName)
+                @Html.TextBoxFor(m => m.TournamentName, new {maxlength = CalendarFields.TournamentName.MaxLength, @class = "form-control", title = "Turniername, z.B. &quot;12. Welfen-Cup&quot;" })
+                @Html.ValidationMessageFor(m => m.TournamentName, null, new {@class = "msg-error-text"})
+                @Html.LabelFor(m => m.Organizer)
+                @Html.TextBoxFor(m => m.Organizer, new {maxlength = CalendarFields.Organizer.MaxLength, @class = "form-control", title = "Veranstalter, z.B. &quot;Volleyballclub Berlin&quot;" })
+                @Html.ValidationMessageFor(m => m.Organizer, null, new {@class = "msg-error-text"})
+                @*
+                @Html.LabelFor(m => m.Special)
+                @Html.TextBoxFor(m => m.Special, new { maxlength = TournamentCalendarFields.Special.MaxLength, @class = "form-control", title="Spezialangaben" })
+                @Html.ValidationMessageFor(m => m.Special, null, new { @class = "msg-error-text" })
+                *@
+            </div>
+        </div>
+    </fieldset>
+
+    <fieldset class="rounded">
+        <legend class="rounded">
+            Datum und Uhrzeit
+        </legend>
+        <div class="row no-gutters">
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-md-5 col-sm-5">
+                        @Html.LabelFor(m => m.DateFromText)
+                        <div class="input-group" style = "width:12rem;">
+                            @Html.TextBoxFor(m => m.DateFromText, new {maxlength = "10", placeholder = "tt.mm.jjj", @class = "form-control", data_input_type="date" })
+                            <span class="input-group-append input-group-text" data-input-type="date"><i class="fa fa-calendar"></i></span>
+                        </div>
+                        @Html.ValidationMessageFor(m => m.DateFromText, null, new {@class = "msg-error-text"})
+                    </div>
+                    <div class="col-md-7 col-sm-7">
+                        @Html.LabelFor(m => m.TimeFrom)
+                        <div class="input-group" style="width:8rem;">
+                            @Html.TextBoxFor(m => m.TimeFrom, new { maxlength = "5", placeholder = "hh:mm", @class = "form-control", data_input_type = "time", title = "Turnierbeginn, oder 00:00 für &quot;unbekannt&quot;" })
+                            <span class="input-group-append input-group-text" data-input-type="time"><i class="fa fa-clock-o"></i></span>
+                        </div>
+                        @Html.ValidationMessageFor(m => m.TimeFrom, null, new { @class = "msg-error-text" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-md-5 col-sm-5">
+                        @Html.LabelFor(m => m.DateToText)
+                        <div class="input-group" style="width:12rem;">
+                            @Html.TextBoxFor(m => m.DateToText, new { maxlength = "10", placeholder = "tt.mm.jjj", @class = "form-control", data_input_type = "date" })
+                            <span class="input-group-append input-group-text" data-input-type="date"><i class="fa fa-calendar"></i></span>
+                        </div>
+                        @Html.ValidationMessageFor(m => m.DateToText, null, new { @class = "msg-error-text" })
+                    </div>
+                    <div class="col-md-7 col-sm-7">
+                        @Html.LabelFor(m => m.TimeTo)
+                        <div class="input-group" style="width:8rem;">
+                            @Html.TextBoxFor(m => m.TimeTo, new { maxlength = "5", placeholder = "hh:mm", @class = "form-control", data_input_type = "time", title = "Turnierbeginn, oder 00:00 für &quot;unbekannt&quot;" })
+                            <span class="input-group-append input-group-text" data-input-type="time"><i class="fa fa-clock-o"></i></span>
+                        </div>
+                        @Html.ValidationMessageFor(m => m.TimeTo, null, new { @class = "msg-error-text" })
+                    </div>
+                </div>
+            </div>                
+            <div class="col-12">
+                @Html.LabelFor(m => m.ClosingDateText)
+                <div class="input-group" style="width:12rem;">
+                    @Html.TextBoxFor(m => m.ClosingDateText, new { maxlength = "10", placeholder = "tt.mm.jjj", @class = "form-control", data_input_type = "date" })
+                    <span class="input-group-append input-group-text" data-input-type="date"><i class="fa fa-calendar"></i></span>
+                </div>
+                @Html.ValidationMessageFor(m => m.ClosingDateText, null, new { @class = "msg-error-text" })
+            </div>
+        </div>
+    </fieldset>
+    <fieldset class="rounded">
+        <legend class="rounded">
+            Besetzung
+        </legend>
+        <div class="row">
+            <div class="col-12">
+                @Html.LabelFor(m => m.NumOfTeams)
+                @Html.TextBoxFor(m => m.NumOfTeams, new {maxlength = "3", @class = "form-control", style = "width:4rem;", title = "Max. Anzahl der Mannschaften. 0 = unbekannt bzw. unbegrenzt." })
+                @Html.ValidationMessageFor(m => m.NumOfTeams, null, new {@class = "msg-error-text"})
+            </div>
+
+            <div class="col-md-5 col-sm-5">
+                @Html.LabelFor(m => m.NumPlayersFemale)
+                <div class="d-inline-flex">
+                    @Html.DropDownListFor(m => m.MinMaxFemale, Model.GetMinMaxPlayerList(), new { @class = "selectpicker", data_width = "9rem" })&nbsp;
+                    @Html.TextBoxFor(m => m.NumPlayersFemale, new { style = "width:2rem", maxlength = "1", @class = "form-control d-inline" })
+                </div>
+                @Html.ValidationMessageFor(m => m.NumPlayersFemale, null, new {@class = "msg-error-text"})
+            </div>
+            <div class="col-md-5 col-sm-5">
+                @Html.LabelFor(m => m.NumPlayersMale)
+                <div class="d-inline-flex">
+                    @Html.DropDownListFor(m => m.MinMaxMale, Model.GetMinMaxPlayerList(), new { @class = "selectpicker", data_width = "9rem" })&nbsp;
+                    @Html.TextBoxFor(m => m.NumPlayersMale, new { style = "display:inline; width: 2rem", maxlength = "1", @class = "form-control" })
+                </div>
+                @Html.ValidationMessageFor(m => m.NumPlayersMale, null, new { @class = "msg-error-text" })
+            </div>
+            <div class="col-md-2 col-sm-2"></div>
+
+            <div class="col-md-5 col-sm-5">
+                @Html.LabelFor(m => m.PlayingAbilityFrom)
+                @Html.DropDownListFor(m => m.PlayingAbilityFrom, Model.GetPlayingAbilityList(), new { @class = "selectpicker", data_width = "11.5rem" })
+            </div>
+            <div class="col-md-5 col-sm-5">
+                @Html.LabelFor(m => m.PlayingAbilityTo)
+                @Html.DropDownListFor(m => m.PlayingAbilityTo, Model.GetPlayingAbilityList(), new { @class = "selectpicker", data_width = "11.5rem" })
+            </div>
+            <div class="col-md-2 col-sm-2"></div>
+        </div>
+    </fieldset>
+    <fieldset class="rounded">
+        <legend class="rounded">
+            Austragungsort
+        </legend>
+        <div class="row">
+            <div class="col-md-12">
+                @Html.LabelFor(m => m.Surface)
+                @Html.DropDownListFor(m => m.Surface, Model.GetSurfaceList(), new { @class = "selectpicker", data_width = "11.5rem" })
+                <div class="pt-3">
+                    Nur <strong>genaue Angaben</strong> mit Postleitzahl, Ort und Straße ermöglichen die Anzeige einer Karte für die Anfahrt.<br/>
+                </div>
+                @Html.LabelFor(m => m.Venue)
+                @Html.TextBoxFor(m => m.Venue, new {maxlength = CalendarFields.Venue.MaxLength, @class = "form-control", title = "Hallenbezeichung, z.B. &quot;Jahn-Turnhalle&quot;" })
+                @Html.ValidationMessageFor(m => m.Venue, null, new {@class = "msg-error-text"})
+                @Html.LabelFor(m => m.Street)
+                @Html.TextBoxFor(m => m.Street, new {maxlength = CalendarFields.Street.MaxLength, @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Street, null, new {@class = "msg-error-text"})
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                @Html.LabelFor(m => m.CountryId)
+                @Html.DropDownListFor(m => m.CountryId, Model.GetCountriesList(), new { @class = "selectpicker", data_width = "11.5rem" })
+            </div>
+            <div class="col-md-8">
+                @Html.LabelFor(m => m.PostalCode)
+                @Html.TextBoxFor(m => m.PostalCode, new {maxlength = CalendarFields.PostalCode.MaxLength, @class = "form-control", style="width:8rem"})
+                @Html.ValidationMessageFor(m => m.PostalCode, null, new {@class = "msg-error-text"})
+            </div>
+            <div class="col-md-12">
+                @Html.LabelFor(m => m.City)
+                @Html.TextBoxFor(m => m.City, new {maxlength = CalendarFields.City.MaxLength, @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.City, null, new {@class = "msg-error-text"})
+            </div>
+        </div>
+    </fieldset>
+    <fieldset class="rounded">
+        <legend class="rounded">
+            Kontaktdaten
+        </legend>
+        <div class="row">
+            <div class="col-md-12">
+                <label for="@Html.NameFor(m => m.ContactAddress)">Name des Ansprechpartners, ggf. mit Telefon und Postanschrift</label>
+                @Html.TextAreaFor(m => m.ContactAddress, new {style = "height: 7rem", @class = "form-control", title = "Ansprechpartner, Postanschrift, Telefon, usw." })
+                @Html.ValidationMessageFor(m => m.ContactAddress, null, new {@class = "msg-error-text"})
+                <label for="@Html.NameFor(m => m.Email)">E-Mail für Anfragen oder Anmeldungen</label>
+                @Html.TextBoxFor(m => m.Email, new {maxlength = CalendarFields.Email.MaxLength, @class = "form-control", title = "E-Mail für Rückfragen oder Anmeldungen" })
+                @Html.ValidationMessageFor(m => m.Email, null, new {@class = "msg-error-text"})
+                <label for="@Html.NameFor(m => m.Website)">Web-Adresse zum Veranstalter oder für das Turnier</label>
+                @Html.TextBoxFor(m => m.Website, new {maxlength = CalendarFields.Website.MaxLength, @class = "form-control", title = "Web-Adresse, z.B. https://volleyball-mixedliga.de" })
+                @Html.ValidationMessageFor(m => m.Website, null, new {@class = "msg-error-text"})
+            </div>
+        </div>
+    </fieldset>
+    <fieldset class="rounded">
+        <legend class="rounded">
+            Weitere Angaben
+        </legend>
+        <div class="row">
+            <div class="col-md-4">
+                @Html.LabelFor(m => m.EntryFee)
+                <div class="input-group" style="width:8rem;">
+                    @Html.EditorFor(m => m.EntryFee, new { htmlAttributes = new { maxlength = "6", @class = "form-control" } })
+                    <span class="input-group-append input-group-text">€</span>
+                </div>
+                @Html.ValidationMessageFor(m => m.EntryFee, null, new {@class = "msg-error-text"})
+            </div>
+            <div class="col-md-8">
+                @Html.LabelFor(m => m.Bond)
+                <div class="input-group" style="width:8rem;">
+                    @Html.EditorFor(m => m.Bond, new { htmlAttributes = new { maxlength = "6", @class = "form-control" } })
+                    <span class="input-group-append input-group-text">€</span>
+                </div>
+                @Html.ValidationMessageFor(m => m.Bond, null, new {@class = "msg-error-text"})
+            </div>
+            <div class="col-md-12">
+                <label for="@Html.NameFor(m => m.Info)">Weitere Infos</label>
+                @Html.TextAreaFor(m => m.Info, new { style = "height: 8rem", @class = "form-control", title = "Weitere Infos wie Hallenöffnung, Anfahrt, Verpflegung u.dgl." })
+                @Html.ValidationMessageFor(m => m.Info, null, new { @class = "msg-error-text" })
+            </div>
+        </div>
+    </fieldset>
+    <fieldset class="rounded">
+        <legend class="rounded">
+            Absender des Turniereintrags
+        </legend>
+        <div class="row">
+            <div class="col-md-12">
+                <div>
+                    <label><b>Notwendige Angaben</b>, die im Turnierkalender <b>nicht angezeigt</b> werden</label>
+                </div>
+                <div>
+                    Nach dem Speichern wird eine E-Mail mit dem Link zum Freischalten des Turniers im Turnierkalender an folgende Adresse geschickt.
+                    <b>Ohne Freischalten erscheint das Turnier nicht im Kalender.</b>
+                    Über den Link in der E-Mail kann das Turnier auch jederzeit bearbeitet werden.
+                </div>
+                <label for="@Html.NameFor(m => m.PostedByName)">Name</label>
+                @Html.TextBoxFor(m => m.PostedByName, new {maxlength = CalendarFields.PostedByName.MaxLength, @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.PostedByName, null, new {@class = "msg-error-text"})
+                <label for="@Html.NameFor(m => m.PostedByEmail)">E-Mail</label>
+                @Html.TextBoxFor(m => m.PostedByEmail, new {maxlength = CalendarFields.PostedByEmail.MaxLength, @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.PostedByEmail, null, new {@class = "msg-error-text"})
+            </div>
+        </div>
+    </fieldset>
+    <fieldset class="rounded">
+        <legend class="rounded">
+            Speichern
+        </legend>
+        <div class="row">
+            <div class="col-md-12">
+                @if (Model.EditMode == EditMode.New && User.IsInRole(TournamentCalendar.Library.Authentication.Constants.RoleName.Editor))
+                {
+                    @Html.CheckBox(nameof(Model.Approved), true)
+                    @Html.Label(nameof(Model.Approved), " Turnier freischalten", new {@class = "form-check-label", style = "display: inline"});
+                }
+                @if (Model.EditMode == EditMode.Change)
+                {
+                    <div>
+                        @if (!Model.DeletedOn.HasValue)
+                        {
+                            <label>Das Turnier ist <strong>aktiv</strong> und bis zum Veranstaltungsdatum im Turnierkalender sichtbar.</label>
+                        }
+                        else
+                        {
+                            <label>Das Turnier ist für die Anzeige im Turnierkalender <strong>nicht freigeschaltet</strong>.</label>
+                        }
+                        @Html.CheckBox(nameof(Model.Approved), false)
+                        @if (Model.DeletedOn.HasValue)
+                        {
+                            <text>Turnier jetzt anzeigen</text>
+                        }
+                        else
+                        {
+                            <text>Turnier künftig verbergen</text>
+                        }
+                    </div>
+                }
+                <div>
+                    Letzte Änderung: @(Model.EditMode == EditMode.New ? "keine" : Model.ModifiedOn.ToString("dd.MM.yyyy - HH:mm:ss"))
+                </div>
+                @if (User.IsInRole(TournamentCalendar.Library.Authentication.Constants.RoleName.Editor))
+                {
+                    // Captcha won't be checked for authenticated users, but the field is still 'required'
+                    Model.Captcha = "Valid";
+                    @Html.Hidden(nameof(Model.Captcha), "Dummy");
+                }
+                else
+                {
+                    <div>
+                        <img id="CaptchaImage" style="vertical-align: bottom; width: 200px; display: inline" class="rounded" src="@Url.Action(nameof(Captcha.Index), nameof(Captcha))@("?guid=" + Guid.NewGuid())" alt="Captcha" />
+                        <span onclick="javascript:if (document.images) document.images.CaptchaImage.src = '@Url.Action(nameof(Captcha.Index), nameof(Captcha))?new=1&amp;time=' + new Date().getTime();" style="cursor: pointer"><i class="fa fa-refresh fa-2x" style="margin: 0 5px 0 5px;" title="Bild neu laden"></i>Bild neu laden</span><br/>
+                    </div>
+                    @Html.LabelFor(m => m.Captcha)
+                    @Html.TextBoxFor(m => m.Captcha, new {maxlength = "7", @class = "form-control", style = "width:12rem"})
+                    @Html.ValidationMessageFor(m => m.Captcha, null, new {@class = "msg-error-text"})
+                }
+                <div class="mt-2">
+                    @* class="cancel" will stop jquery.validate from validation *@
+                    <input type="submit" name="save" value="Turnier speichern" class="col-12 col-sm-6 btn btn-lg btn-success" />
+                </div>
+            </div>
+        </div>
+    </fieldset>
+}
+@section CssSection
+{<link href="@Url.Content(CssName.Lib.JqueryUiDateTimePickerCss)" rel="stylesheet" />}
+@section ScriptStandardSection
+{
+    <script src="@Url.Content(ScriptName.Lib.JqueryValidationAllJs)"></script>
+    <script src="@Url.Content(ScriptName.Lib.JqueryUiDateTimePickerJs)"></script>
+    <script type="text/javascript">
+//<![CDATA[
+	$(document).ready(function () {
+
+        $('#@Html.NameFor(m => m.TournamentName)').focus();
+
+        // take care of ranges with decimal comma
+	    $.validator.methods.range = function (value, element, param) {
+	        var globalizedValue = value.replace(",", ".");
+	        return this.optional(element) || (globalizedValue >= param[0] && globalizedValue <= param[1]);
+	    }
+
+        // take care of numbers with decimal comma
+	    $.validator.methods.number = function (value, element) {
+	        return this.optional(element) || /^-?(?:\d+|\d{1,3}(?:[\s\.,]\d{3})+)(?:[\.,]\d+)?$/.test(value);
+	    }
+
+        // Datepickers
+        $('input[data-input-type="date"]').datepicker({
+            autoSize: true,
+            constrainInput: true,
+			inline: true,
+			minDate: '+2',
+            maxDate: '+12M',
+        });
+
+        $('#@Html.NameFor(m => m.DateFromText)').bind('change', function () {
+			var dateFormat = $(this).datepicker('option', 'dateFormat');
+			var from = $('#@Html.NameFor(m => m.DateFromText)').val();
+            $('#@Html.NameFor(m => m.DateToText)').val(from);
+			try {
+				var dateFrom = $.datepicker.parseDate(dateFormat, from);
+				var closingDate = dateFrom;
+				closingDate.setDate(closingDate.getDate() - 10);
+                if (closingDate <= new Date()) closingDate = (new Date()).getDate() + 1;
+                $('#@Html.NameFor(m => m.ClosingDateText)').val($.datepicker.formatDate(dateFormat, closingDate));
+			}
+			catch (e) { }
+		});
+
+		// Timepickers
+        $('input[data-input-type="time"]').timepicker({
+			showPeriodLabels: false,
+			hourText: 'Stunde',
+			minuteText: 'Minute',
+			inline: true,
+			duration: 75
+        });
+
+        // click on date & time icons focus on input field
+	    $('span[data-input-type="date"], span[data-input-type="time"]').bind('click', function(){
+	        $(this).parent().find('input[data-input-type="date"], input[data-input-type="time"]').trigger('focus');
+        });
+
+		$('#@Html.NameFor(m => m.MinMaxFemale)').on('change', function () {
+			switch ($(this).val()) {
+				case '0':
+					$('#@Html.NameFor(m => m.MinMaxMale)').val(0);
+					break;
+				case '1':
+					$('#@Html.NameFor(m => m.MinMaxMale)').val(2);
+					break;
+				case '2':
+					$('#@Html.NameFor(m => m.MinMaxMale)').val(1);
+					break;
+            }
+		    $('.selectpicker').selectpicker('refresh');
+		});
+
+		$('#@Html.NameFor(m => m.MinMaxMale)').on('change', function () {
+			switch ($(this).val()) {
+				case '0':
+					$('#@Html.NameFor(m => m.MinMaxFemale)').val(0);
+					break;
+				case '1':
+					$('#@Html.NameFor(m => m.MinMaxFemale)').val(2);
+					break;
+				case '2':
+					$('#@Html.NameFor(m => m.MinMaxFemale)').val(1);
+					break;
+            }
+		    $('.selectpicker').selectpicker('refresh');
+		});
+	});
+//]]>
+    </script>
+}

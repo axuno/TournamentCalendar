@@ -1,0 +1,45 @@
+﻿@using TournamentCalendar.Controllers
+@model TournamentCalendar.Models.Contact.ContactModel
+<div class="pb-2">
+    <h3 class="h3">Nachricht an volleyball-turnier.de</h3>
+    @using (Html.BeginForm(nameof(TournamentCalendar.Controllers.Contact.Message), nameof(TournamentCalendar.Controllers.Contact), FormMethod.Post))
+    {
+        @* Validation summary must be insinde BeginForm block *@
+        @Html.ValidationSummary(false, "Die Eingaben enthalten Fehler. Bitte korrigieren.", new { @class = "validation-summary-errors msg-validation rounded" })
+        @await Html.PartialAsync("_AddressFieldsPartial", Model)
+        <h4 class="h4">Nachricht</h4>
+        <fieldset class="rounded">
+            @Html.LabelFor(m => m.Subject)
+            @Html.TextBoxFor(m => m.Subject, new { @class = "form-control input-required col-12 col-sm-10 col-md-8", maxlength = 100 })
+            @Html.ValidationMessageFor(m => m.Subject, null, new { @class = "msg-error-text" })
+            @Html.LabelFor(m => m.Message)
+            @Html.TextAreaFor(m => m.Message, new { @class = "form-control input-required col-12 col-sm-10 col-md-8", style = "height: 12em" })
+            @Html.ValidationMessageFor(m => m.Message, null, new { @class = "msg-error-text" })
+        </fieldset>
+        <fieldset class="rounded my-2">
+            <div class="mt-2">
+                <img id="CaptchaImage" style="vertical-align: bottom; width: 200px; display:inline" class="rounded" src="@Url.Action(nameof(Captcha.Index), nameof(Captcha))@("?guid=" + Guid.NewGuid())" alt="Captcha" />
+                <span onclick="javascript:if (document.images) document.images.CaptchaImage.src = '@Url.Action(nameof(Captcha.Index), nameof(Captcha))?new=1&amp;time=' + new Date().getTime();" style="cursor: pointer"><i class="fa fa-refresh fa-2x" style="margin: 0 5px 0 5px;" title="Bild neu laden"></i>Bild neu laden</span><br />
+            </div>
+            @Html.LabelFor(m => m.Captcha)
+            @Html.TextBoxFor(m => m.Captcha, new { maxlength = "7", @class = "form-control input-required", style = "width:12rem" })
+            @Html.ValidationMessageFor(m => m.Captcha, null, new { @class = "msg-error-text" })
+            <div class="my-2">
+                @Html.CheckBoxFor(m => m.CarbonCopyToSender) @Html.LabelFor(m => m.CarbonCopyToSender, new { style = "display:inline" })
+            </div>
+            <div class="my-1">
+                <input type="submit" name="Submit" value="Abschicken" id="Submit" class="col-12 col-sm-6 btn btn btn-lg btn-success" />
+            </div>
+        </fieldset>
+    }
+</div>
+@section CssSection {}
+@section ScriptStandardSection {
+<script type="text/javascript">
+    //<![CDATA[
+    var textbox = document.getElementById('@Html.NameFor(m => m.Email)');
+    if (textbox)
+        textbox.focus();
+    //]]>
+</script>
+}
