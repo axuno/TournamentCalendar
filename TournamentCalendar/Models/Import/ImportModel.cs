@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
 using AngleSharp.Html.Dom;
 using AngleSharp.Html.Parser;
 using YAXLib;
@@ -64,8 +66,9 @@ namespace TournamentCalendar.Models.TournamentImport
 
 	    public Dictionary<Provider, Exception> Errors { get; } = new Dictionary<Provider, Exception>();
 
-        public void GetTournamentsAfterKeyDate(out ListModel listModel, DateTime keyDate, Provider[] providers)
+        public async Task<ListModel> GetTournamentsAfterKeyDate(DateTime keyDate, Provider[] providers)
         {
+            var listModel = new ListModel {Errors = Errors};
             try
             {
                 var s = new YAXSerializer(typeof(ProviderTournaments));
@@ -75,7 +78,7 @@ namespace TournamentCalendar.Models.TournamentImport
                 var latestFile = files.Where(f => string.Compare(Path.GetFileName(f), $"{FileBaseName}{keyDate:yyyy-MM-dd}.xml",
                                                       StringComparison.Ordinal) <= 0).OrderByDescending(f => f).FirstOrDefault(); ;
 
-                var currentImport = DownloadFromProviders(providers);
+                var currentImport = await DownloadFromProviders(providers);
 
                 var latestImport = latestFile != null
                     ? ((ProviderTournaments) s.DeserializeFromFile(latestFile)).Tournaments
@@ -83,7 +86,7 @@ namespace TournamentCalendar.Models.TournamentImport
 
                 var diff = currentImport.Where(latest => latestImport.All(second => second.Url != latest.Url)).ToList();
 
-                listModel = new ListModel {Errors = Errors, ImportDates = ExtractDatesFromFilenames(files)};
+                listModel.ImportDates = ExtractDatesFromFilenames(files);
                 listModel.LastImportDate = keyDate == DateTime.MaxValue ? listModel.ImportDates.First() : keyDate;
 
                 listModel.NewTournaments.AddRange(diff);
@@ -101,7 +104,9 @@ namespace TournamentCalendar.Models.TournamentImport
                 Errors.Add(Provider.Unknown, e);
                 listModel = new ListModel { Errors = Errors, ImportDates = new[] { DateTime.MinValue }, LastImportDate = DateTime.MinValue };
             }
-         }
+
+            return listModel;
+        }
 
         private static DateTime[] ExtractDatesFromFilenames(string[] files)
         {
@@ -116,7 +121,7 @@ namespace TournamentCalendar.Models.TournamentImport
             }
         }
 		
-		public List<Tournament> DownloadFromProviders(Provider[] providers)
+		public async Task<List<Tournament>> DownloadFromProviders(Provider[] providers)
 		{
 		    var now = DateTime.Now;
             var tournaments = new List<Tournament>();
@@ -124,7 +129,7 @@ namespace TournamentCalendar.Models.TournamentImport
 			{
 				try
 				{
-				    var hrefs = DownloadLinksFromProvider(provider);
+				    var hrefs = await DownloadLinksFromProvider(provider);
 				    tournaments.AddRange(hrefs.Select(href => new Tournament {Provider = provider, Url = href, Date = now}));
 				}
 				catch (Exception ex)
@@ -135,28 +140,28 @@ namespace TournamentCalendar.Models.TournamentImport
 		    return tournaments;
 		}
 
-		private string[] DownloadLinksFromProvider(Provider providerId)
+		private async Task<string[]> DownloadLinksFromProvider(Provider providerId)
 		{
 			var hrefs = new string[1];
 
 			switch (providerId)
 			{
 				case Provider.Volleyballer:
-					hrefs = GetVolleyballerTournamentHrefList();
+					hrefs = await GetVolleyballerTournamentHrefList();
 					break;
 				case Provider.Vobatu:
-					hrefs = GetVobatuTournamentHrefList();
+					hrefs = await GetVobatuTournamentHrefList();
 					break;
 			}
 		    return hrefs;
 		}
 
-		private string[] GetVolleyballerTournamentHrefList()
+		private async Task<string[]> GetVolleyballerTournamentHrefList()
 		{
-			var webClient = new System.Net.WebClient();
-			webClient.Headers.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:56.0) Gecko/20100101 Firefox/56.0");
+			using var httpClient = new HttpClient();
+			httpClient.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:56.0) Gecko/20100101 Firefox/56.0");
 
-			var page = webClient.DownloadString("http://www.volleyballer.de/turniere/volleyball-turniere-gesamtliste.php");
+			var page = await httpClient.GetStringAsync("http://www.volleyballer.de/turniere/volleyball-turniere-gesamtliste.php");
 			var parser = new HtmlParser();
 			var document = parser.ParseDocument(page);
 			var tournamentSection = document.QuerySelector("div.row:nth-child(2) > div:nth-child(1)");
@@ -169,11 +174,11 @@ namespace TournamentCalendar.Models.TournamentImport
 			return hrefs.ToArray();
 		}
 
-		private string[] GetVobatuTournamentHrefList()
+		private async Task<string[]> GetVobatuTournamentHrefList()
 		{
 			var hrefs = new List<string>();
-			var webClient = new System.Net.WebClient();
-			webClient.Headers.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:56.0) Gecko/20100101 Firefox/56.0");
+            using var httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:56.0) Gecko/20100101 Firefox/56.0");
 			var parser = new HtmlParser();
 
 			var pageNum = 1;
@@ -181,7 +186,7 @@ namespace TournamentCalendar.Models.TournamentImport
 
 			while (pageNum <= totalPages)
 			{
-				var page = webClient.DownloadString($"http://www.vobatu.de/volleyballturniere/?pagenum={pageNum}");
+				var page = await httpClient.GetStringAsync($"http://www.vobatu.de/volleyballturniere/?pagenum={pageNum}");
 				var document = parser.ParseDocument(page);
 				if (pageNum == 1)
 				{

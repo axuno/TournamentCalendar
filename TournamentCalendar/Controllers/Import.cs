@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.IO;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -18,7 +19,7 @@ namespace TournamentCalendar.Controllers
 		{}
 
         [Route("anzeigen/{id?}")]
-        public ActionResult Show(string id)
+        public async Task<ActionResult> ShowAsync(string id)
 		{
 		    ViewBag.TitleTagText = "Andere Volleyball-Turnierkalender";
 
@@ -33,7 +34,7 @@ namespace TournamentCalendar.Controllers
 		            out keyDate);
 		    }
             
-		    model.GetTournamentsAfterKeyDate(out var listModel, keyDate, new[] { Provider.Volleyballer, Provider.Vobatu });
+		    var listModel = await model.GetTournamentsAfterKeyDate(keyDate, new[] { Provider.Volleyballer, Provider.Vobatu });
             return View(ViewName.TournamentImport.Show, listModel);
 		}
 	}

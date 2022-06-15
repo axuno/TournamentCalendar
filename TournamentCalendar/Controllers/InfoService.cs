@@ -84,7 +84,7 @@ namespace TournamentCalendar.Controllers
 
 		    var googleApi = new NB.Tools.GeoSpatial.GoogleConfig();
 		    Configuration.Bind("GoogleConfig", googleApi);
-		    model.TryGetLongitudeLatitude(googleApi);
+		    await model.TryGetLongitudeLatitude(googleApi);
             model.Normalize();
 			
 			var confirmationModel = new Models.Shared.ConfirmModel<InfoServiceEntity>();

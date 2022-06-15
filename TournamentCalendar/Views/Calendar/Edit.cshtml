@@ -1,5 +1,4 @@
 ﻿@model EditModel
-@using Microsoft.AspNetCore.Authentication
 @using TournamentCalendar.Models.Calendar
 @using TournamentCalendar.Controllers
 @using TournamentCalendar.Views
@@ -318,17 +317,28 @@
 {
     <script src="@Url.Content(ScriptName.Lib.JqueryValidationAllJs)"></script>
     <script src="@Url.Content(ScriptName.Lib.JqueryUiDateTimePickerJs)"></script>
+    <script src="@Url.Content(ScriptName.Lib.MomentJs)"></script>
     <script type="text/javascript">
 //<![CDATA[
 	$(document).ready(function () {
 
         $('#@Html.NameFor(m => m.TournamentName)').focus();
 
-        // take care of ranges with decimal comma
-	    $.validator.methods.range = function (value, element, param) {
-	        var globalizedValue = value.replace(",", ".");
-	        return this.optional(element) || (globalizedValue >= param[0] && globalizedValue <= param[1]);
-	    }
+        $.validator.methods.range = function(value, element, param) {
+            // Helper for date range validation
+            if ($(element).attr('data-input-type') === 'date') {
+                var min = $(element).attr('data-val-range-min');
+                var max = $(element).attr('data-val-range-max');
+                var date = moment(value, 'DD.MM.YYYY');
+                var minDate = new Date(min).getTime();
+                var maxDate = new Date(max).getTime();
+                return this.optional(element) || (date >= minDate && date <= maxDate);
+            }
+            // use the default method
+            // with support for ranges with decimal comma
+            var globalizedValue = value.replace(",", ".");
+            return this.optional( element ) || ( globalizedValue >= param[0] && globalizedValue <= param[1]);
+        };
 
         // take care of numbers with decimal comma
 	    $.validator.methods.number = function (value, element) {
@@ -341,7 +351,7 @@
             constrainInput: true,
 			inline: true,
 			minDate: '+2',
-            maxDate: '+12M',
+            maxDate: '+12M'
         });
 
         $('#@Html.NameFor(m => m.DateFromText)').bind('change', function () {

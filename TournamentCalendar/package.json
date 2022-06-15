@@ -23,8 +23,8 @@
         "grunt-sass": "3.1.0",
         "node-sass": "4.14.1",
         "jquery": "^3.5.1",
-        "jquery-validation": "1.19.2",
-        "jquery-validation-unobtrusive": "3.2.11",
+        "jquery-validation": "1.19.3",
+        "jquery-validation-unobtrusive": "3.2.12",
         "pixrem": "5.0.0",
         "popper.js": "1.16.1",
         "tether": "1.4.7"

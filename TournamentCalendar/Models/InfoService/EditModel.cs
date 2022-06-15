@@ -52,7 +52,7 @@ namespace TournamentCalendar.Models.InfoService
 			return string.IsNullOrWhiteSpace(Guid) || LoadData(Guid);
 		}
 
-		public bool TryGetLongitudeLatitude(NB.Tools.GeoSpatial.GoogleConfig googleConfig)
+		public async Task<bool> TryGetLongitudeLatitude(NB.Tools.GeoSpatial.GoogleConfig googleConfig)
 		{
 			if (Fields[InfoServiceFields.Street.FieldIndex].IsChanged || Fields[InfoServiceFields.ZipCode.FieldIndex].IsChanged ||
 			    Fields[InfoServiceFields.City.FieldIndex].IsChanged)
@@ -63,7 +63,7 @@ namespace TournamentCalendar.Models.InfoService
 					string completeAddress = string.Join(", ", CountryId, ZipCode, City, Street);
 
 				    NB.Tools.GeoSpatial.GoogleGeo.GoogleApiKey = googleConfig.ServiceApiKey;
-                    NB.Tools.GeoSpatial.Location location = NB.Tools.GeoSpatial.GoogleGeo.GetLocation(completeAddress);
+                    NB.Tools.GeoSpatial.Location location = await NB.Tools.GeoSpatial.GoogleGeo.GetLocation(completeAddress);
 					if (location != null && location.Latitude.Degrees > 1 && location.Longitude.Degrees > 1)
 					{
 						Longitude = location.Longitude.TotalDegrees;

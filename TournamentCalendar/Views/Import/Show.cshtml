@@ -21,10 +21,10 @@
             @if (Model.ImportDates.Length > 0)
             {
                 <h4 class="h4">Verwendete Importdaten im Vergleich zu den Einträgen jetzt</h4>
-                <a class="btn btn-primary mr-2 mb-3@(DateTime.MinValue == Model.LastImportDate ? " active" : "")" href="@Url.Action(nameof(Import.Show), nameof(Import), new {id = DateTime.MinValue.ToString("yyyy-MM-dd")})" role="button">keine</a>
+                <a class="btn btn-primary mr-2 mb-3@(DateTime.MinValue == Model.LastImportDate ? " active" : "")" href="@Url.Action(nameof(Import.ShowAsync), nameof(Import), new {id = DateTime.MinValue.ToString("yyyy-MM-dd")})" role="button">keine</a>
                 foreach (var date in Model.ImportDates)
                 {
-                    <a class="btn btn-primary mr-2 mb-3@(date == Model.LastImportDate ? " active" : "")" href="@Url.Action(nameof(Import.Show), nameof(Import), new {id = date.ToString("yyyy-MM-dd")})" role="button">@date.ToString("dd.MM.yyyy")</a>
+                    <a class="btn btn-primary mr-2 mb-3@(date == Model.LastImportDate ? " active" : "")" href="@Url.Action(nameof(Import.ShowAsync), nameof(Import), new {id = date.ToString("yyyy-MM-dd")})" role="button">@date.ToString("dd.MM.yyyy")</a>
                 }
             }
         </div>

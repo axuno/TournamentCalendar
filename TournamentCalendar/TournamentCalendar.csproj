@@ -2,6 +2,8 @@
 
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
+        <LangVersion>latest</LangVersion>
+        <Nullable>disable</Nullable>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -11,9 +13,9 @@
 
 	<PropertyGroup>
 		<EnableDefaultContentItems>true</EnableDefaultContentItems>
-		<Version>2.0.0</Version>
+		<Version>2.0.1</Version>
 		<Authors>axuno gGmbH</Authors>
-		<Copyright>(C) 1998-2020 axuo gGmbH</Copyright>
+		<Copyright>(C) 1998-2022 axuo gGmbH</Copyright>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageIcon>TournamentCalender-192x192.png</PackageIcon>
 	</PropertyGroup>

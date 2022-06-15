@@ -111,7 +111,7 @@ namespace TournamentCalendar.Controllers
 
 		    var googleApi = new GoogleConfig();
 		    Configuration.Bind("GoogleConfig", googleApi);
-            model.TryGetLongitudeLatitude(googleApi);
+            await model.TryGetLongitudeLatitude(googleApi);
 			model.Normalize();
             if (model.IsNew && User.Identity != null && User.Identity.IsAuthenticated)
             {
