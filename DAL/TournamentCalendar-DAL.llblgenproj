@@ -116,13 +116,13 @@
         <DestinationRootFolder Value=".\" />
         <FrameworkName Value="LLBLGen Pro Runtime Framework" />
         <LanguageName Value="C#" />
-        <PlatformName Value=".NET Standard 2.1" />
+        <PlatformName Value=".NET 6" />
         <PresetName Value="SD.Presets.Adapter.General.Netstandard" />
         <RootNamespace Value="TournamentCalendarDAL" />
         <TemplateGroup Value="Adapter" />
-        <LastGenerationCycleStartedOn Value="2022-11-14T23:06:25.2769975Z" />
+        <LastGenerationCycleStartedOn Value="2022-11-14T23:18:26.3294895Z" />
         <TemplateBindings>
-          <Binding Name="SD.TemplateBindings.SharedTemplates.Netstandard21" />
+          <Binding Name="SD.TemplateBindings.SharedTemplates.Net6" />
           <Binding Name="SD.TemplateBindings.SharedTemplates" />
           <Binding Name="SD.TemplateBindings.SqlServerSpecific" />
           <Binding Name="SD.TemplateBindings.General" />
