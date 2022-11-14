@@ -29,7 +29,7 @@ namespace TournamentCalendarDAL.FactoryClasses
 		/// <param name="entityName">Name of the entity.</param>
 		/// <param name="typeOfEntity">The type of entity.</param>
 		/// <param name="isInHierarchy">If true, the entity of this factory is in an inheritance hierarchy, false otherwise</param>
-		public EntityFactoryBase2(string entityName, TournamentCalendarDAL.EntityType typeOfEntity, bool isInHierarchy) : base(entityName)
+		public EntityFactoryBase2(string entityName, TournamentCalendarDAL.EntityType typeOfEntity, bool isInHierarchy) : base(entityName, (int) typeOfEntity)
 		{
 			_typeOfEntity = typeOfEntity;
 			_isInHierarchy = isInHierarchy;

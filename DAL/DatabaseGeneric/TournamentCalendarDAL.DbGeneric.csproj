@@ -6,6 +6,6 @@
     <RootNamespace>TournamentCalendarDAL</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="SD.LLBLGen.Pro.ORMSupportClasses" Version="5.8.3" />
+    <PackageReference Include="SD.LLBLGen.Pro.ORMSupportClasses" Version="5.9.2" />
   </ItemGroup>
 </Project>
