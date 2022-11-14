@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using AngleSharp.Html.Dom;
 using AngleSharp.Html.Parser;
 using YAXLib;
+using YAXLib.Attributes;
+using YAXLib.Enums;
 
 namespace TournamentCalendar.Models.TournamentImport
 {
