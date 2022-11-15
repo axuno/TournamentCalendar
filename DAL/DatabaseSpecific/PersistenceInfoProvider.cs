@@ -91,12 +91,13 @@ namespace TournamentCalendarDAL.DatabaseSpecific
 		/// <summary>Inits CountryEntity's mappings</summary>
 		private void InitCountryEntityMappings()
 		{
-			this.AddElementMapping("CountryEntity", @"TournamentCalendar", @"dbo", "Country", 5, 0);
+			this.AddElementMapping("CountryEntity", @"TournamentCalendar", @"dbo", "Country", 6, 0);
 			this.AddElementFieldMapping("CountryEntity", "CreatedOn", "CreatedOn", false, "DateTime", 0, 0, 0, false, "", null, typeof(System.DateTime), 0);
 			this.AddElementFieldMapping("CountryEntity", "Id", "Id", false, "NVarChar", 2, 0, 0, false, "", null, typeof(System.String), 1);
 			this.AddElementFieldMapping("CountryEntity", "Iso3", "Iso3", false, "NVarChar", 3, 0, 0, false, "", null, typeof(System.String), 2);
 			this.AddElementFieldMapping("CountryEntity", "ModifiedOn", "ModifiedOn", false, "DateTime", 0, 0, 0, false, "", null, typeof(System.DateTime), 3);
 			this.AddElementFieldMapping("CountryEntity", "Name", "Name", false, "NVarChar", 255, 0, 0, false, "", null, typeof(System.String), 4);
+			this.AddElementFieldMapping("CountryEntity", "NameEn", "NameEN", false, "NVarChar", 255, 0, 0, false, "", null, typeof(System.String), 5);
 		}
 
 		/// <summary>Inits InfoServiceEntity's mappings</summary>

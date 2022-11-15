@@ -198,6 +198,14 @@ namespace TournamentCalendarDAL.EntityClasses
 			set	{ SetValue((int)CountryFieldIndex.Name, value); }
 		}
 
+		/// <summary>The NameEn property of the Entity Country<br/><br/></summary>
+		/// <remarks>Mapped on  table field: "Country"."NameEN".<br/>Table field type characteristics (type, precision, scale, length): NVarChar, 0, 0, 255.<br/>Table field behavior characteristics (is nullable, is PK, is identity): false, false, false</remarks>
+		public virtual System.String NameEn
+		{
+			get { return (System.String)GetValue((int)CountryFieldIndex.NameEn, true); }
+			set	{ SetValue((int)CountryFieldIndex.NameEn, value); }
+		}
+
 		/// <summary>Gets the EntityCollection with the related entities of type 'CalendarEntity' which are related to this entity via a relation of type '1:n'. If the EntityCollection hasn't been fetched yet, the collection returned will be empty.<br/><br/></summary>
 		[TypeContainedAttribute(typeof(CalendarEntity))]
 		public virtual EntityCollection<CalendarEntity> TournamentCalendars { get { return GetOrCreateEntityCollection<CalendarEntity, CalendarEntityFactory>("Country", true, false, ref _tournamentCalendars); } }
@@ -226,6 +234,8 @@ namespace TournamentCalendarDAL
 		ModifiedOn,
 		///<summary>Name. </summary>
 		Name,
+		///<summary>NameEn. </summary>
+		NameEn,
 		/// <summary></summary>
 		AmountOfFields
 	}

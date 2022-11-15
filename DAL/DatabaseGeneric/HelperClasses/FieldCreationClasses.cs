@@ -104,6 +104,8 @@ namespace TournamentCalendarDAL.HelperClasses
 		public static EntityField2 ModifiedOn { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(CountryFieldIndex.ModifiedOn); }}
 		/// <summary>Creates a new CountryEntity.Name field instance</summary>
 		public static EntityField2 Name { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(CountryFieldIndex.Name); }}
+		/// <summary>Creates a new CountryEntity.NameEn field instance</summary>
+		public static EntityField2 NameEn { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(CountryFieldIndex.NameEn); }}
 	}
 
 	/// <summary>Field Creation Class for entity InfoServiceEntity</summary>

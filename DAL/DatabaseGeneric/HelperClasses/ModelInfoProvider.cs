@@ -103,6 +103,7 @@ namespace TournamentCalendarDAL.HelperClasses
 			this.AddElementFieldInfo("CountryEntity", "Iso3", typeof(System.String), false, false, false, false,  (int)CountryFieldIndex.Iso3, 3, 0, 0);
 			this.AddElementFieldInfo("CountryEntity", "ModifiedOn", typeof(System.DateTime), false, false, false, false,  (int)CountryFieldIndex.ModifiedOn, 0, 0, 0);
 			this.AddElementFieldInfo("CountryEntity", "Name", typeof(System.String), false, false, false, false,  (int)CountryFieldIndex.Name, 255, 0, 0);
+			this.AddElementFieldInfo("CountryEntity", "NameEn", typeof(System.String), false, false, false, false,  (int)CountryFieldIndex.NameEn, 255, 0, 0);
 		}
 
 		/// <summary>Inits InfoServiceEntity's info objects</summary>

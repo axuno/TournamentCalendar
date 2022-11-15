@@ -120,7 +120,7 @@
         <PresetName Value="SD.Presets.Adapter.General.Netstandard" />
         <RootNamespace Value="TournamentCalendarDAL" />
         <TemplateGroup Value="Adapter" />
-        <LastGenerationCycleStartedOn Value="2022-11-14T23:18:26.3294895Z" />
+        <LastGenerationCycleStartedOn Value="2022-11-15T21:22:39.8851173Z" />
         <TemplateBindings>
           <Binding Name="SD.TemplateBindings.SharedTemplates.Net6" />
           <Binding Name="SD.TemplateBindings.SharedTemplates" />
@@ -232,6 +232,7 @@
           <Field Name="Iso3" Type="string" MaxLength="3" />
           <Field Name="ModifiedOn" Type="datetime" />
           <Field Name="Name" Type="string" MaxLength="255" />
+          <Field Name="NameEn" Type="string" MaxLength="255" />
         </Fields>
         <UniqueConstraints>
           <UniqueConstraint Name="Iso3">
@@ -344,10 +345,10 @@
       <Catalogs>
         <Catalog Name="TournamentCalendar">
           <Schemas>
-            <Schema Name="dbo" SyncSource="2" LastSyncWithDatabase="2019-06-20T15:14:38.3906416Z">
+            <Schema Name="dbo" SyncSource="2" LastSyncWithDatabase="2022-11-15T21:21:31.2474516Z">
               <Tables>
                 <Table Name="Calendar">
-                  <PkConstraintName Name="PK_1fc3031419c9a8125ae1a8b4f02" />
+                  <PkConstraintName Name="Calendar_pk" />
                   <Fields>
                     <Field Name="Id" Ordinal="1" IsIdentity="true" IsPrimaryKey="true" DbType="0" Precision="19" />
                     <Field Name="Guid" Ordinal="2" IsOptional="true" DbType="12" Length="50" />
@@ -394,9 +395,10 @@
                   <Fields>
                     <Field Name="Id" Ordinal="1" IsPrimaryKey="true" DbType="12" Length="2" />
                     <Field Name="Name" Ordinal="2" DbType="12" Length="255" />
-                    <Field Name="Iso3" Ordinal="3" DbType="12" Length="3" />
-                    <Field Name="CreatedOn" Ordinal="4" DbType="4" />
-                    <Field Name="ModifiedOn" Ordinal="5" DbType="4" />
+                    <Field Name="NameEN" Ordinal="3" DbType="12" Length="255" />
+                    <Field Name="Iso3" Ordinal="4" DbType="12" Length="3" />
+                    <Field Name="CreatedOn" Ordinal="5" DbType="4" />
+                    <Field Name="ModifiedOn" Ordinal="6" DbType="4" />
                   </Fields>
                   <UniqueConstraints>
                     <UniqueConstraint Name="UC_6a283784ae9a06be73f61031c43">
@@ -449,7 +451,7 @@
                   </UniqueConstraints>
                 </Table>
                 <Table Name="SentNewsletters">
-                  <PkConstraintName Name="PK__SentNews__3214EC07BF351E96" />
+                  <PkConstraintName Name="PK__SentNews__3214EC0714FE0BB0" />
                   <Fields>
                     <Field Name="Id" Ordinal="1" IsIdentity="true" IsPrimaryKey="true" DbType="0" Precision="19" />
                     <Field Name="NumOfTournaments" Ordinal="2" DbType="8" Precision="10" />
@@ -553,6 +555,7 @@
             <FieldMapping FieldName="Iso3" TargetFieldName="Iso3" />
             <FieldMapping FieldName="ModifiedOn" TargetFieldName="ModifiedOn" />
             <FieldMapping FieldName="Name" TargetFieldName="Name" />
+            <FieldMapping FieldName="NameEn" TargetFieldName="NameEN" />
           </FieldMappings>
         </EntityMapping>
         <EntityMapping EntityName=":InfoService" TargetName="TournamentCalendar:dbo:InfoService">

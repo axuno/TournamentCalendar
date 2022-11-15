@@ -133,13 +133,13 @@ namespace TournamentCalendar.Models.InfoService
 
 		public IEnumerable<SelectListItem> GetCountriesList()
 		{
-			var countryIds = new[] { "DE", "AT", "CH", "LI", "IT", "NL", "BE", "LU", "FR", "PL", "DK" };
+            var countryIds = new[] { "DE", "AT", "CH", "LI", "IT", "NL", "BE", "LU", "FR", "PL", "DK", "CZ", "SK" };
 
 			var countries = new EntityCollection<CountryEntity>();
 			CountriesRepository.GetCountriesList(countries, countryIds);
 
 			// add to countries list in the sequence of countryIds array
-			return countryIds.Select(id => countries.Where(c => c.Id == id).First()).Select(
+			return countryIds.Select(id => countries.First(c => c.Id == id)).Select(
 					item => new SelectListItem {Value = item.Id, Text = item.Name}).ToList();
 		}
 
