@@ -82,8 +82,8 @@ namespace TournamentCalendar.Controllers
 					if (!TryUpdateModelAsync<EditModel>(model).Result)
 						return View(ViewName.InfoService.Edit, model);
 
-		    var googleApi = new NB.Tools.GeoSpatial.GoogleConfig();
-		    Configuration.Bind("GoogleConfig", googleApi);
+		    var googleApi = new NB.Tools.GeoSpatial.GoogleConfiguration();
+		    Configuration.Bind("GoogleConfiguration", googleApi);
 		    await model.TryGetLongitudeLatitude(googleApi);
             model.Normalize();
 			

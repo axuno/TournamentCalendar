@@ -64,19 +64,6 @@
 <script src="@Url.Content(ScriptName.Lib.BootstrapAllJs)"></script>
 @if (IsSectionDefined(SectionName.ScriptStandardSection))
 {@RenderSection(SectionName.ScriptStandardSection, false)}
-@if (WebHostEnvironment.IsProduction())
-{   <!-- Global site tag (gtag.js) - Google Analytics - start -->
-    @*<!-- Global site tag (gtag.js) - Google Analytics -->*@
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-28246687-2"></script>
-    <script type="text/javascript">
-        //<![CDATA[
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'UA-28246687-2', {cookie_flags: 'SameSite=None;Secure'});
-        //]]>
-    </script>
-    <!-- Global site tag (gtag.js) - Google Analytics - end -->
-}
+<environment include="Production"><partial name="_GoogleAnalytics.cshtml" /></environment>
 </body>
 </html>

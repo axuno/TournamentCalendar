@@ -109,8 +109,8 @@ namespace TournamentCalendar.Controllers
 				return View(ViewName.Calendar.Edit, model);
 			}
 
-		    var googleApi = new GoogleConfig();
-		    Configuration.Bind("GoogleConfig", googleApi);
+		    var googleApi = new GoogleConfiguration();
+		    Configuration.Bind("GoogleConfiguration", googleApi);
             await model.TryGetLongitudeLatitude(googleApi);
 			model.Normalize();
             if (model.IsNew && User.Identity != null && User.Identity.IsAuthenticated)

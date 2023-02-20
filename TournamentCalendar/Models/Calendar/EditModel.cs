@@ -61,7 +61,7 @@ namespace TournamentCalendar.Models.Calendar
 			return string.IsNullOrWhiteSpace(Guid) || LoadTournament(Guid);
 		}
 
-		public async Task<bool> TryGetLongitudeLatitude(NB.Tools.GeoSpatial.GoogleConfig googleConfig)
+		public async Task<bool> TryGetLongitudeLatitude(NB.Tools.GeoSpatial.GoogleConfiguration googleConfig)
 		{
 			if (Fields[CalendarFields.Street.FieldIndex].IsChanged || Fields[CalendarFields.PostalCode.FieldIndex].IsChanged || Fields[CalendarFields.City.FieldIndex].IsChanged)
 			{

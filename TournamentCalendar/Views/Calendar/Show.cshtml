@@ -7,8 +7,8 @@
 @using TournamentCalendar.Views
 @using Calendar = TournamentCalendar.Controllers.Calendar
 @{
-    var googleConfig = new NB.Tools.GeoSpatial.GoogleConfig();
-    Configuration.Bind("GoogleConfig", googleConfig);
+    var googleConfig = new NB.Tools.GeoSpatial.GoogleConfiguration();
+    Configuration.Bind("GoogleConfiguration", googleConfig);
 }
 <div class="row">
     <article class="col">
