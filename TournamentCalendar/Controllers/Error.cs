@@ -1,9 +1,6 @@
-﻿using System;
-using System.Linq;
-using System.Xml.Linq;
-using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using TournamentCalendar.Models.Error;
 using TournamentCalendar.Views;
@@ -14,18 +11,25 @@ namespace TournamentCalendar.Controllers
     public class Error : ControllerBase
     {
         private readonly ILogger _logger;
+        private readonly ILogger _notFoundLogger;
+        private readonly IStringLocalizer<Error> _localizer;
 
-        public Error(ILogger<Error> logger, IWebHostEnvironment environment, IConfiguration configuration) : base(environment, configuration)
+        public Error(ILogger<Error> logger, IStringLocalizer<Error> localizer, ILoggerFactory loggerFactory)
         {
             _logger = logger;
+            _localizer = localizer;
+            _notFoundLogger = loggerFactory.CreateLogger(nameof(TournamentCalendar) + ".NotFound");
         }
 
-        [Route("{id}")]
-        public IActionResult Index(string id)
+        [Route("{id?}")]
+        [HttpGet]
+        public IActionResult Index(string? id)
         {
-            ViewBag.TitleTagText = "Volleyball-Turnierkalender - Fehler";
+            ViewBag.TitleTagText = ViewBag.TitleTagText = "Volleyball-Turnierkalender - Fehler";
+            id ??= string.Empty;
+            id = id.Trim();
 
-            var viewModel = new ErrorModel();
+            var viewModel = new ErrorViewModel();
 
             // The StatusCodePagesMiddleware stores a request-feature with
             // the original path on the HttpContext, that can be accessed from the Features property.
@@ -37,35 +41,30 @@ namespace TournamentCalendar.Controllers
             {
                 viewModel.OrigPath = exceptionFeature?.Path;
                 viewModel.Exception = exceptionFeature?.Error;
-                _logger.LogCritical(viewModel.Exception, "Path: {0}", viewModel.OrigPath);
+                _logger.LogCritical(viewModel.Exception, "Path: {origPath}", viewModel.OrigPath);
             }
             else
             {
                 viewModel.OrigPath = HttpContext.Features
-                    .Get<Microsoft.AspNetCore.Diagnostics.IStatusCodeReExecuteFeature>()?.OriginalPath;
-                _logger.LogInformation("Path: {0}, StatusCode: {1}", viewModel.OrigPath, id);
+                    .Get<Microsoft.AspNetCore.Diagnostics.IStatusCodeReExecuteFeature>()?.OriginalPath ?? string.Empty;
+
+                if (Response.StatusCode == 404)
+                    _notFoundLogger.LogInformation("{NotFound}",
+                        new
+                        {
+                            Status = Response.StatusCode,
+                            Ip = HttpContext.Connection.RemoteIpAddress?.ToString() ?? "127.0.0.1",
+                            Path = viewModel.OrigPath
+                        });
+                else
+                    _logger.LogWarning("StatusCode: {StatusCode}, Path: {OrigPath}", Response.StatusCode,
+                        viewModel.OrigPath);
             }
 
-            var statusCodes = XDocument.Load(System.IO.Path.Combine(HostingEnvironment.ContentRootPath,
-                Program.ConfigurationFolder, "StatusCodes.config"));
-            var status = (from item in statusCodes.Root?.Elements("statuscode")
-                where !string.IsNullOrEmpty(id) && item.Element("code")?.Value == id
-                select (
-                    viewModel.Status.Code = (string) item.Element("code"),
-                    viewModel.Status.Text = (string) item.Element("text"),
-                    viewModel.Status.Description = (string) item.Element("description"),
-                    viewModel.Status.GermanText = (string) item.Element("germantext"),
-                    viewModel.Status.GermanDescription = (string) item.Element("germandescription")
-                    )).FirstOrDefault();
-
-            if (string.IsNullOrEmpty(viewModel.Status.Code))
-            {
-                viewModel.Status.Code = "500";
-                viewModel.Status.Text = "Server Error";
-                viewModel.Status.Description = "Unkown Server Error occurred.";
-                viewModel.Status.GermanText = "Serverfehler";
-                viewModel.Status.GermanDescription = "Ein unbekannter Serverfehler ist aufgetreten.";
-            }
+            viewModel.StatusCode = id;
+            viewModel.StatusText = StatusCodes.ResourceManager.GetString("E" + id) ?? _localizer["Error"];
+            viewModel.Description = StatusDescriptions.ResourceManager.GetString("E" + id) ??
+                                    _localizer["An error has occured"];
 
             return View(ViewName.Error.Index, viewModel);
         }

@@ -2,8 +2,16 @@
 
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
+        <Version>2.1.0</Version>
+        <FileVersion>2.1.0</FileVersion>
+        <EnableDefaultContentItems>true</EnableDefaultContentItems>
+        <Authors>axuno gGmbH</Authors>
+        <CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</CurrentYear>
+        <Copyright>Copyright 1998-$(CurrentYear) $(Authors)</Copyright>
         <LangVersion>latest</LangVersion>
         <Nullable>disable</Nullable>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageIcon>TournamentCalender-192x192.png</PackageIcon>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -12,13 +20,7 @@
 	</PropertyGroup>
 
 	<PropertyGroup>
-		<EnableDefaultContentItems>true</EnableDefaultContentItems>
-		<Version>2.0.2</Version>
-        <FileVersion>2.0.2</FileVersion>
-		<Authors>axuno gGmbH</Authors>
-		<Copyright>(C) 1998-2023 axuo gGmbH</Copyright>
-		<PackageLicenseExpression>MIT</PackageLicenseExpression>
-		<PackageIcon>TournamentCalender-192x192.png</PackageIcon>
+
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -42,6 +44,17 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<EmbeddedResource Update="Models\Error\StatusCodes.de.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Models\Error\StatusCodes.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>StatusCodes.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Models\Error\StatusDescriptions.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>StatusDescriptions.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
 		<EmbeddedResource Update="Resources\DataAnnotationResource.de.resx">
 			<Generator></Generator>
 		</EmbeddedResource>
@@ -73,6 +86,16 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Compile Update="Models\Error\StatusCodes.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>StatusCodes.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Models\Error\StatusDescriptions.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>StatusDescriptions.resx</DependentUpon>
+		</Compile>
 		<Compile Update="Resources\DataAnnotationResource.Designer.cs">
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>

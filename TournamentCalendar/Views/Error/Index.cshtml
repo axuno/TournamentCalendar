@@ -1,24 +1,27 @@
-@using Microsoft.AspNetCore.Http
-@model TournamentCalendar.Models.Error.ErrorModel
-<h2>@Model.Status.GermanText</h2>
+﻿@inject IViewLocalizer Localizer
+@using Microsoft.AspNetCore.Mvc.Localization
+@model TournamentCalendar.Models.Error.ErrorViewModel
+@{
+    ViewData["Title"] = Model.StatusText;
+}
+<h2 class="h2">@ViewData["Title"].</h2>
 <div class="pb-4">
     @if (Model.Exception == null)
     {
-        @Model.Status.GermanDescription <text> (@Model.Status.Code)</text>
+        @Model.Description <text> (@Model.StatusCode)</text>
     }
     else
     {
-        @Model.Status.GermanDescription <text> (@Model.Exception?.GetType().ToString())</text>
+        @Model.Description <text> @(Model.Exception == null ? string.Empty : "(E)")</text>
     }
-    @if (Model.Exception != null || Model.Status.Code == "500")
+    @if (Model.Exception != null || Model.StatusCode == "500")
     {
         <div>
-            Wir bitten, die Unannehmlichkeiten zu entschuldigen.
+            Entschuldigung für die dadurch verursachten Unannehmlichkeiten.<br />
+            Wir wurden über das Problem informiert.
         </div>
     }
 </div>
 <div class="pb-4">
-    <strong>@(ViewContext.HttpContext.Request.IsHttps ? "https" : "http" )://@ViewContext.HttpContext.Request.Host@Model.OrigPath</strong>
+    <strong>@(ViewContext.HttpContext.Request.Scheme)://@ViewContext.HttpContext.Request.Host@Model.OrigPath</strong>
 </div>
-
-

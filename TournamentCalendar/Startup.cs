@@ -241,19 +241,25 @@ namespace TournamentCalendar
 
             #endregion
 
-            #region * Set error handling pages *
 
-            if (WebHostEnvironment.IsProduction())
+            #region * Setup error handling *
+
+            // Error handling must be one of the very first things to configure
+            if (!WebHostEnvironment.IsProduction())
             {
                 // The StatusCodePagesMiddleware should be one of the earliest 
                 // middleware in the pipeline, as it can only modify the response 
                 // of middleware that comes after it in the pipeline
-                app.UseExceptionHandler("/error/500");
-                app.UseStatusCodePagesWithReExecute("/error/{0}");
+                app.UseStatusCodePagesWithReExecute($"/{nameof(TournamentCalendar.Controllers.Error)}/{{0}}");
+                app.UseExceptionHandler($"/{nameof(TournamentCalendar.Controllers.Error)}/500");
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseHsts();
             }
             else
             {
+                app.UseMiddleware<StackifyMiddleware.RequestTracerMiddleware>();
                 app.UseDeveloperExceptionPage();
+                app.UseStatusCodePages();
             }
 
             #endregion
