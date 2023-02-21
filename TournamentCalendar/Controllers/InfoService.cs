@@ -96,11 +96,11 @@ namespace TournamentCalendar.Controllers
 
 				if ((confirmationModel = await model.Save()).SaveSuccessful)
 				{
-					if (!confirmationModel.Entity.UnSubscribedOn.HasValue)
+					if (confirmationModel.Entity?.UnSubscribedOn == null)
 					{
 						confirmationModel = await new Mailer(_mailMergeService, _domainName).MailInfoServiceRegistrationForm(confirmationModel,
-							Url.Action(nameof(this.Bestaetigen), nameof(Controllers.InfoService), new {id = model.Guid}),
-							Url.Action(nameof(this.Eintrag), nameof(Controllers.InfoService), new {id = model.Guid}));
+							Url.Action(nameof(Bestaetigen), nameof(Controllers.InfoService), new {id = model.Guid})!,
+							Url.Action(nameof(Eintrag), nameof(Controllers.InfoService), new {id = model.Guid})!);
 					}
 				}
 
@@ -108,7 +108,7 @@ namespace TournamentCalendar.Controllers
 			}
 			catch (Exception ex)
 			{
-			    _logger.LogError(ex, $"Email: {model.Email}, First/Last Name: {model.FirstName} {model.LastName}");
+			    _logger.LogError(ex, "Email: {Email}, First/Last Name: {FirstName} {LastName}", model.Email, model.FirstName, model.LastName);
                 return View(ViewName.InfoService.Confirm, confirmationModel);
 			}
 		}

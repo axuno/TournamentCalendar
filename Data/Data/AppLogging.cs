@@ -12,7 +12,7 @@ namespace TournamentCalendar
     /// </remarks>
     public static class AppLogging
     {
-        private static ILoggerFactory _factory = null;
+        private static ILoggerFactory? _factory;
         public static void Configure(ILoggerFactory factory)
         {
             // ASP.NET will only write its internal logging to the LoggerFactory object 
@@ -34,7 +34,7 @@ namespace TournamentCalendar
                     // and must therefore be overwritten with the proper implementation.
                     Configure(new LoggerFactory());
                 }
-                return _factory;
+                return _factory!;
             }
             set { _factory = value; }
         }

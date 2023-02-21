@@ -25,7 +25,7 @@ namespace TournamentCalendar.Models.TournamentImport
         public Provider Provider { get; set; }
 
         [YAXAttributeForClass]
-        public string Url { get; set; }
+        public string Url { get; set; } = string.Empty;
 
         [YAXAttributeForClass]
         public DateTime Date { get; set; }
@@ -34,22 +34,22 @@ namespace TournamentCalendar.Models.TournamentImport
     public class ProviderTournaments
     {
         [YAXCollection(YAXCollectionSerializationTypes.RecursiveWithNoContainingElement)]
-        public List<Tournament> Tournaments { get; set; } = new List<Tournament>();
+        public List<Tournament> Tournaments { get; set; } = new();
     }
 
     public class ListModel
     {
-        public List<Tournament> AllTournaments { get; set; } = new List<Tournament>();
+        public List<Tournament> AllTournaments { get; set; } = new();
 
         public Provider[] AllTournamentsProviders { get { return AllTournaments.GroupBy(at => at.Provider).Select(grp => grp.Key).ToArray(); } }
 
-        public List<Tournament> NewTournaments { get; set; } = new List<Tournament>();
+        public List<Tournament> NewTournaments { get; set; } = new();
 
         public Provider[] NewTournamentsProviders { get { return NewTournaments.GroupBy(at => at.Provider).Select(grp => grp.Key).ToArray(); } }
 
-        public Dictionary<Provider, Exception> Errors { get; internal set; } = new Dictionary<Provider, Exception>();
+        public Dictionary<Provider, Exception> Errors { get; internal set; } = new();
 
-        public DateTime[] ImportDates { get; internal set; }
+        public DateTime[] ImportDates { get; internal set; } = Array.Empty<DateTime>();
 
         public DateTime LastImportDate { get; internal set; }
     }
@@ -66,14 +66,14 @@ namespace TournamentCalendar.Models.TournamentImport
 
         public string PathToImportFiles { get; set; }
 
-	    public Dictionary<Provider, Exception> Errors { get; } = new Dictionary<Provider, Exception>();
+	    public Dictionary<Provider, Exception> Errors { get; } = new();
 
         public async Task<ListModel> GetTournamentsAfterKeyDate(DateTime keyDate, Provider[] providers)
         {
             var listModel = new ListModel {Errors = Errors};
             try
             {
-                var s = new YAXSerializer(typeof(ProviderTournaments));
+                var s = new YAXSerializer<ProviderTournaments>();
 
                 var files = Directory.GetFiles($"{PathToImportFiles}", $"{FileBaseName}*.xml");
                     
@@ -83,17 +83,17 @@ namespace TournamentCalendar.Models.TournamentImport
                 var currentImport = await DownloadFromProviders(providers);
 
                 var latestImport = latestFile != null
-                    ? ((ProviderTournaments) s.DeserializeFromFile(latestFile)).Tournaments
+                    ? s.DeserializeFromFile(latestFile)?.Tournaments
                     : new ProviderTournaments().Tournaments;
 
-                var diff = currentImport.Where(latest => latestImport.All(second => second.Url != latest.Url)).ToList();
+                var diff = currentImport.Where(latest => latestImport != null && latestImport.All(second => second.Url != latest.Url)).ToList();
 
                 listModel.ImportDates = ExtractDatesFromFilenames(files);
                 listModel.LastImportDate = keyDate == DateTime.MaxValue ? listModel.ImportDates.First() : keyDate;
 
                 listModel.NewTournaments.AddRange(diff);
 
-                listModel.AllTournaments.AddRange(latestImport);
+                if (latestImport != null) listModel.AllTournaments.AddRange(latestImport);
                 listModel.AllTournaments.AddRange(diff);
 
                 s.SerializeToFile(new ProviderTournaments {Tournaments = listModel.AllTournaments},
@@ -142,7 +142,7 @@ namespace TournamentCalendar.Models.TournamentImport
 		    return tournaments;
 		}
 
-		private async Task<string[]> DownloadLinksFromProvider(Provider providerId)
+		private static async Task<string[]> DownloadLinksFromProvider(Provider providerId)
 		{
 			var hrefs = new string[1];
 
@@ -158,7 +158,7 @@ namespace TournamentCalendar.Models.TournamentImport
 		    return hrefs;
 		}
 
-		private async Task<string[]> GetVolleyballerTournamentHrefList()
+		private static async Task<string[]> GetVolleyballerTournamentHrefList()
 		{
 			using var httpClient = new HttpClient();
 			httpClient.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:56.0) Gecko/20100101 Firefox/56.0");
@@ -176,7 +176,7 @@ namespace TournamentCalendar.Models.TournamentImport
 			return hrefs.ToArray();
 		}
 
-		private async Task<string[]> GetVobatuTournamentHrefList()
+		private static async Task<string[]> GetVobatuTournamentHrefList()
 		{
 			var hrefs = new List<string>();
             using var httpClient = new HttpClient();
@@ -194,7 +194,7 @@ namespace TournamentCalendar.Models.TournamentImport
 				{
 					totalPages =
 						int.Parse(
-							new System.Text.RegularExpressions.Regex(@"Seite 1\ von (\d)").Match(document.Body.TextContent).Groups[1].Value);
+							new System.Text.RegularExpressions.Regex(@"Seite 1\ von (\d)").Match(document.Body?.TextContent!).Groups[1].Value);
 				}
 				var tournamentSection = document.QuerySelector("#c31 > div:nth-child(1) > table:nth-child(4)");
 				if (tournamentSection == null)
@@ -209,37 +209,43 @@ namespace TournamentCalendar.Models.TournamentImport
 			return hrefs.ToArray();
 		}
 
-		private void GetVolleyballerTournamentDetails()
+		private static void GetVolleyballerTournamentDetails()
 		{
 			const string dateFromCol = "Datum:", closingDateCol = "Meldeschluss:";
 
-			var entry = new Dictionary<string, string>();
 			var parser = new HtmlParser();
 
 			var document = parser.ParseDocument(File.ReadAllText(@"c:\temp\volleyballer-eintrag.html"));
 			var tournamentSection = document.QuerySelector("div.row:nth-child(2) > div:nth-child(1)");
 
-			var tournamentName = tournamentSection.QuerySelector("h2:nth-child(3)").TextContent;
+			// var tournamentName = tournamentSection?.QuerySelector("h2:nth-child(3)")?.TextContent;
 
 
-			var twoColRows = tournamentSection.QuerySelectorAll("div.row");
-			foreach (var twoColRow in twoColRows)
-			{
-				if (twoColRow.TextContent.Contains(dateFromCol))
-				{
-					var dates = new System.Text.RegularExpressions.Regex(@"\d{2}\.\d{2}\.\d{4}").Matches(twoColRow.TextContent);
-					if (dates.Count > 0)
-					{
-						var from = DateTime.Parse(dates[0].Value, System.Globalization.CultureInfo.GetCultureInfo("de-de"));
-						var to = DateTime.Parse(dates[1].Value, System.Globalization.CultureInfo.GetCultureInfo("de-de"));
-					}
-				}
+			var twoColRows = tournamentSection?.QuerySelectorAll("div.row");
+            if (twoColRows == null) return;
+            
+            foreach (var twoColRow in twoColRows)
+            {
+                if (twoColRow.TextContent.Contains(dateFromCol))
+                {
+                    var dates =
+                        new System.Text.RegularExpressions.Regex(@"\d{2}\.\d{2}\.\d{4}").Matches(twoColRow
+                            .TextContent);
+                    if (dates.Count > 0)
+                    {
+                        var from = DateTime.Parse(dates[0].Value,
+                            System.Globalization.CultureInfo.GetCultureInfo("de-de"));
+                        var to = DateTime.Parse(dates[1].Value,
+                            System.Globalization.CultureInfo.GetCultureInfo("de-de"));
+                    }
+                }
 
-				if (twoColRow.TextContent.Contains(closingDateCol))
-				{
-					var date = DateTime.Parse(new System.Text.RegularExpressions.Regex(@"\d{2}\.\d{2}\.\d{4}").Match(twoColRow.TextContent).Value);
-				}
-			}
-		}
+                if (twoColRow.TextContent.Contains(closingDateCol))
+                {
+                    var date = DateTime.Parse(new System.Text.RegularExpressions.Regex(@"\d{2}\.\d{2}\.\d{4}")
+                        .Match(twoColRow.TextContent).Value);
+                }
+            }
+        }
     }
 }

@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Net;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -37,9 +33,9 @@ namespace TournamentCalendar.Controllers
         [HttpPost("[controller]/[action]")]
         public async Task<IActionResult> SignIn([FromForm] SignInViewModel model, [FromQuery] string returnUrl)
         {
-            Library.Authentication.User foundUser = null;
+            Library.Authentication.User? foundUser = null;
             var hashedPassword = Convert.ToBase64String(System.Security.Cryptography.SHA1.Create()
-                .ComputeHash(new UTF8Encoding().GetBytes(model.Password)));
+                .ComputeHash(new UTF8Encoding().GetBytes(model.Password ?? string.Empty)));
 
             var users = new List<Library.Authentication.User>();
             _configuration.Bind("Authentication", users);
@@ -61,8 +57,8 @@ namespace TournamentCalendar.Controllers
         
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, foundUser.UserName, ClaimValueTypes.String, "https://volleyball-turnier.de"),
-                new Claim(ClaimTypes.Email, foundUser.Email, ClaimValueTypes.String, "https://volleyball-turnier.de"),
+                new(ClaimTypes.Name, foundUser.UserName, ClaimValueTypes.String, "https://volleyball-turnier.de"),
+                new(ClaimTypes.Email, foundUser.Email, ClaimValueTypes.String, "https://volleyball-turnier.de"),
             };
             foreach (var roleName in foundUser.Roles)
             {

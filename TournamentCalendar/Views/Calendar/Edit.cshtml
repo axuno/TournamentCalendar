@@ -3,6 +3,8 @@
 @using TournamentCalendar.Controllers
 @using TournamentCalendar.Views
 @using TournamentCalendarDAL.HelperClasses
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor httpContextAccessor
 <article>
     @if (Model.EditMode == EditMode.New)
     {
@@ -22,13 +24,9 @@
 </article>
 @using (Model.EditMode == EditMode.New ? Html.BeginForm(nameof(Calendar.Entry), nameof(Calendar), new {id = string.Empty}, FormMethod.Post, null, new{id = "CalendarForm", @class = "pb-2" }) : Html.BeginForm(nameof(Calendar.Entry), nameof(Calendar), new {id = Model.Guid}, FormMethod.Post, null, new { id = "CalendarForm", @class="pb-2" }))
 {
-    @* Validation summary must be insinde BeginForm block *@
-    @Html.ValidationSummary(false, "Es sind Fehler aufgetreten. Bitte die markierten Felder korrigieren und erneut speichern.", new { @class = "validation-summary-errors msg-validation rounded" })
-
-    if (Model.EditMode != EditMode.New)
-    {
-        @Html.HiddenFor(m => m.Guid)
-    }
+    @* Validation summary must be inside BeginForm block *@
+    @if (httpContextAccessor.HttpContext!.Request.Method.Equals("POST", StringComparison.OrdinalIgnoreCase))
+    {@Html.ValidationSummary(false, "Es sind Fehler aufgetreten. Bitte die markierten Felder korrigieren und erneut speichern.", new { @class = "validation-summary-errors msg-validation rounded" })}
 
     <fieldset class="rounded">
         <legend class="rounded">

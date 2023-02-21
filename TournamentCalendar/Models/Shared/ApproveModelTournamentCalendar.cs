@@ -21,13 +21,13 @@ namespace TournamentCalendar.Models.Shared
 		}
 		public bool SaveSuccessFul { get; set; }
 		public bool IsEntityFound { get; set; }
-		public CalendarEntity PossibleDuplicateFound { get; private set; }
-		public Exception Exception { get; set; }
-		public T Entity { get; set; }
+		public CalendarEntity? PossibleDuplicateFound { get; private set; }
+		public Exception? Exception { get; set; }
+		public T? Entity { get; set; }
 
 		public static bool IsGuid(string guid)
 		{
-            return Guid.TryParse(guid, out var dummy);
+            return Guid.TryParse(guid, out _);
         }
 
 	    public async Task<ApproveModelTournamentCalendar<T>> Save()
@@ -45,23 +45,21 @@ namespace TournamentCalendar.Models.Shared
 	                return this;
 	            }
 
-	            if (Entity is CalendarEntity)
+	            if (Entity is CalendarEntity entity)
 	            {
 	                PossibleDuplicateFound =
-	                    await CalendarRepository.GetPossibleDuplicate(Entity as CalendarEntity);
+	                    await CalendarRepository.GetPossibleDuplicate(entity);
 	                if (PossibleDuplicateFound != null)
 	                    return this;
 	            }
 
-	            var deletedOnDateValue = Entity.Fields[_deletedOnDateField.Name].CurrentValue as DateTime?;
-	            if (deletedOnDateValue.HasValue)
+                if (Entity.Fields[_deletedOnDateField.Name].CurrentValue is DateTime)
 	            {
 	                Entity.SetNewFieldValue(_deletedOnDateField.Name, null);
 	            }
 
-	            var approvedDateValue = Entity.Fields[_approveDateField.Name].CurrentValue as DateTime?;
-	            // only save date if not already approved
-	            if (!approvedDateValue.HasValue)
+                // only save date if not already approved
+	            if (Entity.Fields[_approveDateField.Name].CurrentValue is not DateTime)
 	            {
 	                Entity.SetNewFieldValue(_approveDateField.Name, DateTime.Now);
 	            }

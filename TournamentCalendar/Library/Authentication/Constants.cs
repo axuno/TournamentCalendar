@@ -18,7 +18,7 @@ namespace TournamentCalendar.Library.Authentication
             /// Get the values of all constants in this class.
             /// </summary>
             /// <returns>Returns the values of all constants in this class.</returns>
-            public static IEnumerable<T> GetAllValues<T>()
+            public static IEnumerable<T?> GetAllValues<T>()
             {
                 return Constants.GetAllValues<T>(typeof(RoleName));
             }
@@ -37,12 +37,12 @@ namespace TournamentCalendar.Library.Authentication
         /// Get the values of type T of all constants in this class.
         /// </summary>
         /// <returns>Returns the values of type T of all constants in this class.</returns>
-        private static IEnumerable<T> GetAllValues<T>(IReflect type)
+        private static IEnumerable<T?> GetAllValues<T>(IReflect type)
         {
             return type
                 .GetFields(BindingFlags.Public | BindingFlags.Static)
                 .Where(fi => fi.IsLiteral && !fi.IsInitOnly && fi.FieldType == typeof(T))
-                .Select(x => (T)x.GetRawConstantValue())
+                .Select(x => (T?)x.GetRawConstantValue())
                 .ToList();
         }
 
@@ -57,7 +57,8 @@ namespace TournamentCalendar.Library.Authentication
             var fields = type.GetFields(flags).Where(f => f.IsLiteral);
             foreach (var fieldInfo in fields)
             {
-                yield return fieldInfo.GetValue(null)?.ToString();
+                var val = fieldInfo.GetValue(null)?.ToString();
+                if (val != null) yield return val;
             }
         }
     }

@@ -16,13 +16,12 @@ namespace TournamentCalendar.Models.InfoService
 		public string Guid { get; private set; }
 		public bool SaveSuccessFul { get; set; }
 		public bool IsEntityFound { get; set; }
-		public Exception Exception { get; set; }
-		public InfoServiceEntity Entity { get; set; }
+		public Exception? Exception { get; set; }
+		public InfoServiceEntity? Entity { get; set; }
 
 		public static bool IsGuid(string guid)
 		{
-			System.Guid dummy;
-			return System.Guid.TryParse(guid, out dummy);
+			return System.Guid.TryParse(guid, out _);
 		}
 
 		public async Task<UnsubscribeModel> Save()

@@ -6,20 +6,19 @@ namespace TournamentCalendar.ValidationAttributes
 	[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
 	public class TimeSpanDayTimeAttribute : ValidationAttribute
 	{
-		protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+		protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
 		{
 			return IsValid(value)
 					   ? null
-					   : new ValidationResult(string.Format("Wert für '{0}' ist keine Uhrzeit", validationContext.DisplayName));
+					   : new ValidationResult($"Wert für '{validationContext.DisplayName}' ist keine Uhrzeit");
 		}
 
-		public override bool IsValid(object value)
+		public override bool IsValid(object? value)
 		{
-			if (!(value is TimeSpan))
+			if (value is not TimeSpan timeSpan)
 				return false;
 
-			var ts = (TimeSpan)value;
-			return ts >= new TimeSpan(0, 0, 0, 0) && ts <= new TimeSpan(0, 23, 59, 59);
+            return timeSpan >= new TimeSpan(0, 0, 0, 0) && timeSpan <= new TimeSpan(0, 23, 59, 59);
 		}
 	}
 }

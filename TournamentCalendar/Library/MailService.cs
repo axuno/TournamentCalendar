@@ -15,8 +15,8 @@ namespace TournamentCalendar
 
     public class MailMergeServiceConfig
     {
-        public Settings Settings { get; set; }
-        public IMessageStore MessageStore { get; set; }
+        public Settings Settings { get; set; } = null!;
+        public IMessageStore MessageStore { get; set; } = null!;
     }
 
     public class MailMergeService : IMailMergeService

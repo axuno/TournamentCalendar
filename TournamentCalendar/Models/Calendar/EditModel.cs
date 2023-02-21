@@ -24,8 +24,8 @@ namespace TournamentCalendar.Models.Calendar
 	[ModelMetadataType(typeof (TournamentCalendarMetadata))]
 	public class EditModel : CalendarEntity, IValidatableObject
 	{
-		private EntityCollection<SurfaceEntity> _surfaces = new EntityCollection<SurfaceEntity>();
-		private EntityCollection<PlayingAbilityEntity> _playingAbilities = new EntityCollection<PlayingAbilityEntity>();
+		private readonly EntityCollection<SurfaceEntity> _surfaces = new();
+		private readonly EntityCollection<PlayingAbilityEntity> _playingAbilities = new();
 
 		public EditModel()
 		{
@@ -41,7 +41,7 @@ namespace TournamentCalendar.Models.Calendar
 			base.DeletedOn = null;
 			base.Special = string.Empty;
 			base.IsNew = true;
-		}
+        }
 
 	    public async Task<EditModel> Initialize()
 	    {
@@ -245,15 +245,15 @@ namespace TournamentCalendar.Models.Calendar
             }
 		}
 
-		public string Captcha { get; set; }
+		public string Captcha { get; set; } = string.Empty;
 
 		public IEnumerable<SelectListItem> GetMinMaxPlayerList()
 		{
 			return new List<SelectListItem>(3)
 				    {
-						new SelectListItem {Value = "0", Text = "genau"},
-				       	new SelectListItem {Value = "1", Text = "mindestens"},
-				       	new SelectListItem {Value = "2", Text = "maximal"}
+						new() {Value = "0", Text = "genau"},
+				       	new() {Value = "1", Text = "mindestens"},
+				       	new() {Value = "2", Text = "maximal"}
 				    };
 		}
 
@@ -261,7 +261,7 @@ namespace TournamentCalendar.Models.Calendar
 		{
 			var countryIds = new[] { "DE", "AT", "CH", "LI", "IT", "NL", "BE", "LU", "FR", "PL", "DK", "CZ", "SK" };
 
-			EntityCollection<CountryEntity> countries = new EntityCollection<CountryEntity>();
+            EntityCollection<CountryEntity> countries = new();
 			CountriesRepository.GetCountriesList(countries, countryIds);
 
 			// add to countries list in the sequence of countryIds array
@@ -291,14 +291,14 @@ namespace TournamentCalendar.Models.Calendar
 			*/
 
 			Normalize();
-			for (int i = 0; i < Fields.Count; i++)
+			for (var i = 0; i < Fields.Count; i++)
 			{
 				var fieldName = Fields[i].Name;
 				if (Fields[i].DataType != typeof(string) || Fields[i].CurrentValue == null) continue;
 
 				// if the field names exists and there was no error, 
 				// for this field, then set the value from the Model to ModelState
-				if (modelState[fieldName] != null && modelState[fieldName].Errors.Count == 0 && modelState[fieldName].RawValue != null)
+				if (modelState[fieldName]?.Errors.Count == 0 && modelState[fieldName]?.RawValue != null)
 					modelState.SetModelValue(fieldName, new ValueProviderResult(new StringValues(Fields[i].CurrentValue as string), CultureInfo.InvariantCulture));
 			}
 		}
@@ -314,19 +314,15 @@ namespace TournamentCalendar.Models.Calendar
 			// swap from/to date if necessary
 			if (DateTo.TimeOfDay != timeUnknown && DateFrom > DateTo)
 			{
-				DateTime swap = DateFrom;
-				DateFrom = DateTo;
-				DateTo = swap;
-			}
+				(DateFrom, DateTo) = (DateTo, DateFrom);
+            }
 
 			// index is in ascending order - swap from/to if necessary
 			var playingAbility = GetPlayingAbilityList().Select(pa => pa.Text).ToArray();
 			if (Array.IndexOf(playingAbility, PlayingAbilityFrom) > Array.IndexOf(playingAbility, PlayingAbilityTo))
 			{
-				var swap = PlayingAbilityFrom;
-				PlayingAbilityFrom = PlayingAbilityTo;
-				PlayingAbilityTo = swap;
-			}
+				(PlayingAbilityFrom, PlayingAbilityTo) = (PlayingAbilityTo, PlayingAbilityFrom);
+            }
 
 			// if male or female numbers are minimum, the other one is no minimum
 			if (IsMinPlayersFemale)
@@ -344,13 +340,13 @@ namespace TournamentCalendar.Models.Calendar
 			{
 				if (Fields[i].DataType != typeof(string) || Fields[i].CurrentValue == null) continue;
 
-				Fields[i].CurrentValue = NB.Tools.String.StringHelper.StripTags(Fields[i].CurrentValue as string).Trim(); // strip HTML tags
+				Fields[i].CurrentValue = NB.Tools.String.StringHelper.StripTags(Fields[i].CurrentValue as string ?? string.Empty).Trim(); // strip HTML tags
 			}
 		}
 
-		public CalendarEntity PossibleDuplicateFound { get; private set; }
+		public CalendarEntity? PossibleDuplicateFound { get; private set; }
 
-		public async Task<CalendarEntity> GetPossibleDuplicate()
+		public async Task<CalendarEntity?> GetPossibleDuplicate()
 		{
 			// It is expected that the model is normalized before calling this method.
 			return await CalendarRepository.GetPossibleDuplicate(this);
@@ -377,7 +373,7 @@ namespace TournamentCalendar.Models.Calendar
 			try
 			{
 				// Id will be zero if the Guid does not exist:
-				Id = await CalendarRepository.GetIdforGuid(Guid);
+				Id = await CalendarRepository.GetIdForGuid(Guid);
 
 				confirmModel.SaveSuccessful = await CalendarRepository.Save(this, true);
 				confirmModel.Entity = this;
@@ -396,44 +392,44 @@ namespace TournamentCalendar.Models.Calendar
 				"Email, Website, PostedByName, PostedByEmail, PostedByPassword, Approved, Captcha"
 			)]
 		public class TournamentCalendarMetadata
-		{
+        {
 			[HiddenInput]
-			public string Guid { get; set; }
+			public string Guid { get; set; } = string.Empty;
 
 		    [Required(ErrorMessageResourceName = "PropertyValueRequired", ErrorMessageResourceType = typeof(DataAnnotationResource))]
 			[Display(Name="Turniername")]
-			public string TournamentName { get; set; }
+			public string? TournamentName { get; set; }
 
 			[Display(Name="Spezialangaben")]
-			public string Special { get; set; }
+			public string? Special { get; set; }
 
 			[ValidateDate]
 			[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd.MM.yyyy}")]
 			[Required(ErrorMessageResourceName = "PropertyValueRequired", ErrorMessageResourceType = typeof(DataAnnotationResource))]
             [Display(Name="Datum von")]
-			public string DateFromText { get; set; }
+			public string? DateFromText { get; set; }
 
 		    [ValidateDate]
             [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd.MM.yyyy}")]
 			[Required(ErrorMessageResourceName = "PropertyValueRequired", ErrorMessageResourceType = typeof(DataAnnotationResource))]
             [Display(Name="Datum bis")]
-			public string DateToText { get; set; }
+			public string? DateToText { get; set; }
 
 		    [RegularExpression("([0-1]{0,1}[0-9]|[2][0-3]):([0-5][0-9])", ErrorMessage = "'{0}' hat ungültiges Format")]
 			[Required(ErrorMessageResourceName = "PropertyValueRequired", ErrorMessageResourceType = typeof(DataAnnotationResource))]
 			[Display(Name="Uhrzeit von")]
-			public string TimeFrom { get; set; }
+			public string? TimeFrom { get; set; }
 
 		    [RegularExpression("([0-1]{0,1}[0-9]|[2][0-3]):([0-5][0-9])", ErrorMessage = "'{0}' hat ungültiges Format")]
 			[Required(ErrorMessageResourceName = "PropertyValueRequired", ErrorMessageResourceType = typeof(DataAnnotationResource))]
 			[Display(Name="Uhrzeit bis")]
-			public string TimeTo { get; set; }
+			public string? TimeTo { get; set; }
 
 			[ValidateClosingDate("DateFromText")]
 			[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd.MM.yyyy}")]
 			[Required(ErrorMessageResourceName = "PropertyValueRequired", ErrorMessageResourceType = typeof(DataAnnotationResource))]
 			[Display(Name="Anmeldeschluss")]
-			public string ClosingDateText { get; set; }
+			public string? ClosingDateText { get; set; }
 
 			[Display(Name="Anzahl Damen")]
 			[Required(ErrorMessageResourceName = "PropertyValueRequired", ErrorMessageResourceType = typeof(DataAnnotationResource))]
@@ -461,39 +457,39 @@ namespace TournamentCalendar.Models.Calendar
 
 			[Display(Name="Name des Austragungsorts (Halle bzw. Platz)")]
 			[Required(ErrorMessageResourceName = "PropertyValueRequired", ErrorMessageResourceType = typeof(DataAnnotationResource))]
-			public string Venue { get; set; }
+			public string? Venue { get; set; }
 
 			[Display(Name="Straße")]
 			[Required(ErrorMessageResourceName = "PropertyValueRequired", ErrorMessageResourceType = typeof(DataAnnotationResource))]
-			public string Street { get; set; }
+			public string? Street { get; set; }
 
 			[Display(Name = "Land")]
-			public string CountryId { get; set; }
+			public string? CountryId { get; set; }
 
 			[Display(Name="Postleitzahl")]
 			[Required(ErrorMessageResourceName = "PropertyValueRequired", ErrorMessageResourceType = typeof(DataAnnotationResource))]
-			public string PostalCode { get; set; }
+			public string? PostalCode { get; set; }
 
 			[Display(Name="Ort")]
 			[Required(ErrorMessageResourceName = "PropertyValueRequired", ErrorMessageResourceType = typeof(DataAnnotationResource))]
-			public string City { get; set; }
+			public string? City { get; set; }
 
 			[Display(Name="Veranstalter")]
 			[Required(ErrorMessageResourceName = "PropertyValueRequired", ErrorMessageResourceType = typeof(DataAnnotationResource))]
-			public string Organizer { get; set; }
+			public string? Organizer { get; set; }
 
 			[Display(Name = "Ansprechpartner")]
 			[Required(ErrorMessageResourceName = "PropertyValueRequired", ErrorMessageResourceType = typeof(DataAnnotationResource))]
 			[MaxLength(1024, ErrorMessage = "{0}: Max. {1} Zeichen")]
-			public string ContactAddress { get; set; }
+			public string? ContactAddress { get; set; }
 
 			[Display(Name = "E-Mail Ansprechpartner")]
             [RegularExpression(@"^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$", ErrorMessageResourceName = "EmailAddressInvalid", ErrorMessageResourceType = typeof(DataAnnotationResource))]
-			public string Email { get; set; }
+			public string? Email { get; set; }
 
 			[Display(Name = "Web-Adresse")]
 			[RegularExpression(@"^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$", ErrorMessage = "'{0}' hat ungültiges Format")]
-            public string Website { get; set; }
+            public string? Website { get; set; }
 
 			[Display(Name="Startgebühr")]
 			[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:0.00}")]
@@ -509,22 +505,22 @@ namespace TournamentCalendar.Models.Calendar
 
 			[Display(Name = "'Weitere Infos'")]
 			[MaxLength(1024, ErrorMessage = "{0}: Max. {1} Zeichen")]
-			public string Info { get; set; }
+			public string? Info { get; set; }
 
 			[Display(Name="'Gemeldet von' Name")]
 			[Required(ErrorMessageResourceName = "PropertyValueRequired", ErrorMessageResourceType = typeof(DataAnnotationResource))]
-			public string PostedByName { get; set; }
+			public string? PostedByName { get; set; }
 
 			[Display(Name="'Gemeldet von' E-Mail")]
 			[Required(ErrorMessageResourceName = "PropertyValueRequired", ErrorMessageResourceType = typeof(DataAnnotationResource))]
             [EmailAddress(ErrorMessageResourceName = "EmailAddressInvalid", ErrorMessageResourceType = typeof(DataAnnotationResource))]
-			public string PostedByEmail { get; set; }
+			public string? PostedByEmail { get; set; }
 
-			[Display(Name = "Ergebnis der Rechenaufgabe im Bild")]
-			[ValidationAttributes.ValidateCaptchaText]
-			[Required(ErrorMessageResourceName = "PropertyValueRequired", ErrorMessageResourceType = typeof(DataAnnotationResource))]
-            public string Captcha { get; set; }
-		}
+            [Display(Name = "Ergebnis der Rechenaufgabe im Bild")]
+            [ValidationAttributes.ValidateCaptchaText]
+            [Required(ErrorMessageResourceName = "PropertyValueRequired", ErrorMessageResourceType = typeof(DataAnnotationResource))]
+            public string? Captcha { get; set; }
+        }
 
 		#region IValidatableObject Members
 
@@ -597,7 +593,7 @@ namespace TournamentCalendar.Models.Calendar
             _otherDateFieldname = otherDate ?? throw new ArgumentNullException(nameof(otherDate));
 		}
 
-		protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+		protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
 		{
 			if (value == null)
 				return new ValidationResult(validationContext + " ist erforderlich");

@@ -13,9 +13,9 @@ namespace TournamentCalendar.Models.Newsletter
 {
     public class NewsletterModel
     {
-        private EntityCollection<CalendarEntity> _tournaments = new EntityCollection<CalendarEntity>();
-        private readonly EntityCollection<SurfaceEntity> _surfaces = new EntityCollection<SurfaceEntity>();
-        private readonly EntityCollection<PlayingAbilityEntity> _playingAbilities = new EntityCollection<PlayingAbilityEntity>();
+        private EntityCollection<CalendarEntity> _tournaments = new();
+        private readonly EntityCollection<SurfaceEntity> _surfaces = new();
+        private readonly EntityCollection<PlayingAbilityEntity> _playingAbilities = new();
         public async Task<NewsletterModel> InitializeAndLoad()
         {
             Newsletters = await SentNewsletterRepository.GetLastNewsletters();
@@ -31,7 +31,7 @@ namespace TournamentCalendar.Models.Newsletter
             return this;
         }
 
-        private async Task SaveFirstRecord()
+        private static async Task SaveFirstRecord()
         {
             var now = DateTime.Now;
             var nl = new SentNewsletterEntity
@@ -53,7 +53,7 @@ namespace TournamentCalendar.Models.Newsletter
             _tournaments = await CalendarRepository.GetActiveTournaments(LastSendDate);
         }
 
-        public ICollection<SentNewsletterEntity> Newsletters { get; private set; }
+        public ICollection<SentNewsletterEntity> Newsletters { get; private set; } = new HashSet<SentNewsletterEntity>();
 
         public ICollection<CalendarEntityDisplayModel> CalendarDisplayModel
         {

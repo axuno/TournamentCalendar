@@ -22,34 +22,28 @@ namespace TournamentCalendar.Data
 		}
 
 		public static bool GetRegistration(InfoServiceEntity entity, PredicateExpression filter)
-		{
-			using (var da = Connecter.GetNewAdapter())
-			{
-				var success = da.FetchEntityUsingUniqueConstraint(entity, filter);
-				da.CloseConnection();
-				return success;
-			}
-		}
+        {
+            using var da = Connecter.GetNewAdapter();
+            var success = da.FetchEntityUsingUniqueConstraint(entity, filter);
+            da.CloseConnection();
+            return success;
+        }
 
 		public static int GetIdforGuid(string guid)
-		{
-			using (var da = Connecter.GetNewAdapter())
-			{
-				var metaData = new LinqMetaData(da);
+        {
+            using var da = Connecter.GetNewAdapter();
+            var metaData = new LinqMetaData(da);
 
-				// If Guid does not exist, Id will be zero:
-				return (from t in metaData.InfoService where t.Guid == guid select t.Id).First();
-			}
-		}
+            // If Guid does not exist, Id will be zero:
+            return (from t in metaData.InfoService where t.Guid == guid select t.Id).First();
+        }
 
         public static async Task <EntityCollection<InfoServiceEntity>> GetActiveSubscribers()
         {
-            using (var da = Connecter.GetNewAdapter())
-            {
-                var metaData = new LinqMetaData(da);
-                return await (from subs in metaData.InfoService
-                    where !subs.UnSubscribedOn.HasValue select subs).ExecuteAsync<EntityCollection<InfoServiceEntity>>();
-            }
+            using var da = Connecter.GetNewAdapter();
+            var metaData = new LinqMetaData(da);
+            return await (from subs in metaData.InfoService
+                where !subs.UnSubscribedOn.HasValue select subs).ExecuteAsync<EntityCollection<InfoServiceEntity>>();
         }
     }
 }

@@ -91,8 +91,8 @@ namespace TournamentCalendar.Models.Calendar
         public string GetPlayingAbility()
         {
             string value;
-            string from = _playingAbilities.First(pa => pa.Strength == PlayingAbilityFrom).Description;
-            string to = _playingAbilities.First(pa => pa.Strength == PlayingAbilityTo).Description;
+            var from = _playingAbilities.First(pa => pa.Strength == PlayingAbilityFrom).Description;
+            var to = _playingAbilities.First(pa => pa.Strength == PlayingAbilityTo).Description;
 
             if (PlayingAbilityTo == 0) // unbeschränkt
                 to = string.Empty;
@@ -172,7 +172,7 @@ namespace TournamentCalendar.Models.Calendar
                     new Axuno.Tools.GeoSpatial.Latitude(Axuno.Tools.GeoSpatial.Angle.FromDegrees(Latitude.Value)),
                     new Axuno.Tools.GeoSpatial.Longitude(Axuno.Tools.GeoSpatial.Angle.FromDegrees(Longitude.Value)));
 
-            int distance = (int) augsburg.Distance(venue)/1000;
+            var distance = (int) augsburg.Distance(venue)/1000;
             return distance < 1
                 ? string.Empty
                 : string.Format("Entfernung nach Augsburg/Königsplatz ca. {0:0} km Luftlinie", distance);

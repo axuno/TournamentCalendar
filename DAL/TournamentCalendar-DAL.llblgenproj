@@ -120,7 +120,7 @@
         <PresetName Value="SD.Presets.Adapter.General.Netstandard" />
         <RootNamespace Value="TournamentCalendarDAL" />
         <TemplateGroup Value="Adapter" />
-        <LastGenerationCycleStartedOn Value="2022-11-15T21:22:39.8851173Z" />
+        <LastGenerationCycleStartedOn Value="2023-02-22T10:10:20.6330639Z" />
         <TemplateBindings>
           <Binding Name="SD.TemplateBindings.SharedTemplates.Net6" />
           <Binding Name="SD.TemplateBindings.SharedTemplates" />

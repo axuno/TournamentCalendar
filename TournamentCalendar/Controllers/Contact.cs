@@ -59,12 +59,12 @@ namespace TournamentCalendar.Controllers
 		    try
 		    {
 		        HttpContext.Session.Remove(Axuno.Web.CaptchaSvgGenerator.CaptchaSessionKeyName);
-                model = await new Mailer(_mailMergeService, _domainName).ContactForm(model, Url.Action(nameof(this.Message), nameof(Controllers.Contact)));
+                model = await new Mailer(_mailMergeService, _domainName).ContactForm(model, Url.Action(nameof(Message), nameof(Controllers.Contact))!);
 		        return View(ViewName.Contact.Confirm, model);
 		    }
 		    catch (Exception ex)
 		    {
-		        _logger.LogError(ex, $"Email: {model.Email}, Name: {model.FirstName} {model.LastName}, Subject: {model.Subject}, Message: {model.Message}");
+		        _logger.LogError(ex, "Email: {Email}, Name: {FirstName} {LastName}, Subject: {Subject}, Message: {Message}", model.Email, model.FirstName, model.LastName, model.Subject, model.Message);
 		        return View(ViewName.Contact.Confirm, model);
 		    }
 		}

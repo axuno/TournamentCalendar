@@ -19,7 +19,7 @@ namespace TournamentCalendar
 	    private readonly string _domainName; 
 
 		private readonly IMailMergeService _mailMergeService;
-		private readonly MailMergeAddress _contactFormFrom = new MailMergeAddress(MailAddressType.From, "Volleyball-Turnier.de", "info@volleyball-turnier.de");
+		private readonly MailMergeAddress _contactFormFrom = new(MailAddressType.From, "Volleyball-Turnier.de", "info@volleyball-turnier.de");
 
 		public Mailer(IMailMergeService mailMergeService, string domainName)
 		{

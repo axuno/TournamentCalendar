@@ -11,7 +11,7 @@
         if (Model.SaveSuccessFul)
         {
             <div class="msg-success rounded">
-                <span>Der Eintrag bei Volley-News für die E-Mail <strong>@Model.Entity.Email</strong> wurde <strong>gelöscht</strong>.</span>
+                <span>Der Eintrag bei Volley-News für die E-Mail <strong>@Model.Entity?.Email</strong> wurde <strong>gelöscht</strong>.</span>
             </div>
         }
         else

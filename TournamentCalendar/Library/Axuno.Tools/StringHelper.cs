@@ -26,7 +26,7 @@ namespace NB.Tools.String
 		/// <returns>A base64 encoded string</returns>
 		public static string Base64StringEncode(string input)
 		{
-			byte[] encbuff = System.Text.Encoding.UTF8.GetBytes(input);
+			var encbuff = System.Text.Encoding.UTF8.GetBytes(input);
 			return Convert.ToBase64String(encbuff);
 		}
 
@@ -37,7 +37,7 @@ namespace NB.Tools.String
 		/// <returns>A decoded string</returns>
 		public static string Base64StringDecode(string input)
 		{
-			byte[] decbuff = Convert.FromBase64String(input);
+			var decbuff = Convert.FromBase64String(input);
 			return System.Text.Encoding.UTF8.GetString(decbuff);
 		}
 
@@ -50,7 +50,7 @@ namespace NB.Tools.String
 		/// <returns>A string</returns>
 		public static string CaseInsenstiveReplace(string input, string newValue, string oldValue)
 		{
-			Regex regEx = new Regex(oldValue, RegexOptions.IgnoreCase | RegexOptions.Multiline);
+			var regEx = new Regex(oldValue, RegexOptions.IgnoreCase | RegexOptions.Multiline);
 			return regEx.Replace(input, newValue);
 		}
 
@@ -76,16 +76,16 @@ namespace NB.Tools.String
 		/// <returns>A string.</returns>
 		public static string FilterWords(string input, char mask, params string[] filterWords)
 		{
-			string stringMask = mask == char.MinValue ? string.Empty : mask.ToString();
-			string totalMask = stringMask;
+			var stringMask = mask == char.MinValue ? string.Empty : mask.ToString();
+			var totalMask = stringMask;
 
-			foreach (string s in filterWords)
+			foreach (var s in filterWords)
 			{
-				Regex regEx = new Regex(s, RegexOptions.IgnoreCase | RegexOptions.Multiline);
+				var regEx = new Regex(s, RegexOptions.IgnoreCase | RegexOptions.Multiline);
 
 				if (stringMask.Length > 0)
 				{
-					for (int i = 1; i < s.Length; i++)
+					for (var i = 1; i < s.Length; i++)
 						totalMask += stringMask;
 				}
 
@@ -105,18 +105,18 @@ namespace NB.Tools.String
 		/// <returns>A collection of the matched words.</returns>
 		public static MatchCollection HasWords(string input, params string[] hasWords)
 		{
-			StringBuilder sb = new StringBuilder(hasWords.Length + 50);
+			var sb = new StringBuilder(hasWords.Length + 50);
 			//sb.Append("[");
 
-			foreach (string s in hasWords)
+			foreach (var s in hasWords)
 			{
 				sb.AppendFormat("({0})|", StringHelper.HtmlSpecialEntitiesEncode(s.Trim()));
 			}
 
-			string pattern = sb.ToString();
+			var pattern = sb.ToString();
 			pattern = pattern.TrimEnd('|'); // +"]";
 
-			Regex regEx = new Regex(pattern, RegexOptions.IgnoreCase | RegexOptions.Multiline);
+			var regEx = new Regex(pattern, RegexOptions.IgnoreCase | RegexOptions.Multiline);
 			return regEx.Matches(input);
 		}
 
@@ -148,18 +148,18 @@ namespace NB.Tools.String
 		public static string MD5String(string input)
 		{
 			// Create a new instance of the MD5CryptoServiceProvider object.
-			MD5 md5Hasher = MD5.Create();
+			var md5Hasher = MD5.Create();
 
 			// Convert the input string to a byte array and compute the hash.
-			byte[] data = md5Hasher.ComputeHash(Encoding.Default.GetBytes(input));
+			var data = md5Hasher.ComputeHash(Encoding.Default.GetBytes(input));
 
 			// Create a new Stringbuilder to collect the bytes
 			// and create a string.
-			StringBuilder sBuilder = new StringBuilder();
+			var sBuilder = new StringBuilder();
 
 			// Loop through each byte of the hashed data 
 			// and format each one as a hexadecimal string.
-			for (int i = 0; i < data.Length; i++)
+			for (var i = 0; i < data.Length; i++)
 			{
 				sBuilder.Append(data[i].ToString("x2"));
 			}
@@ -177,10 +177,10 @@ namespace NB.Tools.String
 		public static bool MD5VerifyString(string input, string hash)
 		{
 			// Hash the input.
-			string hashOfInput = StringHelper.MD5String(input);
+			var hashOfInput = StringHelper.MD5String(input);
 
 			// Create a StringComparer an comare the hashes.
-			StringComparer comparer = StringComparer.OrdinalIgnoreCase;
+			var comparer = StringComparer.OrdinalIgnoreCase;
 
 			if (0 == comparer.Compare(hashOfInput, hash))
 			{
@@ -201,7 +201,7 @@ namespace NB.Tools.String
 		/// <returns>A padded string.</returns>
 		public static string PadLeftHtmlSpaces(string input, int totalSpaces)
 		{
-			string space = "&nbsp;";
+			var space = "&nbsp;";
 			return PadLeft(input, space, totalSpaces * space.Length);
 		}
 
@@ -231,8 +231,8 @@ namespace NB.Tools.String
 			if (input.Length >= totalWidth)
 				return input;
 
-			int padCount = pad.Length;
-			string paddedString = input;
+			var padCount = pad.Length;
+			var paddedString = input;
 
 			while (paddedString.Length < totalWidth)
 			{
@@ -255,7 +255,7 @@ namespace NB.Tools.String
 		/// <returns>A padded string.</returns>
 		public static string PadRightHtmlSpaces(string input, int totalSpaces)
 		{
-			string space = "&nbsp;";
+			var space = "&nbsp;";
 			return PadRight(input, space, totalSpaces * space.Length);
 		}
 
@@ -285,7 +285,7 @@ namespace NB.Tools.String
 			if (input.Length >= totalWidth)
 				return input;
 
-			string paddedString = string.Empty;
+			var paddedString = string.Empty;
 
 			while (paddedString.Length < totalWidth - input.Length)
 			{
@@ -320,12 +320,12 @@ namespace NB.Tools.String
 		/// <returns>A string</returns>
 		public static string RemoveNewLines(string input, bool addSpace)
 		{
-			string replace = string.Empty;
+			var replace = string.Empty;
 			if (addSpace)
 				replace = " ";
 
-			string pattern = @"[\r|\n]";
-			Regex regEx = new Regex(pattern, RegexOptions.IgnoreCase | RegexOptions.Multiline);
+			var pattern = @"[\r|\n]";
+			var regEx = new Regex(pattern, RegexOptions.IgnoreCase | RegexOptions.Multiline);
 
 			return regEx.Replace(input, replace);
 		}
@@ -340,9 +340,9 @@ namespace NB.Tools.String
 			if (input.Length <= 1)
 				return input;
 
-			char[] c = input.ToCharArray();
-			StringBuilder sb = new StringBuilder(c.Length);
-			for (int i = c.Length - 1; i > -1; i--)
+			var c = input.ToCharArray();
+			var sb = new StringBuilder(c.Length);
+			for (var i = c.Length - 1; i > -1; i--)
 				sb.Append(c[i]);
 
 			return sb.ToString();
@@ -358,7 +358,7 @@ namespace NB.Tools.String
 			if (input.Length < 1)
 				return input;
 
-			string sentence = input.ToLower();
+			var sentence = input.ToLower();
 			return sentence[0].ToString().ToUpper() + sentence.Substring(1);
 		}
 
@@ -369,7 +369,7 @@ namespace NB.Tools.String
 		/// <returns>A string</returns>
 		public static string SpaceToNbsp(string input)
 		{
-			string space = "&nbsp;";
+			var space = "&nbsp;";
 			return input.Replace(" ", space);
 		}
 
@@ -380,7 +380,7 @@ namespace NB.Tools.String
 		/// <returns>A string.</returns>
 		public static string StripTags(string input)
 		{
-			Regex stripTags = new Regex("<(.|\n)+?>");
+			var stripTags = new Regex("<(.|\n)+?>");
 			return stripTags.Replace(input, "");
 		}
 
@@ -392,7 +392,7 @@ namespace NB.Tools.String
 		/// <returns>A string.</returns>
 		public static string StripEntities(string input, bool retainSpace)
 		{
-			string replacement = string.Empty;
+			var replacement = string.Empty;
 			if (retainSpace)
 			{
 				replacement = " ";
@@ -409,7 +409,7 @@ namespace NB.Tools.String
 		/// <returns></returns>
 		public static string StripWhiteSpace(string input, bool retainSpace)
 		{
-			string replacement = string.Empty;
+			var replacement = string.Empty;
 			if (retainSpace)
 			{
 				replacement = " ";
@@ -437,20 +437,22 @@ namespace NB.Tools.String
 		/// <returns>A string.</returns>
 		public static string TitleCase(string input, bool ignoreShortWords)
 		{
-			List<string> ignoreWords = null;
+			List<string> ignoreWords = new();
 			if (ignoreShortWords)
 			{
 				//TODO: Add more ignore words?
-				ignoreWords = new List<string>();
-				ignoreWords.Add("a");
-				ignoreWords.Add("is");
-				ignoreWords.Add("was");
-				ignoreWords.Add("the");
-			}
+				ignoreWords = new List<string>
+                {
+                    "a",
+                    "is",
+                    "was",
+                    "the"
+                };
+            }
 
-			string[] tokens = input.Split(' ');
-			StringBuilder sb = new StringBuilder(input.Length);
-			foreach (string s in tokens)
+			var tokens = input.Split(' ');
+			var sb = new StringBuilder(input.Length);
+			foreach (var s in tokens)
 			{
 				if (ignoreShortWords == true
 					&& s != tokens[0]
@@ -476,7 +478,7 @@ namespace NB.Tools.String
 		/// <returns>A string.</returns>
 		public static string TrimIntraWords(string input)
 		{
-			Regex regEx = new Regex(@"[\s]+");
+			var regEx = new Regex(@"[\s]+");
 			return regEx.Replace(input, " ");
 		}
 
@@ -488,7 +490,7 @@ namespace NB.Tools.String
 		/// <returns>A string.</returns>
 		public static string NewLineToBreak(string input)
 		{
-			Regex regEx = new Regex(@"[\n|\r]+");
+			var regEx = new Regex(@"[\n|\r]+");
 			return regEx.Replace(input, "<br />");
 		}
 
@@ -533,8 +535,8 @@ namespace NB.Tools.String
 		public static string WordWrap(string input, int charCount, bool cutOff,
 			string breakText)
 		{
-			StringBuilder sb = new StringBuilder(input.Length + 100);
-			int counter = 0;
+			var sb = new StringBuilder(input.Length + 100);
+			var counter = 0;
 
 			if (cutOff)
 			{
@@ -555,7 +557,7 @@ namespace NB.Tools.String
 			else
 			{
 				string[] strings = input.Split(' ');
-				for (int i = 0; i < strings.Length; i++)
+				for (var i = 0; i < strings.Length; i++)
 				{
 					counter += strings[i].Length + 1; // the added one is to represent the inclusion of the space.
 					if (i != 0 && counter > charCount)
@@ -652,51 +654,51 @@ namespace NB.Tools.String
 			return Regex.IsMatch(input, @"^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$");
 		}
 
-		public static float StrToFloat(object strValue, float defValue)
+		public static float StrToFloat(object? strValue, float defValue)
 		{
-			if ((strValue == null) || (strValue.ToString().Length > 10))
+			if ((strValue == null) || (strValue.ToString()?.Length > 10))
 			{
 				return defValue;
 			}
-			float single1 = defValue;
-			if ((strValue != null) && new Regex(@"^([-]|[0-9])[0-9]*(\.\w*)?$").IsMatch(strValue.ToString()))
+			var single1 = defValue;
+			if (new Regex(@"^([-]|[0-9])[0-9]*(\.\w*)?$").IsMatch(strValue.ToString() ?? string.Empty))
 			{
 				single1 = Convert.ToSingle(strValue);
 			}
 			return single1;
 		}
 
-		public static int StrToInt(object strValue, int defValue)
+		public static int StrToInt(object? strValue, int defValue)
 		{
-			if ((strValue == null) || (strValue.ToString().Length > 9))
+			if ((strValue == null) || (strValue?.ToString()?.Length > 9))
 			{
 				return defValue;
 			}
-			int num1 = defValue;
-			if ((strValue != null) && new Regex("^([-]|[0-9])[0-9]*$").IsMatch(strValue.ToString()))
+			var num1 = defValue;
+			if ((strValue != null) && new Regex("^([-]|[0-9])[0-9]*$").IsMatch(strValue.ToString() ?? string.Empty))
 			{
 				num1 = Convert.ToInt32(strValue);
 			}
 			return num1;
 		}
 
-        public static DataTable ConvertHtmlTableToDataTable(string HTML)
+        public static DataTable ConvertHtmlTableToDataTable(string html)
         {
             // Declarations
-            DataTable dt = new DataTable();
+            var dt = new DataTable();
             const string tableExpression = "<table[^>]*>(.*?)</table>";
             const string headerExpression = "<th[^>]*>(.*?)</th>";
             const string rowExpression = "<tr[^>]*>(.*?)</tr>";
             const string columnExpression = "<td[^>]*>(.*?)</td>";
             
             // Get a match for all the tables in the HTML
-            MatchCollection tableMatches = Regex.Matches(HTML, tableExpression, RegexOptions.Multiline | RegexOptions.Singleline | RegexOptions.IgnoreCase);
+            var tableMatches = Regex.Matches(html, tableExpression, RegexOptions.Multiline | RegexOptions.Singleline | RegexOptions.IgnoreCase);
             // Loop through each table element
             foreach (Match tableMatch in tableMatches)
             {
                 // Reset the current row counter and the header flag
-                int currRow = 0;
-                bool headerExists = false;
+                var currRow = 0;
+                var headerExists = false;
                 // Add a new table to the DataSet
                 dt = new DataTable();
                 // Create the relevant amount of columns for this table (use the headers if they exist, otherwise use default names)
@@ -705,7 +707,7 @@ namespace NB.Tools.String
                     // Set the HeadersExist flag
                     headerExists = true;
                     // Get a match for all the rows in the table
-                    MatchCollection headerMatches = Regex.Matches(tableMatch.Value, headerExpression, RegexOptions.Multiline | RegexOptions.Singleline | RegexOptions.IgnoreCase);
+                    var headerMatches = Regex.Matches(tableMatch.Value, headerExpression, RegexOptions.Multiline | RegexOptions.Singleline | RegexOptions.IgnoreCase);
                     // Loop through each header element
                     foreach (Match headerMatch in headerMatches)
                     {
@@ -714,13 +716,13 @@ namespace NB.Tools.String
                 }
                 else
                 {
-                    for (int cols = 1; cols <= Regex.Matches(Regex.Matches(Regex.Matches(tableMatch.Value, tableExpression, RegexOptions.Multiline | RegexOptions.Singleline | RegexOptions.IgnoreCase)[0].ToString(), rowExpression, RegexOptions.Multiline | RegexOptions.Singleline | RegexOptions.IgnoreCase)[0].ToString(), columnExpression, RegexOptions.Multiline | RegexOptions.Singleline | RegexOptions.IgnoreCase).Count; cols++)
+                    for (var cols = 1; cols <= Regex.Matches(Regex.Matches(Regex.Matches(tableMatch.Value, tableExpression, RegexOptions.Multiline | RegexOptions.Singleline | RegexOptions.IgnoreCase)[0].ToString(), rowExpression, RegexOptions.Multiline | RegexOptions.Singleline | RegexOptions.IgnoreCase)[0].ToString(), columnExpression, RegexOptions.Multiline | RegexOptions.Singleline | RegexOptions.IgnoreCase).Count; cols++)
                     {
                         dt.Columns.Add("Column " + cols);
                     }
                 }
                 // Get a match for all the rows in the table
-                MatchCollection rowMatches = Regex.Matches(tableMatch.Value, rowExpression, RegexOptions.Multiline | RegexOptions.Singleline | RegexOptions.IgnoreCase);
+                var rowMatches = Regex.Matches(tableMatch.Value, rowExpression, RegexOptions.Multiline | RegexOptions.Singleline | RegexOptions.IgnoreCase);
                 // Loop through each row element
                 foreach (Match rowMatch in rowMatches)
                 {
@@ -728,10 +730,10 @@ namespace NB.Tools.String
                     if (!(currRow == 0 & headerExists))
                     {
                         // Create a new row and reset the current column counter
-                        DataRow dr = dt.NewRow();
-                        int currCol = 0;
+                        var dr = dt.NewRow();
+                        var currCol = 0;
                         // Get a match for all the columns in the row
-                        MatchCollection colMatches = Regex.Matches(rowMatch.Value, columnExpression, RegexOptions.Multiline | RegexOptions.Singleline | RegexOptions.IgnoreCase);
+                        var colMatches = Regex.Matches(rowMatch.Value, columnExpression, RegexOptions.Multiline | RegexOptions.Singleline | RegexOptions.IgnoreCase);
                         // Loop through each column element
                         foreach (Match colMatch in colMatches)
                         {

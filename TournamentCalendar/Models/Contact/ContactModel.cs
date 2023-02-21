@@ -13,8 +13,8 @@ namespace TournamentCalendar.Models.Contact
 			Subject = Message = string.Empty;
 		}
 
-		public string Subject { get; set; }
-		public string Message { get; set; }
+		public string? Subject { get; set; }
+		public string? Message { get; set; }
 		public bool CarbonCopyToSender { get; set; }
 
 
@@ -36,8 +36,8 @@ namespace TournamentCalendar.Models.Contact
 		public new void Normalize()
 		{
 			base.Normalize();
-			if (Subject != null) Subject = Subject.Trim();
-			if (Message != null) Message = Message.Trim();
+			Subject = Subject?.Trim();
+			Message = Message?.Trim();
 		}
 
 
@@ -47,11 +47,11 @@ namespace TournamentCalendar.Models.Contact
 
 			[Required(ErrorMessageResourceName = "PropertyValueRequired", ErrorMessageResourceType = typeof(DataAnnotationResource))]
 			[Display(Name="Betreff")]
-			public string Subject { get; set; }
+			public string? Subject { get; set; }
 
 			[Required(ErrorMessageResourceName = "PropertyValueRequired", ErrorMessageResourceType = typeof(DataAnnotationResource))]
 			[Display(Name="Text")]
-			public string Message { get; set; }
+			public string? Message { get; set; }
 
 
 			[Display(Name = "Kopie der Nachricht an mich verschicken")]

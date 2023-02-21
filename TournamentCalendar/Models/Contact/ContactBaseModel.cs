@@ -18,38 +18,37 @@ namespace TournamentCalendar.Models.Contact
 	{
 		public ContactBaseModel()
 		{
-			Gender = Title = FirstName = LastName = Email = Street = PostalCode = City = Fone = string.Empty;
 		}
 
 		public ContactType ContactType { get; set; }
 
-		public string Gender { get; set; }
-		public string Title { get; set; }
-		public string FirstName { get; set; }
-		public string LastName { get; set; }
-		public string Email { get; set; }
-		public string Street { get; set; }
-		public string PostalCode { get; set; }
-		public string City { get; set; }
-		public string Fone { get; set; }
+		public string? Gender { get; set; }
+		public string? Title { get; set; }
+		public string? FirstName { get; set; }
+		public string? LastName { get; set; }
+		public string? Email { get; set; }
+		public string? Street { get; set; }
+		public string? PostalCode { get; set; }
+		public string? City { get; set; }
+		public string? Fone { get; set; }
 
-		public string Captcha { get; set; }
+		public string? Captcha { get; set; }
 
 		public bool EmailSuccessFul { get; set; }
-		public Exception Exception { get; set; }
+		public Exception? Exception { get; set; }
 
 		public IEnumerable<SelectListItem> GetGenderList()
 		{
 			return new List<SelectListItem>(3)
 			    {
-			       	new SelectListItem {Value = "", Text = "Bitte wählen"},
+			       	new() {Value = "", Text = "Bitte wählen"},
 			       	// a value of string.Empty will cause a required validation error
-			       	new SelectListItem {Value = "f", Text = "Frau"},
-			       	new SelectListItem {Value = "m", Text = "Herr"}
+			       	new() {Value = "f", Text = "Frau"},
+			       	new() {Value = "m", Text = "Herr"}
 			    };
 		}
 
-		public void Normalize(ModelStateDictionary modelState)
+		public void Normalize(ModelStateDictionary _)
 		{
 			/*
 			 * ASP.NET MVC assumes that if you’re rendering a View in response to an HTTP POST, 
@@ -83,18 +82,18 @@ namespace TournamentCalendar.Models.Contact
 		{
 			[Required(ErrorMessageResourceName = "PropertyValueRequired", ErrorMessageResourceType = typeof(DataAnnotationResource))]
 			[Display(Name="Anrede")]
-			public string Gender { get; set; }
+			public string? Gender { get; set; }
 
 			[Display(Name="Titel")]
-			public string Title { get; set; }
+			public string? Title { get; set; }
 
 			[Required(ErrorMessageResourceName = "PropertyValueRequired", ErrorMessageResourceType = typeof(DataAnnotationResource))]
 			[Display(Name="Vorname")]
-			public string FirstName { get; set; }
+			public string? FirstName { get; set; }
 
 			[Required(ErrorMessageResourceName = "PropertyValueRequired", ErrorMessageResourceType = typeof(DataAnnotationResource))]
 			[Display(Name="Familienname")]
-			public string LastName { get; set; }
+			public string? LastName { get; set; }
 
 			[DataType(DataType.EmailAddress)]
 			[RegularExpression(
@@ -102,24 +101,24 @@ namespace TournamentCalendar.Models.Contact
 			, ErrorMessage = "E-Mail hat ungültiges Format")]
 			[Required(ErrorMessageResourceName = "PropertyValueRequired", ErrorMessageResourceType = typeof(DataAnnotationResource))]
 			[Display(Name="E-Mail")]
-			public string Email { get; set; }
+			public string? Email { get; set; }
 
 			[Display(Name="Straße")]
-			public string Street { get; set; }
+			public string? Street { get; set; }
 
 			[Display(Name="Postleitzahl")]
-			public string PostalCode { get; set; }
+			public string? PostalCode { get; set; }
 
 			[Display(Name="Ort")]
-			public string City { get; set; }
+			public string? City { get; set; }
 
 			[Display(Name="Telefon")]
-			public string Fone { get; set; }
+			public string? Fone { get; set; }
 
-			[Display(Name = "Ergebnis der Rechenaufgabe im Bild")]
-			[ValidationAttributes.ValidateCaptchaText]
-			public string Captcha { get; set; }
-		}
+            [Display(Name = "Ergebnis der Rechenaufgabe im Bild")]
+            [ValidationAttributes.ValidateCaptchaText]
+            public string? Captcha { get; set; }
+        }
 
 		#region IValidatableObject Members
 

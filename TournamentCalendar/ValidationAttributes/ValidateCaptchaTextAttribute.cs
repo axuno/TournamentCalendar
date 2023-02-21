@@ -15,21 +15,21 @@ namespace TournamentCalendar.ValidationAttributes
             : base(_defaultErrorMessage)
         { }
 
-        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        protected override ValidationResult IsValid(object? value, ValidationContext validationContext)
         {
             var ctx = validationContext.GetService<IHttpContextAccessor>();
 
-            if (ctx.HttpContext.User.Identity.IsAuthenticated)
+            if (ctx?.HttpContext?.User.Identity != null && ctx.HttpContext.User.Identity.IsAuthenticated)
             {
-                return ValidationResult.Success;
+                return ValidationResult.Success!;
             }
 
-            if (!(value is string captchaText) || ctx.HttpContext.Session.GetString(CaptchaSvgGenerator.CaptchaSessionKeyName) != captchaText)
+            if (value is not string captchaText || ctx?.HttpContext?.Session.GetString(CaptchaSvgGenerator.CaptchaSessionKeyName) != captchaText)
             {
                 return new ValidationResult(string.IsNullOrEmpty(ErrorMessage) ? _defaultErrorMessage : ErrorMessage);
             }
 
-            return ValidationResult.Success;
+            return ValidationResult.Success!;
         }
 
         public override bool RequiresValidationContext => true;

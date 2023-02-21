@@ -67,24 +67,24 @@ namespace TournamentCalendar.Controllers
         private string GetRemoteIpAddress()
         {
             //For this, app.UseForwardedHeaders(...) must be set in Startup
-            if (HttpContext?.Request?.Headers?.TryGetValue("X-Forwarded-For", out var ipList) ?? false)
+            if (HttpContext.Request.Headers.TryGetValue("X-Forwarded-For", out var ipList))
             {
                 if (!StringValues.IsNullOrEmpty(ipList))
                 {
-                    return string.Join(',', ipList);
+                    return string.Join(',', ipList!);
                 }
             }
 
-            var ip = HttpContext?.Connection?.RemoteIpAddress?.MapToIPv4().ToString();
+            var ip = HttpContext.Connection.RemoteIpAddress?.MapToIPv4().ToString();
             if (!string.IsNullOrEmpty(ip) && ip.Length > 1)
             {
                 return ip;
             }
 
-            if (HttpContext?.Request?.Headers?.TryGetValue("REMOTE_ADDR", out var remoteHeaderAddrList) ?? false)
+            if (HttpContext.Request.Headers.TryGetValue("REMOTE_ADDR", out var remoteHeaderAddrList))
             {
                 if (!StringValues.IsNullOrEmpty(remoteHeaderAddrList))
-                    return string.Join(',', remoteHeaderAddrList);
+                    return string.Join(',', remoteHeaderAddrList!);
             }
 
             return "Remote IP unknown";

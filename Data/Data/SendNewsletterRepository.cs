@@ -15,20 +15,16 @@ namespace TournamentCalender.Data
     {
         public static async Task<DateTime?> GetLastSendDate()
         {
-            using (var da = Connecter.GetNewAdapter())
-            {
-                var metaData = new LinqMetaData(da);
-                return await (from nl in metaData.SentNewsletter select nl.StartedOn).MaxAsync();
-            }
+            using var da = Connecter.GetNewAdapter();
+            var metaData = new LinqMetaData(da);
+            return await (from nl in metaData.SentNewsletter select nl.StartedOn).MaxAsync();
         }
 
         public static async Task<List<SentNewsletterEntity>> GetLastNewsletters()
         {
-            using (var da = Connecter.GetNewAdapter())
-            {
-                var metaData = new LinqMetaData(da);
-                return await (from nl in metaData.SentNewsletter orderby nl.StartedOn descending select nl ).Take(4).ToListAsync();
-            }
+            using var da = Connecter.GetNewAdapter();
+            var metaData = new LinqMetaData(da);
+            return await (from nl in metaData.SentNewsletter orderby nl.StartedOn descending select nl ).Take(4).ToListAsync();
         }
     }
 }

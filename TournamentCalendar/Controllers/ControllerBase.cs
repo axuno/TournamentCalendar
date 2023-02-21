@@ -6,9 +6,9 @@ namespace TournamentCalendar.Controllers
 {
     public class ControllerBase : Controller
     {
-        public IWebHostEnvironment HostingEnvironment { get; set; }
+        public IWebHostEnvironment HostingEnvironment { get; set; } = null!;
 
-        public IConfiguration Configuration { get; set; }
+        public IConfiguration Configuration { get; set; } = null!;
 
         public ControllerBase()
         { }

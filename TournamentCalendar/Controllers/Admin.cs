@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TournamentCalendar.Library.Authentication;
@@ -48,10 +49,10 @@ namespace TournamentCalendar.Controllers
             return Content("Ok", "text/plain");
         }
 
-        public IActionResult HeartBeat()
+        public async Task<IActionResult> HeartBeat()
         {
             // called by cron job
-            return Content("Ok", "text/plain");
+            return await Task.FromResult(Content("Ok", "text/plain"));
         }
     }
 }

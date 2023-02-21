@@ -126,13 +126,13 @@ namespace TournamentCalendar.Controllers
 
 				if ((confirmationModel = await model.Save()).SaveSuccessful)
 				{
-					if (!confirmationModel.Entity.ApprovedOn.HasValue || DateTime.Now - confirmationModel.Entity.ApprovedOn.Value < new TimeSpan(0,1,0))
+					if (!confirmationModel.Entity!.ApprovedOn.HasValue || DateTime.Now - confirmationModel.Entity.ApprovedOn.Value < new TimeSpan(0,1,0))
 					{
 						confirmationModel = await
 						new Mailer(_mailMergeService, _domainName).MailTournamentCalendarForm(confirmationModel,
-									Url.Action(nameof(Approve), nameof(Controllers.Calendar), new {id = model.Guid}),
-									Url.Action(nameof(Entry), nameof(Controllers.Calendar), new { id = model.Guid }),
-									Url.Action(nameof(Id), new {id = model.Id}));
+									Url.Action(nameof(Approve), nameof(Controllers.Calendar), new {id = model.Guid})!,
+									Url.Action(nameof(Entry), nameof(Controllers.Calendar), new { id = model.Guid })!,
+									Url.Action(nameof(Id), new {id = model.Id})!);
 					}
 				}
 
@@ -140,7 +140,7 @@ namespace TournamentCalendar.Controllers
 			}
 			catch (Exception ex)
 			{
-			    _logger.LogError(ex, $"Email: {model.PostedByEmail}, PostedBy: {model.PostedByName},  TournamentName: {model.TournamentName}");
+			    _logger.LogError(ex, "Email: {PostedByEmail}, PostedBy: {PostedByName},  TournamentName: {TournamentName}", model.PostedByEmail, model.PostedByName, model.TournamentName);
                 return View(ViewName.Calendar.Confirm, confirmationModel);
 			}
 		}

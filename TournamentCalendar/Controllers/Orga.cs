@@ -13,14 +13,14 @@ namespace TournamentCalendar.Controllers
     [Route("orga")]
 	public class Orga : ControllerBase
     {
-        private string _xmlFileList = "App_Data/TournamentDownloadfiles.xml";
+        private readonly string _xmlFileList = "App_Data/TournamentDownloadfiles.xml";
 
 		public class DownloadFile
 		{
-			public string Id { get; set; }
-			public string Name { get; set; }
+			public string Id { get; set; } = string.Empty;
+			public string Name { get; set; } = string.Empty;
 			public long Size { get; set; }
-			public string ContentType { get; set; }
+			public string ContentType { get; set; } = string.Empty;
 			public bool IsProtected { get; set; }
 		}
 
@@ -44,8 +44,7 @@ namespace TournamentCalendar.Controllers
         [Route("download/{id?}")]
 		public IActionResult Download(string id)
 		{
-		    DownloadFile file;
-		    if (GetFile(id, out file) && System.IO.File.Exists(Path.Combine(HostingEnvironment.WebRootPath, file.Name)))
+		    if (GetFile(id, out var file) && System.IO.File.Exists(Path.Combine(HostingEnvironment.WebRootPath, file!.Name)))
 		    {
 		        var stream = new FileStream(Path.Combine(HostingEnvironment.WebRootPath, file.Name), FileMode.Open);
                 return new FileStreamResult(stream, file.ContentType);
@@ -56,7 +55,7 @@ namespace TournamentCalendar.Controllers
 
 
 		[NonAction]
-		private bool GetFile(string id, out DownloadFile download)
+		private bool GetFile(string id, out DownloadFile? download)
 		{
 			try
 			{
@@ -73,16 +72,16 @@ namespace TournamentCalendar.Controllers
 		[NonAction]
 		private IEnumerable<DownloadFile> GetList()
 		{
-			XDocument xmlDoc = XDocument.Load(Path.Combine(HostingEnvironment.WebRootPath, _xmlFileList));
+			var xmlDoc = XDocument.Load(Path.Combine(HostingEnvironment.WebRootPath, _xmlFileList));
 			return (from download in xmlDoc.Descendants("download")
 			        select
-			        	new DownloadFile()
+			        	new DownloadFile
 			        		{
-			        			Id = download.Attribute("id").Value,
-			        			Name = download.Element("filename").Value,
-								Size = new FileInfo(Path.Combine(HostingEnvironment.WebRootPath, download.Element("filename").Value)).Length,
-								ContentType = download.Element("contenttype").Value,
-			        			IsProtected = bool.Parse(download.Element("isprotected").Value)
+			        			Id = download.Attribute("id")!.Value,
+			        			Name = download!.Element("filename")!.Value,
+								Size = new FileInfo(Path.Combine(HostingEnvironment.WebRootPath, download.Element("filename")!.Value)).Length,
+								ContentType = download.Element("contenttype")!.Value,
+			        			IsProtected = bool.Parse(download.Element("isprotected")!.Value)
 			        		}).ToList();
 		}
 	}

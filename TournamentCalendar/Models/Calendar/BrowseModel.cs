@@ -10,9 +10,9 @@ namespace TournamentCalendar.Models.Calendar
 {
 	public class BrowseModel
 	{
-		private readonly EntityCollection<CalendarEntity> _tournaments = new EntityCollection<CalendarEntity>();
-		private readonly EntityCollection<SurfaceEntity> _surfaces = new EntityCollection<SurfaceEntity>();
-		private readonly EntityCollection<PlayingAbilityEntity> _playingAbilities = new EntityCollection<PlayingAbilityEntity>();
+		private readonly EntityCollection<CalendarEntity> _tournaments = new();
+		private readonly EntityCollection<SurfaceEntity> _surfaces = new();
+		private readonly EntityCollection<PlayingAbilityEntity> _playingAbilities = new();
 
 	    public async Task Load()
 		{

@@ -8,13 +8,13 @@ namespace TournamentCalendar.Models.Shared
 		public bool SaveSuccessful { get; set; }
 		
 		/// <summary>
-		/// Indicates, whether an email was sent succsssfully
+		/// Indicates, whether an email was sent successfully
 		/// Value is null if email is not required
 		/// </summary>
 		public bool? EmailSuccessful { get; set; }
 		
-		public Exception Exception { get; set; }
-		public T Entity { get; set; }
-		public string ReturnUrl { get; set; }
+		public Exception? Exception { get; set; }
+		public T? Entity { get; set; }
+		public string ReturnUrl { get; set; } = string.Empty;
 	}
 }

@@ -3,7 +3,7 @@
     @if (Model.SaveSuccessful)
     {
         <div class="msg-success rounded mb-2"> @* span inside div is necessary to display :before FontAwsome *@
-            <span>Die Anmeldung wurde in der Datenbank @(Model.Entity.ConfirmedOn.HasValue ? " als bestätigt " : "") gespeichert. Vielen Dank.</span>
+            <span>Die Anmeldung wurde in der Datenbank @(Model.Entity is {ConfirmedOn: { } } ? " als bestätigt " : "") gespeichert. Vielen Dank.</span>
         </div>
     }
     else
@@ -19,8 +19,8 @@
     {
         <div class="msg-success rounded">
             <span>
-                Bitte die E-Mail beachten, die wir soeben an @Model?.Entity.Email geschickt haben
-                @if (!Model.Entity.ConfirmedOn.HasValue)
+                Bitte die E-Mail beachten, die wir soeben an @Model.Entity?.Email geschickt haben
+                @if (Model.Entity is {ConfirmedOn: null })
                 {<text><br/>und die Anmeldung <strong>über den Link in der E-Mail bestätgen</strong>.</text>}
             </span>
         </div>
@@ -28,7 +28,7 @@
     @if (Model.EmailSuccessful.HasValue && !Model.EmailSuccessful.Value)
     {
         <div class="msg-error rounded">
-            <span>Beim Versenden der E-Mail an @Model?.Entity.Email ist ein Fehler aufgetreten.</span>
+            <span>Beim Versenden der E-Mail an @Model.Entity?.Email ist ein Fehler aufgetreten.</span>
         </div>
     }
 </div>

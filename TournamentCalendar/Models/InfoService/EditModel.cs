@@ -61,7 +61,7 @@ namespace TournamentCalendar.Models.InfoService
 				try
 				{
 					// try to get longitude and latitude by Google Maps API
-					string completeAddress = string.Join(", ", ZipCode, City, Street);
+					var completeAddress = string.Join(", ", ZipCode, City, Street);
 
                     var location = await Axuno.Tools.GeoSpatial.GoogleGeo.GetLocation(CountryId, completeAddress, googleConfig.ServiceApiKey, TimeSpan.FromSeconds(15));
                     if (location.GeoLocation.Latitude != null && location.GeoLocation.Latitude.Degrees > 1 && location.GeoLocation.Longitude?.Degrees > 1)
@@ -101,10 +101,10 @@ namespace TournamentCalendar.Models.InfoService
 		{
 			return new List<SelectListItem>(3)
 			    {
-			       	new SelectListItem {Value = "", Text = "Bitte wählen"},
+			       	new() {Value = "", Text = "Bitte wählen"},
 			       	// a value of string.Empty will cause a required validation error
-			       	new SelectListItem {Value = "f", Text = "Frau"},
-			       	new SelectListItem {Value = "m", Text = "Herr"}
+			       	new() {Value = "f", Text = "Frau"},
+			       	new() {Value = "m", Text = "Herr"}
 			    };
 		}
 
@@ -127,9 +127,9 @@ namespace TournamentCalendar.Models.InfoService
 			}
 		}
 
-		public InfoServiceEntity ExistingEntryWithSameEmail { get; private set; }
+		public InfoServiceEntity? ExistingEntryWithSameEmail { get; private set; }
 
-		public string Captcha { get; set; }
+		public string Captcha { get; set; } = string.Empty;
 
 		public IEnumerable<SelectListItem> GetCountriesList()
 		{
@@ -155,14 +155,14 @@ namespace TournamentCalendar.Models.InfoService
 			*/
 		    
 			Normalize();
-			for (int i = 0; i < Fields.Count; i++)
+			for (var i = 0; i < Fields.Count; i++)
 			{
 				var fieldName = Fields[i].Name;
 				if (Fields[i].DataType != typeof(string) || Fields[i].CurrentValue == null) continue;
 			    
 				// if the field names exists and there was no error, 
 				// for this field, then set the value from the Model to ModelState
-				if (modelState[fieldName] != null && modelState[fieldName].Errors.Count == 0 && modelState[fieldName].RawValue != null)
+				if (modelState[fieldName]?.Errors.Count == 0 && modelState[fieldName]?.RawValue != null)
 					modelState.SetModelValue(fieldName, new ValueProviderResult(new StringValues(Fields[i].CurrentValue as string), CultureInfo.InvariantCulture));
 			}
 		}
@@ -171,11 +171,11 @@ namespace TournamentCalendar.Models.InfoService
 		public void Normalize()
 		{
 		    // Trim and strip html tags if not allowed for all string fields
-			for (int i=0; i < Fields.Count; i++)
+			for (var i=0; i < Fields.Count; i++)
 			{
 				if (Fields[i].DataType != typeof(string) || Fields[i].CurrentValue == null) continue;
 
-				Fields[i].CurrentValue = NB.Tools.String.StringHelper.StripTags(Fields[i].CurrentValue as string).Trim();
+				Fields[i].CurrentValue = NB.Tools.String.StringHelper.StripTags(Fields[i].CurrentValue as string ?? string.Empty).Trim();
 			}
 
 			if (string.IsNullOrEmpty(Nickname))
@@ -249,31 +249,31 @@ namespace TournamentCalendar.Models.InfoService
 			, ErrorMessage = "E-Mail hat ungültiges Format")]
 			[Required(ErrorMessageResourceName = "PropertyValueRequired", ErrorMessageResourceType = typeof(DataAnnotationResource))]
 			[Display(Name="E-Mail")]
-			public string Email { get; set; }
+			public string Email { get; set; } = string.Empty;
 
 			[Required(ErrorMessageResourceName = "PropertyValueRequired", ErrorMessageResourceType = typeof(DataAnnotationResource))]
 			[Display(Name="Anrede")]
-			public string Gender { get; set; }
+			public string Gender { get; set; } = string.Empty;
 
 			[Display(Name="Titel")]
-			public string Title { get; set; }
+			public string Title { get; set; } = string.Empty;
 
 			[Required(ErrorMessageResourceName = "PropertyValueRequired", ErrorMessageResourceType = typeof(DataAnnotationResource))]
 			[Display(Name="Vorname")]
-			public string FirstName { get; set; }
+			public string FirstName { get; set; } = string.Empty;
 
 			[Display(Name="Ruf-/Spitzname")]
-			public string Nickname { get; set; }
+			public string Nickname { get; set; } = string.Empty;
 
 			[Required(ErrorMessageResourceName = "PropertyValueRequired", ErrorMessageResourceType = typeof(DataAnnotationResource))]
 			[Display(Name="Familienname")]
-			public string LastName { get; set; }
+			public string LastName { get; set; } = string.Empty;
 
 			[Display(Name="Mannschaftsname")]
-			public string TeamName { get; set; }
+			public string TeamName { get; set; } = string.Empty;
 
 			[Display(Name="Vereinsname")]
-			public string ClubName { get; set; }
+			public string ClubName { get; set; } = string.Empty;
 
 			[ValidateAddressFields("CountryId, ZipCode, City, Street")]
 			[Display(Name="Angaben für die Entfernungsberechnung zum Veranstaltungsort aktivieren")]
@@ -283,22 +283,22 @@ namespace TournamentCalendar.Models.InfoService
 			public int? MaxDistance { get; set; }
 
 			[Display(Name="Land")]
-			public string CountryId { get; set; }
+			public string CountryId { get; set; } = string.Empty;
 
 			[Display(Name="Postleitzahl")]
-			public string ZipCode { get; set; }
+			public string ZipCode { get; set; } = string.Empty;
 
 			[Display(Name="Ort")]
-			public string City { get; set; }
+			public string City { get; set; } = string.Empty;
 
 			[Display(Name="Straße")]
-			public string Street { get; set; }
+			public string Street { get; set; } = string.Empty;
 
-			[Display(Name = "Ergebnis der Rechenaufgabe im Bild")]
-			[ValidationAttributes.ValidateCaptchaText]
-			[Required(ErrorMessageResourceName = "PropertyValueRequired", ErrorMessageResourceType = typeof(DataAnnotationResource))]
-            public string Captcha { get; set; }
-		}
+            [Display(Name = "Ergebnis der Rechenaufgabe im Bild")]
+            [ValidationAttributes.ValidateCaptchaText]
+            [Required(ErrorMessageResourceName = "PropertyValueRequired", ErrorMessageResourceType = typeof(DataAnnotationResource))]
+            public string Captcha { get; set; } = string.Empty;
+        }
 
 		#region IValidatableObject Members
 
@@ -333,7 +333,7 @@ namespace TournamentCalendar.Models.InfoService
 	[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
 	public sealed class ValidateAddressFieldsAttribute : ValidationAttribute
 	{
-		private string[] _addressFieldNames;
+		private readonly string[] _addressFieldNames;
 
 		public ValidateAddressFieldsAttribute(string addressFieldNames)
 		{
@@ -343,7 +343,7 @@ namespace TournamentCalendar.Models.InfoService
 			_addressFieldNames = addressFieldNames.Split(new[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
 		}
 
-		protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+		protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
 		{
 			if (value == null)
 				return new ValidationResult(validationContext + " ist erforderlich");
@@ -363,9 +363,9 @@ namespace TournamentCalendar.Models.InfoService
 						return new ValidationResult(string.Format("Datentyp von Feld {0} muss 'string' sein", addressFieldName));
 
 					// get the field value
-					var field = (string)property.GetValue(validationContext.ObjectInstance, null);
+					var field = (string?)property.GetValue(validationContext.ObjectInstance, null);
 
-					if (field.Trim().Length == 0)
+					if (field?.Trim().Length == 0)
 						return new ValidationResult("Felder für Entfernungsberechnung komplett füllen oder Entfernungs-Kontrollkästchen abwählen");
 				}
 			}
