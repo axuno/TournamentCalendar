@@ -4,11 +4,12 @@
 @using System.Globalization
 @using Microsoft.AspNetCore.Hosting
 @using Microsoft.Extensions.Configuration
+@using TournamentCalendar.Library
 @using TournamentCalendar.Views
 @using Calendar = TournamentCalendar.Controllers.Calendar
 @{
-    var googleConfig = new NB.Tools.GeoSpatial.GoogleConfiguration();
-    Configuration.Bind("GoogleConfiguration", googleConfig);
+    var googleConfig = new GoogleConfiguration();
+    Configuration.Bind(nameof(GoogleConfiguration), googleConfig);
 }
 <div class="row">
     <article class="col">

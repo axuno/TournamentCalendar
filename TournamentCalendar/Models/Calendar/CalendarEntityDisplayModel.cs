@@ -163,14 +163,14 @@ namespace TournamentCalendar.Models.Calendar
                 return String.Empty;
 
             var augsburg =
-                new NB.Tools.GeoSpatial.Location(
-                    new NB.Tools.GeoSpatial.Latitude(NB.Tools.GeoSpatial.Angle.FromDegrees(48.3666)),
-                    new NB.Tools.GeoSpatial.Longitude(NB.Tools.GeoSpatial.Angle.FromDegrees(10.894103)));
+                new Axuno.Tools.GeoSpatial.Location(
+                    new Axuno.Tools.GeoSpatial.Latitude(Axuno.Tools.GeoSpatial.Angle.FromDegrees(48.3666)),
+                    new Axuno.Tools.GeoSpatial.Longitude(Axuno.Tools.GeoSpatial.Angle.FromDegrees(10.894103)));
 
             var venue =
-                new NB.Tools.GeoSpatial.Location(
-                    new NB.Tools.GeoSpatial.Latitude(NB.Tools.GeoSpatial.Angle.FromDegrees(Latitude.Value)),
-                    new NB.Tools.GeoSpatial.Longitude(NB.Tools.GeoSpatial.Angle.FromDegrees(Longitude.Value)));
+                new Axuno.Tools.GeoSpatial.Location(
+                    new Axuno.Tools.GeoSpatial.Latitude(Axuno.Tools.GeoSpatial.Angle.FromDegrees(Latitude.Value)),
+                    new Axuno.Tools.GeoSpatial.Longitude(Axuno.Tools.GeoSpatial.Angle.FromDegrees(Longitude.Value)));
 
             int distance = (int) augsburg.Distance(venue)/1000;
             return distance < 1

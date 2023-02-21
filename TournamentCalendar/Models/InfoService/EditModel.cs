@@ -12,10 +12,11 @@ using TournamentCalendar.Resources;
 using TournamentCalendar.Data;
 using TournamentCalendarDAL.EntityClasses;
 using TournamentCalendarDAL.HelperClasses;
+using TournamentCalendar.Library;
 
 namespace TournamentCalendar.Models.InfoService
 {
-	public enum EditMode
+    public enum EditMode
 	{
 		New, Change
 	}
@@ -52,7 +53,7 @@ namespace TournamentCalendar.Models.InfoService
 			return string.IsNullOrWhiteSpace(Guid) || LoadData(Guid);
 		}
 
-		public async Task<bool> TryGetLongitudeLatitude(NB.Tools.GeoSpatial.GoogleConfiguration googleConfig)
+		public async Task<bool> TryGetLongitudeLatitude(GoogleConfiguration googleConfig)
 		{
 			if (Fields[InfoServiceFields.Street.FieldIndex].IsChanged || Fields[InfoServiceFields.ZipCode.FieldIndex].IsChanged ||
 			    Fields[InfoServiceFields.City.FieldIndex].IsChanged)
@@ -60,14 +61,13 @@ namespace TournamentCalendar.Models.InfoService
 				try
 				{
 					// try to get longitude and latitude by Google Maps API
-					string completeAddress = string.Join(", ", CountryId, ZipCode, City, Street);
+					string completeAddress = string.Join(", ", ZipCode, City, Street);
 
-				    NB.Tools.GeoSpatial.GoogleGeo.GoogleApiKey = googleConfig.ServiceApiKey;
-                    NB.Tools.GeoSpatial.Location location = await NB.Tools.GeoSpatial.GoogleGeo.GetLocation(completeAddress);
-					if (location != null && location.Latitude.Degrees > 1 && location.Longitude.Degrees > 1)
+                    var location = await Axuno.Tools.GeoSpatial.GoogleGeo.GetLocation(CountryId, completeAddress, googleConfig.ServiceApiKey, TimeSpan.FromSeconds(15));
+                    if (location.GeoLocation.Latitude != null && location.GeoLocation.Latitude.Degrees > 1 && location.GeoLocation.Longitude?.Degrees > 1)
 					{
-						Longitude = location.Longitude.TotalDegrees;
-						Latitude = location.Latitude.TotalDegrees;
+						Longitude = location.GeoLocation.Longitude.TotalDegrees;
+						Latitude = location.GeoLocation.Latitude.TotalDegrees;
 					}
 				}
 				catch (Exception)
@@ -84,13 +84,13 @@ namespace TournamentCalendar.Models.InfoService
 			{
 				// Distance to Augsburg/Königsplatz
 				var augsburg =
-					new NB.Tools.GeoSpatial.Location(new NB.Tools.GeoSpatial.Latitude(NB.Tools.GeoSpatial.Angle.FromDegrees(48.3666)),
-													 new NB.Tools.GeoSpatial.Longitude(NB.Tools.GeoSpatial.Angle.FromDegrees(10.894103)));
+					new Axuno.Tools.GeoSpatial.Location(new Axuno.Tools.GeoSpatial.Latitude(Axuno.Tools.GeoSpatial.Angle.FromDegrees(48.3666)),
+													 new Axuno.Tools.GeoSpatial.Longitude(Axuno.Tools.GeoSpatial.Angle.FromDegrees(10.894103)));
 
 				var userLoc =
-					new NB.Tools.GeoSpatial.Location(
-						new NB.Tools.GeoSpatial.Latitude(NB.Tools.GeoSpatial.Angle.FromDegrees(Latitude.Value)),
-						new NB.Tools.GeoSpatial.Longitude(NB.Tools.GeoSpatial.Angle.FromDegrees(Longitude.Value)));
+					new Axuno.Tools.GeoSpatial.Location(
+						new Axuno.Tools.GeoSpatial.Latitude(Axuno.Tools.GeoSpatial.Angle.FromDegrees(Latitude.Value)),
+						new Axuno.Tools.GeoSpatial.Longitude(Axuno.Tools.GeoSpatial.Angle.FromDegrees(Longitude.Value)));
 
 				return (int) (userLoc.Distance(augsburg) + 500)/1000;
 			}

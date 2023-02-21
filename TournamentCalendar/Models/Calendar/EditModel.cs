@@ -12,10 +12,11 @@ using TournamentCalendar.Resources;
 using TournamentCalendar.Data;
 using TournamentCalendarDAL.EntityClasses;
 using TournamentCalendarDAL.HelperClasses;
+using TournamentCalendar.Library;
 
 namespace TournamentCalendar.Models.Calendar
 {
-	public enum EditMode
+    public enum EditMode
 	{
 		New, Change
 	}
@@ -61,20 +62,19 @@ namespace TournamentCalendar.Models.Calendar
 			return string.IsNullOrWhiteSpace(Guid) || LoadTournament(Guid);
 		}
 
-		public async Task<bool> TryGetLongitudeLatitude(NB.Tools.GeoSpatial.GoogleConfiguration googleConfig)
+		public async Task<bool> TryGetLongitudeLatitude(GoogleConfiguration googleConfig)
 		{
 			if (Fields[CalendarFields.Street.FieldIndex].IsChanged || Fields[CalendarFields.PostalCode.FieldIndex].IsChanged || Fields[CalendarFields.City.FieldIndex].IsChanged)
 			{
 				try
 				{
 					// try to get longitude and latitude by Google Maps API
-					var completeAddress = string.Join(", ", CountryId, PostalCode, City, Street);
-				    NB.Tools.GeoSpatial.GoogleGeo.GoogleApiKey = googleConfig.ServiceApiKey;
-					NB.Tools.GeoSpatial.Location location = await NB.Tools.GeoSpatial.GoogleGeo.GetLocation(completeAddress);
-					if (location != null && location.Latitude.Degrees > 1 && location.Longitude.Degrees > 1)
+					var completeAddress = string.Join(", ", PostalCode, City, Street);
+				    var location = await Axuno.Tools.GeoSpatial.GoogleGeo.GetLocation(CountryId, completeAddress, googleConfig.ServiceApiKey, TimeSpan.FromSeconds(15));
+					if (location.GeoLocation.Latitude != null && location.GeoLocation.Latitude.Degrees > 1 && location.GeoLocation.Longitude?.Degrees > 1)
 					{
-						Longitude = location.Longitude.TotalDegrees;
-						Latitude = location.Latitude.TotalDegrees;
+						Longitude = location.GeoLocation.Longitude.TotalDegrees;
+						Latitude = location.GeoLocation.Latitude.TotalDegrees;
 					}
 				}
 				catch (Exception)

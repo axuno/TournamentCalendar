@@ -9,7 +9,7 @@
         <CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</CurrentYear>
         <Copyright>Copyright 1998-$(CurrentYear) $(Authors)</Copyright>
         <LangVersion>latest</LangVersion>
-        <Nullable>disable</Nullable>
+        <Nullable>enable</Nullable>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageIcon>TournamentCalender-192x192.png</PackageIcon>
 	</PropertyGroup>
@@ -24,7 +24,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<None Remove="Library\NB.Tools\GeoSpatial\LongitudeLatitudeDistance.mht" />
 		<None Include="TournamentCalender-192x192.png">
 		  <Pack>True</Pack>
 		  <PackagePath></PackagePath>
@@ -34,18 +33,18 @@
 	<ItemGroup>
 		<!--<PackageReference Include="BuildBundlerMinifier" Version="2.6.362" />-->
 		<PackageReference Include="cloudscribe.Web.Navigation" Version="5.0.0" />
-		<PackageReference Include="MailMergeLib" Version="5.8.2" />
+		<PackageReference Include="MailMergeLib" Version="5.9.1" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="6.0.0" />
 		<PackageReference Include="Microsoft.DotNet.PlatformAbstractions" Version="3.1.6" />
 		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.0" />
-		<PackageReference Include="NLog.Web.AspNetCore" Version="5.1.5" />
+		<PackageReference Include="NLog.Web.AspNetCore" Version="5.2.2" />
 		<PackageReference Include="StackifyMiddleware" Version="3.0.5.2" />
 		<PackageReference Include="System.Drawing.Primitives" Version="4.3.0" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<EmbeddedResource Update="Models\Error\StatusCodes.de.resx">
-		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <Generator></Generator>
 		</EmbeddedResource>
 		<EmbeddedResource Update="Models\Error\StatusCodes.resx">
 		  <Generator>PublicResXFileCodeGenerator</Generator>

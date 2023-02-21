@@ -8,6 +8,7 @@ using TournamentCalendar.Views;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using TournamentCalendar.Library;
 
 namespace TournamentCalendar.Controllers
 {
@@ -82,8 +83,8 @@ namespace TournamentCalendar.Controllers
 					if (!TryUpdateModelAsync<EditModel>(model).Result)
 						return View(ViewName.InfoService.Edit, model);
 
-		    var googleApi = new NB.Tools.GeoSpatial.GoogleConfiguration();
-		    Configuration.Bind("GoogleConfiguration", googleApi);
+		    var googleApi = new GoogleConfiguration();
+		    Configuration.Bind(nameof(GoogleConfiguration), googleApi);
 		    await model.TryGetLongitudeLatitude(googleApi);
             model.Normalize();
 			

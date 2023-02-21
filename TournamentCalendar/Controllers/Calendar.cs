@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using NB.Tools.GeoSpatial;
+using TournamentCalendar.Library;
 using TournamentCalendarDAL.EntityClasses;
 using TournamentCalendarDAL.HelperClasses;
 using TournamentCalendar.Models.Calendar;
@@ -110,7 +110,7 @@ namespace TournamentCalendar.Controllers
 			}
 
 		    var googleApi = new GoogleConfiguration();
-		    Configuration.Bind("GoogleConfiguration", googleApi);
+		    Configuration.Bind(nameof(GoogleConfiguration), googleApi);
             await model.TryGetLongitudeLatitude(googleApi);
 			model.Normalize();
             if (model.IsNew && User.Identity != null && User.Identity.IsAuthenticated)
