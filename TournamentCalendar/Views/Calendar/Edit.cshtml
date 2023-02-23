@@ -24,9 +24,13 @@
 </article>
 @using (Model.EditMode == EditMode.New ? Html.BeginForm(nameof(Calendar.Entry), nameof(Calendar), new {id = string.Empty}, FormMethod.Post, null, new{id = "CalendarForm", @class = "pb-2" }) : Html.BeginForm(nameof(Calendar.Entry), nameof(Calendar), new {id = Model.Guid}, FormMethod.Post, null, new { id = "CalendarForm", @class="pb-2" }))
 {
+    ViewContext.ClientValidationEnabled = false;
     @* Validation summary must be inside BeginForm block *@
     @if (httpContextAccessor.HttpContext!.Request.Method.Equals("POST", StringComparison.OrdinalIgnoreCase))
-    {@Html.ValidationSummary(false, "Es sind Fehler aufgetreten. Bitte die markierten Felder korrigieren und erneut speichern.", new { @class = "validation-summary-errors msg-validation rounded" })}
+    {
+        // No validation message when displayed the first time
+        @Html.ValidationSummary(false, "Es sind Fehler aufgetreten. Bitte die markierten Felder korrigieren und erneut speichern.", new { @class = "validation-summary-errors msg-validation rounded" })
+    }
 
     <fieldset class="rounded">
         <legend class="rounded">

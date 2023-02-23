@@ -375,7 +375,7 @@ namespace TournamentCalendar.Models.Calendar
 				// Id will be zero if the Guid does not exist:
 				Id = await CalendarRepository.GetIdForGuid(Guid);
 
-				confirmModel.SaveSuccessful = await CalendarRepository.Save(this, true);
+				confirmModel.SaveSuccessful = await GenericRepository.Save(this, true);
 				confirmModel.Entity = this;
 			}
 			catch (Exception ex)
@@ -394,7 +394,7 @@ namespace TournamentCalendar.Models.Calendar
 		public class TournamentCalendarMetadata
         {
 			[HiddenInput]
-			public string Guid { get; set; } = string.Empty;
+			public string? Guid { get; set; }
 
 		    [Required(ErrorMessageResourceName = "PropertyValueRequired", ErrorMessageResourceType = typeof(DataAnnotationResource))]
 			[Display(Name="Turniername")]
