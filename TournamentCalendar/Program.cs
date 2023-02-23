@@ -1,11 +1,15 @@
 ﻿using System;
 using System.IO;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using NLog.Web;
+using NLog.Extensions.Logging;
 
 namespace TournamentCalendar
 {
@@ -17,7 +21,7 @@ namespace TournamentCalendar
         /// </summary>
         public const string ConfigurationFolder = "Configuration";
 
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             // NLog: setup the logger first to catch all errors
             var currentDir = Directory.GetCurrentDirectory();
@@ -34,7 +38,25 @@ namespace TournamentCalendar
                 // http://zuga.net/articles/cs-how-to-determine-if-a-program-process-or-file-is-32-bit-or-64-bit/
                 logger.Info($"This app runs as {(Environment.Is64BitProcess ? "64-bit" : "32-bit")} process.\n\n");
                 
-                CreateHostBuilder(args).Build().Run();
+                var builder = SetupBuilder(args);
+
+                var loggingConfig = builder.Configuration.GetSection("Logging");
+                builder.Logging.ClearProviders();
+                // Enable NLog as logging provider for Microsoft.Extension.Logging
+                builder.Logging.AddNLog(loggingConfig);
+                NLogBuilder.ConfigureNLog(Path.Combine(builder.Environment.ContentRootPath, ConfigurationFolder,
+                    $"NLog.{builder.Environment.EnvironmentName}.config"));
+
+                builder.WebHost.ConfigureServices(WebAppStartup.ConfigureServices);
+
+                var app = builder.Build();
+
+                builder.WebHost.ConfigureAppConfiguration(_ =>
+                {
+                    WebAppStartup.Configure(app, app.Services.GetRequiredService<ILoggerFactory>());
+                });
+            
+                await app.RunAsync();
             }
             catch (Exception e)
             {
@@ -48,39 +70,41 @@ namespace TournamentCalendar
             }
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureAppConfiguration((hostingContext, config) =>
-                {
-                    var configPath = Path.Combine(hostingContext.HostingEnvironment.ContentRootPath, ConfigurationFolder);
-                    config.SetBasePath(configPath)
-                        .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                        .AddJsonFile($"appsettings.{hostingContext.HostingEnvironment.EnvironmentName}.json", optional: true, reloadOnChange: true)
-                        .AddJsonFile("credentials.json", optional: false, reloadOnChange: true)
-                        .AddJsonFile($"credentials.{hostingContext.HostingEnvironment.EnvironmentName}.json", optional: false, reloadOnChange: true)
-                        .AddEnvironmentVariables()
-                        .AddCommandLine(args);
+        public static WebApplicationBuilder SetupBuilder(string[] args)
+        {
+            var builder = WebApplication.CreateBuilder(new WebApplicationOptions
+            {
+                Args = args,
+                ApplicationName = typeof(Program).Assembly.GetName().Name, // don't use Assembly.Fullname
+                ContentRootPath = Directory.GetCurrentDirectory(),
+                WebRootPath = "wwwroot"
+            });
+        
+            var absoluteConfigurationPath = Path.Combine(builder.Environment.ContentRootPath,
+                ConfigurationFolder);
 
-                    if (hostingContext.HostingEnvironment.IsDevelopment())
-                    {
-                        var secretsFolder = GetSecretsFolder();    
-                        config.AddJsonFile(Path.Combine(secretsFolder, @"credentials.json"), false);
-                        config.AddJsonFile(Path.Combine(secretsFolder, $"credentials.{hostingContext.HostingEnvironment.EnvironmentName}.json"), false);
-                    }
+            builder.Configuration.SetBasePath(absoluteConfigurationPath)
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json",
+                    optional: true, reloadOnChange: true)
+                .AddJsonFile(@"credentials.json", optional: false, reloadOnChange: true)
+                .AddJsonFile($"credentials.{builder.Environment.EnvironmentName}.json",
+                    optional: false, reloadOnChange: true)
+                .AddEnvironmentVariables()
+                .AddCommandLine(args);
 
-                    NLogBuilder.ConfigureNLog(Path.Combine(configPath, $"NLog.{hostingContext.HostingEnvironment.EnvironmentName}.config"));
-                })
-                .ConfigureWebHostDefaults(webHostBuilder =>
-                {
-                    webHostBuilder.UseStartup<Startup>();
-                })
-                .ConfigureLogging((hostingContext, logging) =>
-                {
-                    logging.ClearProviders();
-                    // Note: This logging configuration overrides any call to SetMinimumLevel!
-                    logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
-                })
-                .UseNLog();  // NLog: Setup NLog for dependency injection;
+            if (builder.Environment.IsDevelopment())
+            {
+                var secretsFolder = GetSecretsFolder();    
+                builder.Configuration.AddJsonFile(Path.Combine(secretsFolder, @"credentials.json"), false);
+                builder.Configuration.AddJsonFile(Path.Combine(secretsFolder, $"credentials.{builder.Environment.EnvironmentName}.json"), false);
+            }
+
+            // Use static web assets, also from other referenced projects or packages)
+            builder.WebHost.UseStaticWebAssets();
+
+            return builder;
+        }
         
         /// <summary>
         /// Gets the name of the folder containing credentials and other data of the live website.
