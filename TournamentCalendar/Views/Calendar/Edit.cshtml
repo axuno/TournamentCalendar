@@ -26,11 +26,7 @@
 {
     ViewContext.ClientValidationEnabled = false;
     @* Validation summary must be inside BeginForm block *@
-    @if (httpContextAccessor.HttpContext!.Request.Method.Equals("POST", StringComparison.OrdinalIgnoreCase))
-    {
-        // No validation message when displayed the first time
-        @Html.ValidationSummary(false, "Es sind Fehler aufgetreten. Bitte die markierten Felder korrigieren und erneut speichern.", new { @class = "validation-summary-errors msg-validation rounded" })
-    }
+    @Html.ValidationSummary(false, "Es sind Fehler aufgetreten. Bitte die markierten Felder korrigieren und erneut speichern.", new { @class = "validation-summary-errors msg-validation rounded" })
 
     <fieldset class="rounded">
         <legend class="rounded">

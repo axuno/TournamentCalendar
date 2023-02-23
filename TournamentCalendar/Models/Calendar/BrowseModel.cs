@@ -47,11 +47,6 @@ public class BrowseModel
 
     public int Count => _tournaments.Count;
 
-    public IEnumerable<CalendarEntityDisplayModel> DisplayModel
-    {
-        get 
-        {
-            return _tournaments.Select(t => new CalendarEntityDisplayModel(t, _surfaces, _playingAbilities));
-        }
-    }
+    public IEnumerable<CalendarEntityDisplayModel> DisplayModel =>
+        _tournaments.Select(t => new CalendarEntityDisplayModel(t, _surfaces, _playingAbilities));
 }

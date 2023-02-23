@@ -55,20 +55,20 @@ public class Calendar : ControllerBase
     }
 
     [HttpGet]
-    [Route("eintrag/{id?}")]
-    public async Task<IActionResult> Entry(string id)
+    [Route("eintrag/{guid?}")]
+    public async Task<IActionResult> Entry([FromRoute] string? guid)
     {
         ViewBag.TitleTagText = "Volleyballturnier in den Kalender eintragen";
 
         var model = await new EditModel().Initialize();
-        if (string.IsNullOrEmpty(id))
+        if (string.IsNullOrEmpty(guid))
         {
             model.EditMode = EditMode.New;
             return View(ViewName.Calendar.Edit, model);
         }
 
         model.EditMode = EditMode.Change;
-        model.LoadTournament(id);
+        model.LoadTournament(guid);
 
         return model.IsNew  // id not found
             ? (ActionResult)RedirectToAction(nameof(Calendar.Entry), nameof(Controllers.Calendar), new { id = string.Empty })
@@ -76,10 +76,11 @@ public class Calendar : ControllerBase
     }
 
     [HttpPost]
-    [Route("eintrag/{id?}")]
-    public async Task<IActionResult> Entry(EditModel model)
+    [Route("eintrag/{guid?}")]
+    public async Task<IActionResult> Entry([FromForm] EditModel model, [FromRoute] string? guid)
     {
         ViewBag.TitleTagText = "Volleyballturnier in den Kalender eintragen";
+        model.Guid = guid;
         await model.Initialize();
 
         model.EditMode = string.IsNullOrWhiteSpace(model.Guid) ? EditMode.New : EditMode.Change;
@@ -145,11 +146,11 @@ public class Calendar : ControllerBase
         }
     }
 
-    [Route("bestaetigen/{id?}")]
-    public async Task<IActionResult> Approve(string id = "")
+    [Route("bestaetigen/{guid?}")]
+    public async Task<IActionResult> Approve(string guid = "")
     {
         ViewBag.TitleTagText = "Volleyball-Turniereintrag bestätigen";
-        var approveModel = new Models.Shared.ApproveModelTournamentCalendar<CalendarEntity>(CalendarFields.Guid == id, CalendarFields.ApprovedOn, CalendarFields.DeletedOn);
+        var approveModel = new Models.Shared.ApproveModelTournamentCalendar<CalendarEntity>(CalendarFields.Guid == guid, CalendarFields.ApprovedOn, CalendarFields.DeletedOn);
 			
         return View(ViewName.Calendar.Approve, await approveModel.Save());
     }

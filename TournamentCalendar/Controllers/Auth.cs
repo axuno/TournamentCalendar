@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Configuration;
 using TournamentCalendar.Models.AccountViewModels;
 using TournamentCalendar.Views;
@@ -23,15 +24,15 @@ public class Auth : ControllerBase
         
     [HttpGet("/anmelden")]
     [HttpGet("[controller]/[action]")]
-    public IActionResult SignIn(string returnUrl)
+    public IActionResult SignIn([FromQuery] string? returnUrl)
     {
-        ViewData["ReturnUrl"] = returnUrl;
+        if (returnUrl != null) ViewData["ReturnUrl"] = returnUrl;
         return View(ViewName.Auth.SignIn);
     }
         
     [HttpPost("/anmelden"), ValidateAntiForgeryToken]
     [HttpPost("[controller]/[action]")]
-    public async Task<IActionResult> SignIn([FromForm] SignInViewModel model, [FromQuery] string returnUrl)
+    public async Task<IActionResult> SignIn([FromForm] SignInViewModel model, [FromQuery] string? returnUrl)
     {
         Library.Authentication.User? foundUser = null;
         var hashedPassword = Convert.ToBase64String(System.Security.Cryptography.SHA1.Create()
@@ -77,7 +78,7 @@ public class Auth : ControllerBase
                 AllowRefresh = true
             });
 
-        return RedirectToLocal(returnUrl);
+        return RedirectToLocal(returnUrl ?? "/");
     }
 
     [HttpGet("/abmelden")]
