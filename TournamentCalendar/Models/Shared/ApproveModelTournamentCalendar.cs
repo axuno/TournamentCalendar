@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using SD.LLBLGen.Pro.ORMSupportClasses;
 using TournamentCalendar.Data;
@@ -30,7 +31,7 @@ public class ApproveModelTournamentCalendar<T> where T : EntityBase2, new()
         return Guid.TryParse(guid, out _);
     }
 
-    public async Task<ApproveModelTournamentCalendar<T>> Save()
+    public async Task<ApproveModelTournamentCalendar<T>> Save(CancellationToken cancellationToken)
     {
         SaveSuccessFul = false;
 
@@ -48,7 +49,7 @@ public class ApproveModelTournamentCalendar<T> where T : EntityBase2, new()
             if (Entity is CalendarEntity entity)
             {
                 PossibleDuplicateFound =
-                    await CalendarRepository.GetPossibleDuplicate(entity);
+                    await CalendarRepository.GetPossibleDuplicate(entity, cancellationToken);
                 if (PossibleDuplicateFound != null)
                     return this;
             }

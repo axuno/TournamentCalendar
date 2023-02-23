@@ -13,6 +13,7 @@ using TournamentCalendar.Data;
 using TournamentCalendarDAL.EntityClasses;
 using TournamentCalendarDAL.HelperClasses;
 using TournamentCalendar.Library;
+using System.Threading;
 
 namespace TournamentCalendar.Models.InfoService;
 
@@ -203,7 +204,7 @@ public class EditModel : InfoServiceEntity, IValidatableObject
             ConfirmedOn = DateTime.Now;
     }
 
-    public async Task <Models.Shared.ConfirmModel<InfoServiceEntity>> Save()
+    public async Task <Models.Shared.ConfirmModel<InfoServiceEntity>> Save(CancellationToken cancellationToken)
     {
         if (string.IsNullOrWhiteSpace(Guid) || IsNew)
         {
@@ -227,7 +228,7 @@ public class EditModel : InfoServiceEntity, IValidatableObject
             // Id will be zero if Guid does not exist
             Id = InfoServiceRepository.GetIdforGuid(Guid);
 
-            confirmModel.SaveSuccessful = await InfoServiceRepository.Save(this, true);
+            confirmModel.SaveSuccessful = await GenericRepository.Save(this, true, cancellationToken);
             confirmModel.Entity = this;
         }
         catch (Exception ex)

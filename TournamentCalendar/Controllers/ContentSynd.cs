@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
@@ -17,13 +18,13 @@ public class ContentSynd : ControllerBase
     }
 
     [Route("kalender.html")]
-    public async Task<IActionResult> CalendarList()
+    public async Task<IActionResult> CalendarList(CancellationToken cancellationToken)
     {
         // Cross Origin Request Sharing (CORS) - allow request from any domain:
         Response.Headers.Add("Access-Control-Allow-Origin", "*");
-        _logger.LogInformation("Host: {0}, Referrer: {1}", GetRemoteIpAddress(), string.IsNullOrEmpty(Request.Headers["Referer"]) ? Request.Headers["Referrer"] : Request.Headers["Referer"]);
+        _logger.LogInformation("Host: {RemoteIp}, Referrer: {Referrer}", GetRemoteIpAddress(), string.IsNullOrEmpty(Request.Headers["Referer"]) ? Request.Headers["Referrer"] : Request.Headers["Referer"]);
         var model = new Models.Calendar.BrowseModel();
-        await model.Load();
+        await model.Load(cancellationToken);
         return PartialView(ViewName.ContentSynd.CalendarListPartial, model);
     }
 
@@ -40,7 +41,7 @@ public class ContentSynd : ControllerBase
     {
         Response.Headers.Add("Access-Control-Allow-Origin", "*");
         Response.ContentType = "text/javascript"; // IE < 9 does not support application/javascript
-        _logger.LogInformation("Host: {0}, Referrer: {1}", GetRemoteIpAddress(), string.IsNullOrEmpty(Request.Headers["Referer"]) ? Request.Headers["Referrer"] : Request.Headers["Referer"]);
+        _logger.LogInformation("Host: {Host}, Referrer: {Referrer}", GetRemoteIpAddress(), string.IsNullOrEmpty(Request.Headers["Referer"]) ? Request.Headers["Referrer"] : Request.Headers["Referer"]);
         return PartialView(ViewName.ContentSynd.CalendarListPartialJs);
     }
 

@@ -23,10 +23,10 @@ public class Cron : ControllerBase
     /// in order to prevent application idle timeout shutdowns 
     /// </summary>
     /// <returns></returns>
-    public ContentResult Heartbeat(string id)
+    public ContentResult Heartbeat(string? id)
     {
         HttpContext.Response.StatusCode = (int)HttpStatusCode.OK;
-        return Content($"Completed - {DateTime.Now:G}.", "text/plain", System.Text.Encoding.UTF8);
+        return Content($"Completed - {DateTime.Now:G} {id ?? string.Empty}.", "text/plain", System.Text.Encoding.UTF8);
     }
 
     /// <summary>

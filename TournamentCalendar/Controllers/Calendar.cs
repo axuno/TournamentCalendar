@@ -9,6 +9,7 @@ using TournamentCalendarDAL.EntityClasses;
 using TournamentCalendarDAL.HelperClasses;
 using TournamentCalendar.Models.Calendar;
 using TournamentCalendar.Views;
+using System.Threading;
 
 namespace TournamentCalendar.Controllers;
 
@@ -28,22 +29,22 @@ public class Calendar : ControllerBase
     }
 
     [Route("")]
-    public async Task<IActionResult> Kalender()
+    public async Task<IActionResult> Kalender(CancellationToken cancellationToken)
     {
         ViewBag.TitleTagText = "Volleyball-Turnierkalender";
         var model = new BrowseModel();
-        await model.Load();
+        await model.Load(cancellationToken);
         return View(ViewName.Calendar.Overview, model);
     }
 
     [Route("Id/{id:long}")]
-    public async Task<IActionResult> Id(long id)
+    public async Task<IActionResult> Id(long id, CancellationToken cancellationToken)
     {
         ViewBag.TitleTagText = "Volleyball-Turnierkalender";
         var model = new BrowseModel();
         try
         {
-            await model.Load(id);
+            await model.Load(id, cancellationToken);
         }
         catch (ArgumentOutOfRangeException)
         {
@@ -56,11 +57,11 @@ public class Calendar : ControllerBase
 
     [HttpGet]
     [Route("eintrag/{guid?}")]
-    public async Task<IActionResult> Entry([FromRoute] string? guid)
+    public async Task<IActionResult> Entry([FromRoute] string? guid, CancellationToken cancellationToken)
     {
         ViewBag.TitleTagText = "Volleyballturnier in den Kalender eintragen";
 
-        var model = await new EditModel().Initialize();
+        var model = await new EditModel().Initialize(cancellationToken);
         if (string.IsNullOrEmpty(guid))
         {
             model.EditMode = EditMode.New;
@@ -68,7 +69,7 @@ public class Calendar : ControllerBase
         }
 
         model.EditMode = EditMode.Change;
-        model.LoadTournament(guid);
+        model.LoadTournament(guid, cancellationToken);
 
         return model.IsNew  // id not found
             ? (ActionResult)RedirectToAction(nameof(Calendar.Entry), nameof(Controllers.Calendar), new { id = string.Empty })
@@ -77,11 +78,11 @@ public class Calendar : ControllerBase
 
     [HttpPost]
     [Route("eintrag/{guid?}")]
-    public async Task<IActionResult> Entry([FromForm] EditModel model, [FromRoute] string? guid)
+    public async Task<IActionResult> Entry([FromForm] EditModel model, [FromRoute] string? guid, CancellationToken cancellationToken)
     {
         ViewBag.TitleTagText = "Volleyballturnier in den Kalender eintragen";
         model.Guid = guid;
-        await model.Initialize();
+        await model.Initialize(cancellationToken);
 
         model.EditMode = string.IsNullOrWhiteSpace(model.Guid) ? EditMode.New : EditMode.Change;
 
@@ -92,7 +93,7 @@ public class Calendar : ControllerBase
             
         if (model.EditMode == EditMode.Change)
         {
-            if (model.TryRefetchEntity())
+            if (model.TryRefetchEntity(cancellationToken))
             {
                 if (! await TryUpdateModelAsync<EditModel>(model))
                 {
@@ -102,7 +103,7 @@ public class Calendar : ControllerBase
         }
 
         model.Normalize(ModelState);
-        var possibleDupe = await model.GetPossibleDuplicate();
+        var possibleDupe = await model.GetPossibleDuplicate(cancellationToken);
         if (possibleDupe != null)
         {
             ModelState.Clear();
@@ -125,7 +126,7 @@ public class Calendar : ControllerBase
         {
             HttpContext.Session.Remove(Axuno.Web.CaptchaSvgGenerator.CaptchaSessionKeyName);
 
-            if ((confirmationModel = await model.Save()).SaveSuccessful)
+            if ((confirmationModel = await model.Save(cancellationToken)).SaveSuccessful)
             {
                 if (!confirmationModel.Entity!.ApprovedOn.HasValue || DateTime.Now - confirmationModel.Entity.ApprovedOn.Value < new TimeSpan(0,1,0))
                 {
@@ -147,12 +148,13 @@ public class Calendar : ControllerBase
     }
 
     [Route("bestaetigen/{guid?}")]
-    public async Task<IActionResult> Approve(string guid = "")
+    public async Task<IActionResult> Approve(string? guid, CancellationToken cancellationToken)
     {
+        guid ??= string.Empty;
         ViewBag.TitleTagText = "Volleyball-Turniereintrag bestätigen";
         var approveModel = new Models.Shared.ApproveModelTournamentCalendar<CalendarEntity>(CalendarFields.Guid == guid, CalendarFields.ApprovedOn, CalendarFields.DeletedOn);
 			
-        return View(ViewName.Calendar.Approve, await approveModel.Save());
+        return View(ViewName.Calendar.Approve, await approveModel.Save(cancellationToken));
     }
 
     [Route("integrieren")]

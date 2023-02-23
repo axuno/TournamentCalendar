@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using TournamentCalendar.Library;
+using System.Threading;
 
 namespace TournamentCalendar.Controllers;
 
@@ -55,7 +56,7 @@ public class InfoService : ControllerBase
     /// "save" is the name of the submit button
     /// </summary>
     [HttpPost("[action]/{id?}")]
-    public async Task<IActionResult> Eintrag([FromForm] EditModel model)
+    public async Task<IActionResult> Eintrag([FromForm] EditModel model, CancellationToken cancellationToken)
     {
         ViewBag.TitleTagText = "Volley-News abonnieren";
         model.EditMode = string.IsNullOrWhiteSpace(model.Guid) ? EditMode.New : EditMode.Change;
@@ -94,7 +95,7 @@ public class InfoService : ControllerBase
         {
             HttpContext.Session.Remove(Axuno.Web.CaptchaSvgGenerator.CaptchaSessionKeyName);
 
-            if ((confirmationModel = await model.Save()).SaveSuccessful)
+            if ((confirmationModel = await model.Save(cancellationToken)).SaveSuccessful)
             {
                 if (confirmationModel.Entity?.UnSubscribedOn == null)
                 {
@@ -118,18 +119,18 @@ public class InfoService : ControllerBase
     /// </summary>
     [HttpPost]
     [Route("[action]/{id?}")]
-    public async Task<IActionResult> Unsubscribe([FromForm] EditModel model)
+    public async Task<IActionResult> Unsubscribe([FromForm] EditModel model, CancellationToken cancellationToken)
     {
         ViewBag.TitleTagText = "Volley-News abbestellen";
         var unsubscribeModel = new Models.InfoService.UnsubscribeModel(model.Guid);
-        return View(ViewName.InfoService.Unsubscribe, await unsubscribeModel.Save());
+        return View(ViewName.InfoService.Unsubscribe, await unsubscribeModel.Save(cancellationToken));
     }
 
     [Route("[action]/{id}")]
-    public async Task<IActionResult> Bestaetigen(string id)
+    public async Task<IActionResult> Bestaetigen(string id, CancellationToken cancellationToken)
     {
         ViewBag.TitleTagText = "Volley-News bestätigen";
         var approveModel = new Models.Shared.ApproveModelTournamentCalendar<InfoServiceEntity>(InfoServiceFields.Guid == id, InfoServiceFields.ConfirmedOn, InfoServiceFields.UnSubscribedOn);
-        return View(ViewName.InfoService.Approve, await approveModel.Save());
+        return View(ViewName.InfoService.Approve, await approveModel.Save(cancellationToken));
     }
 }

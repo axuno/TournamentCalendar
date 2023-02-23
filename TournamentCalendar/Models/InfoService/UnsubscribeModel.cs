@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using TournamentCalendar.Data;
 using TournamentCalendarDAL.EntityClasses;
@@ -24,7 +25,7 @@ public class UnsubscribeModel
         return System.Guid.TryParse(guid, out _);
     }
 
-    public async Task<UnsubscribeModel> Save()
+    public async Task<UnsubscribeModel> Save(CancellationToken cancellationToken)
     {
         SaveSuccessFul = false;
         Entity = new InfoServiceEntity();
@@ -39,7 +40,7 @@ public class UnsubscribeModel
             {
                 Entity.UnSubscribedOn = Entity.ModifiedOn = DateTime.Now;
                 Entity.ConfirmedOn = null;
-                SaveSuccessFul = await InfoServiceRepository.Save(Entity, true);
+                SaveSuccessFul = await GenericRepository.Save(Entity, true, cancellationToken);
             }
             else
             {

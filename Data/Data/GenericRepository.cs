@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using SD.LLBLGen.Pro.ORMSupportClasses;
 
@@ -6,10 +7,10 @@ namespace TournamentCalendar.Data;
 
 public class GenericRepository
 {
-    public static async Task<bool> Save<T>(T registration, bool refetchAfterSave) where T: IEntity2
+    public static async Task<bool> Save<T>(T registration, bool refetchAfterSave, CancellationToken cancellationToken) where T: IEntity2
     {
         using var da = Connecter.GetNewAdapter();
-        var success = await da.SaveEntityAsync(registration, refetchAfterSave);
+        var success = await da.SaveEntityAsync(registration, refetchAfterSave, cancellationToken);
         da.CloseConnection();
         return success;
     }

@@ -13,6 +13,7 @@ using TournamentCalendar.Data;
 using TournamentCalendarDAL.EntityClasses;
 using TournamentCalendarDAL.HelperClasses;
 using TournamentCalendar.Library;
+using System.Threading;
 
 namespace TournamentCalendar.Models.Calendar;
 
@@ -43,23 +44,23 @@ public class EditModel : CalendarEntity, IValidatableObject
         base.IsNew = true;
     }
 
-    public async Task<EditModel> Initialize()
+    public async Task<EditModel> Initialize(CancellationToken cancellationToken)
     {
-        await CalendarRepository.GetTournamentRelationshipEntities(_surfaces, _playingAbilities);
+        await CalendarRepository.GetTournamentRelationshipEntities(_surfaces, _playingAbilities, cancellationToken);
         return this;
     }
 
-    public bool LoadTournament(string guid)
+    public bool LoadTournament(string guid, CancellationToken cancellationToken)
     {
-        if (!CalendarRepository.GetTournamentByGuid(this, guid)) return false;
+        if (!CalendarRepository.GetTournamentByGuid(this, guid, cancellationToken)) return false;
 
         Guid = guid;
         return true;
     }
 
-    public bool TryRefetchEntity()
+    public bool TryRefetchEntity(CancellationToken cancellationToken)
     {
-        return string.IsNullOrWhiteSpace(Guid) || LoadTournament(Guid);
+        return string.IsNullOrWhiteSpace(Guid) || LoadTournament(Guid, cancellationToken);
     }
 
     public async Task<bool> TryGetLongitudeLatitude(GoogleConfiguration googleConfig)
@@ -94,7 +95,10 @@ public class EditModel : CalendarEntity, IValidatableObject
     /// </summary>
     public string DateFromText
     {
-        get => DateFrom.ToString("dd.MM.yyyy");
+        get
+        {
+            return DateFrom.ToString("dd.MM.yyyy");
+        }
         set
         {
             if (DateTime.TryParse(value, out var date))
@@ -114,7 +118,10 @@ public class EditModel : CalendarEntity, IValidatableObject
     /// </summary>
     public string DateToText
     {
-        get => DateTo.ToString("dd.MM.yyyy");
+        get
+        {
+            return DateTo.ToString("dd.MM.yyyy");
+        }
         set
         {
             if (DateTime.TryParse(value, out var date))
@@ -134,7 +141,10 @@ public class EditModel : CalendarEntity, IValidatableObject
     /// </summary>
     public string TimeFrom
     {
-        get => DateFrom.ToString("HH:mm");
+        get
+        {
+            return DateFrom.ToString("HH:mm");
+        }
         set
         {
             if (TimeSpan.TryParse(value, out var time))
@@ -151,7 +161,10 @@ public class EditModel : CalendarEntity, IValidatableObject
     /// </summary>
     public string TimeTo
     {
-        get => DateTo.ToString("HH:mm");
+        get
+        {
+            return DateTo.ToString("HH:mm");
+        }
         set
         {
             if (TimeSpan.TryParse(value, out var time))
@@ -161,7 +174,10 @@ public class EditModel : CalendarEntity, IValidatableObject
 
     public string ClosingDateText
     {
-        get => ClosingDate.ToString("dd.MM.yyyy");
+        get
+        {
+            return ClosingDate.ToString("dd.MM.yyyy");
+        }
         set
         {
             if (DateTime.TryParse(value, out var date))
@@ -175,7 +191,10 @@ public class EditModel : CalendarEntity, IValidatableObject
 
     public int MinMaxFemale
     {
-        get => IsMinPlayersFemale ? 1 : IsMinPlayersMale ? 2 : 0;
+        get
+        {
+            return IsMinPlayersFemale ? 1 : IsMinPlayersMale ? 2 : 0;
+        }
         set
         {
             switch (value)
@@ -198,7 +217,10 @@ public class EditModel : CalendarEntity, IValidatableObject
 
     public int MinMaxMale
     {
-        get => IsMinPlayersMale ? 1 : IsMinPlayersFemale ? 2 : 0;
+        get
+        {
+            return IsMinPlayersMale ? 1 : IsMinPlayersFemale ? 2 : 0;
+        }
         set
         {
             switch (value)
@@ -226,7 +248,10 @@ public class EditModel : CalendarEntity, IValidatableObject
     /// </summary>
     public bool Approved
     {
-        get => base.ApprovedOn.HasValue && !base.DeletedOn.HasValue;
+        get
+        {
+            return base.ApprovedOn.HasValue && !base.DeletedOn.HasValue;
+        }
         set
         {
             if (!base.ApprovedOn.HasValue) base.ApprovedOn = DateTime.Now;
@@ -346,14 +371,14 @@ public class EditModel : CalendarEntity, IValidatableObject
 
     public CalendarEntity? PossibleDuplicateFound { get; private set; }
 
-    public async Task<CalendarEntity?> GetPossibleDuplicate()
+    public async Task<CalendarEntity?> GetPossibleDuplicate(CancellationToken cancellationToken)
     {
         // It is expected that the model is normalized before calling this method.
-        return await CalendarRepository.GetPossibleDuplicate(this);
+        return await CalendarRepository.GetPossibleDuplicate(this, cancellationToken);
     }
 
 
-    public async Task<Shared.ConfirmModel<CalendarEntity>> Save()
+    public async Task<Shared.ConfirmModel<CalendarEntity>> Save(CancellationToken cancellationToken)
     {
         if (string.IsNullOrWhiteSpace(Guid) || IsNew)
         {
@@ -373,9 +398,9 @@ public class EditModel : CalendarEntity, IValidatableObject
         try
         {
             // Id will be zero if the Guid does not exist:
-            Id = await CalendarRepository.GetIdForGuid(Guid);
+            Id = await CalendarRepository.GetIdForGuid(Guid, cancellationToken);
 
-            confirmModel.SaveSuccessful = await GenericRepository.Save(this, true);
+            confirmModel.SaveSuccessful = await GenericRepository.Save(this, true, cancellationToken);
             confirmModel.Entity = this;
         }
         catch (Exception ex)
