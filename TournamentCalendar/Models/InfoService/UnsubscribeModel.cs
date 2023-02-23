@@ -3,54 +3,53 @@ using System.Threading.Tasks;
 using TournamentCalendar.Data;
 using TournamentCalendarDAL.EntityClasses;
 
-namespace TournamentCalendar.Models.InfoService
+namespace TournamentCalendar.Models.InfoService;
+
+public class UnsubscribeModel
 {
-	public class UnsubscribeModel
-	{
-		public UnsubscribeModel(string guid)
-		{
-			Guid = guid;
-			SaveSuccessFul = IsEntityFound = false;
-		}
+    public UnsubscribeModel(string guid)
+    {
+        Guid = guid;
+        SaveSuccessFul = IsEntityFound = false;
+    }
 
-		public string Guid { get; private set; }
-		public bool SaveSuccessFul { get; set; }
-		public bool IsEntityFound { get; set; }
-		public Exception? Exception { get; set; }
-		public InfoServiceEntity? Entity { get; set; }
+    public string Guid { get; private set; }
+    public bool SaveSuccessFul { get; set; }
+    public bool IsEntityFound { get; set; }
+    public Exception? Exception { get; set; }
+    public InfoServiceEntity? Entity { get; set; }
 
-		public static bool IsGuid(string guid)
-		{
-			return System.Guid.TryParse(guid, out _);
-		}
+    public static bool IsGuid(string guid)
+    {
+        return System.Guid.TryParse(guid, out _);
+    }
 
-		public async Task<UnsubscribeModel> Save()
-		{
-			SaveSuccessFul = false;
-			Entity = new InfoServiceEntity();
+    public async Task<UnsubscribeModel> Save()
+    {
+        SaveSuccessFul = false;
+        Entity = new InfoServiceEntity();
 
-			try
-			{
-				if (!(IsEntityFound = InfoServiceRepository.GetRegistrationByGuid(Entity, Guid)))
-					return this;
+        try
+        {
+            if (!(IsEntityFound = InfoServiceRepository.GetRegistrationByGuid(Entity, Guid)))
+                return this;
 
-				// only save dates if not already unsubscribed
-				if (!Entity.UnSubscribedOn.HasValue)
-				{
-					Entity.UnSubscribedOn = Entity.ModifiedOn = DateTime.Now;
-					Entity.ConfirmedOn = null;
-					SaveSuccessFul = await InfoServiceRepository.Save(Entity, true);
-				}
-				else
-				{
-					SaveSuccessFul = true;
-				}
-			}
-			catch (Exception ex)
-			{
-				Exception = ex;
-			}
-			return this;
-		}
-	}
+            // only save dates if not already unsubscribed
+            if (!Entity.UnSubscribedOn.HasValue)
+            {
+                Entity.UnSubscribedOn = Entity.ModifiedOn = DateTime.Now;
+                Entity.ConfirmedOn = null;
+                SaveSuccessFul = await InfoServiceRepository.Save(Entity, true);
+            }
+            else
+            {
+                SaveSuccessFul = true;
+            }
+        }
+        catch (Exception ex)
+        {
+            Exception = ex;
+        }
+        return this;
+    }
 }

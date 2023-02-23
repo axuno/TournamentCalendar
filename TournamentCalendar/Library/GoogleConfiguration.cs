@@ -1,9 +1,8 @@
-﻿namespace TournamentCalendar.Library
+﻿namespace TournamentCalendar.Library;
+
+public class GoogleConfiguration
 {
-    public class GoogleConfiguration
-    {
-        public string AnalyticsTrackingId { get; set; } = string.Empty;
-        public string WebApiKey { get; set; } = string.Empty;
-        public string ServiceApiKey { get; set; } = string.Empty;
-    }
+    public string AnalyticsTrackingId { get; set; } = string.Empty;
+    public string WebApiKey { get; set; } = string.Empty;
+    public string ServiceApiKey { get; set; } = string.Empty;
 }

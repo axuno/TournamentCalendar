@@ -9,33 +9,32 @@ using Microsoft.Extensions.Configuration;
 using TournamentCalendar.Models.TournamentImport;
 using TournamentCalendar.Views;
 
-namespace TournamentCalendar.Controllers
+namespace TournamentCalendar.Controllers;
+
+[Authorize(Roles = Library.Authentication.Constants.RoleName.Editor)]
+[Route("import")]
+public class Import : ControllerBase
 {
-    [Authorize(Roles = Library.Authentication.Constants.RoleName.Editor)]
-    [Route("import")]
-    public class Import : ControllerBase
-	{
-		public Import(IWebHostEnvironment hostingEnvironment, IConfiguration configuration) : base(hostingEnvironment, configuration)
-		{}
+    public Import(IWebHostEnvironment hostingEnvironment, IConfiguration configuration) : base(hostingEnvironment, configuration)
+    {}
 
-        [Route("anzeigen/{id?}")]
-        public async Task<ActionResult> ShowAsync(string id)
-		{
-		    ViewBag.TitleTagText = "Andere Volleyball-Turnierkalender";
+    [Route("anzeigen/{id?}")]
+    public async Task<ActionResult> ShowAsync(string id)
+    {
+        ViewBag.TitleTagText = "Andere Volleyball-Turnierkalender";
 
-            var model = new ImportModel(Path.Combine(HostingEnvironment.WebRootPath, @"App_Data\Import"));
-		    var keyDate = DateTime.MaxValue;
+        var model = new ImportModel(Path.Combine(HostingEnvironment.WebRootPath, @"App_Data\Import"));
+        var keyDate = DateTime.MaxValue;
 
-		    if (!string.IsNullOrEmpty(id))
-		    {
-		        DateTime.TryParseExact(id, new[] {"dd'.'MM'.'yyyy", "dd'.'MM'.'yy", "yyyy'-'MM'-'dd"},
-		            CultureInfo.InvariantCulture,
-		            DateTimeStyles.None,
-		            out keyDate);
-		    }
+        if (!string.IsNullOrEmpty(id))
+        {
+            DateTime.TryParseExact(id, new[] {"dd'.'MM'.'yyyy", "dd'.'MM'.'yy", "yyyy'-'MM'-'dd"},
+                CultureInfo.InvariantCulture,
+                DateTimeStyles.None,
+                out keyDate);
+        }
             
-		    var listModel = await model.GetTournamentsAfterKeyDate(keyDate, new[] { Provider.Volleyballer, Provider.Vobatu });
-            return View(ViewName.TournamentImport.Show, listModel);
-		}
-	}
+        var listModel = await model.GetTournamentsAfterKeyDate(keyDate, new[] { Provider.Volleyballer, Provider.Vobatu });
+        return View(ViewName.TournamentImport.Show, listModel);
+    }
 }
