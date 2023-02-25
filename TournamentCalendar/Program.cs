@@ -26,11 +26,11 @@ public class Program
         // NLog: setup the logger first to catch all errors
         var currentDir = Directory.GetCurrentDirectory();
         var logger = NLogBuilder
-            .ConfigureNLog($@"{currentDir}\{Program.ConfigurationFolder}\NLog.Internal.config")
+            .ConfigureNLog($@"{currentDir}{Path.DirectorySeparatorChar}{Program.ConfigurationFolder}{Path.DirectorySeparatorChar}NLog.Internal.config")
             .GetCurrentClassLogger();
 
         // Allows for <target name="file" xsi:type="File" fileName = "${var:logDirectory}logfile.log"... >
-        NLog.LogManager.Configuration.Variables["logDirectory"] = currentDir + "\\";
+        NLog.LogManager.Configuration.Variables["logDirectory"] = currentDir + Path.DirectorySeparatorChar;
 
         try
         {
@@ -75,11 +75,12 @@ public class Program
         var builder = WebApplication.CreateBuilder(new WebApplicationOptions
         {
             Args = args,
-            ApplicationName = typeof(Program).Assembly.GetName().Name, // don't use Assembly.Fullname
-            ContentRootPath = Directory.GetCurrentDirectory(),
-            WebRootPath = "wwwroot"
+            ApplicationName = typeof(Program).Assembly.GetName().Name // don't use Assembly.Fullname
+            // Note: ContentRootPath and WebRootPath are detected by the framework.
+            //       If set explicitly as WebApplicationOptions, 
+            //       WebApplicationFactory in unit tests does not override them.
         });
-        
+
         var absoluteConfigurationPath = Path.Combine(builder.Environment.ContentRootPath,
             ConfigurationFolder);
 
@@ -95,7 +96,7 @@ public class Program
 
         if (builder.Environment.IsDevelopment())
         {
-            var secretsFolder = GetSecretsFolder();    
+            var secretsFolder = GetParentFolder("Secrets", builder.Environment.ContentRootPath);    
             builder.Configuration.AddJsonFile(Path.Combine(secretsFolder, @"credentials.json"), false);
             builder.Configuration.AddJsonFile(Path.Combine(secretsFolder, $"credentials.{builder.Environment.EnvironmentName}.json"), false);
         }
@@ -105,16 +106,32 @@ public class Program
 
         return builder;
     }
-        
+
     /// <summary>
-    /// Gets the name of the folder containing credentials and other data of the live website.
+    /// Searches the parent directories of <paramref name="contentRootPath"/> for
+    /// the first directory with name of <paramref name="folderName"/>.
     /// </summary>
+    /// <remarks>
+    /// For unit tests, the <paramref name="contentRootPath"/> may be the debug folder.
+    /// So we have to search for a parent directory.
+    /// </remarks>
+    /// <param name="folderName"></param>
+    /// <param name="contentRootPath"></param>
     /// <returns>The name of the folder containing credentials and other data of the live website</returns>
     /// <exception cref="DirectoryNotFoundException"></exception>
-    public static string GetSecretsFolder()
+    public static string GetParentFolder(string folderName, string contentRootPath)
     {
-        var folder = Path.Combine(Directory.GetCurrentDirectory(), @"..\..\Secrets");
-        if (!Directory.Exists(folder)) throw new DirectoryNotFoundException("Secrets folder not found");
-        return folder;
+        var tmpFolderName = folderName;
+        var count = 0;
+
+        while (!Directory.Exists(Path.Combine(contentRootPath, tmpFolderName)) && count < 20)
+        {
+            count++;
+            tmpFolderName = ".." + Path.DirectorySeparatorChar + tmpFolderName;
+        }
+        
+        var folder = Path.Combine(contentRootPath, tmpFolderName);
+        if (!Directory.Exists(folder)) throw new DirectoryNotFoundException( $"Folder '{folderName}' not found.");
+        return Path.GetFullPath(folder);
     }
 }

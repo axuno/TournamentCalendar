@@ -19,16 +19,16 @@
 		<WarningsAsErrors>NU1605</WarningsAsErrors>
 	</PropertyGroup>
 
-	<PropertyGroup>
-
-	</PropertyGroup>
-
 	<ItemGroup>
 		<None Include="TournamentCalender-192x192.png">
 		  <Pack>True</Pack>
 		  <PackagePath></PackagePath>
 		</None>
 	</ItemGroup>
+
+    <ItemGroup>
+        <InternalsVisibleTo Include="TournamentCalendar.Tests" />
+    </ItemGroup>
 
 	<ItemGroup>
 		<!--<PackageReference Include="BuildBundlerMinifier" Version="2.6.362" />-->
