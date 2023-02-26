@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace TournamentCalendar.Tests;
 internal class RouteHelper
 {
-    public static IEnumerable<(string? Method, string? Route, string? Action, string? ControllerMethod)> GetRegisteredRoutes(IServiceProvider services)
+    public static IEnumerable<(string? Method, string Route, string? Action, string? ControllerMethod)> GetRegisteredRoutes(IServiceProvider services)
     {
         var endpoints = services.GetRequiredService<IEnumerable<EndpointDataSource>>()
             .SelectMany(es => es.Endpoints)

@@ -165,7 +165,7 @@ public static class WebAppStartup
                 for (var i = 0; i < fms.SearchFolders.Length; i++)
                 {
                     // make relative paths absolute - ready to use
-                    fms.SearchFolders[i] = Path.Combine(context.HostingEnvironment.WebRootPath, fms.SearchFolders[i]);
+                    fms.SearchFolders[i] = Path.Combine(context.HostingEnvironment.ContentRootPath, fms.SearchFolders[i]);
                 }
                 options.MessageStore = fms;
             });

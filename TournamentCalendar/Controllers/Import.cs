@@ -23,7 +23,7 @@ public class Import : ControllerBase
     {
         ViewBag.TitleTagText = "Andere Volleyball-Turnierkalender";
 
-        var model = new ImportModel(Path.Combine(HostingEnvironment.WebRootPath, @"App_Data\Import"));
+        var model = new ImportModel(Path.Combine(HostingEnvironment.WebRootPath, @"Import"));
         var keyDate = DateTime.MaxValue;
 
         if (!string.IsNullOrEmpty(id))

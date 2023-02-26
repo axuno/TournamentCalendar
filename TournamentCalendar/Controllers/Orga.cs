@@ -13,7 +13,7 @@ namespace TournamentCalendar.Controllers;
 [Route("orga")]
 public class Orga : ControllerBase
 {
-    private readonly string _xmlFileList = "App_Data/TournamentDownloadfiles.xml";
+    private readonly string _xmlFileList = "Download-Files/TournamentDownloadfiles.xml";
 
     public class DownloadFile
     {

@@ -20,6 +20,12 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Content Include="MailStore\CalendarEntry.xml" />
+	  <Content Include="MailStore\ContactForm.xml" />
+	  <Content Include="MailStore\InfoServiceEntry.xml" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<None Include="TournamentCalender-192x192.png">
 		  <Pack>True</Pack>
 		  <PackagePath></PackagePath>
