@@ -81,23 +81,17 @@
         <div class="row">
             <article class="col-sm-8">
                 <h5 class="h5">
-                    Turnierprogramm des Volleyballverbands Rheinland
+                    Tournify - Online-Turnierplaner
                 </h5>
-                <p>
-                    Auch hier handelt es sich um Excel-Kalkulationen mit Makros. Je nach Anzahl der teilnehmenden Mannschaften gibt es eine speziell dafür angepasste Version.
-                </p>
-                <p>
-                    Unter welcher Lizenz diese Software verbreitet wird, ist den Exceldateien und der Website des Entwicklers nicht zu entnehmen.
-                </p>
-            </article>
-            <article class="col-sm-4">
-                <a href="http://www.volleyballturniere.de/"><i class="fa fa-arrow-circle-down fa-2x ax-color" aria-hidden="true"></i> Download von der Website des Programmierers</a>
-                <p>
-                    <i class="fa fa-arrow-circle-down fa-2x ax-color" aria-hidden="true"></i>
-                    @{var file3 = Model.First(m => m.Id == "turnierplaner-rmm-beispiel.pdf"); }
-                    @Html.ActionLink("Beispiel-Kalk. als PDF-Dokument", nameof(Orga.Download), nameof(Orga), new { id = file3.Id }, null)
-                    <br />(@file3.Size Bytes)
-                </p>
+                <div>Hauptmerkmale</div>
+                <ul>
+                    <li>Einfach und schnell einen Turnierplan erstellen</li>
+                    <li>Übersichtlicher Live-Präsentationsbildschirm</li>
+                    <li>Online Registrierungsseite für Teams</li>
+                </ul>
+                <div>
+                    Mehr Infos gibt es auf der <a href="https://tournify.de/" class="link">Website des Anbieters</a>.
+                </div>
             </article>
         </div>
     </div>
