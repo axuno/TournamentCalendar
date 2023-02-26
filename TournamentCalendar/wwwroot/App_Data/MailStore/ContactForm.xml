@@ -25,6 +25,12 @@
       <DisplayName>{FirstName} {LastName}</DisplayName>
       <DisplayNameCharacterEncoding>utf-8</DisplayNameCharacterEncoding>
     </MailMergeAddress>
+    <MailMergeAddress>
+      <AddrType>ReplyTo</AddrType>
+      <Address>{Email}</Address>
+      <DisplayName>{FirstName} {LastName}</DisplayName>
+      <DisplayNameCharacterEncoding>utf-8</DisplayNameCharacterEncoding>
+    </MailMergeAddress>
   </MailMergeAddresses>
   <Headers />
   <Subject>{Subject}</Subject>
