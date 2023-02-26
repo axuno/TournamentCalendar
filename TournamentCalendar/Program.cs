@@ -75,10 +75,11 @@ public class Program
         var builder = WebApplication.CreateBuilder(new WebApplicationOptions
         {
             Args = args,
-            ApplicationName = typeof(Program).Assembly.GetName().Name // don't use Assembly.Fullname
-            // Note: ContentRootPath and WebRootPath are detected by the framework.
+            ApplicationName = typeof(Program).Assembly.GetName().Name, // don't use Assembly.Fullname
+            WebRootPath = "wwwroot"
+            // Note: ContentRootPath is detected by the framework.
             //       If set explicitly as WebApplicationOptions, 
-            //       WebApplicationFactory in unit tests does not override them.
+            //       WebApplicationFactory in unit tests does not override it.
         });
 
         var absoluteConfigurationPath = Path.Combine(builder.Environment.ContentRootPath,
