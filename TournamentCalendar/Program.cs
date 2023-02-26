@@ -96,7 +96,7 @@ public class Program
 
         if (builder.Environment.IsDevelopment())
         {
-            var secretsFolder = GetParentFolder("Secrets", builder.Environment.ContentRootPath);    
+            var secretsFolder = FindParentFolder("Secrets", builder.Environment.ContentRootPath);    
             builder.Configuration.AddJsonFile(Path.Combine(secretsFolder, @"credentials.json"), false);
             builder.Configuration.AddJsonFile(Path.Combine(secretsFolder, $"credentials.{builder.Environment.EnvironmentName}.json"), false);
         }
@@ -108,30 +108,37 @@ public class Program
     }
 
     /// <summary>
-    /// Searches the parent directories of <paramref name="contentRootPath"/> for
-    /// the first directory with name of <paramref name="folderName"/>.
+    /// Searches the parent directories of <paramref name="startPath"/> for
+    /// the first directory with name of <paramref name="directoryName"/>.
     /// </summary>
-    /// <remarks>
-    /// For unit tests, the <paramref name="contentRootPath"/> may be the debug folder.
-    /// So we have to search for a parent directory.
-    /// </remarks>
-    /// <param name="folderName"></param>
-    /// <param name="contentRootPath"></param>
-    /// <returns>The name of the folder containing credentials and other data of the live website</returns>
-    /// <exception cref="DirectoryNotFoundException"></exception>
-    public static string GetParentFolder(string folderName, string contentRootPath)
+    /// <param name="directoryName">The name of the directory to search.</param>
+    /// <param name="startPath">The path where the search starts.</param>
+    /// <returns>The full path of the found folder.</returns>
+    /// <exception cref="DirectoryNotFoundException">
+    /// The <paramref name="startPath"/> does not exist, or the <paramref name="directoryName"/>
+    /// was not found in the parent directories.
+    /// </exception>
+    /// <exception cref="System.UnauthorizedAccessException">The caller does not have the required permission.</exception>
+    /// <exception cref="System.IO.PathTooLongException">The specified path, file name, or both exceed the system-defined maximum length.</exception>
+    public static string FindParentFolder(string directoryName, string startPath)
     {
-        var tmpFolderName = folderName;
-        var count = 0;
-
-        while (!Directory.Exists(Path.Combine(contentRootPath, tmpFolderName)) && count < 20)
+        if (!Directory.Exists(startPath))
         {
-            count++;
-            tmpFolderName = ".." + Path.DirectorySeparatorChar + tmpFolderName;
+            throw new DirectoryNotFoundException( $"Start path '{startPath}' not found.");
+        }
+
+        var currentPath = startPath;
+        var rootReached = false;
+
+        while (!rootReached && !Directory.Exists(Path.Combine(currentPath, directoryName)))
+        {
+            currentPath = Directory.GetParent(currentPath)?.FullName;
+            rootReached = currentPath == null;
+            currentPath ??= Directory.GetDirectoryRoot(startPath);
         }
         
-        var folder = Path.Combine(contentRootPath, tmpFolderName);
-        if (!Directory.Exists(folder)) throw new DirectoryNotFoundException( $"Folder '{folderName}' not found.");
-        return Path.GetFullPath(folder);
+        var resultPath = Path.Combine(currentPath, directoryName);
+        if (!Directory.Exists(resultPath)) throw new DirectoryNotFoundException( $"Folder '{directoryName}' not found in parent directories.");
+        return resultPath;
     }
 }
