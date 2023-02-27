@@ -237,7 +237,7 @@ public static class WebAppStartup
         #region * Setup error handling *
 
         // Error handling must be one of the very first things to configure
-        if (!env.IsProduction())
+        if (env.IsProduction())
         {
             // The StatusCodePagesMiddleware should be one of the earliest 
             // middleware in the pipeline, as it can only modify the response 
