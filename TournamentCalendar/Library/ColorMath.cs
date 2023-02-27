@@ -20,18 +20,18 @@ namespace Axuno.ColorTools
 {
     public static class ColorMath
     {
-        public static Color FromHtmlColor(string htmlColor)
+        public static Color? FromHtmlColor(string htmlColor)
         {
             if (htmlColor.StartsWith("#") & (htmlColor.Length == 7 | htmlColor.Length == 4) &
                 htmlColor.Substring(1).All(c => "ABCDEF0123456789".IndexOf(char.ToUpper(c)) != -1))
             {
-                return (Color) new ColorConverter().ConvertFromString(htmlColor);
+                return (Color?) new ColorConverter().ConvertFromString(htmlColor);
             }
             var converter = new ColorConverter();
-            var stdColors = (TypeConverter.StandardValuesCollection)converter.GetStandardValues();
-            if (stdColors.Cast<Color>().Any(col => col.Name.Equals(htmlColor, StringComparison.OrdinalIgnoreCase)))
+            var stdColors = (TypeConverter.StandardValuesCollection?)converter.GetStandardValues();
+            if (stdColors != null && stdColors.Cast<Color>().Any(col => col.Name.Equals(htmlColor, StringComparison.OrdinalIgnoreCase)))
             {
-                return (Color) converter.ConvertFromString(htmlColor);
+                return (Color?) converter.ConvertFromString(htmlColor);
             }
             throw new ArgumentException($"Invalid argument '{htmlColor}'");
         }
@@ -46,10 +46,10 @@ namespace Axuno.ColorTools
         /// <returns></returns>
         public static Color Blend(Color color1, Color color2, double ratio)
         {
-            int a = (int) Math.Round(color1.A * (1 - ratio) + color2.A * ratio);
-            int r = (int) Math.Round(color1.R * (1 - ratio) + color2.R * ratio);
-            int g = (int) Math.Round(color1.G * (1 - ratio) + color2.G * ratio);
-            int b = (int) Math.Round(color1.B * (1 - ratio) + color2.B * ratio);
+            var a = (int) Math.Round(color1.A * (1 - ratio) + color2.A * ratio);
+            var r = (int) Math.Round(color1.R * (1 - ratio) + color2.R * ratio);
+            var g = (int) Math.Round(color1.G * (1 - ratio) + color2.G * ratio);
+            var b = (int) Math.Round(color1.B * (1 - ratio) + color2.B * ratio);
             return Color.FromArgb(a, r, g, b);
         }
 
@@ -67,11 +67,11 @@ namespace Axuno.ColorTools
         {
             // Translated from JavaScript, part of coati
             double h, s, l;
-            double r = (double) rgb.R / 255;
-            double g = (double) rgb.G / 255;
-            double b = (double) rgb.B / 255;
-            double min = Math.Min(Math.Min(r, g), b);
-            double max = Math.Max(Math.Max(r, g), b);
+            var r = (double) rgb.R / 255;
+            var g = (double) rgb.G / 255;
+            var b = (double) rgb.B / 255;
+            var min = Math.Min(Math.Min(r, g), b);
+            var max = Math.Max(Math.Max(r, g), b);
 
             l = (max + min) / 2;
 
@@ -100,18 +100,18 @@ namespace Axuno.ColorTools
         public static Color HslToRgb(HslColor hsl)
         {
             // Translated from JavaScript, part of coati
-            double h = (double) hsl.H / 256;
-            double s = (double) hsl.S / 255;
-            double l = (double) hsl.L / 255;
+            var h = (double) hsl.H / 256;
+            var s = (double) hsl.S / 255;
+            var l = (double) hsl.L / 255;
             double q;
             if (l < 0.5)
                 q = l * (1 + s);
             else
                 q = l + s - l * s;
-            double p = 2 * l - q;
-            double[] t = new double[] {h + 1.0 / 3, h, h - 1.0 / 3};
-            byte[] rgb = new byte[3];
-            for (int i = 0; i < 3; i++)
+            var p = 2 * l - q;
+            var t = new double[] {h + 1.0 / 3, h, h - 1.0 / 3};
+            var rgb = new byte[3];
+            for (var i = 0; i < 3; i++)
             {
                 if (t[i] < 0) t[i]++;
                 if (t[i] > 1) t[i]--;
@@ -138,7 +138,7 @@ namespace Axuno.ColorTools
         {
             if (divisor <= 0)
                 throw new ArgumentOutOfRangeException("divisor", "The divisor cannot be zero or negative.");
-            int i = dividend % divisor;
+            var i = dividend % divisor;
             if (i < 0) i += divisor;
             return i;
         }
@@ -256,7 +256,7 @@ namespace Axuno.ColorTools
 
         public string ToRGBString()
         {
-            Color color = (Color)this;
+            var color = (Color)this;
             return String.Format("R: {0:#0.##} G: {1:#0.##} B: {2:#0.##}", color.R, color.G, color.B);
         }
 
@@ -270,8 +270,8 @@ namespace Axuno.ColorTools
                     r = g = b = hslColor.luminosity;
                 else
                 {
-                    double temp2 = GetTemp2(hslColor);
-                    double temp1 = 2.0 * hslColor.luminosity - temp2;
+                    var temp2 = GetTemp2(hslColor);
+                    var temp1 = 2.0 * hslColor.luminosity - temp2;
 
                     r = GetColorComponent(temp1, temp2, hslColor.hue + 1.0 / 3.0);
                     g = GetColorComponent(temp1, temp2, hslColor.hue);
@@ -313,7 +313,7 @@ namespace Axuno.ColorTools
 
         public static implicit operator HSLColor(Color color)
         {
-            HSLColor hslColor = new HSLColor();
+            var hslColor = new HSLColor();
             hslColor.hue = color.GetHue() / 360.0; // we store hue as 0-1 as opposed to 0-360 
             hslColor.luminosity = color.GetBrightness();
             hslColor.saturation = color.GetSaturation();
@@ -323,7 +323,7 @@ namespace Axuno.ColorTools
 
         public void SetRGB(int red, int green, int blue)
         {
-            HSLColor hslColor = (HSLColor)Color.FromArgb(red, green, blue);
+            var hslColor = (HSLColor)Color.FromArgb(red, green, blue);
             this.hue = hslColor.hue;
             this.saturation = hslColor.saturation;
             this.luminosity = hslColor.luminosity;

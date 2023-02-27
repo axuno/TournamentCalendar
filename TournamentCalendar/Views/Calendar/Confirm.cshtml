@@ -1,13 +1,13 @@
 ﻿@model TournamentCalendar.Models.Shared.ConfirmModel<TournamentCalendarDAL.EntityClasses.CalendarEntity>
 <div class="pb-2">
     <h4 class="h4">
-        @if (Model.Entity.IsNew){<text>Neuer </text>}Turniereintrag:<br />
-        @Model.Entity.TournamentName
+        @if (Model.Entity?.IsNew ?? false){<text>Neuer </text>}Turniereintrag:<br />
+        @Model.Entity?.TournamentName
     </h4>
     @if (Model.SaveSuccessful)
     {
         <div class="msg-success rounded mb-2">
-            <span>Das Turnier wurde in der Datenbank gespeichert (<strong>@(Model.Entity.ApprovedOn.HasValue && !Model.Entity.DeletedOn.HasValue ? "aktiv" : "inaktiv")</strong>). Vielen Dank!</span>
+            <span>Das Turnier wurde in der Datenbank gespeichert (<strong>@(Model.Entity?.ApprovedOn != null && !Model.Entity.DeletedOn.HasValue ? "aktiv" : "inaktiv")</strong>). Vielen Dank!</span>
         </div>
     }
     else
@@ -22,9 +22,9 @@
     @if (Model.EmailSuccessful.HasValue && Model.EmailSuccessful.Value)
     {
         <div class="msg-success rounded">
-            Bitte die E-Mail beachten, die wir soeben an @Model.Entity.PostedByEmail geschickt haben
+            Bitte die E-Mail beachten, die wir soeben an @Model.Entity?.PostedByEmail geschickt haben
             <span>
-                @if (!Model.Entity.ApprovedOn.HasValue)
+                @if (Model.Entity is {ApprovedOn: null })
                      {
                          <text><br/>und das Turnier <strong>über den Link in der E-Mail aktiv schalten</strong>.</text>
                      }
@@ -34,7 +34,7 @@
     @if (Model.EmailSuccessful.HasValue && !Model.EmailSuccessful.Value)
     {
         <div class="msg-error rounded">
-            <span>Beim Versenden der E-Mail an @Model.Entity.PostedByEmail ist ein Fehler aufgetreten.</span>
+            <span>Beim Versenden der E-Mail an @Model.Entity?.PostedByEmail ist ein Fehler aufgetreten.</span>
         </div>
     }
 </div>

@@ -2,21 +2,20 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 
-namespace TournamentCalendar.Controllers
+namespace TournamentCalendar.Controllers;
+
+public class ControllerBase : Controller
 {
-    public class ControllerBase : Controller
+    public IWebHostEnvironment HostingEnvironment { get; set; } = null!;
+
+    public IConfiguration Configuration { get; set; } = null!;
+
+    public ControllerBase()
+    { }
+
+    public ControllerBase(IWebHostEnvironment hostingEnvironment, IConfiguration configuration) : this()
     {
-        public IWebHostEnvironment HostingEnvironment { get; set; }
-
-        public IConfiguration Configuration { get; set; }
-
-        public ControllerBase()
-        { }
-
-        public ControllerBase(IWebHostEnvironment hostingEnvironment, IConfiguration configuration) : this()
-        {
-            HostingEnvironment = hostingEnvironment;
-            Configuration = configuration;
-        }
+        HostingEnvironment = hostingEnvironment;
+        Configuration = configuration;
     }
 }

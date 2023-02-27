@@ -2,8 +2,16 @@
 
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
+        <Version>2.1.0</Version>
+        <FileVersion>2.1.0</FileVersion>
+        <EnableDefaultContentItems>true</EnableDefaultContentItems>
+        <Authors>axuno gGmbH</Authors>
+        <CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</CurrentYear>
+        <Copyright>Copyright 1998-$(CurrentYear) $(Authors)</Copyright>
         <LangVersion>latest</LangVersion>
-        <Nullable>disable</Nullable>
+        <Nullable>enable</Nullable>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageIcon>TournamentCalender-192x192.png</PackageIcon>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -11,37 +19,45 @@
 		<WarningsAsErrors>NU1605</WarningsAsErrors>
 	</PropertyGroup>
 
-	<PropertyGroup>
-		<EnableDefaultContentItems>true</EnableDefaultContentItems>
-		<Version>2.0.2</Version>
-        <FileVersion>2.0.2</FileVersion>
-		<Authors>axuno gGmbH</Authors>
-		<Copyright>(C) 1998-2023 axuo gGmbH</Copyright>
-		<PackageLicenseExpression>MIT</PackageLicenseExpression>
-		<PackageIcon>TournamentCalender-192x192.png</PackageIcon>
-	</PropertyGroup>
+	<ItemGroup>
+        <None Update="MailStore\**" CopyToOutputDirectory="Always" />
+	</ItemGroup>
 
 	<ItemGroup>
-		<None Remove="Library\NB.Tools\GeoSpatial\LongitudeLatitudeDistance.mht" />
 		<None Include="TournamentCalender-192x192.png">
 		  <Pack>True</Pack>
 		  <PackagePath></PackagePath>
 		</None>
 	</ItemGroup>
 
+    <ItemGroup>
+        <InternalsVisibleTo Include="TournamentCalendar.Tests" />
+    </ItemGroup>
+
 	<ItemGroup>
 		<!--<PackageReference Include="BuildBundlerMinifier" Version="2.6.362" />-->
-		<PackageReference Include="cloudscribe.Web.Navigation" Version="5.0.0" />
-		<PackageReference Include="MailMergeLib" Version="5.8.2" />
+		<PackageReference Include="cloudscribe.Web.Navigation" Version="6.0.2" />
+		<PackageReference Include="MailMergeLib" Version="5.9.1" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="6.0.0" />
 		<PackageReference Include="Microsoft.DotNet.PlatformAbstractions" Version="3.1.6" />
 		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.0" />
-		<PackageReference Include="NLog.Web.AspNetCore" Version="5.1.5" />
+		<PackageReference Include="NLog.Web.AspNetCore" Version="5.2.2" />
 		<PackageReference Include="StackifyMiddleware" Version="3.0.5.2" />
 		<PackageReference Include="System.Drawing.Primitives" Version="4.3.0" />
 	</ItemGroup>
 
 	<ItemGroup>
+		<EmbeddedResource Update="Models\Error\StatusCodes.de.resx">
+		  <Generator></Generator>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Models\Error\StatusCodes.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>StatusCodes.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Models\Error\StatusDescriptions.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>StatusDescriptions.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
 		<EmbeddedResource Update="Resources\DataAnnotationResource.de.resx">
 			<Generator></Generator>
 		</EmbeddedResource>
@@ -73,6 +89,16 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Compile Update="Models\Error\StatusCodes.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>StatusCodes.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Models\Error\StatusDescriptions.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>StatusDescriptions.resx</DependentUpon>
+		</Compile>
 		<Compile Update="Resources\DataAnnotationResource.Designer.cs">
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>

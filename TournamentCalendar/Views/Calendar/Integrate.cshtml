@@ -1,6 +1,5 @@
 ﻿@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
 @using TournamentCalendar.Controllers
-@using TournamentCalendar.Views
 <div class="row">
     <article class="col-md-6">
         <h3 class="h3">Turnierkalender<br/>in die eigene<br/> Homepage integrieren</h3>
@@ -23,10 +22,10 @@
     </article>
 </div>
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-12 mb-3">
         <div>
             <p>
-                Für diese Integration gibt es verschiedene Optionen, die nachfolgend beispielhaft beschrieben werden.
+                Für diese Integration gibt es verschiedene Optionen. Nachfolgend ist beispielhaft die Integration mit JavaScript beschrieben.
                 Bei Fragen dazu @Html.ActionLink("helfen wir gerne kostenlos weiter", nameof(Contact.Message), nameof(Contact), null, new { @class = "link" }).
             </p>
         </div>
@@ -45,25 +44,6 @@
             </p>
             <p>
                 <a class="btn btn-primary mr-2 mb-3" href="https://jsfiddle.net/axuno/wot90aon/">Demo anzeigen</a>
-            </p>
-        </div>
-    </div>
-    <div class="col-md-12">
-        <div class="card shadow p-2 my-4">
-            <h4 class="h4">PHP</h4>
-            <p>
-                Das ist ein Beispiel für die Integration mit PHP. Wegen der Einbindung der Style Sheets wird die gesamte HTML Seite
-                angezeigt. Der Kern ist dabei die PHP-Funktion <code>file_get_contents(...)</code>.
-            </p>
-            <script src="https://gist.github.com/axunonb/734612b0f7c61ab9de2a02d16ab71bc3.js"></script>
-            <p>
-                Natürlich lässt sich das Style Sheet teilweise oder ganz mit eigenen CSS <code>Style</code>s dem Design der Homepage anzupassen.
-            </p>
-            <p>
-                Dieser Beispielcode kann hier gestartet werden:
-            </p>
-            <p>
-                <a class="btn btn-primary mr-2 mb-3" href="http://phpfiddle.org/lite?url=https://gist.githubusercontent.com/axunonb/734612b0f7c61ab9de2a02d16ab71bc3/raw/a0d4a2423101f79cde8d81d55cce158c16fe9b2f/EmbedCalendar.php">Demo anzeigen</a>    
             </p>
         </div>
     </div>

@@ -1,5 +1,4 @@
-﻿@using AngleSharp.Media.Dom
-@using TournamentCalendar.Controllers
+﻿@using TournamentCalendar.Controllers
 @model IEnumerable<Orga.DownloadFile>
 <section class="pb-2">
     <div class="row">
@@ -28,7 +27,7 @@
             <article class="col-sm-8">
                 <h5 class="h5">
                     Turnierauswertung
-                    für Microsoft Excel 2007-2016<br />
+                    für Microsoft Excel (ab 2007)<br />
                     (12 Mannschaften auf 2 Spielfeldern)
                 </h5>
                 Spielmodus:
@@ -52,7 +51,7 @@
             <article class="col-sm-8">
                 <h5 class="h5">
                     Turnierauswertung
-                    für Microsoft Excel 2007-2016<br />
+                    für Microsoft Excel (ab 2007)<br />
                     (16 Mannschaften auf 4 Spielfeldern)
                 </h5>
                 Spielmodus:
@@ -82,23 +81,54 @@
         <div class="row">
             <article class="col-sm-8">
                 <h5 class="h5">
-                    Turnierprogramm des Volleyballverbands Rheinland
+                    Volleyballturnierorganisator
                 </h5>
-                <p>
-                    Auch hier handelt es sich um Excel-Kalkulationen mit Makros. Je nach Anzahl der teilnehmenden Mannschaften gibt es eine speziell dafür angepasste Version.
-                </p>
-                <p>
-                    Unter welcher Lizenz diese Software verbreitet wird, ist den Exceldateien und der Website des Entwicklers nicht zu entnehmen.
-                </p>
+                <div>Hauptmerkmale</div>
+                <ul>
+                    <li>Läuft auf Microsoft Windows 11, 10, 8, 7, Vista, XP, NT und 98</li>
+                    <li>Volleyballturnierorganisator 4.0.3 ist eine Software zur Vorbereitung und Durchführung von Turnieren für Volleyball und andere Ballsportarten</li>
+                    <li>Vor dem Turnier wird der Spielplan erzeugt; Spielpläne und Spielberichtsbögen werden ausgedruckt. Während des Turniers werden die Ergebnisse eingegeben. Die Tabellen und Ergebnisse werden berechnet und können jederzeit ausgedruckt werden.</li>
+                </ul>
+                <div>
+                    Mehr Infos gibt es auf der <a href="https://www.turnierprogramm.de/" class="link">Website des Anbieters</a>.
+                </div>
             </article>
-            <article class="col-sm-4">
-                <a href="http://www.volleyballturniere.de/"><i class="fa fa-arrow-circle-down fa-2x ax-color" aria-hidden="true"></i> Download von der Website des Programmierers</a>
-                <p>
-                    <i class="fa fa-arrow-circle-down fa-2x ax-color" aria-hidden="true"></i>
-                    @{var file3 = Model.First(m => m.Id == "turnierplaner-rmm-beispiel.pdf"); }
-                    @Html.ActionLink("Beispiel-Kalk. als PDF-Dokument", nameof(Orga.Download), nameof(Orga), new { id = file3.Id }, null)
-                    <br />(@file3.Size Bytes)
-                </p>
+        </div>
+    </div>
+    <div class="card shadow p-2 my-4">
+        <div class="row">
+            <article class="col-sm-8">
+                <h5 class="h5">
+                    SPORT-Software
+                </h5>
+                <div>Hauptmerkmale</div>
+                <ul>
+                    <li>Läuft auf Microsoft Windows 11, 10, 8, 7, Vista, XP, NT und 98</li>
+                    <li>Es ist auch ein &quot;O&lt; Turnier Manager für Android&quot; erhältlich</li>
+                    <li>Mögliche Turniersysteme:  Gruppensystem, KO-Systeme, Rundensystem, Schweizer System, Supermêlée, Poule-System</li>
+                    <li>Verwaltet Spieler, Vereine und Schiedsrichter ohne Anzahlbeschränkung</li>
+                </ul>
+                <div>
+                    Mehr Infos gibt es auf der <a href="https://www.sport-software.de/" class="link">Website des Anbieters</a>.
+                </div>
+            </article>
+        </div>
+    </div>
+    <div class="card shadow p-2 my-4">
+        <div class="row">
+            <article class="col-sm-8">
+                <h5 class="h5">
+                    Tournify - Online-Turnierplaner
+                </h5>
+                <div>Hauptmerkmale</div>
+                <ul>
+                    <li>Einfach und schnell einen Turnierplan erstellen</li>
+                    <li>Übersichtlicher Live-Präsentationsbildschirm</li>
+                    <li>Online Registrierungsseite für Teams</li>
+                </ul>
+                <div>
+                    Mehr Infos gibt es auf der <a href="https://tournify.de/" class="link">Website des Anbieters</a>.
+                </div>
             </article>
         </div>
     </div>
