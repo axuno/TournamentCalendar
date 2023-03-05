@@ -12,6 +12,7 @@ namespace TournamentCalendar.Controllers;
 /// </summary>
 public class Captcha : ControllerBase
 {
+    [HttpGet]
     public async Task<IActionResult> Index()
     {
         return await GetSvgContent();

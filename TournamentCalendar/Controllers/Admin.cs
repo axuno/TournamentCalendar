@@ -18,6 +18,7 @@ public class Admin : ControllerBase
     }
 
     [Authorize(Roles = Constants.RoleName.Admin)]
+    [HttpGet]
     public IActionResult NetCoreInfo()
     {
         var p = new Process
@@ -43,12 +44,14 @@ public class Admin : ControllerBase
     }
 
     [Authorize(Roles = Constants.RoleName.Admin)]
+    [HttpGet]
     public ActionResult Restart()
     {
         _applicationLifetime.StopApplication();
         return Content("Ok", "text/plain");
     }
 
+    [HttpGet]
     public async Task<IActionResult> HeartBeat()
     {
         // called by cron job

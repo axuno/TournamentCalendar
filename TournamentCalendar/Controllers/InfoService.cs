@@ -27,17 +27,14 @@ public class InfoService : ControllerBase
         _logger = logger;
     }
 
-    [HttpGet]
-    [Route("")]
+    [HttpGet("")]
     public IActionResult Index()
     {
         ViewBag.TitleTagText = "Volley-News abonnieren";
         return View(ViewName.InfoService.Edit, new EditModel { EditMode = EditMode.New });
     }
 
-
-    [HttpGet]
-    [Route("[action]/{id?}")]
+    [HttpGet("[action]/{id?}")]
     public IActionResult Eintrag(string id)
     {
         ViewBag.TitleTagText = "Volley-News abonnieren";
@@ -117,8 +114,7 @@ public class InfoService : ControllerBase
     /// <summary>
     /// This method is call when using the submit button with attribute formaction = volley-news/unsubscribe
     /// </summary>
-    [HttpPost]
-    [Route("[action]/{id?}")]
+    [HttpPost("[action]/{id?}")]
     public async Task<IActionResult> Unsubscribe([FromForm] EditModel model, CancellationToken cancellationToken)
     {
         ViewBag.TitleTagText = "Volley-News abbestellen";
@@ -126,7 +122,7 @@ public class InfoService : ControllerBase
         return View(ViewName.InfoService.Unsubscribe, await unsubscribeModel.Save(cancellationToken));
     }
 
-    [Route("[action]/{id}")]
+    [HttpGet("[action]/{id}")]
     public async Task<IActionResult> Bestaetigen(string id, CancellationToken cancellationToken)
     {
         ViewBag.TitleTagText = "Volley-News bestätigen";

@@ -18,7 +18,7 @@ public class Import : ControllerBase
     public Import(IWebHostEnvironment hostingEnvironment, IConfiguration configuration) : base(hostingEnvironment, configuration)
     {}
 
-    [Route("anzeigen/{id?}")]
+    [HttpGet("anzeigen/{id?}")]
     public async Task<ActionResult> ShowAsync(string id)
     {
         ViewBag.TitleTagText = "Andere Volleyball-Turnierkalender";

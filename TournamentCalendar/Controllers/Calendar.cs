@@ -28,7 +28,7 @@ public class Calendar : ControllerBase
         _logger = logger;
     }
 
-    [Route("")]
+    [HttpGet("")]
     public async Task<IActionResult> Kalender(CancellationToken cancellationToken)
     {
         ViewBag.TitleTagText = "Volleyball-Turnierkalender";
@@ -37,7 +37,7 @@ public class Calendar : ControllerBase
         return View(ViewName.Calendar.Overview, model);
     }
 
-    [Route("Id/{id:long}")]
+    [HttpGet("Id/{id:long}")]
     public async Task<IActionResult> Id(long id, CancellationToken cancellationToken)
     {
         ViewBag.TitleTagText = "Volleyball-Turnierkalender";
@@ -55,8 +55,7 @@ public class Calendar : ControllerBase
         return View(ViewName.Calendar.Show, model);
     }
 
-    [HttpGet]
-    [Route("eintrag/{guid?}")]
+    [HttpGet("eintrag/{guid?}")]
     public async Task<IActionResult> Entry([FromRoute] string? guid, CancellationToken cancellationToken)
     {
         ViewBag.TitleTagText = "Volleyballturnier in den Kalender eintragen";
@@ -76,8 +75,7 @@ public class Calendar : ControllerBase
             : View(ViewName.Calendar.Edit, model);
     }
 
-    [HttpPost]
-    [Route("eintrag/{guid?}")]
+    [HttpPost("eintrag/{guid?}")]
     public async Task<IActionResult> Entry([FromForm] EditModel model, [FromRoute] string? guid, CancellationToken cancellationToken)
     {
         ViewBag.TitleTagText = "Volleyballturnier in den Kalender eintragen";
@@ -148,7 +146,7 @@ public class Calendar : ControllerBase
         }
     }
 
-    [Route("bestaetigen/{guid?}")]
+    [HttpGet("bestaetigen/{guid?}")]
     public async Task<IActionResult> Approve(string? guid, CancellationToken cancellationToken)
     {
         guid ??= string.Empty;
@@ -158,7 +156,7 @@ public class Calendar : ControllerBase
         return View(ViewName.Calendar.Approve, await approveModel.Save(cancellationToken));
     }
 
-    [Route("integrieren")]
+    [HttpGet("integrieren")]
     public IActionResult Integrate()
     {
         ViewBag.TitleTagText = "Turnierkalender integrieren";
