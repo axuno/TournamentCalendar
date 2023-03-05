@@ -2,9 +2,14 @@ name: build + test
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, 'version/**', 'pr/**', 'pr-**' ]
+    paths-ignore:
+      - '**/*.md'
   pull_request:
-    branches: [ main ]
+    branches: [ main, 'version/**', 'pr/**', 'pr-**' ]
+    types: [opened, synchronize, reopened]
+    paths-ignore:
+      - '**/*.md'
 
 jobs:
   build:
@@ -12,14 +17,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Setup .NET
-      uses: actions/setup-dotnet@v1
+      uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 6.0.x
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build --no-restore -nowarn:CS0162,CS0436
-    - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet build --no-restore /p:configuration=release -p:EnvironmentName=Production

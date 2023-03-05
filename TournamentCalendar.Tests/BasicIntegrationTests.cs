@@ -22,6 +22,7 @@ public class BasicIntegrationTests
                     builder =>
                     {
                         builder.UseEnvironment(Environments.Development);
+                        builder.ConfigureAppConfiguration((context, configurationBuilder) => { });
                         builder.ConfigureTestServices(services =>
                         {
                         });
