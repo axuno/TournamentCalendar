@@ -12,6 +12,11 @@
         <Nullable>enable</Nullable>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageIcon>TournamentCalender-192x192.png</PackageIcon>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion> <!--only update AssemblyVersion with major releases -->
+        <LangVersion>latest</LangVersion>
+        <EnableNETAnalyzers>true</EnableNETAnalyzers>
+        <AnalysisLevel>latest</AnalysisLevel>
+        <Features>strict</Features>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
