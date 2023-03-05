@@ -22,7 +22,7 @@
         </div>
     }
 </article>
-@using (Model.EditMode == EditMode.New ? Html.BeginForm(nameof(Calendar.Entry), nameof(Calendar), new {id = string.Empty}, FormMethod.Post, null, new{id = "CalendarForm", @class = "pb-2" }) : Html.BeginForm(nameof(Calendar.Entry), nameof(Calendar), new {id = Model.Guid}, FormMethod.Post, null, new { id = "CalendarForm", @class="pb-2" }))
+@using (Model.EditMode == EditMode.New ? Html.BeginForm(nameof(Calendar.Entry), nameof(Calendar), new {guid = string.Empty}, FormMethod.Post, null, new{id = "CalendarForm", @class = "pb-2" }) : Html.BeginForm(nameof(Calendar.Entry), nameof(Calendar), new {guid = Model.Guid}, FormMethod.Post, null, new { id = "CalendarForm", @class="pb-2" }))
 {
     ViewContext.ClientValidationEnabled = false;
     @* Validation summary must be inside BeginForm block *@
