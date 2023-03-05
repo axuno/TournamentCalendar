@@ -17,7 +17,7 @@ public class ContentSynd : ControllerBase
         _logger = logger;
     }
 
-    [Route("kalender.html")]
+    [HttpGet("kalender.html")]
     public async Task<IActionResult> CalendarList(CancellationToken cancellationToken)
     {
         // Cross Origin Request Sharing (CORS) - allow request from any domain:
@@ -28,7 +28,7 @@ public class ContentSynd : ControllerBase
         return PartialView(ViewName.ContentSynd.CalendarListPartial, model);
     }
 
-    [Route("kalender.css")]
+    [HttpGet("kalender.css")]
     public IActionResult CalendarListCss()
     {
         Response.Headers.Add("Access-Control-Allow-Origin", "*");
@@ -36,7 +36,7 @@ public class ContentSynd : ControllerBase
         return PartialView(ViewName.ContentSynd.CalendarListPartialCss);
     }
 
-    [Route("kalender.js")]
+    [HttpGet("kalender.js")]
     public IActionResult CalendarListJs()
     {
         Response.Headers.Add("Access-Control-Allow-Origin", "*");
@@ -45,7 +45,7 @@ public class ContentSynd : ControllerBase
         return PartialView(ViewName.ContentSynd.CalendarListPartialJs);
     }
 
-    [Route("test")]
+    [HttpGet("test")]
     public IActionResult Test()
     {
         return View("Test");

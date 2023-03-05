@@ -24,15 +24,13 @@ public class Contact : ControllerBase
         _logger = logger;
     }
 
-    [HttpGet]
-    [Route("")]
+    [HttpGet("")]
     public IActionResult Index()
     {
         return RedirectToAction(nameof(Message));
     }
 
-    [HttpGet]
-    [Route("nachricht")]
+    [HttpGet("nachricht")]
     public async Task<IActionResult> Message()
     {
         ViewBag.TitleTagText = "Volleyball-Turnier.de kontaktieren";

@@ -88,6 +88,7 @@ public class Auth : ControllerBase
         return RedirectToAction(nameof(SignIn));
     }
 
+    [HttpGet]
     public IActionResult Denied()
     {
         return View(ViewName.Auth.Denied);

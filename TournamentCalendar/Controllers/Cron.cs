@@ -23,6 +23,7 @@ public class Cron : ControllerBase
     /// in order to prevent application idle timeout shutdowns 
     /// </summary>
     /// <returns></returns>
+    [HttpGet]
     public ContentResult Heartbeat(string? id)
     {
         HttpContext.Response.StatusCode = (int)HttpStatusCode.OK;
@@ -34,6 +35,7 @@ public class Cron : ControllerBase
     /// in order to initiate application restart by IIS.
     /// </summary>
     /// <returns>Returns the ping url to initiate application restart by IIS</returns>
+    [NonAction]
     public static string GetHeartbeatUrl()
     {
         return "https://volleyball-turnier.de/cron/heartbeat/" + _internalPing;

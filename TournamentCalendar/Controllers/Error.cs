@@ -20,8 +20,7 @@ public class Error : ControllerBase
         _notFoundLogger = loggerFactory.CreateLogger(nameof(TournamentCalendar) + ".NotFound");
     }
 
-    [Route("{id?}")]
-    [HttpGet]
+    [HttpGet("{id?}")]
     public IActionResult Index(string? id)
     {
         ViewBag.TitleTagText = ViewBag.TitleTagText = "Volleyball-Turnierkalender - Fehler";

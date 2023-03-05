@@ -27,21 +27,21 @@ public class Orga : ControllerBase
     public Orga(IWebHostEnvironment hostingEnvironment, IConfiguration configuration) : base(hostingEnvironment, configuration)
     {}
 
-    [Route("")]
-    [Route("Index")]
+    [HttpGet("")]
+    [HttpGet("Index")]
     public IActionResult Index()
     {
         return RedirectToAction(nameof(Orga.Evaluation), nameof(Controllers.Orga));
     }
 
-    [Route("auswertung")]
+    [HttpGet("auswertung")]
     public IActionResult Evaluation()
     {
         ViewBag.TitleTagText = "Software zur Auswertung von Volleyballturnieren";
         return View(ViewName.Orga.Auswertung, GetList());
     }
 
-    [Route("download/{id?}")]
+    [HttpGet("download/{id?}")]
     public IActionResult Download(string id)
     {
         if (GetFile(id, out var file) && System.IO.File.Exists(Path.Combine(HostingEnvironment.WebRootPath, file!.Name)))

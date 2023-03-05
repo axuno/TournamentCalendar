@@ -8,7 +8,7 @@ namespace TournamentCalendar.Controllers;
 [Route("nl")]
 public class Newsletter : ControllerBase
 {
-    [Route("show")]
+    [HttpGet("show")]
     public async Task<IActionResult> Show(CancellationToken cancellationToken)
     {
         var model = await new NewsletterModel().InitializeAndLoad(cancellationToken);
@@ -16,7 +16,7 @@ public class Newsletter : ControllerBase
         return View("Show", model);
     }
 
-    [Route("send")]
+    [HttpGet("send")]
     public async Task<IActionResult> Send(CancellationToken cancellationToken)
     {
         return await Task.FromResult(Content("send"));
