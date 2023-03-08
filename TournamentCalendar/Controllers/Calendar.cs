@@ -60,6 +60,11 @@ public class Calendar : ControllerBase
     {
         ViewBag.TitleTagText = "Volleyballturnier in den Kalender eintragen";
 
+        if (!string.IsNullOrEmpty(guid) && !Guid.TryParse(guid, out _))
+        {
+            return NotFound();
+        }
+
         var model = await new EditModel().Initialize(cancellationToken);
         if (string.IsNullOrEmpty(guid))
         {
@@ -71,7 +76,7 @@ public class Calendar : ControllerBase
         model.LoadTournament(guid, cancellationToken);
 
         return model.IsNew  // id not found
-            ? (ActionResult)RedirectToAction(nameof(Calendar.Entry), nameof(Controllers.Calendar), new { id = string.Empty })
+            ? RedirectToAction(nameof(Calendar.Entry), nameof(Controllers.Calendar), new { guid = string.Empty })
             : View(ViewName.Calendar.Edit, model);
     }
 
