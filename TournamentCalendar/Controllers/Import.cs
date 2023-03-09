@@ -20,11 +20,11 @@ public class Import : ControllerBase
     {}
 
     [HttpGet("anzeigen/{id?}")]
-    public async Task<ActionResult> Show(string id, CancellationToken cancellationToken)
+    public ActionResult Show(string id)
     {
         ViewBag.TitleTagText = "Andere Volleyball-Turnierkalender";
 
-        var storage = new Storage(Path.Combine(HostingEnvironment.WebRootPath, @"Import"));
+        Storage.StorageFolder = Path.Combine(HostingEnvironment.WebRootPath, @"Import");
 
         // Uses the latest stored tourneys and compares with current tourneys
         var beforeThisDate = DateTime.MaxValue;
@@ -37,7 +37,7 @@ public class Import : ControllerBase
                 out beforeThisDate);
         }
             
-        var listModel = await storage.GetListModel(beforeThisDate);
+        var listModel = Storage.CreateListModel(beforeThisDate);
         return View(ViewName.TournamentImport.Show, listModel);
     }
 }

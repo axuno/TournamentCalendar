@@ -26,29 +26,27 @@
                     <a class="btn btn-primary mr-2 mb-3@(date == Model.LastImportDate ? " active" : "")" href="@Url.Action(nameof(Import.Show), nameof(Import), new {id = date.ToString("yyyy-MM-dd")})" role="button">@date.ToString("dd.MM.yyyy")</a>
                 }
             }
+            else
+            {
+                <h4 class="h4">Keine Importdaten gefunden</h4>
+            }
         </div>
 
-        @foreach (var providerId in Model.AllTournamentsProviderIds)
+        @foreach (var provider in Model.Providers)
         {
             <div class="mb-4">
                 @{
-                    var currentProvider = providerId;
-                    var newProviderEntries = Model.NewTournaments.Where(p => p.ProviderId == currentProvider).ToArray();
+                    var newTourneys = Model.NewTourneys!.Where(p => p.ProviderId == provider.ProviderId).ToArray();
                 }
-                <h4 class="h4">@Model.ProviderById(providerId).ProviderName</h4>
-                <h5>Insgesamt @newProviderEntries.Length neue Einträge</h5>
+                <h4 class="h4">@provider.ProviderName</h4>
+                <h5>Insgesamt @newTourneys.Length neue Einträge</h5>
                 @if (Model.LastImportDate != DateTime.MinValue)
                 {
                     <div><b>Seit dem letzten Import am @Model.LastImportDate.ToString("dd.MM.yyyy"):</b>
                     </div>
                 }
                 @{
-                    if (!newProviderEntries.Any())
-                    {
-                        <div>Keine Einträge</div>
-                    }
-
-                    foreach (var entry in newProviderEntries)
+                    foreach (var entry in newTourneys)
                     {
                         <div>
                             @entry.CollectedOn.ToString("dd.MM.yyyy") <a href="@entry.Url" target="_blank" class="link">@entry.Url</a>
