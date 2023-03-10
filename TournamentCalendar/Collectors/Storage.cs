@@ -10,7 +10,7 @@ namespace TournamentCalendar.Collectors;
 
 internal static class Storage
 {
-    internal const string FileBaseName = "ExtTournaments_";
+    internal const string FileBaseName = "Tourneys_";
 
     /// <summary>
     /// Gets the files with their full path in descending order.
@@ -30,7 +30,7 @@ internal static class Storage
     public static CollectedTourneys ReadTourneysFromFile(string pathToFile)
     {
         var serializer = new YAXSerializer<CollectedTourneys>();
-        var tourneys = serializer.DeserializeFromFile(Path.Combine(StorageFolder, pathToFile));
+        var tourneys = serializer.DeserializeFromFile(pathToFile);
         return tourneys ?? new CollectedTourneys();
     }
 
@@ -43,20 +43,20 @@ internal static class Storage
         serializer.SerializeToFile(tourneys, filename);
     }
 
-    public static async Task CollectAndSaveTourneys()
+    public static async Task CollectAndSaveTourneys(bool overwriteExisting)
     {
-        var currentTourneys = (await Providers.CollectTourneys(DateTime.Now)).Tourneys;
+        var currentTourneys = (await Providers.CollectTourneys()).Tourneys;
 
-        SaveTourneysToFile(new CollectedTourneys { Tourneys = currentTourneys }, false);
+        SaveTourneysToFile(new CollectedTourneys { Tourneys = currentTourneys }, overwriteExisting);
 
         RemoveOldImportFiles(10);
     }
 
-    public static (IList<Tourney> Same, IList<Tourney> New, IList<Tourney> Deleted) CompareTourneysByUrl(IList<Tourney> latestTourneys, IList<Tourney> olderTourneys)
+    public static (IList<TourneyInfo> Same, IList<TourneyInfo> New, IList<TourneyInfo> Deleted) CompareTourneysByUrl(IList<TourneyInfo> latestTourneys, IList<TourneyInfo> olderTourneys)
     {
-        var sameTourneys = latestTourneys.Where(latest => olderTourneys.Any(older => older.Url == latest.Url)).ToList();
-        var deletedTourneys = olderTourneys.Where(older => latestTourneys.All(latest => latest.Url != older.Url)).ToList();
-        var newTourneys = latestTourneys.Where(latest => olderTourneys.All(older => older.Url != latest.Url)).ToList();
+        var sameTourneys = latestTourneys.Where(latest => olderTourneys.Any(older => older.Link == latest.Link)).ToList();
+        var deletedTourneys = olderTourneys.Where(older => latestTourneys.All(latest => latest.Link != older.Link)).ToList();
+        var newTourneys = latestTourneys.Where(latest => olderTourneys.All(older => older.Link != latest.Link)).ToList();
 
         return (sameTourneys, newTourneys, deletedTourneys);
     }

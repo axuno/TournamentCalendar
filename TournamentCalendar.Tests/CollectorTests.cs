@@ -27,17 +27,29 @@ public class CollectorTests
         Assert.That(doc, Is.Not.Empty);
         Assert.That(section, Is.Not.Null);
     }
+
+    [Test]
+    public async Task Providers_GetHttpGetAllTourneys()
+    {
+        Storage.StorageFolder = @"C:\Temp";
+        await Storage.CollectAndSaveTourneys(true);
+    }
     
     [TestCaseSource(nameof(GetAllProviderExpectedResults))]
-    public async Task Provider_ExtractAllLinks(ProviderBase provider, int numOfLinks)
+    public async Task Provider_ExtractAllInfos(ProviderBase provider, int numOfLinks)
     {
         provider.StartPath = $"{provider.GetType().Name}_Page1.html";
         provider.GetDocumentAsync = path =>
             File.ReadAllTextAsync(Path.Combine(_testDataDirectory, path.TrimStart('/')), Encoding.UTF8)!;
 
-        var links = await provider.GetAllTourneyLinks();
+        var infos = await provider.GetAllTourneyInfos();
+        var info = infos.FirstOrDefault();
 
-        Assert.That(links.Count, Is.EqualTo(numOfLinks));
+        Assert.That(infos.Count, Is.EqualTo(numOfLinks));
+        Assert.That(info?.Link, Is.Not.Empty);
+        Assert.That(info?.Date, Is.Not.EqualTo(DateTime.MinValue));
+        Assert.That(info?.Name, Is.Not.Empty);
+        Assert.That(info?.PostalCode, Is.Not.Empty);
     }
 
     [TestCaseSource(nameof(GetAllProviderClassInstances))]
@@ -46,7 +58,7 @@ public class CollectorTests
         provider.StartPath = $"{provider.GetType().Name}_Page1.html";
         provider.GetDocumentAsync = path => Task.FromResult(default(string?));
 
-        var exception = Assert.ThrowsAsync<InvalidOperationException>(code: async () => await provider.GetAllTourneyLinks());
+        var exception = Assert.ThrowsAsync<InvalidOperationException>(code: async () => await provider.GetAllTourneyInfos());
         Assert.That(exception != null && exception.Message.Contains("Page"));
     }
 
@@ -56,7 +68,7 @@ public class CollectorTests
         provider.StartPath = $"{provider.GetType().Name}_Page1.html";
         provider.GetDocumentAsync = path => Task.FromResult("<html></html>")!;
 
-        var exception = Assert.ThrowsAsync<InvalidOperationException>(code: async () => await provider.GetAllTourneyLinks());
+        var exception = Assert.ThrowsAsync<InvalidOperationException>(code: async () => await provider.GetAllTourneyInfos());
         Assert.That(exception != null && exception.Message.Contains("Tournament section not found"));
     }
 

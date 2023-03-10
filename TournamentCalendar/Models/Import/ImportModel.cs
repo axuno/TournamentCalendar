@@ -8,11 +8,11 @@ public class ListModel
 {
     public IList<IProvider> Providers { get; } = Collectors.Providers.GetAll();
 
-    public IList<Tourney>? NewTourneys { get; internal set; }
+    public IList<TourneyInfo>? NewTourneys { get; internal set; }
 
-    public IList<Tourney>? DeletedTourneys { get; internal set; }
+    public IList<TourneyInfo>? DeletedTourneys { get; internal set; }
 
-    public IList<Tourney>? SameTourneys { get; internal set; }
+    public IList<TourneyInfo>? SameTourneys { get; internal set; }
 
     public IList<Exception> Errors { get; internal set; } = new List<Exception>();
 

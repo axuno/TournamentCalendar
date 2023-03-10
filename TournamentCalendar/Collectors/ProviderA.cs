@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Threading.Tasks;
 using AngleSharp.Dom;
 using AngleSharp.Html.Dom;
 using Microsoft.Extensions.Logging;
-
 
 namespace TournamentCalendar.Collectors;
 
@@ -28,16 +28,37 @@ public class ProviderA : ProviderBase
     {
         return parentElement.QuerySelectorAll("ul.pagination li.page-item.next > a").OfType<IHtmlAnchorElement>().Select(l => l.PathName).FirstOrDefault();
     }
-
-    protected override List<string> ExtractLinks(IElement parentElement)
+    
+    protected override List<TourneyInfo> ExtractInfos(IElement parentElement)
     {
-        var links = parentElement.QuerySelectorAll("table tr td:nth-child(1) a").OfType<IHtmlAnchorElement>();
-        return links.Select(l => BaseAddress.AbsoluteUri.ConcatPath(l.PathName.Trim())).ToList();
+        var list = new List<TourneyInfo>();
+        var now = DateTime.UtcNow;
+
+        var tableRows = parentElement.QuerySelectorAll("table tr").OfType<IHtmlTableRowElement>();
+        foreach (var tableRow in tableRows)
+        {
+            var dateString = tableRow.QuerySelector<IHtmlAnchorElement>("td:nth-child(1) a")?.Text;
+            if (string.IsNullOrEmpty(dateString)) continue;
+            DateTime.TryParseExact(dateString, new[] {"dd'.'MM'.'yyyy"},
+                CultureInfo.InvariantCulture,
+                DateTimeStyles.None,
+                out var date);
+            var link = BaseAddress.AbsoluteUri.ConcatPath(tableRow.QuerySelector<IHtmlAnchorElement>("td:nth-child(1) a")?.PathName.Trim() ?? string.Empty);
+            var postalCode = tableRow.QuerySelector<IHtmlAnchorElement>("td:nth-child(3) a")?.Text;
+            var name = tableRow.QuerySelector<IHtmlAnchorElement>("td:nth-child(4) a")?.Text;
+            
+            list.Add(new TourneyInfo {
+                ProviderId = ProviderId, Date = date, Name = name, PostalCode = postalCode, Link = link,
+                CollectedOn = now
+            });
+        }
+
+        return list;
     }
 
-    public override async Task<List<string>> GetAllTourneyLinks()
+    public override async Task<List<TourneyInfo>> GetAllTourneyInfos()
     {
-        var links = new List<string>();
+        var infos = new List<TourneyInfo>();
 
         var nextPagePath = StartPath;
 
@@ -47,10 +68,10 @@ public class ProviderA : ProviderBase
             _ = html ?? throw new InvalidOperationException($"Page '{BaseAddress.AbsoluteUri.ConcatPath(nextPagePath)}' not found");
             var tournamentSection = await GetTournamentSection(html);
             _ = tournamentSection ??  throw new InvalidOperationException($"Tournament section not found in '{BaseAddress.AbsoluteUri.ConcatPath(nextPagePath)}'");
-            links.AddRange(ExtractLinks(tournamentSection));
+            infos.AddRange(ExtractInfos(tournamentSection));
             nextPagePath = GetPathToNextPage(tournamentSection);
         }
 
-        return links;
+        return infos;
     }
 }

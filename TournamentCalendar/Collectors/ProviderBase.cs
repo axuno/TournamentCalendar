@@ -61,6 +61,6 @@ public abstract class ProviderBase : IProvider
 
     protected internal abstract Task<IElement?> GetTournamentSection(string page);
     protected abstract string? GetPathToNextPage(IElement parentElement);
-    protected abstract List<string> ExtractLinks(IElement parentElement);
-    public abstract Task<List<string>> GetAllTourneyLinks();
+    protected abstract List<TourneyInfo> ExtractInfos(IElement parentElement);
+    public abstract Task<List<TourneyInfo>> GetAllTourneyInfos();
 }

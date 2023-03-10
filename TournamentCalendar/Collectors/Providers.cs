@@ -15,15 +15,14 @@ public class Providers
         return ProviderList;
     }
 
-    public static async Task<CollectedTourneys> CollectTourneys(DateTime dateWrittenToRecords)
+    public static async Task<CollectedTourneys> CollectTourneys()
     {
         var tourneys = new CollectedTourneys();
 
         foreach (var provider in GetAll())
         {
-            var links = await provider.GetAllTourneyLinks();
-            tourneys.Tourneys.AddRange(links.Select(href => new Tourney
-                { ProviderId = provider.ProviderId, Url = href, CollectedOn = dateWrittenToRecords }));
+            var infos = await provider.GetAllTourneyInfos();
+            tourneys.Tourneys.AddRange(infos);
         }
 
         return tourneys;

@@ -7,5 +7,5 @@ namespace TournamentCalendar.Collectors;
 public class CollectedTourneys
 {
     [YAXCollection(YAXCollectionSerializationTypes.RecursiveWithNoContainingElement)]
-    public List<Tourney> Tourneys { get; set; } = new();
+    public List<TourneyInfo> Tourneys { get; set; } = new();
 }

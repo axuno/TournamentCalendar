@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Threading.Tasks;
 using AngleSharp.Dom;
 using AngleSharp.Html.Dom;
@@ -29,15 +30,37 @@ public class ProviderB : ProviderBase
         return null;
     }
 
-    protected override List<string> ExtractLinks(IElement parentElement)
+    protected override List<TourneyInfo> ExtractInfos(IElement parentElement)
     {
-        var links = parentElement.QuerySelectorAll("a").OfType<IHtmlAnchorElement>();
-        return links.Where(l => l.Text.ToLower() == "weiter").Select(l => BaseAddress.AbsoluteUri.ConcatPath(l.PathName.Trim())).ToList();
+        var list = new List<TourneyInfo>();
+        var now = DateTime.UtcNow;
+
+        var h3Headers = parentElement.QuerySelectorAll("h3").OfType<IHtmlHeadingElement>().Where(h => h.QuerySelector("a[title='weiter']") != null);
+        foreach (var h3Header in h3Headers)
+        {
+            var h3Link = h3Header.QuerySelector<IHtmlAnchorElement>("a[title='weiter']");
+            var name = h3Link?.Text;
+            var link = BaseAddress.AbsoluteUri.ConcatPath(h3Link?.PathName.Trim() ?? string.Empty);
+            var infoBlock = h3Header.NextElementSibling?.QuerySelector("div.seven.column")?.TextContent.Trim();
+            var blocks = infoBlock?.Split(" - ", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+            DateTime.TryParseExact((blocks?.FirstOrDefault())?[..10], new[] {"dd'.'MM'.'yyyy"},
+                CultureInfo.InvariantCulture,
+                DateTimeStyles.None,
+                out var date);
+            var postalCode = (blocks?.LastOrDefault())?[..5];
+            
+            list.Add(new TourneyInfo {
+                ProviderId = ProviderId, Date = date, Name = name, PostalCode = postalCode, Link = link,
+                CollectedOn = now
+            });
+        }
+
+        return list;
     }
 
-    public override async Task<List<string>> GetAllTourneyLinks()
+    public override async Task<List<TourneyInfo>> GetAllTourneyInfos()
     {
-        var links = new List<string>();
+        var infos = new List<TourneyInfo>();
 
         var nextPagePath = StartPath;
 
@@ -47,10 +70,11 @@ public class ProviderB : ProviderBase
             _ = html ?? throw new InvalidOperationException($"Page '{BaseAddress.AbsoluteUri.ConcatPath(nextPagePath)}' not found");
             var tournamentSection = await GetTournamentSection(html);
             _ = tournamentSection ?? throw new InvalidOperationException($"Tournament section not found in '{BaseAddress.AbsoluteUri.ConcatPath(nextPagePath)}'");
-            links.AddRange(ExtractLinks(tournamentSection));
+            _ = ExtractInfos(tournamentSection);
+            infos.AddRange(ExtractInfos(tournamentSection));
             nextPagePath = GetPathToNextPage(tournamentSection);
         }
 
-        return links;
+        return infos;
     }
 }

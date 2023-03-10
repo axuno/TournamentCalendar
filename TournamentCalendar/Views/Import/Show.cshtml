@@ -46,10 +46,10 @@
                     </div>
                 }
                 @{
-                    foreach (var entry in newTourneys)
+                    foreach (var tourney in newTourneys)
                     {
                         <div>
-                            @entry.CollectedOn.ToString("dd.MM.yyyy") <a href="@entry.Url" target="_blank" class="link">@entry.Url</a>
+                            <a href="@tourney.Link" target="_blank" class="link">@tourney.Name</a> @tourney.Date?.ToString("dd.MM.yyyy")
                         </div>
                     }
                 }

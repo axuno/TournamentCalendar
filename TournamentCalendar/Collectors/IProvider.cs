@@ -10,5 +10,5 @@ public interface IProvider
     string ProviderName { get; init; }
     Uri BaseAddress { get; set; }
     string StartPath { get; set; }
-    Task<List<string>> GetAllTourneyLinks();
+    Task<List<TourneyInfo>> GetAllTourneyInfos();
 }
