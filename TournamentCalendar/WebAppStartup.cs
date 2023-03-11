@@ -146,7 +146,7 @@ public static class WebAppStartup
                     options.LoginPath = new PathString("/auth/signin");
                     options.LogoutPath = new PathString("/auth/signoff");
                     options.AccessDeniedPath = new PathString("/auth/denied");
-                    options.Cookie.Name = "Tournaments";
+                    options.Cookie.Name = ".TournamentsAuth";
                 });
         
         #endregion
