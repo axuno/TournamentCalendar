@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using TournamentCalendar.Models.TournamentImport;
+using TournamentCalendar.Models.Collect;
 using YAXLib;
 
 namespace TournamentCalendar.Collectors;
@@ -45,7 +45,7 @@ internal static class Storage
 
     public static async Task CollectAndSaveTourneys(bool overwriteExisting)
     {
-        var currentTourneys = (await Providers.CollectTourneys()).Tourneys;
+        var currentTourneys = (await Collectors.CollectTourneys()).Tourneys;
 
         SaveTourneysToFile(new CollectedTourneys { Tourneys = currentTourneys }, overwriteExisting);
 
@@ -59,34 +59,6 @@ internal static class Storage
         var newTourneys = latestTourneys.Where(latest => olderTourneys.All(older => older.Link != latest.Link)).ToList();
 
         return (sameTourneys, newTourneys, deletedTourneys);
-    }
-
-    public static ListModel CreateListModel(DateTime beforeThisDate)
-    {
-        var listModel = new ListModel();
-        try
-        {
-            var files = GetFilesDescending().ToList();
-            // Find the first file matching the data criteria
-            var fileIndex = files.FindIndex(0, f => ExtractDateFromFileName(f).Date <= beforeThisDate.Date);
-
-            // Read the file, if found
-            var latestTourneys = fileIndex != -1 ? ReadTourneysFromFile(files[fileIndex]).Tourneys : new CollectedTourneys().Tourneys;
-            // Read the file before the latest
-            var olderTourneys = fileIndex + 1 < files.Count ? ReadTourneysFromFile(files[fileIndex + 1]).Tourneys : new CollectedTourneys().Tourneys;
-
-            (listModel.SameTourneys, listModel.NewTourneys, listModel.DeletedTourneys)
-                = CompareTourneysByUrl(latestTourneys, olderTourneys);
-            
-            listModel.ImportDates = ExtractDatesFromFileNames(files);
-            listModel.LastImportDate = GetLastCollectionDate(listModel.ImportDates, beforeThisDate);
-        }
-        catch (Exception e)
-        {
-            listModel = new ListModel { Errors = new[] {e}, ImportDates = new[] { DateTime.MinValue }, LastImportDate = DateTime.MinValue };
-        }
-
-        return listModel;
     }
 
     internal static DateTime GetLastCollectionDate(IEnumerable<DateTime> collectionDates, DateTime beforeThisDate)

@@ -10,9 +10,9 @@ using Microsoft.Extensions.Logging.Abstractions;
 
 namespace TournamentCalendar.Collectors;
 
-public abstract class ProviderBase : IProvider
+public abstract class CollectorBase : ICollector
 {
-    protected ProviderBase(ILogger? logger)
+    protected CollectorBase(ILogger? logger)
     {
         // initial value must be set in the constructor
         GetDocumentAsync = GetHttpDocumentAsync;

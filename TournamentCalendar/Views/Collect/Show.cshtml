@@ -1,5 +1,5 @@
 ﻿@using TournamentCalendar.Controllers
-@model TournamentCalendar.Models.TournamentImport.ListModel
+@model TournamentCalendar.Models.Collect.ListModel
 <div class="row">
     <div class="col">
         <div class="text-right">Authentifiziert: @Context.User.Identity?.Name</div>
@@ -7,7 +7,7 @@
         @if (Model.Errors.Any())
         {
             <div class="col-12">
-                <h3 style="color: red">Beim Import sind Fehler aufgetreten:</h3>
+                <h3 style="color: red">Beim Collect sind Fehler aufgetreten:</h3>
                 @foreach (var err in Model.Errors)
                 {
                     <div>@err.Message</div>
@@ -19,20 +19,20 @@
         <div class="mb-4">
             @if (Model.ImportDates.Length > 0)
             {
-                <h4 class="h4">Verwendete Importdaten im Vergleich zu den Einträgen jetzt</h4>
-                <a class="btn btn-primary mr-2 mb-3@(DateTime.MinValue == Model.LastImportDate ? " active" : "")" href="@Url.Action(nameof(Import.Show), nameof(Import), new {id = DateTime.MinValue.ToString("yyyy-MM-dd")})" role="button">keine</a>
+                <h4 class="h4">Verwendete Collectdaten im Vergleich zu den Einträgen jetzt</h4>
+                <a class="btn btn-primary mr-2 mb-3@(DateTime.MinValue == Model.LastImportDate ? " active" : "")" href="@Url.Action(nameof(Collect.Show), nameof(Collect), new {id = DateTime.MinValue.ToString("yyyy-MM-dd")})" role="button">keine</a>
                 foreach (var date in Model.ImportDates)
                 {
-                    <a class="btn btn-primary mr-2 mb-3@(date == Model.LastImportDate ? " active" : "")" href="@Url.Action(nameof(Import.Show), nameof(Import), new {id = date.ToString("yyyy-MM-dd")})" role="button">@date.ToString("dd.MM.yyyy")</a>
+                    <a class="btn btn-primary mr-2 mb-3@(date == Model.LastImportDate ? " active" : "")" href="@Url.Action(nameof(Collect.Show), nameof(Collect), new {id = date.ToString("yyyy-MM-dd")})" role="button">@date.ToString("dd.MM.yyyy")</a>
                 }
             }
             else
             {
-                <h4 class="h4">Keine Importdaten gefunden</h4>
+                <h4 class="h4">Keine Collectdaten gefunden</h4>
             }
         </div>
 
-        @foreach (var provider in Model.Providers)
+        @foreach (var provider in Model.Collectors)
         {
             <div class="mb-4">
                 @{
@@ -42,7 +42,7 @@
                 <h5>Insgesamt @newTourneys.Length neue Einträge</h5>
                 @if (Model.LastImportDate != DateTime.MinValue)
                 {
-                    <div><b>Seit dem letzten Import am @Model.LastImportDate.ToString("dd.MM.yyyy"):</b>
+                    <div><b>Seit dem letzten Collect am @Model.LastImportDate.ToString("dd.MM.yyyy"):</b>
                     </div>
                 }
                 @{

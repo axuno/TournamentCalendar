@@ -5,23 +5,23 @@ using System.Threading.Tasks;
 
 namespace TournamentCalendar.Collectors;
 
-public class Providers
+public class Collectors
 {
-    private static readonly IList<IProvider> ProviderList = new List<IProvider>
-        { new ProviderA(), new ProviderB() };
+    private static readonly IList<ICollector> CollectorList = new List<ICollector>
+        { new CollectorA(), new CollectorB() };
 
-    public static IList<IProvider> GetAll()
+    public static IList<ICollector> GetAll()
     {
-        return ProviderList;
+        return CollectorList;
     }
 
     public static async Task<CollectedTourneys> CollectTourneys()
     {
         var tourneys = new CollectedTourneys();
 
-        foreach (var provider in GetAll())
+        foreach (var collector in GetAll())
         {
-            var infos = await provider.GetAllTourneyInfos();
+            var infos = await collector.GetAllTourneyInfos();
             tourneys.Tourneys.AddRange(infos);
         }
 

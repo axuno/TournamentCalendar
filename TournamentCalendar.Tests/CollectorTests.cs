@@ -18,7 +18,7 @@ public class CollectorTests
             "Collector");
 
     [TestCaseSource(nameof(GetAllProviderClassInstances))]
-    public async Task Provider_GetHttpTourneyStartPage(ProviderBase provider)
+    public async Task Provider_GetHttpTourneyStartPage(CollectorBase provider)
     {
         // Ensure the start page for tournaments can be loaded
         var doc = await provider.GetDocumentAsync(provider.StartPath);
@@ -36,7 +36,7 @@ public class CollectorTests
     }
     
     [TestCaseSource(nameof(GetAllProviderExpectedResults))]
-    public async Task Provider_ExtractAllInfos(ProviderBase provider, int numOfLinks)
+    public async Task Provider_ExtractAllInfos(CollectorBase provider, int numOfLinks)
     {
         provider.StartPath = $"{provider.GetType().Name}_Page1.html";
         provider.GetDocumentAsync = path =>
@@ -53,7 +53,7 @@ public class CollectorTests
     }
 
     [TestCaseSource(nameof(GetAllProviderClassInstances))]
-    public void Provider_EmptyPageShouldThrow(ProviderBase provider)
+    public void Provider_EmptyPageShouldThrow(CollectorBase provider)
     {
         provider.StartPath = $"{provider.GetType().Name}_Page1.html";
         provider.GetDocumentAsync = path => Task.FromResult(default(string?));
@@ -63,7 +63,7 @@ public class CollectorTests
     }
 
     [TestCaseSource(nameof(GetAllProviderClassInstances))]
-    public void Provider_MissingTournamentSectionShouldThrow(ProviderBase provider)
+    public void Provider_MissingTournamentSectionShouldThrow(CollectorBase provider)
     {
         provider.StartPath = $"{provider.GetType().Name}_Page1.html";
         provider.GetDocumentAsync = path => Task.FromResult("<html></html>")!;
@@ -72,15 +72,15 @@ public class CollectorTests
         Assert.That(exception != null && exception.Message.Contains("Tournament section not found"));
     }
 
-    public static IEnumerable<ProviderBase> GetAllProviderClassInstances()
+    public static IEnumerable<CollectorBase> GetAllProviderClassInstances()
     {
         var providerNames = AppDomain.CurrentDomain.GetAssemblies().SelectMany(a => a.GetTypes())
-            .Where(t => typeof(ProviderBase).IsAssignableFrom(t) && t is { IsInterface: false, IsAbstract: false })
+            .Where(t => typeof(CollectorBase).IsAssignableFrom(t) && t is { IsInterface: false, IsAbstract: false })
             .Select(t => t.FullName!);
 
         foreach (var providerName in providerNames)
         {
-            var provider = (ProviderBase) typeof(IProvider).Assembly.CreateInstance(providerName, false, BindingFlags.CreateInstance, null,
+            var provider = (CollectorBase) typeof(ICollector).Assembly.CreateInstance(providerName, false, BindingFlags.CreateInstance, null,
                 new object[1], null, null)!;
             yield return provider;
         }
@@ -88,7 +88,7 @@ public class CollectorTests
 
     public static IEnumerable<object[]> GetAllProviderExpectedResults()
     {
-        var numOfLinks = new Dictionary<string, int> { { "ProviderA", 18 }, {"ProviderB", 21} };
+        var numOfLinks = new Dictionary<string, int> { { nameof(CollectorA), 18 }, {nameof(CollectorB), 21} };
         
         foreach (var provider in GetAllProviderClassInstances())
         {

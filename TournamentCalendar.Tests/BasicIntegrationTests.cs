@@ -1,10 +1,6 @@
-﻿using System.Collections.Generic;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Controllers;
+﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.TestHost;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NUnit.Framework;
 
@@ -44,6 +40,9 @@ public class BasicIntegrationTests
     [TestCase("/captcha")]
     public async Task Get_EndpointsReturnSuccessAndCorrectContentType(string url)
     {
+        // Todo:
+        // https://code-maze.com/aspnet-core-testing-anti-forgery-token/
+
         // Arrange
         var client = _factory.CreateClient();
 
@@ -59,6 +58,6 @@ public class BasicIntegrationTests
     {
         var routes = RouteHelper.GetRegisteredRoutes(_factory.Services);
 
-        Assert.That(routes.Any(r => r.Route != null && r.Route.Equals("/anmelden", StringComparison.OrdinalIgnoreCase)), Is.True);
+        Assert.That(routes.Any(r => r.Route.Equals("/anmelden", StringComparison.OrdinalIgnoreCase)), Is.True);
     }
 }

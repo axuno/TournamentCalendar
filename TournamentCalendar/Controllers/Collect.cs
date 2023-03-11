@@ -1,22 +1,21 @@
 ﻿using System;
 using System.Globalization;
 using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using TournamentCalendar.Collectors;
+using TournamentCalendar.Models.Collect;
 using TournamentCalendar.Views;
 
 namespace TournamentCalendar.Controllers;
 
 [Authorize(Roles = Library.Authentication.Constants.RoleName.Editor)]
 [Route("import")]
-public class Import : ControllerBase
+public class Collect : ControllerBase
 {
-    public Import(IWebHostEnvironment hostingEnvironment, IConfiguration configuration) : base(hostingEnvironment, configuration)
+    public Collect(IWebHostEnvironment hostingEnvironment, IConfiguration configuration) : base(hostingEnvironment, configuration)
     {}
 
     [HttpGet("anzeigen/{id?}")]
@@ -24,7 +23,7 @@ public class Import : ControllerBase
     {
         ViewBag.TitleTagText = "Andere Volleyball-Turnierkalender";
 
-        Storage.StorageFolder = Path.Combine(HostingEnvironment.WebRootPath, @"Import");
+        Storage.StorageFolder = Path.Combine(HostingEnvironment.WebRootPath, @"Collect");
 
         // Uses the latest stored tourneys and compares with current tourneys
         var beforeThisDate = DateTime.MaxValue;
@@ -37,7 +36,7 @@ public class Import : ControllerBase
                 out beforeThisDate);
         }
             
-        var listModel = Storage.CreateListModel(beforeThisDate);
-        return View(ViewName.TournamentImport.Show, listModel);
+        var listModel = CollectionModelFactory.CreateListModel(beforeThisDate);
+        return View(ViewName.Collect.Show, listModel);
     }
 }

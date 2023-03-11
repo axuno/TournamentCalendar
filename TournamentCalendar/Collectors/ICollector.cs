@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace TournamentCalendar.Collectors;
 
-public interface IProvider
+public interface ICollector
 {
     int ProviderId { get; init; }
     string ProviderName { get; init; }

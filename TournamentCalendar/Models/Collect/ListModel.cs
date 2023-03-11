@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using TournamentCalendar.Collectors;
 
-namespace TournamentCalendar.Models.TournamentImport;
+namespace TournamentCalendar.Models.Collect;
 
 public class ListModel
 {
-    public IList<IProvider> Providers { get; } = Collectors.Providers.GetAll();
+    public IList<ICollector> Collectors { get; } = TournamentCalendar.Collectors.Collectors.GetAll();
 
     public IList<TourneyInfo>? NewTourneys { get; internal set; }
 

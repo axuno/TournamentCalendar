@@ -9,9 +9,9 @@ using Microsoft.Extensions.Logging;
 
 namespace TournamentCalendar.Collectors;
 
-public class ProviderA : ProviderBase
+public class CollectorA : CollectorBase
 {
-    public ProviderA(ILogger? logger = null) : base(logger)
+    public CollectorA(ILogger? logger = null) : base(logger)
     {
     }
 
@@ -48,8 +48,8 @@ public class ProviderA : ProviderBase
             var name = tableRow.QuerySelector<IHtmlAnchorElement>("td:nth-child(4) a")?.Text;
             
             list.Add(new TourneyInfo {
-                ProviderId = ProviderId, Date = date, Name = name, PostalCode = postalCode, Link = link,
-                CollectedOn = now
+                ProviderId = ProviderId, Date = date, Name = name,
+                PostalCode = postalCode, Link = link, CollectedOn = now
             });
         }
 
