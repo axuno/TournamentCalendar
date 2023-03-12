@@ -9,12 +9,14 @@ namespace TournamentCalendar.Models.Shared;
 
 public class ApproveModelTournamentCalendar<T> where T : EntityBase2, new()
 {
+    private readonly IAppDb _appDb;
     private readonly IPredicate _filter;
     private readonly EntityField2 _approveDateField;
     private readonly EntityField2 _deletedOnDateField;
 
-    public ApproveModelTournamentCalendar(IPredicate filter, EntityField2 approveDateField, EntityField2 deletedOnDateField)
+    public ApproveModelTournamentCalendar(IAppDb appDb, IPredicate filter, EntityField2 approveDateField, EntityField2 deletedOnDateField)
     {
+        _appDb = appDb;
         _filter = filter;
         _approveDateField = approveDateField;
         _deletedOnDateField = deletedOnDateField;
@@ -39,7 +41,7 @@ public class ApproveModelTournamentCalendar<T> where T : EntityBase2, new()
         {
             Entity = new T();
 
-            IsEntityFound = CalendarRepository.FetchEntity(Entity, new PredicateExpression(_filter));
+            IsEntityFound = _appDb.CalendarRepository.FetchEntity(Entity, new PredicateExpression(_filter));
 
             if (!IsEntityFound)
             {
@@ -49,7 +51,7 @@ public class ApproveModelTournamentCalendar<T> where T : EntityBase2, new()
             if (Entity is CalendarEntity entity)
             {
                 PossibleDuplicateFound =
-                    await CalendarRepository.GetPossibleDuplicate(entity, cancellationToken);
+                    await _appDb.CalendarRepository.GetPossibleDuplicate(entity, cancellationToken);
                 if (PossibleDuplicateFound != null)
                     return this;
             }
@@ -67,7 +69,7 @@ public class ApproveModelTournamentCalendar<T> where T : EntityBase2, new()
 
             if (Entity.IsDirty)
             {
-                SaveSuccessFul = await CalendarRepository.SaveEntity(Entity, true);
+                SaveSuccessFul = await _appDb.CalendarRepository.SaveEntity(Entity, true);
             }
             else
             {

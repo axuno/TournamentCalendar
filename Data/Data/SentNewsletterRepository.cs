@@ -12,16 +12,18 @@ namespace TournamentCalender.Data;
 
 public class SentNewsletterRepository : GenericRepository
 {
-    public static async Task<DateTime?> GetLastSendDate()
+    public SentNewsletterRepository(IDbContext dbContext) : base(dbContext) { }
+
+    public virtual async Task<DateTime?> GetLastSendDate()
     {
-        using var da = Connecter.GetNewAdapter();
+        using var da = _dbContext.GetNewAdapter();
         var metaData = new LinqMetaData(da);
         return await (from nl in metaData.SentNewsletter select nl.StartedOn).MaxAsync();
     }
 
-    public static async Task<List<SentNewsletterEntity>> GetLastNewsletters(CancellationToken cancellationToken)
+    public virtual async Task<List<SentNewsletterEntity>> GetLastNewsletters(CancellationToken cancellationToken)
     {
-        using var da = Connecter.GetNewAdapter();
+        using var da = _dbContext.GetNewAdapter();
         var metaData = new LinqMetaData(da);
         return await (from nl in metaData.SentNewsletter orderby nl.StartedOn descending select nl ).Take(4).ToListAsync(cancellationToken);
     }

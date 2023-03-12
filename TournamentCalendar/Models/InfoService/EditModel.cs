@@ -26,6 +26,7 @@ public enum EditMode
 public class EditModel : InfoServiceEntity, IValidatableObject
 {
     private bool _isAddressEntered = true;
+    private readonly IAppDb? _appDb;
 
     public EditModel()
     {
@@ -38,15 +39,21 @@ public class EditModel : InfoServiceEntity, IValidatableObject
         IsAddressEntered = true;
     }
 
-    public EditModel(string guid)
+    public EditModel(IAppDb appDb) : this()
     {
+        _appDb = appDb;
+    }
+
+    public EditModel(IAppDb appDb, string guid)
+    {
+        _appDb = appDb;
         LoadData(guid);
         IsAddressEntered = true;
     }
 
     private bool LoadData(string guid)
     {
-        return InfoServiceRepository.GetRegistrationByGuid(this, guid);
+        return _appDb!.InfoServiceRepository.GetRegistrationByGuid(this, guid);
     }
 
     public bool TryRefetchEntity()
@@ -137,7 +144,7 @@ public class EditModel : InfoServiceEntity, IValidatableObject
         var countryIds = new[] { "DE", "AT", "CH", "LI", "IT", "NL", "BE", "LU", "FR", "PL", "DK", "CZ", "SK" };
 
         var countries = new EntityCollection<CountryEntity>();
-        CountriesRepository.GetCountriesList(countries, countryIds);
+        _appDb!.CountriesRepository.GetCountriesList(countries, countryIds);
 
         // add to countries list in the sequence of countryIds array
         return countryIds.Select(id => countries.First(c => c.Id == id)).Select(
@@ -226,9 +233,9 @@ public class EditModel : InfoServiceEntity, IValidatableObject
         try
         {
             // Id will be zero if Guid does not exist
-            Id = InfoServiceRepository.GetIdforGuid(Guid);
+            Id = _appDb!.InfoServiceRepository.GetIdForGuid(Guid);
 
-            confirmModel.SaveSuccessful = await GenericRepository.Save(this, true, cancellationToken);
+            confirmModel.SaveSuccessful = await _appDb!.GenericRepository.Save(this, true, cancellationToken);
             confirmModel.Entity = this;
         }
         catch (Exception ex)
@@ -305,6 +312,8 @@ public class EditModel : InfoServiceEntity, IValidatableObject
 
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {
+        if(_appDb == null) return Enumerable.Empty<ValidationResult>();
+
         // Will be called only after individual fields are valid
         var errors = new List<ValidationResult>();
 
@@ -314,7 +323,7 @@ public class EditModel : InfoServiceEntity, IValidatableObject
         ExistingEntryWithSameEmail = null;
 			
         // if email found
-        if (InfoServiceRepository.GetRegistrationByEmail(info, email))
+        if (_appDb!.InfoServiceRepository.GetRegistrationByEmail(info, email))
         {
             // email address was found in a different record than the current one
             if (info.Guid != Guid)

@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Globalization;
 using System.IO;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using TournamentCalendar.Collectors;
+using TournamentCalendar.Data;
 using TournamentCalendar.Models.Collect;
 using TournamentCalendar.Views;
 
@@ -15,11 +17,16 @@ namespace TournamentCalendar.Controllers;
 [Route("import")]
 public class Collect : ControllerBase
 {
-    public Collect(IWebHostEnvironment hostingEnvironment, IConfiguration configuration) : base(hostingEnvironment, configuration)
-    {}
+    private readonly IAppDb _appDb;
+
+    public Collect(IAppDb appDb, IWebHostEnvironment hostingEnvironment, IConfiguration configuration) : base(
+        hostingEnvironment, configuration)
+    {
+        _appDb = appDb;
+    }
 
     [HttpGet("anzeigen/{id?}")]
-    public ActionResult Show(string id)
+    public async Task<IActionResult> Show(string id)
     {
         ViewBag.TitleTagText = "Andere Volleyball-Turnierkalender";
 
@@ -36,7 +43,7 @@ public class Collect : ControllerBase
                 out beforeThisDate);
         }
             
-        var listModel = CollectionModelFactory.CreateListModel(beforeThisDate);
+        var listModel = await CollectionModelFactory.CreateListModel(beforeThisDate, _appDb);
         return View(ViewName.Collect.Show, listModel);
     }
 }

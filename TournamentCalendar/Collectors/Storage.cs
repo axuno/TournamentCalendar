@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using TournamentCalendar.Models.Collect;
 using YAXLib;
 
 namespace TournamentCalendar.Collectors;
@@ -54,9 +53,9 @@ internal static class Storage
 
     public static (IList<TourneyInfo> Same, IList<TourneyInfo> New, IList<TourneyInfo> Deleted) CompareTourneysByUrl(IList<TourneyInfo> latestTourneys, IList<TourneyInfo> olderTourneys)
     {
-        var sameTourneys = latestTourneys.Where(latest => olderTourneys.Any(older => older.Link == latest.Link)).ToList();
-        var deletedTourneys = olderTourneys.Where(older => latestTourneys.All(latest => latest.Link != older.Link)).ToList();
-        var newTourneys = latestTourneys.Where(latest => olderTourneys.All(older => older.Link != latest.Link)).ToList();
+        var sameTourneys = latestTourneys.Where(latest => olderTourneys.Any(older => older.Link == latest.Link)).OrderBy(t => t.Date).ToList();
+        var deletedTourneys = olderTourneys.Where(older => latestTourneys.All(latest => latest.Link != older.Link)).OrderBy(t => t.Date).ToList();
+        var newTourneys = latestTourneys.Where(latest => olderTourneys.All(older => older.Link != latest.Link)).OrderBy(t => t.Date).ToList();
 
         return (sameTourneys, newTourneys, deletedTourneys);
     }

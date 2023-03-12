@@ -20,7 +20,7 @@
             @if (Model.ImportDates.Length > 0)
             {
                 <h4 class="h4">Verwendete Collectdaten im Vergleich zu den Einträgen jetzt</h4>
-                <a class="btn btn-primary mr-2 mb-3@(DateTime.MinValue == Model.LastImportDate ? " active" : "")" href="@Url.Action(nameof(Collect.Show), nameof(Collect), new {id = DateTime.MinValue.ToString("yyyy-MM-dd")})" role="button">keine</a>
+                <a class="btn btn-primary mr-2 mb-3@(DateTime.MinValue == Model.LastImportDate ? " active" : "")" href="@Url.Action(nameof(Collect.Show), nameof(Collect), new {id = DateTime.MinValue.ToString("yyyy-MM-dd")})" role="button">Alle aktuellen</a>
                 foreach (var date in Model.ImportDates)
                 {
                     <a class="btn btn-primary mr-2 mb-3@(date == Model.LastImportDate ? " active" : "")" href="@Url.Action(nameof(Collect.Show), nameof(Collect), new {id = date.ToString("yyyy-MM-dd")})" role="button">@date.ToString("dd.MM.yyyy")</a>
@@ -49,7 +49,7 @@
                     foreach (var tourney in newTourneys)
                     {
                         <div>
-                            <a href="@tourney.Link" target="_blank" class="link">@tourney.Name</a> @tourney.Date?.ToString("dd.MM.yyyy")
+                            <a href="@tourney.Link" target="_blank" class="link">@tourney.Name</a> @tourney.Date?.ToString("dd.MM.yyyy") @(Model.ExistInCalendar.Contains(tourney.Link!) ? "✅" : "")
                         </div>
                     }
                 }

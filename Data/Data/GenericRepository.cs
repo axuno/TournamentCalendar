@@ -1,23 +1,32 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using SD.LLBLGen.Pro.ORMSupportClasses;
 
 namespace TournamentCalendar.Data;
 
 public class GenericRepository
 {
-    public static async Task<bool> Save<T>(T registration, bool refetchAfterSave, CancellationToken cancellationToken) where T: IEntity2
+    private static readonly ILogger _logger = AppLogging.CreateLogger<GenericRepository>();
+    protected readonly IDbContext _dbContext;
+
+    public GenericRepository(IDbContext dbContext)
     {
-        using var da = Connecter.GetNewAdapter();
+        _dbContext = dbContext;
+    }
+
+    public virtual async Task<bool> Save<T>(T registration, bool refetchAfterSave, CancellationToken cancellationToken) where T: IEntity2
+    {
+        using var da = _dbContext.GetNewAdapter();
         var success = await da.SaveEntityAsync(registration, refetchAfterSave, cancellationToken);
         da.CloseConnection();
         return success;
     }
 
-    public static bool UpdateDateIfNotSet<T>(T entity, IPredicate filter, EntityField2 field, DateTime date , out bool found) where T: IEntity2, new()
+    public virtual bool UpdateDateIfNotSet<T>(T entity, IPredicate filter, EntityField2 field, DateTime date , out bool found) where T: IEntity2, new()
     {
-        using var da = Connecter.GetNewAdapter();
+        using var da = _dbContext.GetNewAdapter();
         if (!(found = da.FetchEntityUsingUniqueConstraint(entity, new PredicateExpression(filter))))
             return false;
 

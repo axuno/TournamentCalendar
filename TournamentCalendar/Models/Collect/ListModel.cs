@@ -19,4 +19,6 @@ public class ListModel
     public DateTime[] ImportDates { get; internal set; } = Array.Empty<DateTime>();
 
     public DateTime LastImportDate { get; internal set; }
+
+    public List<string> ExistInCalendar { get; internal set; } = new();
 }
