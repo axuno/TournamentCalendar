@@ -83,17 +83,17 @@ public static class ViewName
 
     #endregion
 
-    #region *** Import views ***
+    #region *** Collect views ***
 
     /// <summary>
     /// Tournament import - ~/import
     /// </summary>
-    public static class TournamentImport
+    public static class Collect
     {
         /// <summary>
-        /// ~/Views/Import/Show.cshtml
+        /// ~/Views/Collect/Show.cshtml
         /// </summary>
-        public const string Show = "~/Views/Import/Show.cshtml";
+        public const string Show = "~/Views/Collect/Show.cshtml";
     }
 
     #endregion

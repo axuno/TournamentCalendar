@@ -1,0 +1,69 @@
+﻿@using TournamentCalendar.Controllers
+@model TournamentCalendar.Models.Collect.ListModel
+<div class="row">
+    <div class="col">
+        <div class="text-right">Authentifiziert: @Context.User.Identity?.Name</div>
+        <h2 class="h2">Turniere in anderen Volleyball-Turnierkalendern</h2>
+        @if (Model.Errors.Any())
+        {
+            <div class="col-12">
+                <h3 style="color: red">Beim Collect sind Fehler aufgetreten:</h3>
+                @foreach (var err in Model.Errors)
+                {
+                    <div>@err.Message</div>
+                    <div>@err.StackTrace</div>
+                }
+            </div>
+        }
+
+        <div class="mb-4">
+            @if (Model.CollectionDates.Length > 0)
+            {
+                <h4 class="h4">Gesammelte Einträge im Vergleich zum markierten Datum</h4>
+                <a class="btn btn-primary mr-2 mb-3@(DateTime.MinValue == Model.LastCollectionDate ? " active" : "")" href="@Url.Action(nameof(Collect.Show), nameof(Collect), new {id = DateTime.MinValue.ToString("yyyy-MM-dd")})" role="button">Alle aktuellen</a>
+                foreach (var date in Model.CollectionDates)
+                {
+                    <a class="btn btn-primary mr-2 mb-3@(date == Model.LastCollectionDate ? " active" : "")" href="@Url.Action(nameof(Collect.Show), nameof(Collect), new {id = date.ToString("yyyy-MM-dd")})" role="button">@date.ToString("dd.MM.yyyy")</a>
+                }
+            }
+            else
+            {
+                <h4 class="h4">Keine gesammelten Einträge gefunden</h4>
+            }
+        </div>
+
+        @foreach (var provider in Model.Collectors)
+        {
+            <div class="mb-4">
+                @{
+                    var newTourneys = Model.NewTourneys!.Where(p => p.ProviderId == provider.ProviderId).ToArray();
+                }
+                <h4 class="h4">@provider.ProviderName</h4>
+                <h5>Insgesamt @newTourneys.Length neue Einträge</h5>
+                @if (Model.LastCollectionDate != DateTime.MinValue)
+                {
+                    <div><b>Einträge seit dem letzten Einsammeln am @Model.LastCollectionDate.ToString("dd.MM.yyyy"):</b>
+                    </div>
+                }
+                @{
+                    foreach (var tourney in newTourneys)
+                    {
+                        <div>
+                            @(Model.ExistInCalendar.Contains(tourney.Link!) ? "✅" : "⭕") <a href="@tourney.Link" target="_blank" class="link">@tourney.Name</a> @tourney.Date?.ToString("dd.MM.yyyy")
+                        </div>
+                    }
+                }
+            </div>
+        }
+    </div>
+</div>
+@section CssSection {}
+@section MetaSection {<meta name="referrer" content="no-referrer" />}
+@section ScriptStandardSection {
+<script type="text/javascript">
+    //<![CDATA[
+    Object.defineProperty(document, "referer", { get: function() { return "http://volleyball-turnier.de/"; } });
+    Object.defineProperty(document, "referrer", { get: function() { return "http://volleyball-turnier.de/"; } });
+    //]]>
+</script>
+}

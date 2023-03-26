@@ -10,6 +10,7 @@ using TournamentCalendarDAL.HelperClasses;
 using TournamentCalendar.Models.Calendar;
 using TournamentCalendar.Views;
 using System.Threading;
+using TournamentCalendar.Data;
 
 namespace TournamentCalendar.Controllers;
 
@@ -20,11 +21,13 @@ public class Calendar : ControllerBase
     private readonly IMailMergeService _mailMergeService;
     private readonly string _domainName;
     private readonly ILogger<Calendar> _logger;
+    private readonly IAppDb _appDb;
 
-    public Calendar(IWebHostEnvironment hostingEnvironment, IConfiguration configuration, ILogger<Calendar> logger, IMailMergeService mailMergeService) : base(hostingEnvironment, configuration)
+    public Calendar(IWebHostEnvironment hostingEnvironment, IConfiguration configuration, IAppDb appDb, ILogger<Calendar> logger, IMailMergeService mailMergeService) : base(hostingEnvironment, configuration)
     {
         _mailMergeService = mailMergeService;
         _domainName = configuration["DomainName"];
+        _appDb = appDb;
         _logger = logger;
     }
 
@@ -32,7 +35,7 @@ public class Calendar : ControllerBase
     public async Task<IActionResult> Kalender(CancellationToken cancellationToken)
     {
         ViewBag.TitleTagText = "Volleyball-Turnierkalender";
-        var model = new BrowseModel();
+        var model = new BrowseModel(_appDb);
         await model.Load(cancellationToken);
         return View(ViewName.Calendar.Overview, model);
     }
@@ -41,7 +44,7 @@ public class Calendar : ControllerBase
     public async Task<IActionResult> Id(long id, CancellationToken cancellationToken)
     {
         ViewBag.TitleTagText = "Volleyball-Turnierkalender";
-        var model = new BrowseModel();
+        var model = new BrowseModel(_appDb);
         try
         {
             await model.Load(id, cancellationToken);
@@ -65,7 +68,7 @@ public class Calendar : ControllerBase
             return NotFound();
         }
 
-        var model = await new EditModel().Initialize(cancellationToken);
+        var model = await new EditModel().Initialize(_appDb, cancellationToken);
         if (string.IsNullOrEmpty(guid))
         {
             model.EditMode = EditMode.New;
@@ -85,7 +88,7 @@ public class Calendar : ControllerBase
     {
         ViewBag.TitleTagText = "Volleyballturnier in den Kalender eintragen";
         model.Guid = guid;
-        await model.Initialize(cancellationToken);
+        await model.Initialize(_appDb, cancellationToken);
 
         model.EditMode = string.IsNullOrWhiteSpace(model.Guid) ? EditMode.New : EditMode.Change;
 
@@ -156,7 +159,7 @@ public class Calendar : ControllerBase
     {
         guid ??= string.Empty;
         ViewBag.TitleTagText = "Volleyball-Turniereintrag bestätigen";
-        var approveModel = new Models.Shared.ApproveModelTournamentCalendar<CalendarEntity>(CalendarFields.Guid == guid, CalendarFields.ApprovedOn, CalendarFields.DeletedOn);
+        var approveModel = new Models.Shared.ApproveModelTournamentCalendar<CalendarEntity>(_appDb,CalendarFields.Guid == guid, CalendarFields.ApprovedOn, CalendarFields.DeletedOn);
 			
         return View(ViewName.Calendar.Approve, await approveModel.Save(cancellationToken));
     }

@@ -1,0 +1,738 @@
+﻿<!DOCTYPE html>
+<html dir="ltr" lang="de">
+<head>
+
+    <meta charset="utf-8">
+    <!--
+    build by Dennis Grün
+
+    This website is powered by TYPO3 - inspiring people to share!
+    TYPO3 is a free open source Content Management Framework initially created by Kasper Skaarhoj and licensed under GNU/GPL.
+    TYPO3 is copyright 1998-2023 of Kasper Skaarhoj. Extensions are copyright of their respective owners.
+    Information and contribution at https://typo3.org/
+    -->
+
+
+    <link rel="shortcut icon" href="/typo3conf/ext/vobatu_sitepackage/Resources/Public/Icons/favicon.ico" type="image/vnd.microsoft.icon">
+    <title>Volleyballturniere: Vobatu.de</title>
+    <meta http-equiv="x-ua-compatible" content="IE=edge" />
+    <meta name="generator" content="TYPO3 CMS" />
+    <meta name="description" content="Liste der Volleyball Turniere in Deutschland und auch im Umland.
+In den Kategorien Mixed, Herren, Damen und Jugend und durch Standorterfassung auch nach Abstand sortiert werden die Volleyballturniere, die hier gemeldet wurden, aufgelistet." />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="index,follow" />
+    <meta name="author" content="Dennis Grün" />
+    <meta name="keywords" content="Volleyballturniere,Volleyball,Turniere,Beachvolleyball,Beach" />
+    <meta property="og:description" content="Liste der Volleyball Turniere in Deutschland und auch im Umland.
+In den Kategorien Mixed, Herren, Damen und Jugend und durch Standorterfassung auch nach Abstand sortiert werden die Volleyballturniere, die hier gemeldet wurden, aufgelistet." />
+    <meta property="og:title" content="Turniere" />
+    <meta property="og:image" content="https://www.vobatu.de/fileadmin/_processed_/2/1/csm_socialpreview_24623c5bcf.png" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="apple-mobile-web-app-capable" content="no" />
+
+
+    <link rel="stylesheet" type="text/css" href="/typo3temp/assets/compressed/bootstrap.min-d488cbf1ef18e85cf4ac36dccc8060d1.css.gzip?1674342557" media="all">
+
+
+
+    <script src="/typo3temp/assets/compressed/merged-6cd33d6fd66c0d923cf8dd5b335bc457-e68622c6ec124bf7f9788a4ce998b811.js.gzip?1674233847"></script>
+
+
+
+
+    <link rel="canonical" href="https://www.vobatu.de/turniere" />
+
+
+</head>
+<body>
+
+<!-- Fixed navbar -->
+<header>
+    <nav class="navbar navbar-expand-md navbar-light border-bottom">
+        <div class="container">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <button class="btn btn-danger pulse d-sm-block d-md-none" type="button" href="#tournamentsMyLocation" data-toggle="modal" data-target="#tournamentsMyLocation">
+                Mein Standort
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav mr-auto"><li class="nav-item"><a href="/" class="nav-link">Home</a></li><li class="nav-item active"><a href="/turniere" class="nav-link">Turniere</a></li><li class="nav-item"><a href="/turnierkarte" class="nav-link">Turnierkarte</a></li><li class="nav-item"><a href="/turnier-eintragen" class="nav-link">Turnier eintragen</a></li><li class="nav-item"><a href="/links" class="nav-link">Links</a></li></ul>
+                <button class="btn btn-danger pulse d-none d-md-inline-block" href="#tournamentsMyLocation" data-toggle="modal" data-target="#tournamentsMyLocation">Mein Standort</button>
+            </div>
+        </div>
+    </nav>
+</header>
+<div class="header-logo container mb-4">
+    <div class="row">
+        <div class="col">
+            <img class="img-fluid" src="/typo3conf/ext/vobatu_sitepackage/Resources/Public/Images/vobatu_header_new.jpg" width="1200" height="233" alt="" />
+        </div>
+    </div>
+</div>
+<main role="main">
+<div class="container">
+<div class="row">
+
+
+<div id="c4" class="col-12 default ">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="tx-tournaments row">
+
+
+<div class="col-12 text-center mb-3">
+    <h1>Volleyballturnier Liste</h1>
+</div>
+
+
+
+
+
+<div class="col-12">
+<div class="row my-2">
+    <div class="col-3 col-lg-1">
+        <legend class="">Suche</legend>
+    </div>
+    <form name="tournamentSearch" class="form-inline col-9" action="/turniere" method="post">
+        <div>
+            <input type="hidden" name="tx_tournaments_tournamentlist[__referrer][@extension]" value="Tournaments" />
+            <input type="hidden" name="tx_tournaments_tournamentlist[__referrer][@controller]" value="Tournament" />
+            <input type="hidden" name="tx_tournaments_tournamentlist[__referrer][@action]" value="list" />
+            <input type="hidden" name="tx_tournaments_tournamentlist[__referrer][arguments]" value="YTowOnt904fa3ad1b68876caa974acea192a3961f131ba48" />
+            <input type="hidden" name="tx_tournaments_tournamentlist[__referrer][@request]" value="{&quot;@extension&quot;:&quot;Tournaments&quot;,&quot;@controller&quot;:&quot;Tournament&quot;,&quot;@action&quot;:&quot;list&quot;}9132078695b61ad3c61e325b2688a0187da618e2" />
+            <input type="hidden" name="tx_tournaments_tournamentlist[__trustedProperties]" value="{&quot;filter&quot;:{&quot;fulltext&quot;:1,&quot;mode&quot;:1,&quot;archive&quot;:1,&quot;sorting&quot;:1}}7cc0a3235e87ec62ff7cc47d790c2cc1e86c3567" />
+        </div>
+
+        <div class="form-group mr-2 mb-2">
+            <input placeholder="Suchtext (Name/Ort)" class="form-control" type="text" name="tx_tournaments_tournamentlist[filter][fulltext]" />
+        </div>
+        <div class="form-group mr-2 mb-2">
+            <select class="form-control" name="tx_tournaments_tournamentlist[filter][mode]">
+                <option value="">Alle Spielmodi</option>
+                <option value="1">Mixed</option>
+                <option value="2">Herren</option>
+                <option value="3">Damen</option>
+                <option value="4">Jugend</option>
+                <option value="5">Sonstiges</option>
+            </select>
+        </div>
+        <div class="form-group mr-2 mb-2">
+            <select class="form-control" name="tx_tournaments_tournamentlist[filter][archive]">
+                <option value="">aktuell</option>
+                <option value="2022">Archiv 2022</option>
+                <option value="2021">Archiv 2021</option>
+                <option value="2020">Archiv 2020</option>
+                <option value="2019">Archiv 2019</option>
+                <option value="2018">Archiv 2018</option>
+                <option value="2017">Archiv 2017</option>
+                <option value="2016">Archiv 2016</option>
+                <option value="2015">Archiv 2015</option>
+                <option value="2014">Archiv 2014</option>
+                <option value="2013">Archiv 2013</option>
+                <option value="2012">Archiv 2012</option>
+                <option value="2011">Archiv 2011</option>
+            </select>
+        </div>
+
+        <div class="form-group mr-2 mb-2 d-md-none">
+            <select class="form-control" name="tx_tournaments_tournamentlist[filter][sorting]">
+                <option value="">Sortierung wählen</option>
+
+                <option value="startdate_asc">Sortiert nach Datum ▲</option>
+                <option value="startdate_desc">Sortiert nach Datum ▼</option>
+                <option value="addressZip_asc">Sortiert nach PLZ ▲</option>
+                <option value="addressZip_desc">Sortiert nach PLZ ▼</option>
+
+            </select>
+        </div>
+
+        <div class="form-group mb-2">
+            <button type="submit" class="btn btn-primary mr-2">Los</button>
+            <a class="btn btn-secondary" href="/turniere/liste/seite?tx_tournaments_tournamentlist%5Bfilter%5D%5Breset%5D=1&amp;cHash=b84ae6cc287491baffcf8ecab844b0cb">Reset</a>
+        </div>
+    </form>
+</div>
+
+
+
+
+<div class="table-responsive d-none d-md-table">
+    <table class="table table-hover tx_tournaments">
+        <tr>
+            <th>
+
+                <a href="/turniere/liste/seite?tx_tournaments_tournamentlist%5Bfilter%5D%5Bsorting%5D=startdate_asc&amp;cHash=f31e617de99a65a94df790ee34792145">
+                    Datum
+
+                </a>
+
+            </th>
+            <th>Turniermodus</th>
+
+            <th>
+
+                <a href="/turniere/liste/seite?tx_tournaments_tournamentlist%5Bfilter%5D%5Bsorting%5D=addressZip_desc&amp;cHash=45035254f72daf3d0be842ce7eae185f">
+                    PLZ
+
+                </a>
+
+            </th>
+            <th>Turniername / Veranstalter</th>
+            <th>Meldeschluss</th>
+            <th>Startplätze (frei)</th>
+        </tr>
+
+        <tr>
+            <td><a href="/turniere/turnier-details/2023-03-11-cbc-indoor-hobby-beachvolleyball-turnier-roberto-beach-1381">11.03.2023</a></td>
+            <td><a href="/turniere/turnier-details/2023-03-11-cbc-indoor-hobby-beachvolleyball-turnier-roberto-beach-1381">Sonstiges</a></td>
+
+            <td><a href="/turniere/turnier-details/2023-03-11-cbc-indoor-hobby-beachvolleyball-turnier-roberto-beach-1381">85607</a></td>
+            <td><a href="/turniere/turnier-details/2023-03-11-cbc-indoor-hobby-beachvolleyball-turnier-roberto-beach-1381">CBC Indoor Hobby Beachvolleyball Turnier / Roberto Beach</a></td>
+            <td><a href="/turniere/turnier-details/2023-03-11-cbc-indoor-hobby-beachvolleyball-turnier-roberto-beach-1381">10.03.2023</a></td>
+            <td><a href="/turniere/turnier-details/2023-03-11-cbc-indoor-hobby-beachvolleyball-turnier-roberto-beach-1381">20 (12)</a></td>
+        </tr>
+
+        <tr>
+            <td><a href="/turniere/turnier-details/2023-03-25-ivolleycup-jon-ev-1386">25.03.2023</a></td>
+            <td><a href="/turniere/turnier-details/2023-03-25-ivolleycup-jon-ev-1386">Herren</a></td>
+
+            <td><a href="/turniere/turnier-details/2023-03-25-ivolleycup-jon-ev-1386">66892</a></td>
+            <td><a href="/turniere/turnier-details/2023-03-25-ivolleycup-jon-ev-1386">iVolleyCup / JO!N e.V.</a></td>
+            <td><a href="/turniere/turnier-details/2023-03-25-ivolleycup-jon-ev-1386">18.03.2023</a></td>
+            <td><a href="/turniere/turnier-details/2023-03-25-ivolleycup-jon-ev-1386">16 (14)</a></td>
+        </tr>
+
+        <tr>
+            <td><a href="/turniere/turnier-details/2023-03-25-ivolleycup-jon-ev-1387">25.03.2023</a></td>
+            <td><a href="/turniere/turnier-details/2023-03-25-ivolleycup-jon-ev-1387">Damen</a></td>
+
+            <td><a href="/turniere/turnier-details/2023-03-25-ivolleycup-jon-ev-1387">66892</a></td>
+            <td><a href="/turniere/turnier-details/2023-03-25-ivolleycup-jon-ev-1387">iVolleyCup / JO!N e.V.</a></td>
+            <td><a href="/turniere/turnier-details/2023-03-25-ivolleycup-jon-ev-1387">18.03.2023</a></td>
+            <td><a href="/turniere/turnier-details/2023-03-25-ivolleycup-jon-ev-1387">8 (8)</a></td>
+        </tr>
+
+        <tr>
+            <td><a href="/turniere/turnier-details/2023-03-25-11-hallenvolleyball-mix-turnier-mtv-pattensen-1361">25.03.2023</a></td>
+            <td><a href="/turniere/turnier-details/2023-03-25-11-hallenvolleyball-mix-turnier-mtv-pattensen-1361">Mixed</a></td>
+
+            <td><a href="/turniere/turnier-details/2023-03-25-11-hallenvolleyball-mix-turnier-mtv-pattensen-1361">21423</a></td>
+            <td><a href="/turniere/turnier-details/2023-03-25-11-hallenvolleyball-mix-turnier-mtv-pattensen-1361">11. Hallenvolleyball Mix Turnier / MTV Pattensen</a></td>
+            <td><a href="/turniere/turnier-details/2023-03-25-11-hallenvolleyball-mix-turnier-mtv-pattensen-1361">10.03.2023</a></td>
+            <td><a href="/turniere/turnier-details/2023-03-25-11-hallenvolleyball-mix-turnier-mtv-pattensen-1361">15 (2)</a></td>
+        </tr>
+
+        <tr>
+            <td><a href="/turniere/turnier-details/2023-03-26-ivolleycup-jon-ev-1388">26.03.2023</a></td>
+            <td><a href="/turniere/turnier-details/2023-03-26-ivolleycup-jon-ev-1388">Mixed</a></td>
+
+            <td><a href="/turniere/turnier-details/2023-03-26-ivolleycup-jon-ev-1388">66892</a></td>
+            <td><a href="/turniere/turnier-details/2023-03-26-ivolleycup-jon-ev-1388">iVolleyCup / JO!N e.V.</a></td>
+            <td><a href="/turniere/turnier-details/2023-03-26-ivolleycup-jon-ev-1388">18.03.2023</a></td>
+            <td><a href="/turniere/turnier-details/2023-03-26-ivolleycup-jon-ev-1388">16 (15)</a></td>
+        </tr>
+
+        <tr>
+            <td><a href="/turniere/turnier-details/2023-04-15-cbc-indoor-hobby-beachvolleyball-turnier-roberto-beach-1382">15.04.2023</a></td>
+            <td><a href="/turniere/turnier-details/2023-04-15-cbc-indoor-hobby-beachvolleyball-turnier-roberto-beach-1382">Sonstiges</a></td>
+
+            <td><a href="/turniere/turnier-details/2023-04-15-cbc-indoor-hobby-beachvolleyball-turnier-roberto-beach-1382">85607</a></td>
+            <td><a href="/turniere/turnier-details/2023-04-15-cbc-indoor-hobby-beachvolleyball-turnier-roberto-beach-1382">CBC Indoor Hobby Beachvolleyball Turnier / Roberto Beach</a></td>
+            <td><a href="/turniere/turnier-details/2023-04-15-cbc-indoor-hobby-beachvolleyball-turnier-roberto-beach-1382">14.04.2023</a></td>
+            <td><a href="/turniere/turnier-details/2023-04-15-cbc-indoor-hobby-beachvolleyball-turnier-roberto-beach-1382">20 (13)</a></td>
+        </tr>
+
+        <tr>
+            <td><a href="/turniere/turnier-details/2023-04-19-sachsenbeach-dreieck-marketing-1384">19.04.2023</a></td>
+            <td><a href="/turniere/turnier-details/2023-04-19-sachsenbeach-dreieck-marketing-1384">Mixed</a></td>
+
+            <td><a href="/turniere/turnier-details/2023-04-19-sachsenbeach-dreieck-marketing-1384">04109</a></td>
+            <td><a href="/turniere/turnier-details/2023-04-19-sachsenbeach-dreieck-marketing-1384">SachsenBeach / DREIECK MARKETING</a></td>
+            <td><a href="/turniere/turnier-details/2023-04-19-sachsenbeach-dreieck-marketing-1384">15.03.2023</a></td>
+            <td><a href="/turniere/turnier-details/2023-04-19-sachsenbeach-dreieck-marketing-1384">998 (998)</a></td>
+        </tr>
+
+        <tr>
+            <td><a href="/turniere/turnier-details/2023-04-22-bettingenr-osterhasen-turnier-tsv-bettingen-1370">22.04.2023</a></td>
+            <td><a href="/turniere/turnier-details/2023-04-22-bettingenr-osterhasen-turnier-tsv-bettingen-1370">Mixed</a></td>
+
+            <td><a href="/turniere/turnier-details/2023-04-22-bettingenr-osterhasen-turnier-tsv-bettingen-1370">97877</a></td>
+            <td><a href="/turniere/turnier-details/2023-04-22-bettingenr-osterhasen-turnier-tsv-bettingen-1370">Bettingenr Osterhasen Turnier  / TSV Bettingen </a></td>
+            <td><a href="/turniere/turnier-details/2023-04-22-bettingenr-osterhasen-turnier-tsv-bettingen-1370">08.04.2023</a></td>
+            <td><a href="/turniere/turnier-details/2023-04-22-bettingenr-osterhasen-turnier-tsv-bettingen-1370">18 (18)</a></td>
+        </tr>
+
+        <tr>
+            <td><a href="/turniere/turnier-details/2023-04-23-fruehlingsturnier-bonner-tv-1373">23.04.2023</a></td>
+            <td><a href="/turniere/turnier-details/2023-04-23-fruehlingsturnier-bonner-tv-1373">Mixed</a></td>
+
+            <td><a href="/turniere/turnier-details/2023-04-23-fruehlingsturnier-bonner-tv-1373">53119</a></td>
+            <td><a href="/turniere/turnier-details/2023-04-23-fruehlingsturnier-bonner-tv-1373">Frühlingsturnier / Bonner TV</a></td>
+            <td><a href="/turniere/turnier-details/2023-04-23-fruehlingsturnier-bonner-tv-1373">14.04.2023</a></td>
+            <td><a href="/turniere/turnier-details/2023-04-23-fruehlingsturnier-bonner-tv-1373">12</a></td>
+        </tr>
+
+        <tr>
+            <td><a href="/turniere/turnier-details/2023-05-13-quattro-mixed-turnier-bg-marburg-vfl-marburg-1389">13.05.2023</a></td>
+            <td><a href="/turniere/turnier-details/2023-05-13-quattro-mixed-turnier-bg-marburg-vfl-marburg-1389">Mixed</a></td>
+
+            <td><a href="/turniere/turnier-details/2023-05-13-quattro-mixed-turnier-bg-marburg-vfl-marburg-1389">35037</a></td>
+            <td><a href="/turniere/turnier-details/2023-05-13-quattro-mixed-turnier-bg-marburg-vfl-marburg-1389">Quattro-Mixed-Turnier / BG Marburg, VfL Marburg</a></td>
+            <td><a href="/turniere/turnier-details/2023-05-13-quattro-mixed-turnier-bg-marburg-vfl-marburg-1389">24.04.2023</a></td>
+            <td><a href="/turniere/turnier-details/2023-05-13-quattro-mixed-turnier-bg-marburg-vfl-marburg-1389">35 (28)</a></td>
+        </tr>
+
+    </table>
+</div>
+<div class="d-md-none">
+
+<div class="card card-primary h-100 mb-4">
+    <a class="card-header bg-primary text-white" href="/turniere/turnier-details/2023-03-11-cbc-indoor-hobby-beachvolleyball-turnier-roberto-beach-1381">
+        <div class="row">
+            <h5 class="mb-0 mt-1 col-10">CBC Indoor Hobby Beachvolleyball Turnier</h5>
+            <div class="col-2">
+                <span class="btn-sm btn-light float-right">
+                    >>
+                </span>
+            </div>
+        </div>
+    </a>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-sm-6">
+                <p><strong>Turniermodus:</strong> Sonstiges</p>
+                <p><strong>Datum:</strong> 11.03.2023</p>
+                <p><strong>Ort:</strong> 85607 Aschheim bei München</p>
+            </div>
+            <div class="col-sm-6">
+                <p><strong>Veranstalter:</strong> Roberto Beach</p>
+                <p><strong>Startplätze (frei):</strong> 20 (12)</p>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card card-primary h-100 mb-4">
+    <a class="card-header bg-primary text-white" href="/turniere/turnier-details/2023-03-25-ivolleycup-jon-ev-1386">
+        <div class="row">
+            <h5 class="mb-0 mt-1 col-10">iVolleyCup</h5>
+            <div class="col-2">
+                <span class="btn-sm btn-light float-right">
+                    >>
+                </span>
+            </div>
+        </div>
+    </a>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-sm-6">
+                <p><strong>Turniermodus:</strong> Herren</p>
+                <p><strong>Datum:</strong> 25.03.2023</p>
+                <p><strong>Ort:</strong> 66892 Bruchmühlbach-Miesau</p>
+            </div>
+            <div class="col-sm-6">
+                <p><strong>Veranstalter:</strong> JO!N e.V.</p>
+                <p><strong>Startplätze (frei):</strong> 16 (14)</p>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card card-primary h-100 mb-4">
+    <a class="card-header bg-primary text-white" href="/turniere/turnier-details/2023-03-25-ivolleycup-jon-ev-1387">
+        <div class="row">
+            <h5 class="mb-0 mt-1 col-10">iVolleyCup</h5>
+            <div class="col-2">
+                <span class="btn-sm btn-light float-right">
+                    >>
+                </span>
+            </div>
+        </div>
+    </a>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-sm-6">
+                <p><strong>Turniermodus:</strong> Damen</p>
+                <p><strong>Datum:</strong> 25.03.2023</p>
+                <p><strong>Ort:</strong> 66892 Bruchmühlbach-Miesau</p>
+            </div>
+            <div class="col-sm-6">
+                <p><strong>Veranstalter:</strong> JO!N e.V.</p>
+                <p><strong>Startplätze (frei):</strong> 8 (8)</p>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card card-primary h-100 mb-4">
+    <a class="card-header bg-primary text-white" href="/turniere/turnier-details/2023-03-25-11-hallenvolleyball-mix-turnier-mtv-pattensen-1361">
+        <div class="row">
+            <h5 class="mb-0 mt-1 col-10">11. Hallenvolleyball Mix Turnier</h5>
+            <div class="col-2">
+                <span class="btn-sm btn-light float-right">
+                    >>
+                </span>
+            </div>
+        </div>
+    </a>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-sm-6">
+                <p><strong>Turniermodus:</strong> Mixed</p>
+                <p><strong>Datum:</strong> 25.03.2023</p>
+                <p><strong>Ort:</strong> 21423 21423 Winsen Luhe</p>
+            </div>
+            <div class="col-sm-6">
+                <p><strong>Veranstalter:</strong> MTV Pattensen</p>
+                <p><strong>Startplätze (frei):</strong> 15 (2)</p>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card card-primary h-100 mb-4">
+    <a class="card-header bg-primary text-white" href="/turniere/turnier-details/2023-03-26-ivolleycup-jon-ev-1388">
+        <div class="row">
+            <h5 class="mb-0 mt-1 col-10">iVolleyCup</h5>
+            <div class="col-2">
+                <span class="btn-sm btn-light float-right">
+                    >>
+                </span>
+            </div>
+        </div>
+    </a>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-sm-6">
+                <p><strong>Turniermodus:</strong> Mixed</p>
+                <p><strong>Datum:</strong> 26.03.2023</p>
+                <p><strong>Ort:</strong> 66892 Bruchmühlbach-Miesau</p>
+            </div>
+            <div class="col-sm-6">
+                <p><strong>Veranstalter:</strong> JO!N e.V.</p>
+                <p><strong>Startplätze (frei):</strong> 16 (15)</p>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card card-primary h-100 mb-4">
+    <a class="card-header bg-primary text-white" href="/turniere/turnier-details/2023-04-15-cbc-indoor-hobby-beachvolleyball-turnier-roberto-beach-1382">
+        <div class="row">
+            <h5 class="mb-0 mt-1 col-10">CBC Indoor Hobby Beachvolleyball Turnier</h5>
+            <div class="col-2">
+                <span class="btn-sm btn-light float-right">
+                    >>
+                </span>
+            </div>
+        </div>
+    </a>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-sm-6">
+                <p><strong>Turniermodus:</strong> Sonstiges</p>
+                <p><strong>Datum:</strong> 15.04.2023</p>
+                <p><strong>Ort:</strong> 85607 Aschheim bei München</p>
+            </div>
+            <div class="col-sm-6">
+                <p><strong>Veranstalter:</strong> Roberto Beach</p>
+                <p><strong>Startplätze (frei):</strong> 20 (13)</p>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card card-primary h-100 mb-4">
+    <a class="card-header bg-primary text-white" href="/turniere/turnier-details/2023-04-19-sachsenbeach-dreieck-marketing-1384">
+        <div class="row">
+            <h5 class="mb-0 mt-1 col-10">SachsenBeach</h5>
+            <div class="col-2">
+                <span class="btn-sm btn-light float-right">
+                    >>
+                </span>
+            </div>
+        </div>
+    </a>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-sm-6">
+                <p><strong>Turniermodus:</strong> Mixed</p>
+                <p><strong>Datum:</strong> 19.04.2023</p>
+                <p><strong>Ort:</strong> 04109 Leipzig</p>
+            </div>
+            <div class="col-sm-6">
+                <p><strong>Veranstalter:</strong> DREIECK MARKETING</p>
+                <p><strong>Startplätze (frei):</strong> 998 (998)</p>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card card-primary h-100 mb-4">
+    <a class="card-header bg-primary text-white" href="/turniere/turnier-details/2023-04-22-bettingenr-osterhasen-turnier-tsv-bettingen-1370">
+        <div class="row">
+            <h5 class="mb-0 mt-1 col-10">Bettingenr Osterhasen Turnier </h5>
+            <div class="col-2">
+                <span class="btn-sm btn-light float-right">
+                    >>
+                </span>
+            </div>
+        </div>
+    </a>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-sm-6">
+                <p><strong>Turniermodus:</strong> Mixed</p>
+                <p><strong>Datum:</strong> 22.04.2023</p>
+                <p><strong>Ort:</strong> 97877 Wertheim </p>
+            </div>
+            <div class="col-sm-6">
+                <p><strong>Veranstalter:</strong> TSV Bettingen </p>
+                <p><strong>Startplätze (frei):</strong> 18 (18)</p>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card card-primary h-100 mb-4">
+    <a class="card-header bg-primary text-white" href="/turniere/turnier-details/2023-04-23-fruehlingsturnier-bonner-tv-1373">
+        <div class="row">
+            <h5 class="mb-0 mt-1 col-10">Frühlingsturnier</h5>
+            <div class="col-2">
+                <span class="btn-sm btn-light float-right">
+                    >>
+                </span>
+            </div>
+        </div>
+    </a>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-sm-6">
+                <p><strong>Turniermodus:</strong> Mixed</p>
+                <p><strong>Datum:</strong> 23.04.2023</p>
+                <p><strong>Ort:</strong> 53119 Bonn</p>
+            </div>
+            <div class="col-sm-6">
+                <p><strong>Veranstalter:</strong> Bonner TV</p>
+                <p><strong>Startplätze (frei):</strong> 12</p>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card card-primary h-100 mb-4">
+    <a class="card-header bg-primary text-white" href="/turniere/turnier-details/2023-05-13-quattro-mixed-turnier-bg-marburg-vfl-marburg-1389">
+        <div class="row">
+            <h5 class="mb-0 mt-1 col-10">Quattro-Mixed-Turnier</h5>
+            <div class="col-2">
+                <span class="btn-sm btn-light float-right">
+                    >>
+                </span>
+            </div>
+        </div>
+    </a>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-sm-6">
+                <p><strong>Turniermodus:</strong> Mixed</p>
+                <p><strong>Datum:</strong> 13.05.2023</p>
+                <p><strong>Ort:</strong> 35037 Marburg</p>
+            </div>
+            <div class="col-sm-6">
+                <p><strong>Veranstalter:</strong> BG Marburg, VfL Marburg</p>
+                <p><strong>Startplätze (frei):</strong> 35 (28)</p>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+
+
+
+
+<ul class="pagination justify-content-center">
+
+
+
+
+
+    <li class="page-item active">
+        <span class="page-link">
+            1
+        </span>
+    </li>
+
+
+
+    <li class="page-item">
+
+        <a class="page-link" href="/turniere/liste/seite-2">2</a>
+
+    </li>
+
+
+
+
+
+    <li class="page-item next">
+        <a class="page-link" rel="next" href="CollectorA_Page2.html"><span aria-hidden="true">&raquo;</span></a>
+    </li>
+
+</ul>
+
+
+
+
+
+
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+
+
+
+
+</div>
+</div> <!-- /container -->
+</main>
+<footer class="text-center my-4">
+    © Vobatu.de - Eure Volleyballturniere im Netz
+    <ul class="list-inline"><li class="list-inline-item"><a href="/impressum">Impressum</a></li><li class="list-inline-item">&#124;</li><li class="list-inline-item"><a href="/datenschutz">Datenschutz</a></li></ul>
+</footer>
+
+
+<div class="modal fade" id="tournamentsMyLocation">
+    <div class="modal-dialog  modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h4 class="modal-title">Mein Standort</h4>
+                <button type="button" class="btn btn-primary pull-right border-white" data-dismiss="modal">X</button>
+            </div>
+            <div class="modal-body">
+
+
+
+                <div class="row mb-3">
+
+
+
+
+                </div>
+                <form name="userGeoDataRequest" action="/turniere?tx_tournaments_getgeodata%5Baction%5D=userGeoDataAjax&amp;type=1607866889&amp;cHash=461ed0d8824d4976fbe7acfe41aeb87a" method="post">
+                    <div>
+                        <input type="hidden" name="tx_tournaments_getgeodata[__referrer][@extension]" value="Tournaments" />
+                        <input type="hidden" name="tx_tournaments_getgeodata[__referrer][@controller]" value="Tournament" />
+                        <input type="hidden" name="tx_tournaments_getgeodata[__referrer][@action]" value="userGeoDataAjax" />
+                        <input type="hidden" name="tx_tournaments_getgeodata[__referrer][arguments]" value="YTowOnt904fa3ad1b68876caa974acea192a3961f131ba48" />
+                        <input type="hidden" name="tx_tournaments_getgeodata[__referrer][@request]" value="{&quot;@extension&quot;:&quot;Tournaments&quot;,&quot;@controller&quot;:&quot;Tournament&quot;,&quot;@action&quot;:&quot;userGeoDataAjax&quot;}0e7d7b689c2014e48e7c6873d448bed72e4ba88d" />
+                        <input type="hidden" name="tx_tournaments_getgeodata[__trustedProperties]" value="{&quot;userGeoDataRequest&quot;:{&quot;addressZip&quot;:1,&quot;addressCity&quot;:1,&quot;addressStreet&quot;:1,&quot;addressNumber&quot;:1,&quot;saveLocation&quot;:1}}74f3ad25bcc2bf1872970eefc6f542236eb922df" />
+                    </div>
+
+                    <div class="form-group">
+                        <input placeholder="PLZ" class="form-control" type="text" name="tx_tournaments_getgeodata[userGeoDataRequest][addressZip]" />
+                    </div>
+                    <div class="form-group">
+                        <input placeholder="Ort" class="form-control" type="text" name="tx_tournaments_getgeodata[userGeoDataRequest][addressCity]" />
+                    </div>
+                    <div class="form-group">
+                        <input placeholder="Straße (optional)" class="form-control" type="text" name="tx_tournaments_getgeodata[userGeoDataRequest][addressStreet]" />
+                    </div>
+                    <div class="form-group">
+                        <input placeholder="Hausnr. (optional)" class="form-control" type="text" name="tx_tournaments_getgeodata[userGeoDataRequest][addressNumber]" />
+                    </div>
+                    <div class="form-group">
+                        <div class="form-check text-center">
+                            <input type="hidden" name="tx_tournaments_getgeodata[userGeoDataRequest][saveLocation]" value="" /><input class="form-check-input" id="saveLocation" type="checkbox" name="tx_tournaments_getgeodata[userGeoDataRequest][saveLocation]" value="1" checked="checked" />
+                            <label class="form-check-label" for="saveLocation">
+                                Standort speichern <img src="/typo3conf/ext/tournaments/Resources/Public/Icons/icon-info.svg" data-toggle="tooltip" data-placement="top" title="Der Standort wird in deinem Browser als Cookie gespeichert." />
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group text-center">
+                        <input class="btn btn-primary" type="submit" value="Standort festlegen" />
+                    </div>
+                </form>
+
+
+                <script>
+    $(document).ready(function() {
+        $('#tournamentsMyLocation form').submit(function(event) {
+            event.preventDefault();
+            // Formular per AJAX senden
+            var form = $(this);
+            $.ajax({
+                type: 'POST',
+                url: form.prop('action'),
+                data : form.serialize(),
+                dataType: 'json',
+                encode: false
+            }).always(function(data) {
+                if(data.status == 200) {
+                    $('#tournamentsMyLocation .modal-body').html(data.responseText);
+                } else {
+                    //console.log('location error');
+                    //console.log(data);
+                }
+            });
+        });
+    });
+                    </script>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/typo3temp/assets/compressed/merged-c8ca54fd328bee30de1bef4ad264decf-4c2995c28a4e9d32357117d9fef30952.js.gzip?1674233847"></script>
+
+
+
+</body>
+</html>

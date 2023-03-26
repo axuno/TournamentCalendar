@@ -34,8 +34,10 @@ public class Auth : ControllerBase
     public async Task<IActionResult> SignIn([FromForm] SignInViewModel model, [FromQuery] string? returnUrl)
     {
         Library.Authentication.User? foundUser = null;
-        var hashedPassword = Convert.ToBase64String(System.Security.Cryptography.SHA1.Create()
-            .ComputeHash(new UTF8Encoding().GetBytes(model.Password ?? string.Empty)));
+        var hashedPassword =
+            Convert.ToBase64String(
+                System.Security.Cryptography.SHA1.HashData(
+                    new UTF8Encoding().GetBytes(model.Password ?? string.Empty)));
 
         var users = new List<Library.Authentication.User>();
         _configuration.Bind("Authentication", users);

@@ -45,7 +45,7 @@ public class Mailer
             {
                 mmm.MailMergeAddresses.Remove(mmm.MailMergeAddresses.Get(MailAddressType.CC).First());
             }
-            await _mailMergeService.Sender.SendAsync(mmm, (object) so);
+            await _mailMergeService.Sender.SendAsync(mmm, so);
             model.EmailSuccessFul = true;
         }
         catch (Exception ex)
@@ -76,7 +76,7 @@ public class Mailer
         try
         {
             var mmm = _mailMergeService.MessageStore.ScanForMessages().First(m => m.Category == "CalenderEntry").LoadMessage();
-            await _mailMergeService.Sender.SendAsync(mmm, (object) so);
+            await _mailMergeService.Sender.SendAsync(mmm, so);
             model.EmailSuccessful = true;
         }
         catch (Exception ex)
@@ -106,7 +106,7 @@ public class Mailer
         try
         {
             var mmm = _mailMergeService.MessageStore.ScanForMessages().First(m => m.Category == "InfoServiceEntry").LoadMessage();
-            await _mailMergeService.Sender.SendAsync(mmm, (object) so);
+            await _mailMergeService.Sender.SendAsync(mmm, so);
             model.EmailSuccessful = true;
         }
         catch (Exception ex)

@@ -13,60 +13,62 @@ namespace TournamentCalendar.Data;
 
 public class CalendarRepository : GenericRepository
 {
-    public static bool GetTournamentByGuid(CalendarEntity entity, string guid, CancellationToken cancellationToken)
+    public CalendarRepository(IDbContext dbContext) : base(dbContext) { }
+
+    public virtual bool GetTournamentByGuid(CalendarEntity entity, string guid, CancellationToken cancellationToken)
     {
-        using var da = Connecter.GetNewAdapter();
+        using var da = _dbContext.GetNewAdapter();
         return da.FetchEntityUsingUniqueConstraint(entity, new PredicateExpression(CalendarFields.Guid == guid));
     }
 
-    public static async Task<long> GetIdForGuid(string guid, CancellationToken cancellationToken)
+    public virtual async Task<long> GetIdForGuid(string guid, CancellationToken cancellationToken)
     {
-        using var da = Connecter.GetNewAdapter();
+        using var da = _dbContext.GetNewAdapter();
         var metaData = new LinqMetaData(da);
 
         // If Guid does not exist, Id will be zero:
         return (await (from t in metaData.Calendar where t.Guid == guid select t.Id).ExecuteAsync<ICollection<long>>(cancellationToken)).FirstOrDefault();
     }
 
-    public static async Task GetAllActiveTournaments(EntityCollection<CalendarEntity> tournaments, CancellationToken cancellationToken)
+    public virtual async Task GetAllActiveTournaments(EntityCollection<CalendarEntity> tournaments, CancellationToken cancellationToken)
     {
-        using var da = Connecter.GetNewAdapter();
+        using var da = _dbContext.GetNewAdapter();
         tournaments.Clear();
         var at = await GetActiveTournaments(da).ExecuteAsync<ICollection<CalendarEntity>>(cancellationToken);
         tournaments.AddRange(at);
     }
 
-    public static bool FetchEntity<T>(T entity, PredicateExpression predicateExpression) where T : EntityBase2, new()
+    public virtual bool FetchEntity<T>(T entity, PredicateExpression predicateExpression) where T : EntityBase2, new()
     {
-        using var da = Connecter.GetNewAdapter();
+        using var da = _dbContext.GetNewAdapter();
         return da.FetchEntityUsingUniqueConstraint(entity, predicateExpression);
     }
 
-    public static async Task GetActiveTournaments(EntityCollection<CalendarEntity> tournaments, string guid, CancellationToken cancellationToken)
+    public virtual async Task GetActiveTournaments(EntityCollection<CalendarEntity> tournaments, string guid, CancellationToken cancellationToken)
     {
-        using var da = Connecter.GetNewAdapter();
+        using var da = _dbContext.GetNewAdapter();
         tournaments.Clear();
         var at = await GetActiveTournaments(da).Where(t => t.Guid == guid).ExecuteAsync<ICollection<CalendarEntity>>(cancellationToken);
         tournaments.AddRange(at);
     }
 
-    public static async Task GetActiveTournaments(EntityCollection<CalendarEntity> tournaments, long id, CancellationToken cancellationToken)
+    public virtual async Task GetActiveTournaments(EntityCollection<CalendarEntity> tournaments, long id, CancellationToken cancellationToken)
     {
-        using var da = Connecter.GetNewAdapter();
+        using var da = _dbContext.GetNewAdapter();
         tournaments.Clear();
         var at = await GetActiveTournaments(da).Where(t => t.Id == id).ExecuteAsync<ICollection<CalendarEntity>>(cancellationToken);
         tournaments.AddRange(at);
     }
 
-    public static async Task<bool> SaveEntity<T>(T entity, bool refetchAfterSave) where T : EntityBase2, new()
+    public virtual async Task<bool> SaveEntity<T>(T entity, bool refetchAfterSave) where T : EntityBase2, new()
     {
-        using var da = Connecter.GetNewAdapter();
+        using var da = _dbContext.GetNewAdapter();
         return await da.SaveEntityAsync(entity, refetchAfterSave);
     }
 
-    public static async Task<EntityCollection<CalendarEntity>> GetActiveTournaments(DateTime sinceDate)
+    public virtual async Task<EntityCollection<CalendarEntity>> GetActiveTournaments(DateTime sinceDate)
     {
-        using var da = Connecter.GetNewAdapter();
+        using var da = _dbContext.GetNewAdapter();
         return await GetActiveTournaments(da).Where(t => t.ModifiedOn >= sinceDate).ExecuteAsync<EntityCollection<CalendarEntity>>();
     }
 
@@ -87,9 +89,9 @@ public class CalendarRepository : GenericRepository
     /// <param name="entry">TournamentCalendarEntity</param>
     /// <param name="cancellationToken"></param>
     /// <returns>Returns the Id of a possible duplicate if found, else Null.</returns>
-    public static async Task<CalendarEntity?> GetPossibleDuplicate(CalendarEntity entry, CancellationToken cancellationToken)
+    public virtual async Task<CalendarEntity?> GetPossibleDuplicate(CalendarEntity entry, CancellationToken cancellationToken)
     {
-        using var da = Connecter.GetNewAdapter();
+        using var da = _dbContext.GetNewAdapter();
         var metaData = new LinqMetaData(da);
 
         // check for duplicate criteria an existing and approved other tournament calender entries
@@ -119,9 +121,9 @@ public class CalendarRepository : GenericRepository
             .ExecuteAsync<ICollection<CalendarEntity>>(cancellationToken)).FirstOrDefault();
     }
 
-    public static async Task GetTournamentRelationshipEntities(EntityCollection<SurfaceEntity> surface, EntityCollection<PlayingAbilityEntity> ability, CancellationToken cancellationToken)
+    public virtual async Task GetTournamentRelationshipEntities(EntityCollection<SurfaceEntity> surface, EntityCollection<PlayingAbilityEntity> ability, CancellationToken cancellationToken)
     {
-        using var da = Connecter.GetNewAdapter();
+        using var da = _dbContext.GetNewAdapter();
         await da.FetchEntityCollectionAsync(new QueryParameters { CollectionToFetch = surface }, cancellationToken);
         await da.FetchEntityCollectionAsync(new QueryParameters { CollectionToFetch = ability }, cancellationToken);
         da.CloseConnection();

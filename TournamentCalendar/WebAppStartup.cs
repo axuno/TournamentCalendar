@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Rewrite;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using SD.LLBLGen.Pro.ORMSupportClasses;
@@ -123,7 +124,14 @@ public static class WebAppStartup
             options.RedirectStatusCode = StatusCodes.Status301MovedPermanently;
         });
 
-        ConfigureLlblgenPro(context.HostingEnvironment, context.Configuration);
+        var dbContext = new DbContext();
+        context.Configuration.Bind(nameof(DbContext), dbContext);
+        dbContext.ConnectionString = context.Configuration.GetConnectionString(dbContext.ConnectionKey);
+
+        ConfigureLlblgenPro(dbContext, context.HostingEnvironment);
+        
+        services.TryAddSingleton<IDbContext>(dbContext);
+        services.AddScoped<IAppDb>(s => s.GetRequiredService<IDbContext>().AppDb);
 
         #region *** Add CloudScribeNavigation ***
 
@@ -146,7 +154,7 @@ public static class WebAppStartup
                     options.LoginPath = new PathString("/auth/signin");
                     options.LogoutPath = new PathString("/auth/signoff");
                     options.AccessDeniedPath = new PathString("/auth/denied");
-                    options.Cookie.Name = "Tournaments";
+                    options.Cookie.Name = ".TournamentsAuth";
                 });
         
         #endregion
@@ -173,13 +181,9 @@ public static class WebAppStartup
         #endregion
     }
 
-    private static void ConfigureLlblgenPro(IWebHostEnvironment environment, IConfiguration configuration)
+    private static void ConfigureLlblgenPro(IDbContext dbContext, IWebHostEnvironment environment)
     {
-        // strings used in ConnectionStrings.json:
-        const string tournamentsConnectionToUseKeyName = "TournamentsConnectionToUse";
-
-        var connStringKeyName = configuration.GetValue<string>(tournamentsConnectionToUseKeyName);
-        RuntimeConfiguration.AddConnectionString(Connecter.DefaultConnection, configuration.GetConnectionString(connStringKeyName));
+        RuntimeConfiguration.AddConnectionString(dbContext.ConnectionKey, dbContext.ConnectionString);
 
         if (environment.IsProduction())
         {

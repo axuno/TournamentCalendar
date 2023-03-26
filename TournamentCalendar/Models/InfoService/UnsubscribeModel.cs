@@ -8,8 +8,11 @@ namespace TournamentCalendar.Models.InfoService;
 
 public class UnsubscribeModel
 {
-    public UnsubscribeModel(string guid)
+    private readonly IAppDb _appDb;
+
+    public UnsubscribeModel(IAppDb appDb, string guid)
     {
+        _appDb = appDb;
         Guid = guid;
         SaveSuccessFul = IsEntityFound = false;
     }
@@ -32,7 +35,7 @@ public class UnsubscribeModel
 
         try
         {
-            if (!(IsEntityFound = InfoServiceRepository.GetRegistrationByGuid(Entity, Guid)))
+            if (!(IsEntityFound = _appDb.InfoServiceRepository.GetRegistrationByGuid(Entity, Guid)))
                 return this;
 
             // only save dates if not already unsubscribed
@@ -40,7 +43,7 @@ public class UnsubscribeModel
             {
                 Entity.UnSubscribedOn = Entity.ModifiedOn = DateTime.Now;
                 Entity.ConfirmedOn = null;
-                SaveSuccessFul = await GenericRepository.Save(Entity, true, cancellationToken);
+                SaveSuccessFul = await _appDb.GenericRepository.Save(Entity, true, cancellationToken);
             }
             else
             {

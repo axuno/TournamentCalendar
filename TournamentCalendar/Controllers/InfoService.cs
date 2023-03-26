@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using TournamentCalendar.Library;
 using System.Threading;
+using TournamentCalendar.Data;
 
 namespace TournamentCalendar.Controllers;
 
@@ -19,9 +20,11 @@ public class InfoService : ControllerBase
     private readonly string _domainName;
     private readonly IMailMergeService _mailMergeService;
     private readonly ILogger<InfoService> _logger;
+    private readonly IAppDb _appDb;
 
-    public InfoService(IWebHostEnvironment hostingEnvironment, IConfiguration configuration, ILogger<InfoService> logger, IMailMergeService mailMergeService) : base(hostingEnvironment, configuration)
+    public InfoService(IAppDb appDb, IWebHostEnvironment hostingEnvironment, IConfiguration configuration, ILogger<InfoService> logger, IMailMergeService mailMergeService) : base(hostingEnvironment, configuration)
     {
+        _appDb = appDb;
         _domainName = configuration["DomainName"];
         _mailMergeService = mailMergeService;
         _logger = logger;
@@ -31,7 +34,7 @@ public class InfoService : ControllerBase
     public IActionResult Index()
     {
         ViewBag.TitleTagText = "Volley-News abonnieren";
-        return View(ViewName.InfoService.Edit, new EditModel { EditMode = EditMode.New });
+        return View(ViewName.InfoService.Edit, new EditModel(_appDb) { EditMode = EditMode.New });
     }
 
     [HttpGet("[action]/{id?}")]
@@ -43,9 +46,9 @@ public class InfoService : ControllerBase
             return RedirectToAction(nameof(InfoService.Index), nameof(Controllers.InfoService));
         }
 
-        var model = new EditModel(id) { EditMode = EditMode.Change };
+        var model = new EditModel(_appDb, id) { EditMode = EditMode.Change };
         return model.IsNew  // id not found
-            ? (IActionResult) RedirectToAction(nameof(InfoService.Index), nameof(Controllers.InfoService))
+            ? RedirectToAction(nameof(InfoService.Index), nameof(Controllers.InfoService))
             : View(ViewName.InfoService.Edit, model);
     }
 
@@ -55,6 +58,9 @@ public class InfoService : ControllerBase
     [HttpPost("[action]/{id?}")]
     public async Task<IActionResult> Eintrag([FromForm] EditModel model, CancellationToken cancellationToken)
     {
+        model = new EditModel(_appDb);
+        _ = await TryUpdateModelAsync<EditModel>(model);
+
         ViewBag.TitleTagText = "Volley-News abonnieren";
         model.EditMode = string.IsNullOrWhiteSpace(model.Guid) ? EditMode.New : EditMode.Change;
 
@@ -78,7 +84,7 @@ public class InfoService : ControllerBase
         ModelState.Clear();
         if (model.EditMode == EditMode.Change)
             if (model.TryRefetchEntity())
-                if (!TryUpdateModelAsync<EditModel>(model).Result)
+                if (!await TryUpdateModelAsync<EditModel>(model))
                     return View(ViewName.InfoService.Edit, model);
 
         var googleApi = new GoogleConfiguration();
@@ -118,7 +124,7 @@ public class InfoService : ControllerBase
     public async Task<IActionResult> Unsubscribe([FromForm] EditModel model, CancellationToken cancellationToken)
     {
         ViewBag.TitleTagText = "Volley-News abbestellen";
-        var unsubscribeModel = new Models.InfoService.UnsubscribeModel(model.Guid);
+        var unsubscribeModel = new Models.InfoService.UnsubscribeModel(_appDb, model.Guid);
         return View(ViewName.InfoService.Unsubscribe, await unsubscribeModel.Save(cancellationToken));
     }
 
@@ -126,7 +132,7 @@ public class InfoService : ControllerBase
     public async Task<IActionResult> Bestaetigen(string id, CancellationToken cancellationToken)
     {
         ViewBag.TitleTagText = "Volley-News bestätigen";
-        var approveModel = new Models.Shared.ApproveModelTournamentCalendar<InfoServiceEntity>(InfoServiceFields.Guid == id, InfoServiceFields.ConfirmedOn, InfoServiceFields.UnSubscribedOn);
+        var approveModel = new Models.Shared.ApproveModelTournamentCalendar<InfoServiceEntity>(_appDb,InfoServiceFields.Guid == id, InfoServiceFields.ConfirmedOn, InfoServiceFields.UnSubscribedOn);
         return View(ViewName.InfoService.Approve, await approveModel.Save(cancellationToken));
     }
 }

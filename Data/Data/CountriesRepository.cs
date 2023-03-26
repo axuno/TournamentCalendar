@@ -7,9 +7,12 @@ namespace TournamentCalendar.Data;
 
 public class CountriesRepository : GenericRepository
 {
-    public static void GetCountriesList(EntityCollection<CountryEntity> countries, string[] forIds)
+    public CountriesRepository(IDbContext dbContext) : base(dbContext) { }
+
+    public virtual void GetCountriesList(EntityCollection<CountryEntity> countries, string[] forIds)
     {
-        using var da = Connecter.GetNewAdapter();
+        using var da = _dbContext.GetNewAdapter();
+
         var bucket = new RelationPredicateBucket();
         foreach (var id in forIds)
         {

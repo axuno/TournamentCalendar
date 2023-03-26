@@ -25,6 +25,7 @@ public enum EditMode
 [ModelMetadataType(typeof (TournamentCalendarMetadata))]
 public class EditModel : CalendarEntity, IValidatableObject
 {
+    private IAppDb? _appDb;
     private readonly EntityCollection<SurfaceEntity> _surfaces = new();
     private readonly EntityCollection<PlayingAbilityEntity> _playingAbilities = new();
 
@@ -44,15 +45,16 @@ public class EditModel : CalendarEntity, IValidatableObject
         base.IsNew = true;
     }
 
-    public async Task<EditModel> Initialize(CancellationToken cancellationToken)
+    public async Task<EditModel> Initialize(IAppDb appDb, CancellationToken cancellationToken)
     {
-        await CalendarRepository.GetTournamentRelationshipEntities(_surfaces, _playingAbilities, cancellationToken);
+        _appDb = appDb;
+        await _appDb.CalendarRepository.GetTournamentRelationshipEntities(_surfaces, _playingAbilities, cancellationToken);
         return this;
     }
 
     public bool LoadTournament(string guid, CancellationToken cancellationToken)
     {
-        if (!CalendarRepository.GetTournamentByGuid(this, guid, cancellationToken)) return false;
+        if (!_appDb!.CalendarRepository.GetTournamentByGuid(this, guid, cancellationToken)) return false;
 
         Guid = guid;
         return true;
@@ -264,7 +266,7 @@ public class EditModel : CalendarEntity, IValidatableObject
             {
                 if (value)
                 {
-                    base.DeletedOn = (!base.DeletedOn.HasValue ? DateTime.Now : (DateTime?) null);
+                    base.DeletedOn = (!base.DeletedOn.HasValue ? DateTime.Now : null);
                 }
             }
         }
@@ -287,7 +289,7 @@ public class EditModel : CalendarEntity, IValidatableObject
         var countryIds = new[] { "DE", "AT", "CH", "LI", "IT", "NL", "BE", "LU", "FR", "PL", "DK", "CZ", "SK" };
 
         EntityCollection<CountryEntity> countries = new();
-        CountriesRepository.GetCountriesList(countries, countryIds);
+        _appDb!.CountriesRepository.GetCountriesList(countries, countryIds);
 
         // add to countries list in the sequence of countryIds array
         return countryIds.Select(id => countries.First(c => c.Id == id)).Select(
@@ -374,7 +376,7 @@ public class EditModel : CalendarEntity, IValidatableObject
     public async Task<CalendarEntity?> GetPossibleDuplicate(CancellationToken cancellationToken)
     {
         // It is expected that the model is normalized before calling this method.
-        return await CalendarRepository.GetPossibleDuplicate(this, cancellationToken);
+        return await _appDb!.CalendarRepository.GetPossibleDuplicate(this, cancellationToken);
     }
 
 
@@ -398,9 +400,9 @@ public class EditModel : CalendarEntity, IValidatableObject
         try
         {
             // Id will be zero if the Guid does not exist:
-            Id = await CalendarRepository.GetIdForGuid(Guid, cancellationToken);
+            Id = await _appDb!.CalendarRepository.GetIdForGuid(Guid, cancellationToken);
 
-            confirmModel.SaveSuccessful = await GenericRepository.Save(this, true, cancellationToken);
+            confirmModel.SaveSuccessful = await _appDb.GenericRepository.Save(this, true, cancellationToken);
             confirmModel.Entity = this;
         }
         catch (Exception ex)

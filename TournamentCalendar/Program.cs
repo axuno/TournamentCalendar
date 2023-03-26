@@ -92,6 +92,7 @@ public class Program
             .AddJsonFile(@"credentials.json", optional: false, reloadOnChange: true)
             .AddJsonFile($"credentials.{builder.Environment.EnvironmentName}.json",
                 optional: false, reloadOnChange: true)
+            .AddXmlFile("DbContext.config", optional: false, reloadOnChange: true)
             .AddEnvironmentVariables()
             .AddCommandLine(args);
 

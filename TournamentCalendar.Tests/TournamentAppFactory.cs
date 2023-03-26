@@ -1,34 +1,31 @@
-﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.Extensions.Hosting;
 
 namespace TournamentCalendar.Tests;
 
-public class TournamentAppFactory : WebApplicationFactory<Program>
+internal class TournamentAppFactory : WebApplicationFactory<Program>
 {
-    
-    public TournamentAppFactory()
+    private readonly string _environment;
+
+    public TournamentAppFactory(string environment = nameof(Environments.Development))
     {
+        _environment = environment;
     }
-    
-    protected override IWebHostBuilder CreateWebHostBuilder()
+
+    protected override IHost CreateHost(IHostBuilder builder)
     {
-        var builder = base.CreateWebHostBuilder();
-        return builder!;
-    }
-    
-    protected override void ConfigureWebHost(IWebHostBuilder builder)
-    {
-        base.ConfigureWebHost(builder);
+        builder.UseEnvironment(_environment);
 
-        builder
-            .ConfigureServices(services =>
-            {
+        builder.ConfigureAppConfiguration(config =>
+        {
+            // runs AFTER Program.cs
+        });
 
-            }).ConfigureAppConfiguration(app =>
-            {
-
-            });
-        builder.Build();
+        // Add mock/test services to the builder here
+        builder.ConfigureServices(services =>
+        {
+        });
+        
+        return base.CreateHost(builder);
     }
 }

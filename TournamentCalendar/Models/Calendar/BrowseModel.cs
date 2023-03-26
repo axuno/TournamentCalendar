@@ -11,37 +11,43 @@ namespace TournamentCalendar.Models.Calendar;
 
 public class BrowseModel
 {
+    private readonly IAppDb _appDb;
     private readonly EntityCollection<CalendarEntity> _tournaments = new();
     private readonly EntityCollection<SurfaceEntity> _surfaces = new();
     private readonly EntityCollection<PlayingAbilityEntity> _playingAbilities = new();
 
+    public BrowseModel(IAppDb appDb)
+    {
+        _appDb = appDb;
+    }
+
     public async Task Load(CancellationToken cancellationToken)
     {
         IsFiltered = false;
-        await CalendarRepository.GetAllActiveTournaments(_tournaments, cancellationToken);
-        await CalendarRepository.GetTournamentRelationshipEntities(_surfaces, _playingAbilities, cancellationToken);
+        await _appDb.CalendarRepository.GetAllActiveTournaments(_tournaments, cancellationToken);
+        await _appDb.CalendarRepository.GetTournamentRelationshipEntities(_surfaces, _playingAbilities, cancellationToken);
     }
 
     public async Task Load(string guid, CancellationToken cancellationToken)
     {
         IsFiltered = true;
-        await CalendarRepository.GetActiveTournaments(_tournaments, guid, cancellationToken);
+        await _appDb.CalendarRepository.GetActiveTournaments(_tournaments, guid, cancellationToken);
         if (_tournaments.Count == 0)
         {
             throw new ArgumentOutOfRangeException(nameof(guid), guid, "No entry found.");
         }
-        await CalendarRepository.GetTournamentRelationshipEntities(_surfaces, _playingAbilities, cancellationToken);
+        await _appDb.CalendarRepository.GetTournamentRelationshipEntities(_surfaces, _playingAbilities, cancellationToken);
     }
 
     public async Task Load(long id, CancellationToken cancellationToken)
     {
         IsFiltered = true;
-        await CalendarRepository.GetActiveTournaments(_tournaments, id, cancellationToken);
+        await _appDb.CalendarRepository.GetActiveTournaments(_tournaments, id, cancellationToken);
         if (_tournaments.Count == 0)
         {
             throw new ArgumentOutOfRangeException(nameof(id), id, "No entry found.");
         }
-        await CalendarRepository.GetTournamentRelationshipEntities(_surfaces, _playingAbilities, cancellationToken);
+        await _appDb.CalendarRepository.GetTournamentRelationshipEntities(_surfaces, _playingAbilities, cancellationToken);
     }
 
     public bool IsFiltered { get; private set; }
