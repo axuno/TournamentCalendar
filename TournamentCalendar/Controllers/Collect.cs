@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using TournamentCalendar.Collectors;
+using TournamentCalendar.Collecting;
 using TournamentCalendar.Data;
 using TournamentCalendar.Models.Collect;
 using TournamentCalendar.Views;
@@ -30,7 +30,7 @@ public class Collect : ControllerBase
     {
         ViewBag.TitleTagText = "Andere Volleyball-Turnierkalender";
 
-        Storage.StorageFolder = Path.Combine(HostingEnvironment.WebRootPath, @"Collect");
+        Storage.StorageFolder = Path.Combine(HostingEnvironment.WebRootPath, Storage.StorageFolderName);
 
         // Uses the latest stored tourneys and compares with current tourneys
         var beforeThisDate = DateTime.MaxValue;

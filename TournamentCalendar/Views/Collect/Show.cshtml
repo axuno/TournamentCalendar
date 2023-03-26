@@ -17,18 +17,18 @@
         }
 
         <div class="mb-4">
-            @if (Model.ImportDates.Length > 0)
+            @if (Model.CollectionDates.Length > 0)
             {
-                <h4 class="h4">Verwendete Collectdaten im Vergleich zu den Einträgen jetzt</h4>
-                <a class="btn btn-primary mr-2 mb-3@(DateTime.MinValue == Model.LastImportDate ? " active" : "")" href="@Url.Action(nameof(Collect.Show), nameof(Collect), new {id = DateTime.MinValue.ToString("yyyy-MM-dd")})" role="button">Alle aktuellen</a>
-                foreach (var date in Model.ImportDates)
+                <h4 class="h4">Gesammelte Einträge im Vergleich zum markierten Datum</h4>
+                <a class="btn btn-primary mr-2 mb-3@(DateTime.MinValue == Model.LastCollectionDate ? " active" : "")" href="@Url.Action(nameof(Collect.Show), nameof(Collect), new {id = DateTime.MinValue.ToString("yyyy-MM-dd")})" role="button">Alle aktuellen</a>
+                foreach (var date in Model.CollectionDates)
                 {
-                    <a class="btn btn-primary mr-2 mb-3@(date == Model.LastImportDate ? " active" : "")" href="@Url.Action(nameof(Collect.Show), nameof(Collect), new {id = date.ToString("yyyy-MM-dd")})" role="button">@date.ToString("dd.MM.yyyy")</a>
+                    <a class="btn btn-primary mr-2 mb-3@(date == Model.LastCollectionDate ? " active" : "")" href="@Url.Action(nameof(Collect.Show), nameof(Collect), new {id = date.ToString("yyyy-MM-dd")})" role="button">@date.ToString("dd.MM.yyyy")</a>
                 }
             }
             else
             {
-                <h4 class="h4">Keine Collectdaten gefunden</h4>
+                <h4 class="h4">Keine gesammelten Einträge gefunden</h4>
             }
         </div>
 
@@ -40,16 +40,16 @@
                 }
                 <h4 class="h4">@provider.ProviderName</h4>
                 <h5>Insgesamt @newTourneys.Length neue Einträge</h5>
-                @if (Model.LastImportDate != DateTime.MinValue)
+                @if (Model.LastCollectionDate != DateTime.MinValue)
                 {
-                    <div><b>Seit dem letzten Collect am @Model.LastImportDate.ToString("dd.MM.yyyy"):</b>
+                    <div><b>Einträge seit dem letzten Einsammeln am @Model.LastCollectionDate.ToString("dd.MM.yyyy"):</b>
                     </div>
                 }
                 @{
                     foreach (var tourney in newTourneys)
                     {
                         <div>
-                            <a href="@tourney.Link" target="_blank" class="link">@tourney.Name</a> @tourney.Date?.ToString("dd.MM.yyyy") @(Model.ExistInCalendar.Contains(tourney.Link!) ? "✅" : "")
+                            @(Model.ExistInCalendar.Contains(tourney.Link!) ? "✅" : "⭕") <a href="@tourney.Link" target="_blank" class="link">@tourney.Name</a> @tourney.Date?.ToString("dd.MM.yyyy")
                         </div>
                     }
                 }

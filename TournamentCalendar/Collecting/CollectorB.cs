@@ -7,7 +7,7 @@ using AngleSharp.Dom;
 using AngleSharp.Html.Dom;
 using Microsoft.Extensions.Logging;
 
-namespace TournamentCalendar.Collectors;
+namespace TournamentCalendar.Collecting;
 
 public class CollectorB : CollectorBase
 {

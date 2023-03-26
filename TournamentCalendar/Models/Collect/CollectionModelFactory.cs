@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using TournamentCalendar.Collectors;
+using TournamentCalendar.Collecting;
 using TournamentCalendar.Data;
 using TournamentCalendarDAL.EntityClasses;
 using TournamentCalendarDAL.HelperClasses;
@@ -21,26 +21,26 @@ public class CollectionModelFactory
         var listModel = new ListModel();
         try
         {
-            var files = Storage.GetFilesDescending().ToList();
+            var fileNames = Storage.GetFileNamesDescending().ToList();
             // Find the first file matching the data criteria
-            var fileIndex = files.FindIndex(0, f => Storage.ExtractDateFromFileName(f).Date <= (beforeThisDate != DateTime.MinValue ? beforeThisDate.Date : DateTime.MaxValue));
+            var fileIndex = fileNames.FindIndex(0, f => Storage.ExtractDateFromFileName(f).Date <= (beforeThisDate != DateTime.MinValue ? beforeThisDate.Date : DateTime.MaxValue));
 
             // Read the file, if found
-            var latestTourneys = fileIndex != -1 ? Storage.ReadTourneysFromFile(files[fileIndex]).Tourneys : new CollectedTourneys().Tourneys;
+            var latestTourneys = fileIndex != -1 ? Storage.ReadTourneysFromFile(fileNames[fileIndex]).Tourneys : new CollectedTourneys().Tourneys;
             // Read the file before the latest
-            var olderTourneys = beforeThisDate != DateTime.MinValue && fileIndex + 1 < files.Count ? Storage.ReadTourneysFromFile(files[fileIndex + 1]).Tourneys : new CollectedTourneys().Tourneys;
+            var olderTourneys = beforeThisDate != DateTime.MinValue && fileIndex + 1 < fileNames.Count ? Storage.ReadTourneysFromFile(fileNames[fileIndex + 1]).Tourneys : new CollectedTourneys().Tourneys;
 
             (listModel.SameTourneys, listModel.NewTourneys, listModel.DeletedTourneys)
-                = Storage.CompareTourneysByUrl(latestTourneys, olderTourneys);
+                = Collecting.Collectors.CompareTourneysByUrl(latestTourneys, olderTourneys);
             
-            listModel.ImportDates = Storage.ExtractDatesFromFileNames(files);
-            listModel.LastImportDate = Storage.GetLastCollectionDate(listModel.ImportDates, beforeThisDate);
+            listModel.CollectionDates = Storage.ExtractDatesFromFileNames(fileNames);
+            listModel.LastCollectionDate = Storage.GetLastCollectionDate(listModel.CollectionDates, beforeThisDate);
 
             await CheckForExistingLocalEntries(listModel);
         }
         catch (Exception e)
         {
-            listModel = new ListModel { Errors = new[] { e }, ImportDates = new[] { DateTime.MinValue }, LastImportDate = DateTime.MinValue };
+            listModel = new ListModel { Errors = new[] { e }, CollectionDates = new[] { DateTime.MinValue }, LastCollectionDate = DateTime.MinValue };
         }
 
         return listModel;

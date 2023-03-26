@@ -8,7 +8,7 @@ using AngleSharp.Html.Parser;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 
-namespace TournamentCalendar.Collectors;
+namespace TournamentCalendar.Collecting;
 
 public abstract class CollectorBase : ICollector
 {
@@ -16,15 +16,15 @@ public abstract class CollectorBase : ICollector
     {
         // initial value must be set in the constructor
         GetDocumentAsync = GetHttpDocumentAsync;
-        if(logger != null) Logger = logger;
+        Logger = logger ?? NullLogger.Instance;
     }
 
-    protected ILogger Logger { get; set; } = NullLogger.Instance;
+    protected ILogger Logger { get; set; }
 
-    public virtual int ProviderId { get; init; } = 0;
-    public virtual string ProviderName { get; init; } = string.Empty;
-    public virtual Uri BaseAddress { get; set; } = new("https://localhost");
-    public virtual string StartPath { get; set; } = string.Empty;
+    public abstract int ProviderId { get; init; }
+    public abstract string ProviderName { get; init; }
+    public abstract Uri BaseAddress { get; set; }
+    public abstract string StartPath { get; set; }
 
     protected async Task<IHtmlDocument> ToHtmlDocument(string page)
     {

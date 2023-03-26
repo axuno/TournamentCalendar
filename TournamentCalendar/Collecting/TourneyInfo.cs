@@ -1,7 +1,7 @@
 ﻿using System;
 using YAXLib.Attributes;
 
-namespace TournamentCalendar.Collectors;
+namespace TournamentCalendar.Collecting;
 
 public class TourneyInfo
 {

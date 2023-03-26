@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace TournamentCalendar.Collectors;
+namespace TournamentCalendar.Collecting;
 
 public interface ICollector
 {

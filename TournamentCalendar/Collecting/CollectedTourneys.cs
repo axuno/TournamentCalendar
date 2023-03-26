@@ -2,7 +2,7 @@
 using YAXLib.Attributes;
 using YAXLib.Enums;
 
-namespace TournamentCalendar.Collectors;
+namespace TournamentCalendar.Collecting;
 
 public class CollectedTourneys
 {
