@@ -10,14 +10,14 @@
             if (!await Model.HasVisibleChildren(node))
             {
                 <li class="@Model.GetClass(node.Value, "nav-item", "active", true)">
-                    <a class="nav-link" href="@Url.Content(Model.AdjustUrl(node))">@Model.AdjustText(node)</a>
+                    <a class="nav-link" href="@Url.Content(Model.AdjustUrl(node))">@Html.Raw(Model.GetIcon(node.Value))@Model.AdjustText(node)</a>
                 </li>
             }
             else
             {
                 <li class="@Model.GetClass(node.Value, "nav-item dropdown", "active", true)">
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="@Url.Content(Model.AdjustUrl(node))" role="button">
-                        @Model.AdjustText(node)@Model.UpdateTempNode(node)
+                        @Html.Raw(Model.GetIcon(node.Value))@Model.AdjustText(node)@Model.UpdateTempNode(node)
                     </a>
                     @await Html.PartialAsync("NavigationNodeChildDropdownPartial", Model)
                 </li>

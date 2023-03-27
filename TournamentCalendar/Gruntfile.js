@@ -90,7 +90,8 @@ module.exports = function (grunt) {
             },
             bootstrap_css_all: {
                 src: ["wwwroot/lib/bootstrap/bootstrap.min.css",
-                    "node_modules/bootstrap-select/dist/css/bootstrap-select.min.css"
+                    "node_modules/bootstrap-select/dist/css/bootstrap-select.min.css",
+                    "node_modules/bootstrap-icons/font/bootstrap-icons.css"
                 ],
                 dest: "wwwroot/lib/bootstrap/bootstrap.min.css",
                 nonull: true
@@ -134,6 +135,11 @@ module.exports = function (grunt) {
         },
 
         copy: {
+            bootstrap_icons_fonts: {
+                files: [
+                    { cwd: 'node_modules/bootstrap-icons/font/fonts/', expand: 'true', src: '**/*', dest: 'wwwroot/lib/bootstrap/fonts/' }
+                ]
+            },
             jquery_ui_date_time_picker_img: {
                 files: [
                     { cwd:"ScriptLib/DateTimePicker/Images/", expand:"true", src:"**/*", dest: "wwwroot/lib/DateTimePicker/Images/" }
