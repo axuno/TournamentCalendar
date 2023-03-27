@@ -1,5 +1,4 @@
 @import '../bootstrap/custom';
-@import '../../node_modules/font-awesome/scss/font-awesome'; 
 @import 'std-input';
 
 body {
@@ -129,6 +128,6 @@ fieldset legend {
 }
 
 /* Auswertung.cshtml*/
-.fa.fa-arrow-circle-down.fa-2x {
+.bi.bi-arrow-down-circle-fill.fa-2x {
     color: theme-color("success");
 }

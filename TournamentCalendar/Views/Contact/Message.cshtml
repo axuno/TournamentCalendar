@@ -19,7 +19,7 @@
         <fieldset class="rounded my-2">
             <div class="mt-2">
                 <img id="CaptchaImage" style="vertical-align: bottom; width: 200px; display:inline" class="rounded" src="@Url.Action(nameof(Captcha.Index), nameof(Captcha))@("?guid=" + Guid.NewGuid())" alt="Captcha" />
-                <span onclick="javascript:if (document.images) document.images.CaptchaImage.src = '@Url.Action(nameof(Captcha.Index), nameof(Captcha))?new=1&amp;time=' + new Date().getTime();" style="cursor: pointer"><i class="fa fa-refresh fa-2x" style="margin: 0 5px 0 5px;" title="Bild neu laden"></i>Bild neu laden</span><br />
+                <span onclick="javascript:if (document.images) document.images.CaptchaImage.src = '@Url.Action(nameof(Captcha.Index), nameof(Captcha))?new=1&amp;time=' + new Date().getTime();" style="cursor: pointer"><i class="bi bi-arrow-clockwise fa-2x" style="margin: 0 5px 0 5px;" title="Bild neu laden"></i>Bild neu laden</span><br />
             </div>
             @Html.LabelFor(m => m.Captcha)
             @Html.TextBoxFor(m => m.Captcha, new { maxlength = "7", @class = "form-control input-required", style = "width:12rem" })

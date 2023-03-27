@@ -38,7 +38,7 @@
                 <th>Art</th>
                 <th>Belag</th>
                 <th>PLZ</th>
-                <th class="text-right"><i class="fa fa-info-circle"></i></th>
+                    <th class="text-right"><i class="bi bi-info-circle-fill"></i></th>
             </tr>
         </thead>
         <tbody>
@@ -51,7 +51,7 @@
                     <td>@m.GetTournamentTypeShort()</td>
                     <td>@m.GetSurface()</td>
                     <td>@m.CountryId-@m.PostalCode</td>
-                    <td class="text-right"><a href="@Url.Action(nameof(Calendar.Id), nameof(Calendar), new {id = m.Id})" style="text-decoration: none"><i class="fa fa-info-circle @((DateTime.Now.Date - m.ModifiedOn.Date).Days < 2 ? "text-primary" : "")"></i></a></td>
+                    <td class="text-right"><a href="@Url.Action(nameof(Calendar.Id), nameof(Calendar), new {id = m.Id})" style="text-decoration: none"><i class="bi bi-info-circle @((DateTime.Now.Date - m.ModifiedOn.Date).Days < 2 ? "text-primary" : "")"></i></a></td>
                 </tr>
             }
         </tbody>
@@ -59,8 +59,7 @@
 </article>
 
 <article class="col-12 pb-2">
-    <h5 class="h5">Weitere Volleyball-Turniere sind hier zu finden</h5>
-    <a href="http://www.volleyball-verband.de" class="link">www.volleyball-verband.de</a><br />
+    <h5 class="h5">Andere Turnierkalender:</h5>
     <a href="http://www.vobatu.de" class="link">www.vobatu.de</a><br />
     <a href="http://www.volleyballer.de" class="link">www.volleyballer.de</a><br />
 </article>

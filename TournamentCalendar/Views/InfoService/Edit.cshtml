@@ -98,7 +98,7 @@
                     @Html.LabelFor(m => m.Street)
                     @Html.TextBoxFor(m => m.Street, new { maxlength = InfoServiceFields.Street.MaxLength, @class = "form-control" })
                     <div style="margin-top: 15px; cursor: pointer" onclick="ShowHideLocation()">
-                        <i class="fa fa-info-circle"></i> Karte mit Standort in Google Maps
+                        <i class="bi bi-info-circle-fill"></i> Karte mit Standort in Google Maps
                     </div>
                     <div id="mapPlaceholder" style="@if (!Model.Longitude.HasValue && !Model.Latitude.HasValue)
                                                         {
@@ -139,7 +139,7 @@
 
                 <div>
                     <img id="CaptchaImage" class="rounded" src="@Url.Action(nameof(Captcha.Index), nameof(Captcha))@("?guid=" + Guid.NewGuid())" alt="Captcha" style="vertical-align: bottom; width: 12rem" />
-                    <span onclick="javascript:if (document.images) document.images.CaptchaImage.src = '@Url.Action(nameof(Captcha.Index), nameof(Captcha))?new=1&amp;time=' + new Date().getTime();" style="cursor: pointer"><i class="fa fa-refresh fa-2x" style="margin: 0 5px 0 5px" title="Bild neu laden"></i>Bild neu laden</span><br />
+                    <span onclick="javascript:if (document.images) document.images.CaptchaImage.src = '@Url.Action(nameof(Captcha.Index), nameof(Captcha))?new=1&amp;time=' + new Date().getTime();" style="cursor: pointer"><i class="bi bi-arrow-clockwise fa-2x" style="margin: 0 5px 0 5px" title="Bild neu laden"></i>Bild neu laden</span><br />
 
                     @Html.LabelFor(m => m.Captcha)
                 </div>

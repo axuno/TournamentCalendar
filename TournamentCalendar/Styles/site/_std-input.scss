@@ -74,7 +74,8 @@ label {
     position: relative;
 
     &:before {
-        font-family: FontAwesome;
+        font-family: "bootstrap-icons";
+        font-display: block;
         font-size: 2.25rem; // 36px
         content: '';
         display: inline-block;
@@ -95,52 +96,58 @@ label {
 
 
 .msg-info {
-	color: $info-color;
-	background-color: $info-bgcolor;
+    color: $info-color;
+    background-color: $info-bgcolor;
+
     &:before {
-		content: '\f05a';
-	}
+        content: '\F431';
+    }
 }
 
 
 .msg-success {
-	color: $success-color;
-	background-color: $success-bgcolor;
+    color: $success-color;
+    background-color: $success-bgcolor;
+
     &:before {
-		content: '\f058';
-	}
+        content: '\F26B';
+    }
 }
 
 .msg-warning {
-	color: $warning-color;
-	background-color: $warning-bgcolor;
+    color: $warning-color;
+    background-color: $warning-bgcolor;
+
     &:before {
-		content: '\f06a';
-	}
+        content: '\F333';
+    }
 }
 
 .msg-question {
-	color: $question-color;
-	background-color: $question-bgcolor;
+    color: $question-color;
+    background-color: $question-bgcolor;
+
     &:before {
-		content: '\f059';
-	}
+        content: '\F505';
+    }
 }
 
 .msg-error {
-	color: $error-color;
-	background-color: $error-bgcolor;
+    color: $error-color;
+    background-color: $error-bgcolor;
+
     &:before {
-		content: '\f057';
-	}
+        content: '\F623';
+    }
 }
 
 .msg-validation {
-	color: $validation-color;
-	background-color: $validation-bgcolor;
+    color: $validation-color;
+    background-color: $validation-bgcolor;
+
     &:before {
-		content: '\f05e';
-	}
+        content: '\F567';
+    }
 }
 
 
