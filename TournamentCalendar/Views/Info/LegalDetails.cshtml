@@ -1,4 +1,5 @@
-﻿<div class="row">
+﻿@using TournamentCalendar
+<div class="row">
     <article class="col-12">
         <h3 class="h3">Impressum</h3>
         <p style="margin-top: 0">
@@ -23,6 +24,13 @@
             <strong>Haftungshinweis:</strong> Trotz sorgfältiger inhaltlicher Kontrolle übernehmen wir keine Haftung für die Inhalte
             externer Links. Für den Inhalt der verlinkten Seiten sind ausschließlich deren Betreiber verantwortlich.
         </p>
+        @{
+            var webAppInfo = new Axuno.Tools.AssemblyInfo(typeof(WebAppStartup));
+            if (webAppInfo.Name != null)
+            {
+                <div class="my-3 text-black-50">@(webAppInfo.Product) v@(webAppInfo.Version)</div>
+            }
+        }
  </article>
 </div>
 @section CssSection {}
