@@ -3,8 +3,8 @@
 	<PropertyGroup>
         <Product>TournamentCalendar</Product>
         <TargetFramework>net6.0</TargetFramework>
-        <Version>2.1.4</Version>
-        <FileVersion>2.1.4</FileVersion>
+        <Version>2.1.5</Version>
+        <FileVersion>2.1.5</FileVersion>
         <EnableDefaultContentItems>true</EnableDefaultContentItems>
         <Authors>axuno gGmbH</Authors>
         <CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</CurrentYear>

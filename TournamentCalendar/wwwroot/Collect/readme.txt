@@ -1,1 +1,1 @@
-Import files go into this folder
+Collected tourney files go into this folder

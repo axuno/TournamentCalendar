@@ -60,7 +60,7 @@
                         @Html.LabelFor(m => m.DateFromText)
                         <div class="input-group" style = "width:12rem;">
                             @Html.TextBoxFor(m => m.DateFromText, new {maxlength = "10", placeholder = "tt.mm.jjj", @class = "form-control", data_input_type="date" })
-                            <span class="input-group-append input-group-text" data-input-type="date"><i class="bi bi-calendar3 fa-lg"></i></span>
+                            <span class="input-group-append input-group-text" data-input-type="date"><i class="bi bi-calendar3 bi-lg"></i></span>
                         </div>
                         @Html.ValidationMessageFor(m => m.DateFromText, null, new {@class = "msg-error-text"})
                     </div>
@@ -68,7 +68,7 @@
                         @Html.LabelFor(m => m.TimeFrom)
                         <div class="input-group" style="width:8rem;">
                             @Html.TextBoxFor(m => m.TimeFrom, new { maxlength = "5", placeholder = "hh:mm", @class = "form-control", data_input_type = "time", title = "Turnierbeginn, oder 00:00 für &quot;unbekannt&quot;" })
-                            <span class="input-group-append input-group-text" data-input-type="time"><i class="bi bi-clock fa-lg"></i></span>
+                            <span class="input-group-append input-group-text" data-input-type="time"><i class="bi bi-clock bi-lg"></i></span>
                         </div>
                         @Html.ValidationMessageFor(m => m.TimeFrom, null, new { @class = "msg-error-text" })
                     </div>
@@ -80,7 +80,7 @@
                         @Html.LabelFor(m => m.DateToText)
                         <div class="input-group" style="width:12rem;">
                             @Html.TextBoxFor(m => m.DateToText, new { maxlength = "10", placeholder = "tt.mm.jjj", @class = "form-control", data_input_type = "date" })
-                            <span class="input-group-append input-group-text" data-input-type="date"><i class="bi bi-calendar3 fa-lg"></i></span>
+                            <span class="input-group-append input-group-text" data-input-type="date"><i class="bi bi-calendar3 bi-lg"></i></span>
                         </div>
                         @Html.ValidationMessageFor(m => m.DateToText, null, new { @class = "msg-error-text" })
                     </div>
@@ -88,7 +88,7 @@
                         @Html.LabelFor(m => m.TimeTo)
                         <div class="input-group" style="width:8rem;">
                             @Html.TextBoxFor(m => m.TimeTo, new { maxlength = "5", placeholder = "hh:mm", @class = "form-control", data_input_type = "time", title = "Turnierbeginn, oder 00:00 für &quot;unbekannt&quot;" })
-                            <span class="input-group-append input-group-text" data-input-type="time"><i class="bi bi-clock fa-lg"></i></span>
+                            <span class="input-group-append input-group-text" data-input-type="time"><i class="bi bi-clock bi-lg"></i></span>
                         </div>
                         @Html.ValidationMessageFor(m => m.TimeTo, null, new { @class = "msg-error-text" })
                     </div>
@@ -98,7 +98,7 @@
                 @Html.LabelFor(m => m.ClosingDateText)
                 <div class="input-group" style="width:12rem;">
                     @Html.TextBoxFor(m => m.ClosingDateText, new { maxlength = "10", placeholder = "tt.mm.jjj", @class = "form-control", data_input_type = "date" })
-                    <span class="input-group-append input-group-text" data-input-type="date"><i class="bi bi-calendar3 fa-lg"></i></span>
+                    <span class="input-group-append input-group-text" data-input-type="date"><i class="bi bi-calendar3 bi-lg"></i></span>
                 </div>
                 @Html.ValidationMessageFor(m => m.ClosingDateText, null, new { @class = "msg-error-text" })
             </div>
@@ -118,7 +118,7 @@
             <div class="col-md-5 col-sm-5">
                 @Html.LabelFor(m => m.NumPlayersFemale)
                 <div class="d-inline-flex">
-                    @Html.DropDownListFor(m => m.MinMaxFemale, Model.GetMinMaxPlayerList(), new { @class = "selectpicker", data_width = "9rem" })&nbsp;
+                    @Html.DropDownListFor(m => m.MinMaxFemale, Model.GetMinMaxPlayerList(), new { @class = "form-control", style = "width:9rem" })&nbsp;
                     @Html.TextBoxFor(m => m.NumPlayersFemale, new { style = "width:2rem", maxlength = "1", @class = "form-control d-inline" })
                 </div>
                 @Html.ValidationMessageFor(m => m.NumPlayersFemale, null, new {@class = "msg-error-text"})
@@ -126,7 +126,7 @@
             <div class="col-md-5 col-sm-5">
                 @Html.LabelFor(m => m.NumPlayersMale)
                 <div class="d-inline-flex">
-                    @Html.DropDownListFor(m => m.MinMaxMale, Model.GetMinMaxPlayerList(), new { @class = "selectpicker", data_width = "9rem" })&nbsp;
+                    @Html.DropDownListFor(m => m.MinMaxMale, Model.GetMinMaxPlayerList(), new { @class = "form-control", style = "width:9rem" })&nbsp;
                     @Html.TextBoxFor(m => m.NumPlayersMale, new { style = "display:inline; width: 2rem", maxlength = "1", @class = "form-control" })
                 </div>
                 @Html.ValidationMessageFor(m => m.NumPlayersMale, null, new { @class = "msg-error-text" })
@@ -135,11 +135,11 @@
 
             <div class="col-md-5 col-sm-5">
                 @Html.LabelFor(m => m.PlayingAbilityFrom)
-                @Html.DropDownListFor(m => m.PlayingAbilityFrom, Model.GetPlayingAbilityList(), new { @class = "selectpicker", data_width = "11.5rem" })
+                @Html.DropDownListFor(m => m.PlayingAbilityFrom, Model.GetPlayingAbilityList(), new { @class = "form-control", style = "width:11.5rem" })
             </div>
             <div class="col-md-5 col-sm-5">
                 @Html.LabelFor(m => m.PlayingAbilityTo)
-                @Html.DropDownListFor(m => m.PlayingAbilityTo, Model.GetPlayingAbilityList(), new { @class = "selectpicker", data_width = "11.5rem" })
+                @Html.DropDownListFor(m => m.PlayingAbilityTo, Model.GetPlayingAbilityList(), new { @class = "form-control", style = "width:11.5rem" })
             </div>
             <div class="col-md-2 col-sm-2"></div>
         </div>
@@ -151,7 +151,7 @@
         <div class="row">
             <div class="col-md-12">
                 @Html.LabelFor(m => m.Surface)
-                @Html.DropDownListFor(m => m.Surface, Model.GetSurfaceList(), new { @class = "selectpicker", data_width = "11.5rem" })
+                @Html.DropDownListFor(m => m.Surface, Model.GetSurfaceList(), new { @class = "form-control", style = "width:11.5rem" })
                 <div class="pt-3">
                     Nur <strong>genaue Angaben</strong> mit Postleitzahl, Ort und Straße ermöglichen die Anzeige einer Karte für die Anfahrt.<br/>
                 </div>
@@ -166,7 +166,7 @@
         <div class="row">
             <div class="col-md-4">
                 @Html.LabelFor(m => m.CountryId)
-                @Html.DropDownListFor(m => m.CountryId, Model.GetCountriesList(), new { @class = "selectpicker", data_width = "11.5rem" })
+                @Html.DropDownListFor(m => m.CountryId, Model.GetCountriesList(), new { @class = "form-control", style = "width:11.5rem" })
             </div>
             <div class="col-md-8">
                 @Html.LabelFor(m => m.PostalCode)
@@ -295,7 +295,7 @@
                 {
                     <div>
                         <img id="CaptchaImage" style="vertical-align: bottom; width: 200px; display: inline" class="rounded" src="@Url.Action(nameof(Captcha.Index), nameof(Captcha))@("?guid=" + Guid.NewGuid())" alt="Captcha" />
-                        <span onclick="javascript:if (document.images) document.images.CaptchaImage.src = '@Url.Action(nameof(Captcha.Index), nameof(Captcha))?new=1&amp;time=' + new Date().getTime();" style="cursor: pointer"><i class="bi bi-arrow-clockwise fa-2x" style="margin: 0 5px 0 5px;" title="Bild neu laden"></i>Bild neu laden</span><br/>
+                        <span onclick="javascript:if (document.images) document.images.CaptchaImage.src = '@Url.Action(nameof(Captcha.Index), nameof(Captcha))?new=1&amp;time=' + new Date().getTime();" style="cursor: pointer"><i class="bi bi-arrow-clockwise bi-2x" style="margin: 0 5px 0 5px" title="Bild neu laden"></i>Bild neu laden</span><br/>
                     </div>
                     @Html.LabelFor(m => m.Captcha)
                     @Html.TextBoxFor(m => m.Captcha, new {maxlength = "7", @class = "form-control", style = "width:12rem"})
@@ -392,7 +392,6 @@
 					$('#@Html.NameFor(m => m.MinMaxMale)').val(1);
 					break;
             }
-		    $('.selectpicker').selectpicker('refresh');
 		});
 
 		$('#@Html.NameFor(m => m.MinMaxMale)').on('change', function () {
@@ -407,7 +406,6 @@
 					$('#@Html.NameFor(m => m.MinMaxFemale)').val(1);
 					break;
             }
-		    $('.selectpicker').selectpicker('refresh');
 		});
 	});
 //]]>
