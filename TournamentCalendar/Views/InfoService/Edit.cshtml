@@ -55,7 +55,7 @@
                 @Html.TextBoxFor(m => m.Email, new { maxlength = InfoServiceFields.Email.MaxLength, @class = "form-control input-required" })
                 @Html.ValidationMessageFor(m => m.Email, null, new { @class = "msg-error-text" })
                 @Html.LabelFor(m => m.Gender)
-                @Html.DropDownListFor(m => m.Gender, Model.GetGenderList(), new { @class = "input-required selectpicker", data_width = "auto" })
+                @Html.DropDownListFor(m => m.Gender, Model.GetGenderList(), new { @class = "input-required form-control", style = "width:10rem" })
                 @Html.ValidationMessageFor(m => m.Gender, null, new { @class = "msg-error-text" })
                 @Html.LabelFor(m => m.Title)
                 @Html.TextBoxFor(m => m.Title, new { maxlength = InfoServiceFields.Title.MaxLength, @class = "form-control" })
@@ -90,7 +90,7 @@
                     @Html.TextBoxFor(m => m.MaxDistance, new { maxlength = 4, @class = "form-control", style = "width: 5rem" })
                     @Html.ValidationMessageFor(m => m.MaxDistance, null, new { @class = "msg-error-text" })
                     @Html.LabelFor(m => m.CountryId)
-                    @Html.DropDownListFor(m => m.CountryId, Model.GetCountriesList(), new { @class = "selectpicker", data_width = "auto" })
+                    @Html.DropDownListFor(m => m.CountryId, Model.GetCountriesList(), new { @class = "form-control", style = "width:12rem" })
                     @Html.LabelFor(m => m.ZipCode)
                     @Html.TextBoxFor(m => m.ZipCode, new { maxlength = InfoServiceFields.ZipCode.MaxLength, @class = "form-control", style = "width:6rem" })
                     @Html.LabelFor(m => m.City)
@@ -139,7 +139,7 @@
 
                 <div>
                     <img id="CaptchaImage" class="rounded" src="@Url.Action(nameof(Captcha.Index), nameof(Captcha))@("?guid=" + Guid.NewGuid())" alt="Captcha" style="vertical-align: bottom; width: 12rem" />
-                    <span onclick="javascript:if (document.images) document.images.CaptchaImage.src = '@Url.Action(nameof(Captcha.Index), nameof(Captcha))?new=1&amp;time=' + new Date().getTime();" style="cursor: pointer"><i class="bi bi-arrow-clockwise fa-2x" style="margin: 0 5px 0 5px" title="Bild neu laden"></i>Bild neu laden</span><br />
+                    <span onclick="javascript:if (document.images) document.images.CaptchaImage.src = '@Url.Action(nameof(Captcha.Index), nameof(Captcha))?new=1&amp;time=' + new Date().getTime();" style="cursor: pointer"><i class="bi bi-arrow-clockwise bi-2x" style="margin: 0 5px 0 5px" title="Bild neu laden"></i>Bild neu laden</span><br />
 
                     @Html.LabelFor(m => m.Captcha)
                 </div>

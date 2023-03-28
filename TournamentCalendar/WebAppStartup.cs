@@ -226,13 +226,14 @@ public static class WebAppStartup
 
         #endregion
 
-        #region * Rewrite all domain names to https://volleyball-turnier.de *
+        #region * Rewrite all domain names to https://volleyball-turnier.de; redirect favicon.ico *
 
         if (env.IsProduction())
         {
             using var iisUrlRewriteStreamReader = File.OpenText(Path.Combine(env.ContentRootPath, Program.ConfigurationFolder, @"IisRewrite.config"));
             var options = new RewriteOptions()
                 .AddIISUrlRewrite(iisUrlRewriteStreamReader);
+            options.AddRedirect("favicon.ico", "images/favicon.ico", StatusCodes.Status301MovedPermanently);
             app.UseRewriter(options);
         }
 

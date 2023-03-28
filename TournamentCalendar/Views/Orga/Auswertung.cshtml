@@ -39,7 +39,7 @@
             </article>
             <article class="col-sm-4">
                 @{var file1 = Model.First(m => m.Id == "turnier-ausw-12-2.xlsm"); }
-                <i class="bi bi-arrow-down-circle-fill fa-2x" aria-hidden="true"></i>
+                <i class="bi bi-arrow-down-circle-fill bi-2x text-success" aria-hidden="true"></i>
                 @Html.ActionLink("Download", nameof(Orga.Download), nameof(Orga), new { id = file1.Id }, null)
                 <br />(@file1.Size Bytes)
             </article>
@@ -64,7 +64,7 @@
             </article>
             <article class="col-sm-4">
                 @{var file2 = Model.First(m => m.Id == "turnier-ausw-16-4.xlsm"); }
-                <i class="bi bi-arrow-down-circle-fill fa-2x" aria-hidden="true"></i>
+                <i class="bi bi-arrow-down-circle-fill bi-2x text-success" aria-hidden="true"></i>
                 @Html.ActionLink("Download", nameof(Orga.Download), nameof(Orga), new { id = file2.Id }, null)
                 <br />(@file2.Size Bytes)
             </article>

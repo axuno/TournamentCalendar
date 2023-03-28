@@ -6,7 +6,7 @@
     @Html.TextBoxFor(m => m.Email, new { @class = "form-control input-required col-12 col-sm-10 col-md-8", maxlength = 100 })
     @Html.ValidationMessageFor(m => m.Email, null, new { @class = "msg-error-text" })
     @Html.LabelFor(m => m.Gender)
-    @Html.DropDownListFor(m => m.Gender, Model.GetGenderList(), new { @class = "input-required selectpicker", data_width = "auto" })
+    @Html.DropDownListFor(m => m.Gender, Model.GetGenderList(), new { @class = "form-control input-required", style = "width:10rem" })
     @Html.ValidationMessageFor(m => m.Gender, null, new { @class = "msg-error-text" })
     @Html.LabelFor(m => m.Title)
     @Html.TextBoxFor(m => m.Title, new { @class = "form-control col-12 col-sm-10 col-md-8", maxlength = 50 })
