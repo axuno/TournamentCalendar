@@ -26,10 +26,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-        <None Update="MailStore\**" CopyToOutputDirectory="Always" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<None Include="TournamentCalender-192x192.png">
 		  <Pack>True</Pack>
 		  <PackagePath></PackagePath>
@@ -84,12 +80,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="logs\" />
-		<Folder Include="Scripts\" />
-		<Folder Include="wwwroot\js\" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<None Include="Views\ContentSynd\CalendarListPartialCss.cshtml" />
 	</ItemGroup>
 
@@ -121,9 +111,14 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Content Update="Configuration\nlog.config">
-			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</Content>
+		<Content Update="Configuration\*" CopyToPublishDirectory="Always" />
+        <Content Remove="wwwroot\Collect\*.xml" />
+        <None Update="MailStore\**" CopyToPublishDirectory="Always" />
+        <Folder Remove="logs\" />
+        <Folder Remove="Scripts\" />
+        <Folder Remove="ScriptLib\" />
+        <Content Remove="ScriptLib\**" CopyToPublishDirectory="Never" /> 
+        <Folder Include="wwwroot\js\" />
 	</ItemGroup>
 
 	<!-- Custom PropertyGroup to add the Environment name during publish. The EnvironmentName property is used for the 'Environment' variable in web.config when publishing. -->
