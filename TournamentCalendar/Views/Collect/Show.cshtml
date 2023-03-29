@@ -49,7 +49,15 @@
                     foreach (var tourney in newTourneys)
                     {
                         <div>
-                            @(Model.ExistInCalendar.Contains(tourney.Link!) ? "✅" : "⭕") <a href="@tourney.Link" target="_blank" class="link">@tourney.Name</a> @tourney.Date?.ToString("dd.MM.yyyy")
+                            @if(Model.ExistInCalendar.Contains(tourney.Link!))
+                            {
+                                <i class="bi bi-check-square-fill bi-lg text-success"></i>
+                            }
+                            else
+                            {
+                                <i class="bi bi-x-square-fill bi-lg text-danger"></i>
+                            }
+                            <a href="@tourney.Link" target="_blank" class="link">@tourney.Name</a> @tourney.Date?.ToString("dd.MM.yyyy")
                         </div>
                     }
                 }

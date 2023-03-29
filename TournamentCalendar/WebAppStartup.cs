@@ -233,7 +233,7 @@ public static class WebAppStartup
             using var iisUrlRewriteStreamReader = File.OpenText(Path.Combine(env.ContentRootPath, Program.ConfigurationFolder, @"IisRewrite.config"));
             var options = new RewriteOptions()
                 .AddIISUrlRewrite(iisUrlRewriteStreamReader);
-            options.AddRedirect("favicon.ico", "images/favicon.ico", StatusCodes.Status301MovedPermanently);
+            options.AddRedirect(@"https://volleyball-turnier\.de/favicon\.ico", "/favicon/favicon.ico", StatusCodes.Status301MovedPermanently);
             app.UseRewriter(options);
         }
 
