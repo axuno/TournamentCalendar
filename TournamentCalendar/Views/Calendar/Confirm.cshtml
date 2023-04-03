@@ -7,7 +7,14 @@
     @if (Model.SaveSuccessful)
     {
         <div class="msg-success rounded mb-2">
-            <span>Das Turnier wurde in der Datenbank gespeichert (<strong>@(Model.Entity?.ApprovedOn != null && !Model.Entity.DeletedOn.HasValue ? "aktiv" : "inaktiv")</strong>). Vielen Dank!</span>
+            @if (Model.Entity is { ApprovedOn: { }, DeletedOn: null })
+            {
+                <span>Das Turnier wurde in der Datenbank gespeichert <strong>und wird im Kalender gezeigt</strong>. Vielen Dank!</span>
+            }
+            else
+            {
+                <span>Das Turnier wurde in der Datenbank gespeichert, <strong>wird aber im Kalender nicht gezeigt</strong>. Vielen Dank!</span>
+            }
         </div>
     }
     else

@@ -308,11 +308,8 @@ public static class WebAppStartup
 
         app.UseEndpoints(endpoints =>
         {
-            endpoints
-                .MapControllerRoute(
-                name: "default",
-                pattern: "{controller=Calendar}/{action=Index}/{id?}");
-
+            // We use attribute routing,
+            // so we don't implement endpoints.MapControllerRoute(...)
             endpoints.MapControllers();
             endpoints.MapRazorPages();
         });

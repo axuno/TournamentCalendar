@@ -37,16 +37,16 @@ public class InfoService : ControllerBase
         return View(ViewName.InfoService.Edit, new EditModel(_appDb) { EditMode = EditMode.New });
     }
 
-    [HttpGet("[action]/{id?}")]
-    public IActionResult Eintrag(string id)
+    [HttpGet("eintrag/{guid}")]
+    public IActionResult Entry(string guid)
     {
         ViewBag.TitleTagText = "Volley-News abonnieren";
-        if (string.IsNullOrEmpty(id))
+        if (string.IsNullOrEmpty(guid))
         {
             return RedirectToAction(nameof(InfoService.Index), nameof(Controllers.InfoService));
         }
 
-        var model = new EditModel(_appDb, id) { EditMode = EditMode.Change };
+        var model = new EditModel(_appDb, guid) { EditMode = EditMode.Change };
         return model.IsNew  // id not found
             ? RedirectToAction(nameof(InfoService.Index), nameof(Controllers.InfoService))
             : View(ViewName.InfoService.Edit, model);
@@ -55,8 +55,8 @@ public class InfoService : ControllerBase
     /// <summary>
     /// "save" is the name of the submit button
     /// </summary>
-    [HttpPost("[action]/{id?}")]
-    public async Task<IActionResult> Eintrag([FromForm] EditModel model, CancellationToken cancellationToken)
+    [HttpPost("eintrag"), ValidateAntiForgeryToken]
+    public async Task<IActionResult> Entry([FromForm] EditModel model, CancellationToken cancellationToken)
     {
         model = new EditModel(_appDb);
         _ = await TryUpdateModelAsync<EditModel>(model);
@@ -69,7 +69,7 @@ public class InfoService : ControllerBase
             // if the entry with this email address was not yet confirmed, just redirect there
             if (!model.ExistingEntryWithSameEmail.ConfirmedOn.HasValue)
             {
-                return RedirectToAction(nameof(InfoService.Eintrag), nameof(Controllers.InfoService), new {id = model.ExistingEntryWithSameEmail.Guid });
+                return RedirectToAction(nameof(InfoService.Entry), nameof(Controllers.InfoService), new {id = model.ExistingEntryWithSameEmail.Guid });
             }
 
             // todo: what to do, if the email was already confirmed? Re-send confirmation email without asking?
@@ -103,8 +103,8 @@ public class InfoService : ControllerBase
                 if (confirmationModel.Entity?.UnSubscribedOn == null)
                 {
                     confirmationModel = await new Mailer(_mailMergeService, _domainName).MailInfoServiceRegistrationForm(confirmationModel,
-                        Url.Action(nameof(Bestaetigen), nameof(Controllers.InfoService), new {id = model.Guid})!,
-                        Url.Action(nameof(Eintrag), nameof(Controllers.InfoService), new {id = model.Guid})!);
+                        Url.Action(nameof(Approve), nameof(Controllers.InfoService), new {guid = model.Guid})!,
+                        Url.Action(nameof(Entry), nameof(Controllers.InfoService), new { guid = model.Guid})!);
                 }
             }
 
@@ -118,9 +118,9 @@ public class InfoService : ControllerBase
     }
 
     /// <summary>
-    /// This method is call when using the submit button with attribute formaction = volley-news/unsubscribe
+    /// This method is called when using the submit button with attribute formaction = volley-news/unsubscribe
     /// </summary>
-    [HttpPost("[action]/{id?}")]
+    [HttpPost("[action]")]
     public async Task<IActionResult> Unsubscribe([FromForm] EditModel model, CancellationToken cancellationToken)
     {
         ViewBag.TitleTagText = "Volley-News abbestellen";
@@ -128,11 +128,11 @@ public class InfoService : ControllerBase
         return View(ViewName.InfoService.Unsubscribe, await unsubscribeModel.Save(cancellationToken));
     }
 
-    [HttpGet("[action]/{id}")]
-    public async Task<IActionResult> Bestaetigen(string id, CancellationToken cancellationToken)
+    [HttpGet("bestaetigen/{guid}")]
+    public async Task<IActionResult> Approve(string guid, CancellationToken cancellationToken)
     {
         ViewBag.TitleTagText = "Volley-News bestätigen";
-        var approveModel = new Models.Shared.ApproveModelTournamentCalendar<InfoServiceEntity>(_appDb,InfoServiceFields.Guid == id, InfoServiceFields.ConfirmedOn, InfoServiceFields.UnSubscribedOn);
+        var approveModel = new Models.Shared.ApproveModelTournamentCalendar<InfoServiceEntity>(_appDb,InfoServiceFields.Guid == guid, InfoServiceFields.ConfirmedOn, InfoServiceFields.UnSubscribedOn);
         return View(ViewName.InfoService.Approve, await approveModel.Save(cancellationToken));
     }
 }

@@ -38,6 +38,26 @@ public class CalendarRepository : GenericRepository
         tournaments.AddRange(at);
     }
 
+    /// <summary>
+    /// Gets the calendar entries for tournaments starting in the future,
+    /// and which are approved, but may have been deleted (e.g. because they are fully booked already).
+    /// This is to compare local calendar entries witch tourneys collected from the web.
+    /// </summary>
+    /// <param name="afterThisDate"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    public virtual async Task<EntityCollection<CalendarEntity>> GetActiveOrDeletedTournaments(DateTime afterThisDate, CancellationToken cancellationToken)
+    {
+        using var da = _dbContext.GetNewAdapter();
+        var metaData = new LinqMetaData(da);
+        var result = from tc in metaData.Calendar
+            where tc.DateFrom >= afterThisDate.Date && tc.ApprovedOn != null
+            select tc;
+        var coll = new EntityCollection<CalendarEntity>();
+        coll.AddRange(await result.ExecuteAsync<ICollection<CalendarEntity>>(cancellationToken));
+        return coll;
+    }
+
     public virtual bool FetchEntity<T>(T entity, PredicateExpression predicateExpression) where T : EntityBase2, new()
     {
         using var da = _dbContext.GetNewAdapter();

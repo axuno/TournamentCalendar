@@ -5,8 +5,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using TournamentCalendar.Collecting;
 using TournamentCalendar.Data;
-using TournamentCalendarDAL.EntityClasses;
-using TournamentCalendarDAL.HelperClasses;
 
 namespace TournamentCalendar.Models.Collect;
 
@@ -31,7 +29,7 @@ public class CollectionModelFactory
             var olderTourneys = beforeThisDate != DateTime.MinValue && fileIndex + 1 < fileNames.Count ? Storage.ReadTourneysFromFile(fileNames[fileIndex + 1]).Tourneys : new CollectedTourneys().Tourneys;
 
             (listModel.SameTourneys, listModel.NewTourneys, listModel.DeletedTourneys)
-                = Collecting.Collectors.CompareTourneysByUrl(latestTourneys, olderTourneys);
+                = Collectors.CompareTourneysByUrl(latestTourneys, olderTourneys);
             
             listModel.CollectionDates = Storage.ExtractDatesFromFileNames(fileNames);
             listModel.LastCollectionDate = Storage.GetLastCollectionDate(listModel.CollectionDates, beforeThisDate);
@@ -50,10 +48,11 @@ public class CollectionModelFactory
     {
         if (model.NewTourneys == null || !model.NewTourneys.Any() || _appDb == null) return;
 
+        var oldestEntryDate = model.NewTourneys.OrderBy(t => t.Date).First(t => t.Date != null).Date!.Value;
+
         model.ExistInCalendar = new List<string>();
 
-        EntityCollection<CalendarEntity> calendarEntries = new();
-        await _appDb.CalendarRepository.GetAllActiveTournaments(calendarEntries, CancellationToken.None);
+        var calendarEntries = await _appDb.CalendarRepository.GetActiveOrDeletedTournaments(oldestEntryDate, CancellationToken.None);
 
         foreach (var tourney in model.NewTourneys)
         {

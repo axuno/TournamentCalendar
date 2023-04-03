@@ -8,6 +8,7 @@ using TournamentCalendar.Library.Authentication;
 
 namespace TournamentCalendar.Controllers;
 
+[Route(nameof(Admin))]
 public class Admin : ControllerBase
 {
     private readonly Microsoft.Extensions.Hosting.IHostApplicationLifetime _applicationLifetime;
@@ -18,7 +19,7 @@ public class Admin : ControllerBase
     }
 
     [Authorize(Roles = Constants.RoleName.Admin)]
-    [HttpGet]
+    [HttpGet(nameof(NetCoreInfo))]
     public IActionResult NetCoreInfo()
     {
         var p = new Process
@@ -44,14 +45,14 @@ public class Admin : ControllerBase
     }
 
     [Authorize(Roles = Constants.RoleName.Admin)]
-    [HttpGet]
+    [HttpGet(nameof(Restart))]
     public ActionResult Restart()
     {
         _applicationLifetime.StopApplication();
         return Content("Ok", "text/plain");
     }
 
-    [HttpGet]
+    [HttpGet(nameof(HeartBeat))]
     public async Task<IActionResult> HeartBeat()
     {
         // called by cron job

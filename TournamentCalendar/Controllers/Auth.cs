@@ -103,6 +103,6 @@ public class Auth : ControllerBase
             return Redirect(returnUrl);
         }
 
-        return RedirectToAction(nameof(Calendar.Kalender), nameof(Controllers.Calendar));
+        return RedirectToAction(nameof(Calendar.All), nameof(Controllers.Calendar));
     }
 }

@@ -4,7 +4,6 @@ using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Build.Framework;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using TournamentCalendar.Collecting;
@@ -24,6 +23,7 @@ public class Cron : ControllerBase
         _logger = logger;
     }
 
+    [HttpGet("")]
     public ContentResult Index()
     {
         return Content("<pre>This page is accessible only via cron job.</pre>");
@@ -38,14 +38,14 @@ public class Cron : ControllerBase
     /// in order to prevent application idle timeout shutdowns 
     /// </summary>
     /// <returns></returns>
-    [HttpGet]
+    [HttpGet(nameof(Heartbeat) + "/{id?}")]
     public ContentResult Heartbeat(string? id)
     {
         HttpContext.Response.StatusCode = (int)HttpStatusCode.OK;
         return Content($"Completed - {DateTime.Now:G} {id ?? string.Empty}.", "text/plain", System.Text.Encoding.UTF8);
     }
 
-    [HttpGet("collect/{key}")]
+    [HttpGet(nameof(Collect) + "/{key}")]
     public async Task<ContentResult> Collect([FromRoute] string key)
     {
         if (key != Configuration.GetValue<string?>("CronApiKey"))

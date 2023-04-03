@@ -14,8 +14,7 @@ using TournamentCalendar.Data;
 
 namespace TournamentCalendar.Controllers;
 
-[Route("")]
-[Route("Kalender")]
+[Route("/kalender")]
 public class Calendar : ControllerBase
 {
     private readonly IMailMergeService _mailMergeService;
@@ -31,8 +30,14 @@ public class Calendar : ControllerBase
         _logger = logger;
     }
 
+    [HttpGet("/")]
+    public IActionResult Index(CancellationToken cancellationToken)
+    {
+        return RedirectToActionPermanent(nameof(All), nameof(Calendar));
+    }
+
     [HttpGet("")]
-    public async Task<IActionResult> Kalender(CancellationToken cancellationToken)
+    public async Task<IActionResult> All(CancellationToken cancellationToken)
     {
         ViewBag.TitleTagText = "Volleyball-Turnierkalender";
         var model = new BrowseModel(_appDb);
@@ -58,8 +63,18 @@ public class Calendar : ControllerBase
         return View(ViewName.Calendar.Show, model);
     }
 
-    [HttpGet("eintrag/{guid?}")]
-    public async Task<IActionResult> Entry([FromRoute] string? guid, CancellationToken cancellationToken)
+    [HttpGet("eintrag")]
+    public async Task<IActionResult> NewEntry(CancellationToken cancellationToken)
+    {
+        ViewBag.TitleTagText = "Volleyballturnier in den Kalender eintragen";
+        var model = await new EditModel().Initialize(_appDb, cancellationToken);
+        model.Guid = string.Empty;
+        model.EditMode = EditMode.New;
+        return View(ViewName.Calendar.Edit, model);
+    }
+
+    [HttpGet("eintrag/{guid}")]
+    public async Task<IActionResult> Entry([FromRoute] string guid, CancellationToken cancellationToken)
     {
         ViewBag.TitleTagText = "Volleyballturnier in den Kalender eintragen";
 
@@ -72,22 +87,22 @@ public class Calendar : ControllerBase
         if (string.IsNullOrEmpty(guid))
         {
             model.EditMode = EditMode.New;
+            model.Guid = string.Empty;
             return View(ViewName.Calendar.Edit, model);
         }
 
         model.EditMode = EditMode.Change;
         model.LoadTournament(guid, cancellationToken);
 
-        return model.IsNew  // id not found
+        return model.IsNew  // guid not found
             ? RedirectToAction(nameof(Calendar.Entry), nameof(Controllers.Calendar), new { guid = string.Empty })
             : View(ViewName.Calendar.Edit, model);
     }
 
-    [HttpPost("eintrag/{guid?}")]
-    public async Task<IActionResult> Entry([FromForm] EditModel model, [FromRoute] string? guid, CancellationToken cancellationToken)
+    [HttpPost("eintrag"), ValidateAntiForgeryToken]
+    public async Task<IActionResult> Entry([FromForm] EditModel model, CancellationToken cancellationToken)
     {
         ViewBag.TitleTagText = "Volleyballturnier in den Kalender eintragen";
-        model.Guid = guid;
         await model.Initialize(_appDb, cancellationToken);
 
         model.EditMode = string.IsNullOrWhiteSpace(model.Guid) ? EditMode.New : EditMode.Change;
@@ -105,6 +120,11 @@ public class Calendar : ControllerBase
                 {
                     return View(ViewName.Calendar.Edit, model);
                 }
+            }
+            else
+            {
+                // Tournament for model.Guid does not exist
+                return RedirectToAction(nameof(Calendar.Entry), nameof(Controllers.Calendar));
             }
         }
 

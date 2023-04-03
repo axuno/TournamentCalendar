@@ -107,7 +107,7 @@ public class EditModel : CalendarEntity, IValidatableObject
                 DateFrom = date.Date + DateFrom.TimeOfDay;
             else
             {
-                throw new Exception("Datum ist ungültig");
+                throw new InvalidOperationException("Date is invalid");
             }
 
             if (TimeSpan.TryParse(TimeTo, out var time))
@@ -130,7 +130,7 @@ public class EditModel : CalendarEntity, IValidatableObject
                 DateTo = date.Date + DateTo.TimeOfDay;
             else
             {
-                throw new Exception("Date is invalid");
+                throw new InvalidOperationException("Date is invalid");
             }
 
             if (TimeSpan.TryParse(TimeTo, out var time))
@@ -153,7 +153,7 @@ public class EditModel : CalendarEntity, IValidatableObject
                 DateFrom = DateFrom.Date + time;
             else
             {
-                throw new Exception("Date is invalid");
+                throw new InvalidOperationException("Date is invalid");
             }
         }
     }
@@ -186,7 +186,7 @@ public class EditModel : CalendarEntity, IValidatableObject
                 ClosingDate = date.Date;
             else
             {
-                throw new Exception("Datum ist ungültig");
+                throw new InvalidOperationException("Date is invalid");
             }
         }
     }
@@ -246,17 +246,19 @@ public class EditModel : CalendarEntity, IValidatableObject
     /// <summary>
     /// The question to the user is asked in a way, that clicking the checkbox
     /// means to toggle the approval status:
-    /// if (Approved) { "Click to hide the tournament" } else { "Click to show the tournament" }
+    /// if (ShowTournament) { "Click to hide the tournament" } else { "Click to show the tournament" }
     /// </summary>
-    public bool Approved
+    public bool ShowTournament
     {
         get
         {
+            // Must be approved and not deleted
             return base.ApprovedOn.HasValue && !base.DeletedOn.HasValue;
         }
         set
         {
-            if (!base.ApprovedOn.HasValue) base.ApprovedOn = DateTime.Now;
+            // When submitted from the form, it's always approved
+            base.ApprovedOn ??= DateTime.Now;
 
             if (base.IsNew)
             {
@@ -264,10 +266,8 @@ public class EditModel : CalendarEntity, IValidatableObject
             }
             else
             {
-                if (value)
-                {
-                    base.DeletedOn = (!base.DeletedOn.HasValue ? DateTime.Now : null);
-                }
+                // Set deletion date, if tournament shall not be displayed
+                base.DeletedOn = value ? null : DateTime.Now;
             }
         }
     }
@@ -359,7 +359,7 @@ public class EditModel : CalendarEntity, IValidatableObject
             IsMinPlayersFemale = false;
 
         if (!string.IsNullOrEmpty(Website) && !Website.StartsWith("http://") && !Website.StartsWith("https://"))
-            Website = "http://" + Website;
+            Website = "https://" + Website;
 
 			
         // Trim and strip html tags for all string fields
@@ -416,7 +416,7 @@ public class EditModel : CalendarEntity, IValidatableObject
     [Bind("Guid, Special, TournamentName, DateFromText, DateToText, TimeFrom, TimeTo, ClosingDateText, Venue, CountryId, PostalCode, City, Street, " +
           "Longitude, Latitude, NumOfTeams, NumPlayersMale, MinMaxFemale, NumPlayersFemale, MinMaxMale, " +
           "Surface, PlayingAbilityFrom, PlayingAbilityTo, EntryFee, Bond, Info, Organizer, ContactAddress, " +
-          "Email, Website, PostedByName, PostedByEmail, PostedByPassword, Approved, Captcha"
+          "Email, Website, PostedByName, PostedByEmail, PostedByPassword, ShowTournament, Captcha"
     )]
     public class TournamentCalendarMetadata
     {
@@ -542,6 +542,8 @@ public class EditModel : CalendarEntity, IValidatableObject
         [Required(ErrorMessageResourceName = "PropertyValueRequired", ErrorMessageResourceType = typeof(DataAnnotationResource))]
         [EmailAddress(ErrorMessageResourceName = "EmailAddressInvalid", ErrorMessageResourceType = typeof(DataAnnotationResource))]
         public string? PostedByEmail { get; set; }
+
+        public bool ShowTournament { get; set; }
 
         [Display(Name = "Ergebnis der Rechenaufgabe im Bild")]
         [ValidationAttributes.ValidateCaptchaText]

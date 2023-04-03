@@ -10,9 +10,10 @@ namespace TournamentCalendar.Controllers;
 /// <summary>
 /// Captcha Controller
 /// </summary>
+[Route(nameof(Captcha))]
 public class Captcha : ControllerBase
 {
-    [HttpGet]
+    [HttpGet("")]
     public async Task<IActionResult> Index()
     {
         return await GetSvgContent();

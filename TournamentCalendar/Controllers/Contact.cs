@@ -27,21 +27,18 @@ public class Contact : ControllerBase
     [HttpGet("")]
     public IActionResult Index()
     {
-        return RedirectToAction(nameof(Message));
+        return RedirectToActionPermanent(nameof(Message));
     }
 
     [HttpGet("nachricht")]
-    public async Task<IActionResult> Message()
+    public IActionResult Message()
     {
         ViewBag.TitleTagText = "Volleyball-Turnier.de kontaktieren";
-        return await Task.Run(() =>
-        {
-            var model = new ContactModel();
-            return View(ViewName.Contact.Message, model);
-        });
+        var model = new ContactModel();
+        return View(ViewName.Contact.Message, model);
     }
 
-    [HttpPost("nachricht")]
+    [HttpPost("nachricht"), ValidateAntiForgeryToken]
     public async Task<IActionResult> Message([FromForm] ContactModel model)
     {
         ViewBag.TitleTagText = "Volleyball-Turnier.de kontaktieren";

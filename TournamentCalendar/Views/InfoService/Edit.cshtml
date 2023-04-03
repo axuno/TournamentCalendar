@@ -34,9 +34,9 @@
         <img src="@Url.Content("~/images/volleynews-anmeldung.jpg")" alt="" class="rounded img-fluid" style="width: 100%" />
     </article>
 </div>
-@using (Model.EditMode == EditMode.New ? Html.BeginForm(nameof(InfoService.Eintrag), nameof(InfoService), new { id = string.Empty }, FormMethod.Post, null, new { @class = "pb-2" }) : Html.BeginForm(nameof(InfoService.Eintrag), nameof(InfoService), new { id = Model.Guid }, FormMethod.Post, null, new { @class = "pb-2" }))
+@using (Model.EditMode == EditMode.New ? Html.BeginForm(nameof(InfoService.Entry), nameof(InfoService), new { guid = string.Empty }, FormMethod.Post, null, new { @class = "pb-2" }) : Html.BeginForm(nameof(InfoService.Entry), nameof(InfoService), new { guid = string.Empty }, FormMethod.Post, true, new { @class = "pb-2" }))
 {
-    @* Validation summary must be insinde BeginForm block *@
+    @* Validation summary must be inside BeginForm block *@
     @Html.ValidationSummary(false, "Es sind Fehler aufgetreten. Bitte korrigieren und erneut speichern.", new { @class = "validation-summary-errors msg-validation rounded" })
 
     if (Model.EditMode == EditMode.Change)
@@ -151,7 +151,7 @@
                 <input type="submit" name="save" value="Eintrag speichern" class="col-12 btn btn-lg btn-success" />
             </div>
             <div class="col-md-5 col-sm-5 mt-3">
-                <input type="submit" formaction="@Url.Action(nameof(InfoService.Unsubscribe), nameof(InfoService)))" name="unsubscribe" value="Von Volley-News abmelden" @if ((Model.EditMode == EditMode.New) || (Model.ConfirmedOn.HasValue && Model.UnSubscribedOn.HasValue)) { <text> disabled="disabled" </text> } class="cancel col-12 btn btn-lg btn-success" />
+                <input type="submit" formaction="@Url.Action(nameof(InfoService.Unsubscribe), nameof(InfoService))" name="unsubscribe" value="Von Volley-News abmelden" @if ((Model.EditMode == EditMode.New) || (Model.ConfirmedOn.HasValue && Model.UnSubscribedOn.HasValue)) { <text> disabled="disabled" </text> } class="cancel col-12 btn btn-lg btn-success" />
             </div>
 
         </div>
