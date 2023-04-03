@@ -14,7 +14,7 @@ using TournamentCalendar.Views;
 namespace TournamentCalendar.Controllers;
 
 [Authorize(Roles = Library.Authentication.Constants.RoleName.Editor)]
-[Route("import")]
+[Route(nameof(Collect))]
 public class Collect : ControllerBase
 {
     private readonly IAppDb _appDb;
@@ -25,7 +25,7 @@ public class Collect : ControllerBase
         _appDb = appDb;
     }
 
-    [HttpGet("anzeigen/{id?}")]
+    [HttpGet("show/{id?}")]
     public async Task<IActionResult> Show(string id)
     {
         ViewBag.TitleTagText = "Andere Volleyball-Turnierkalender";

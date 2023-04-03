@@ -3,8 +3,9 @@
 @using TournamentCalendar.Controllers
 @using TournamentCalendar.Views
 @using TournamentCalendarDAL.HelperClasses
-@using Microsoft.AspNetCore.Http
-@inject IHttpContextAccessor httpContextAccessor
+@{
+    ViewContext.ClientValidationEnabled = false;
+}
 <article>
     @if (Model.EditMode == EditMode.New)
     {
@@ -22,24 +23,23 @@
         </div>
     }
 </article>
-@using (Model.EditMode == EditMode.New ? Html.BeginForm(nameof(Calendar.Entry), nameof(Calendar), new {guid = string.Empty}, FormMethod.Post, null, new{id = "CalendarForm", @class = "pb-2" }) : Html.BeginForm(nameof(Calendar.Entry), nameof(Calendar), new {guid = Model.Guid}, FormMethod.Post, null, new { id = "CalendarForm", @class="pb-2" }))
-{
-    ViewContext.ClientValidationEnabled = false;
-    @* Validation summary must be inside BeginForm block *@
-    @Html.ValidationSummary(false, "Es sind Fehler aufgetreten. Bitte die markierten Felder korrigieren und erneut speichern.", new { @class = "validation-summary-errors msg-validation rounded" })
 
+<form asp-controller="@nameof(Calendar)" asp-action="@nameof(Calendar.Entry)" asp-route-guid="" method="post" class="pb-2">
+    @* Validation summary must be inside form block *@
+<div asp-validation-summary="All" class="validation-summary-errors msg-validation rounded">Es sind Fehler aufgetreten. Bitte die markierten Felder korrigieren und erneut speichern.</div>
+<input type="hidden" asp-for="@Model.Guid" value="@Model.Guid"/>
     <fieldset class="rounded">
         <legend class="rounded">
             Bezeichnung
         </legend>
         <div class="row">
             <div class="col-12">
-                @Html.LabelFor(m => m.TournamentName)
-                @Html.TextBoxFor(m => m.TournamentName, new {maxlength = CalendarFields.TournamentName.MaxLength, @class = "form-control", title = "Turniername, z.B. &quot;12. Welfen-Cup&quot;" })
-                @Html.ValidationMessageFor(m => m.TournamentName, null, new {@class = "msg-error-text"})
-                @Html.LabelFor(m => m.Organizer)
-                @Html.TextBoxFor(m => m.Organizer, new {maxlength = CalendarFields.Organizer.MaxLength, @class = "form-control", title = "Veranstalter, z.B. &quot;Volleyballclub Berlin&quot;" })
-                @Html.ValidationMessageFor(m => m.Organizer, null, new {@class = "msg-error-text"})
+                <label asp-for="@Model.TournamentName"></label>
+                <input asp-for="@Model.TournamentName" maxlength="@CalendarFields.TournamentName.MaxLength" class="form-control" title="Turniername, z.B. &quot;12. Welfen-Cup&quot;">
+                <span asp-validation-for="@Model.TournamentName" class="msg-error-text"></span>
+                <label asp-for="@Model.Organizer"></label>
+                <input asp-for="@Model.Organizer" maxlength="@CalendarFields.Organizer.MaxLength" class="form-control" title="Veranstalter, z.B. &quot;Volleyballclub Berlin&quot;">
+                <span asp-validation-for="@Model.Organizer" class="msg-error-text"></span>
                 @*
                 @Html.LabelFor(m => m.Special)
                 @Html.TextBoxFor(m => m.Special, new { maxlength = TournamentCalendarFields.Special.MaxLength, @class = "form-control", title="Spezialangaben" })
@@ -57,50 +57,50 @@
             <div class="col-12">
                 <div class="row">
                     <div class="col-md-5 col-sm-5">
-                        @Html.LabelFor(m => m.DateFromText)
-                        <div class="input-group" style = "width:12rem;">
-                            @Html.TextBoxFor(m => m.DateFromText, new {maxlength = "10", placeholder = "tt.mm.jjj", @class = "form-control", data_input_type="date" })
+                        <label asp-for="@Model.DateFromText"></label>
+                        <div class="input-group" style="width: 12rem;">
+                            <input asp-for="@Model.DateFromText" maxlength="10" class="form-control" placeholder = "tt.mm.jjj" data-input-type="date">
                             <span class="input-group-append input-group-text" data-input-type="date"><i class="bi bi-calendar3 bi-lg"></i></span>
                         </div>
-                        @Html.ValidationMessageFor(m => m.DateFromText, null, new {@class = "msg-error-text"})
+                        <span asp-validation-for="@Model.DateFromText" class="msg-error-text"></span>
                     </div>
                     <div class="col-md-7 col-sm-7">
-                        @Html.LabelFor(m => m.TimeFrom)
-                        <div class="input-group" style="width:8rem;">
-                            @Html.TextBoxFor(m => m.TimeFrom, new { maxlength = "5", placeholder = "hh:mm", @class = "form-control", data_input_type = "time", title = "Turnierbeginn, oder 00:00 für &quot;unbekannt&quot;" })
+                        <label asp-for="@Model.TimeFrom"></label>
+                        <div class="input-group" style="width: 8rem;">
+                            <input asp-for="@Model.TimeFrom" maxlength="5" class="form-control" placeholder="hh:mm" data-input-type="time" title="Turnierbeginn, oder 00:00 für &quot;unbekannt&quot;">
                             <span class="input-group-append input-group-text" data-input-type="time"><i class="bi bi-clock bi-lg"></i></span>
                         </div>
-                        @Html.ValidationMessageFor(m => m.TimeFrom, null, new { @class = "msg-error-text" })
+                        <span asp-validation-for="@Model.TimeFrom" class="msg-error-text"></span>
                     </div>
                 </div>
             </div>
             <div class="col-12">
                 <div class="row">
                     <div class="col-md-5 col-sm-5">
-                        @Html.LabelFor(m => m.DateToText)
-                        <div class="input-group" style="width:12rem;">
-                            @Html.TextBoxFor(m => m.DateToText, new { maxlength = "10", placeholder = "tt.mm.jjj", @class = "form-control", data_input_type = "date" })
+                        <label asp-for="@Model.DateToText"></label>
+                        <div class="input-group" style="width: 12rem;">
+                            <input asp-for="@Model.DateToText" maxlength="10" class="form-control" placeholder="tt.mm.jjj" data-input-type="date">
                             <span class="input-group-append input-group-text" data-input-type="date"><i class="bi bi-calendar3 bi-lg"></i></span>
                         </div>
-                        @Html.ValidationMessageFor(m => m.DateToText, null, new { @class = "msg-error-text" })
+                        <span asp-validation-for="@Model.DateToText" class="msg-error-text"></span>
                     </div>
                     <div class="col-md-7 col-sm-7">
-                        @Html.LabelFor(m => m.TimeTo)
-                        <div class="input-group" style="width:8rem;">
-                            @Html.TextBoxFor(m => m.TimeTo, new { maxlength = "5", placeholder = "hh:mm", @class = "form-control", data_input_type = "time", title = "Turnierbeginn, oder 00:00 für &quot;unbekannt&quot;" })
+                        <label asp-for="@Model.TimeTo"></label>
+                        <div class="input-group" style="width: 8rem;">
+                            <input asp-for="@Model.TimeTo" maxlength="5" class="form-control" placeholder="hh:mm" data-input-type="time" title="Turnierbeginn, oder 00:00 für &quot;unbekannt&quot;">
                             <span class="input-group-append input-group-text" data-input-type="time"><i class="bi bi-clock bi-lg"></i></span>
                         </div>
-                        @Html.ValidationMessageFor(m => m.TimeTo, null, new { @class = "msg-error-text" })
+                        <span asp-validation-for="@Model.TimeTo" class="msg-error-text"></span>
                     </div>
                 </div>
             </div>                
             <div class="col-12">
-                @Html.LabelFor(m => m.ClosingDateText)
-                <div class="input-group" style="width:12rem;">
-                    @Html.TextBoxFor(m => m.ClosingDateText, new { maxlength = "10", placeholder = "tt.mm.jjj", @class = "form-control", data_input_type = "date" })
+                <label asp-for="@Model.ClosingDateText"></label>
+                <div class="input-group" style="width: 12rem;">
+                    <input asp-for="@Model.ClosingDateText" maxlength="10" class="form-control" placeholder="tt.mm.jjj" class="form-control" data-input-type="date">
                     <span class="input-group-append input-group-text" data-input-type="date"><i class="bi bi-calendar3 bi-lg"></i></span>
                 </div>
-                @Html.ValidationMessageFor(m => m.ClosingDateText, null, new { @class = "msg-error-text" })
+                <span asp-validation-for="@Model.ClosingDateText" class="msg-error-text"></span>
             </div>
         </div>
     </fieldset>
@@ -110,36 +110,36 @@
         </legend>
         <div class="row">
             <div class="col-12">
-                @Html.LabelFor(m => m.NumOfTeams)
-                @Html.TextBoxFor(m => m.NumOfTeams, new {maxlength = "3", @class = "form-control", style = "width:4rem;", title = "Max. Anzahl der Mannschaften. 0 = unbekannt bzw. unbegrenzt." })
-                @Html.ValidationMessageFor(m => m.NumOfTeams, null, new {@class = "msg-error-text"})
+                <label asp-for="@Model.NumOfTeams"></label>
+                <input asp-for="@Model.NumOfTeams" type="text" maxlength="3" class="form-control" style="width:4rem;" title="Max. Anzahl der Mannschaften. 0 = unbekannt bzw. unbegrenzt.">
+                <span asp-validation-for="@Model.NumOfTeams" class="msg-error-text"></span>
             </div>
 
             <div class="col-md-5 col-sm-5">
-                @Html.LabelFor(m => m.NumPlayersFemale)
+                <label asp-for="@Model.NumPlayersFemale"></label>
                 <div class="d-inline-flex">
-                    @Html.DropDownListFor(m => m.MinMaxFemale, Model.GetMinMaxPlayerList(), new { @class = "form-control", style = "width:9rem" })&nbsp;
-                    @Html.TextBoxFor(m => m.NumPlayersFemale, new { style = "width:2rem", maxlength = "1", @class = "form-control d-inline" })
+                    <select asp-for="@Model.MinMaxFemale" asp-items="Model.GetMinMaxPlayerList()" class="form-control" style="width:9rem"></select>&nbsp;
+                    <input asp-for="@Model.NumPlayersFemale" type="text" maxlength="1" class="form-control d-inline" style="width:2rem">
                 </div>
-                @Html.ValidationMessageFor(m => m.NumPlayersFemale, null, new {@class = "msg-error-text"})
+                <span asp-validation-for="@Model.NumPlayersFemale" class="msg-error-text"></span>
             </div>
             <div class="col-md-5 col-sm-5">
-                @Html.LabelFor(m => m.NumPlayersMale)
+                <label asp-for="@Model.NumPlayersMale"></label>
                 <div class="d-inline-flex">
-                    @Html.DropDownListFor(m => m.MinMaxMale, Model.GetMinMaxPlayerList(), new { @class = "form-control", style = "width:9rem" })&nbsp;
-                    @Html.TextBoxFor(m => m.NumPlayersMale, new { style = "display:inline; width: 2rem", maxlength = "1", @class = "form-control" })
+                    <select asp-for="@Model.MinMaxMale" asp-items="Model.GetMinMaxPlayerList()" class="form-control" style="width: 9rem"></select>&nbsp;
+                    <input asp-for="@Model.NumPlayersMale" type="text" maxlength="1" class="form-control d-inline" style="width:2rem;">
                 </div>
-                @Html.ValidationMessageFor(m => m.NumPlayersMale, null, new { @class = "msg-error-text" })
+                <span asp-validation-for="@Model.NumPlayersMale" class="msg-error-text"></span>
             </div>
             <div class="col-md-2 col-sm-2"></div>
 
             <div class="col-md-5 col-sm-5">
-                @Html.LabelFor(m => m.PlayingAbilityFrom)
-                @Html.DropDownListFor(m => m.PlayingAbilityFrom, Model.GetPlayingAbilityList(), new { @class = "form-control", style = "width:11.5rem" })
+                <label asp-for="@Model.PlayingAbilityFrom"></label>
+                <select asp-for="@Model.PlayingAbilityFrom" asp-items="Model.GetPlayingAbilityList()" class="form-control" style="width:11rem"></select>
             </div>
             <div class="col-md-5 col-sm-5">
-                @Html.LabelFor(m => m.PlayingAbilityTo)
-                @Html.DropDownListFor(m => m.PlayingAbilityTo, Model.GetPlayingAbilityList(), new { @class = "form-control", style = "width:11.5rem" })
+                <label asp-for="@Model.PlayingAbilityTo"></label>
+                <select asp-for="@Model.PlayingAbilityTo" asp-items="Model.GetPlayingAbilityList()" class="form-control" style="width:11rem"></select>
             </div>
             <div class="col-md-2 col-sm-2"></div>
         </div>
@@ -150,33 +150,33 @@
         </legend>
         <div class="row">
             <div class="col-md-12">
-                @Html.LabelFor(m => m.Surface)
-                @Html.DropDownListFor(m => m.Surface, Model.GetSurfaceList(), new { @class = "form-control", style = "width:11.5rem" })
+                <label asp-for="@Model.Surface"></label>
+                <select asp-for="@Model.Surface" asp-items="Model.GetSurfaceList()" class="form-control" style="width:11rem"></select>
                 <div class="pt-3">
                     Nur <strong>genaue Angaben</strong> mit Postleitzahl, Ort und Straße ermöglichen die Anzeige einer Karte für die Anfahrt.<br/>
                 </div>
-                @Html.LabelFor(m => m.Venue)
-                @Html.TextBoxFor(m => m.Venue, new {maxlength = CalendarFields.Venue.MaxLength, @class = "form-control", title = "Hallenbezeichung, z.B. &quot;Jahn-Turnhalle&quot;" })
-                @Html.ValidationMessageFor(m => m.Venue, null, new {@class = "msg-error-text"})
-                @Html.LabelFor(m => m.Street)
-                @Html.TextBoxFor(m => m.Street, new {maxlength = CalendarFields.Street.MaxLength, @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.Street, null, new {@class = "msg-error-text"})
+                <label asp-for="@Model.Venue"></label>
+                <input asp-for="@Model.Venue" type="text" maxlength="@CalendarFields.Venue.MaxLength" class="form-control" title="Hallenbezeichung, z.B. &quot;Jahn-Turnhalle&quot;">
+                <span asp-validation-for="@Model.Venue" class="msg-error-text"></span>
+                <label asp-for="@Model.Street"></label>
+                <input asp-for="@Model.Street" type="text" maxlength="@CalendarFields.Street.MaxLength" class="form-control">
+                <span asp-validation-for="@Model.Street" class="msg-error-text"></span>
             </div>
         </div>
         <div class="row">
             <div class="col-md-4">
-                @Html.LabelFor(m => m.CountryId)
-                @Html.DropDownListFor(m => m.CountryId, Model.GetCountriesList(), new { @class = "form-control", style = "width:11.5rem" })
+                <label asp-for="@Model.CountryId"></label>
+                <select asp-for="@Model.CountryId" asp-items="Model.GetCountriesList()" class="form-control" style="width:11rem"></select>
             </div>
             <div class="col-md-8">
-                @Html.LabelFor(m => m.PostalCode)
-                @Html.TextBoxFor(m => m.PostalCode, new {maxlength = CalendarFields.PostalCode.MaxLength, @class = "form-control", style="width:8rem"})
-                @Html.ValidationMessageFor(m => m.PostalCode, null, new {@class = "msg-error-text"})
+                <label asp-for="@Model.PostalCode"></label>
+                <input asp-for="@Model.PostalCode" type="text" maxlength="@CalendarFields.PostalCode.MaxLength" class="form-control" style="width:8rem">
+                <span asp-validation-for="@Model.PostalCode" class="msg-error-text"></span>
             </div>
             <div class="col-md-12">
-                @Html.LabelFor(m => m.City)
-                @Html.TextBoxFor(m => m.City, new {maxlength = CalendarFields.City.MaxLength, @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.City, null, new {@class = "msg-error-text"})
+                <label asp-for="@Model.City"></label>
+                <input asp-for="@Model.City" type="text" maxlength="@CalendarFields.City.MaxLength" class="form-control">
+                <span asp-validation-for="@Model.City" class="msg-error-text"></span>
             </div>
         </div>
     </fieldset>
@@ -186,15 +186,15 @@
         </legend>
         <div class="row">
             <div class="col-md-12">
-                <label for="@Html.NameFor(m => m.ContactAddress)">Name des Ansprechpartners, ggf. mit Telefon und Postanschrift</label>
-                @Html.TextAreaFor(m => m.ContactAddress, new {style = "height: 7rem", @class = "form-control", title = "Ansprechpartner, Postanschrift, Telefon, usw." })
-                @Html.ValidationMessageFor(m => m.ContactAddress, null, new {@class = "msg-error-text"})
-                <label for="@Html.NameFor(m => m.Email)">E-Mail für Anfragen oder Anmeldungen</label>
-                @Html.TextBoxFor(m => m.Email, new {maxlength = CalendarFields.Email.MaxLength, @class = "form-control", title = "E-Mail für Rückfragen oder Anmeldungen" })
-                @Html.ValidationMessageFor(m => m.Email, null, new {@class = "msg-error-text"})
-                <label for="@Html.NameFor(m => m.Website)">Web-Adresse zum Veranstalter oder für das Turnier</label>
-                @Html.TextBoxFor(m => m.Website, new {maxlength = CalendarFields.Website.MaxLength, @class = "form-control", title = "Web-Adresse, z.B. https://volleyball-mixedliga.de" })
-                @Html.ValidationMessageFor(m => m.Website, null, new {@class = "msg-error-text"})
+                <label asp-for="@Model.ContactAddress"></label>
+                <textarea asp-for="@Model.ContactAddress" class="form-control" style="height: 7rem" title="Ansprechpartner, Postanschrift, Telefon, usw."></textarea>
+                <span asp-validation-for="@Model.ContactAddress" class="msg-error-text"></span>
+                <label asp-for="@Model.Email"></label>
+                <input asp-for="@Model.Email" type="text" maxlength="@CalendarFields.Email.MaxLength" class="form-control" title="E-Mail für Rückfragen oder Anmeldungen">
+                <span asp-validation-for="@Model.Email" class="msg-error-text"></span>
+                <label asp-for="@Model.Website"></label>
+                <input asp-for="@Model.Website" type="text" maxlength="@CalendarFields.Website.MaxLength" class="form-control" title="Web-Adresse, z.B. https://volleyball-liga.de">
+                <span asp-validation-for="@Model.Website" class="msg-error-text"></span>
             </div>
         </div>
     </fieldset>
@@ -204,25 +204,25 @@
         </legend>
         <div class="row">
             <div class="col-md-4">
-                @Html.LabelFor(m => m.EntryFee)
-                <div class="input-group" style="width:8rem;">
-                    @Html.EditorFor(m => m.EntryFee, new { htmlAttributes = new { maxlength = "6", @class = "form-control" } })
+                <label asp-for="@Model.EntryFee"></label>
+                <div class="input-group" style="width: 8rem;">
+                    <input asp-for="@Model.EntryFee" type="text" maxlength="6" class="form-control">
                     <span class="input-group-append input-group-text">€</span>
                 </div>
-                @Html.ValidationMessageFor(m => m.EntryFee, null, new {@class = "msg-error-text"})
+                <span asp-validation-for="@Model.EntryFee" class="msg-error-text"></span>
             </div>
             <div class="col-md-8">
-                @Html.LabelFor(m => m.Bond)
-                <div class="input-group" style="width:8rem;">
-                    @Html.EditorFor(m => m.Bond, new { htmlAttributes = new { maxlength = "6", @class = "form-control" } })
+                <label asp-for="@Model.Bond"></label>
+                <div class="input-group" style="width: 8rem;">
+                    <input asp-for="@Model.Bond" type="text" maxlength="6" class="form-control">
                     <span class="input-group-append input-group-text">€</span>
                 </div>
-                @Html.ValidationMessageFor(m => m.Bond, null, new {@class = "msg-error-text"})
+                <span asp-validation-for="@Model.Bond" class="msg-error-text"></span>
             </div>
             <div class="col-md-12">
-                <label for="@Html.NameFor(m => m.Info)">Weitere Infos</label>
-                @Html.TextAreaFor(m => m.Info, new { style = "height: 8rem", @class = "form-control", title = "Weitere Infos wie Hallenöffnung, Anfahrt, Verpflegung u.dgl." })
-                @Html.ValidationMessageFor(m => m.Info, null, new { @class = "msg-error-text" })
+                <label asp-for="@Model.Info"></label>
+                <textarea asp-for="@Model.Info" class="form-control" style="height: 8rem" title="Weitere Infos wie Hallenöffnung, Anfahrt, Verpflegung u.dgl."></textarea>
+                <span asp-validation-for="@Model.Info" class="msg-error-text"></span>
             </div>
         </div>
     </fieldset>
@@ -240,12 +240,12 @@
                     <b>Ohne Freischalten erscheint das Turnier nicht im Kalender.</b>
                     Über den Link in der E-Mail kann das Turnier auch jederzeit bearbeitet werden.
                 </div>
-                <label for="@Html.NameFor(m => m.PostedByName)">Name</label>
-                @Html.TextBoxFor(m => m.PostedByName, new {maxlength = CalendarFields.PostedByName.MaxLength, @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.PostedByName, null, new {@class = "msg-error-text"})
-                <label for="@Html.NameFor(m => m.PostedByEmail)">E-Mail</label>
-                @Html.TextBoxFor(m => m.PostedByEmail, new {maxlength = CalendarFields.PostedByEmail.MaxLength, @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.PostedByEmail, null, new {@class = "msg-error-text"})
+                <label asp-for="@Model.PostedByName"></label>
+                <input asp-for="@Model.PostedByName" type="text" maxlength="@CalendarFields.PostedByName.MaxLength" class="form-control">
+                <span asp-validation-for="@Model.PostedByName" class="msg-error-text"></span>
+                <label asp-for="@Model.PostedByEmail"></label>
+                <input asp-for="@Model.PostedByEmail" type="text" maxlength="@CalendarFields.PostedByEmail.MaxLength" class="form-control">
+                <span asp-validation-for="@Model.PostedByEmail" class="msg-error-text"></span>
             </div>
         </div>
     </fieldset>
@@ -257,39 +257,32 @@
             <div class="col-md-12">
                 @if (Model.EditMode == EditMode.New && User.IsInRole(TournamentCalendar.Library.Authentication.Constants.RoleName.Editor))
                 {
-                    @Html.CheckBox(nameof(Model.Approved), true)
-                    @Html.Label(nameof(Model.Approved), " Turnier freischalten", new {@class = "form-check-label", style = "display: inline"});
+                    <input asp-for="@Model.ShowTournament" type="checkbox" class="form-check-label" checked="checked" style="display: inline" />
+                    <label asp-for="@Model.ShowTournament" style="display: inline"> Turnier im Kalender anzeigen</label>
                 }
                 @if (Model.EditMode == EditMode.Change)
                 {
                     <div>
-                        @if (!Model.DeletedOn.HasValue)
+                        @if (Model.ShowTournament)
                         {
-                            <label>Das Turnier ist <strong>aktiv</strong> und bis zum Veranstaltungsdatum im Turnierkalender sichtbar.</label>
+                            <div>Das Turnier ist bis zum Veranstaltungsdatum im Turnierkalender sichtbar.</div>
                         }
                         else
                         {
-                            <label>Das Turnier ist für die Anzeige im Turnierkalender <strong>nicht freigeschaltet</strong>.</label>
+                            <div>Das Turnier ist im Kalender <strong>derzeit nicht sichtbar</strong>.</div>
                         }
-                        @Html.CheckBox(nameof(Model.Approved), false)
-                        @if (Model.DeletedOn.HasValue)
-                        {
-                            <text>Turnier jetzt anzeigen</text>
-                        }
-                        else
-                        {
-                            <text>Turnier künftig verbergen</text>
-                        }
+                        <input asp-for="@Model.ShowTournament" type="checkbox" class="form-check-label" checked="checked" style="display: inline" />
+                        <label asp-for="@Model.ShowTournament" style="display: inline"> Turnier im Kalender anzeigen</label>
                     </div>
                 }
                 <div>
-                    Letzte Änderung: @(Model.EditMode == EditMode.New ? "keine" : Model.ModifiedOn.ToString("dd.MM.yyyy - HH:mm:ss"))
+                    Letzte Änderung: @(Model.EditMode == EditMode.New || Model.ModifiedOn == DateTime.MinValue ? "keine" : Model.ModifiedOn.ToString("dd.MM.yyyy - HH:mm:ss"))
                 </div>
                 @if (User.IsInRole(TournamentCalendar.Library.Authentication.Constants.RoleName.Editor))
                 {
                     // Captcha won't be checked for authenticated users, but the field is still 'required'
                     Model.Captcha = "Valid";
-                    @Html.Hidden(nameof(Model.Captcha), "Dummy");
+                    <input type="hidden" asp-for="@Model.Captcha" value="Valid" />
                 }
                 else
                 {
@@ -297,9 +290,9 @@
                         <img id="CaptchaImage" style="vertical-align: bottom; width: 200px; display: inline" class="rounded" src="@Url.Action(nameof(Captcha.Index), nameof(Captcha))@("?guid=" + Guid.NewGuid())" alt="Captcha" />
                         <span onclick="javascript:if (document.images) document.images.CaptchaImage.src = '@Url.Action(nameof(Captcha.Index), nameof(Captcha))?new=1&amp;time=' + new Date().getTime();" style="cursor: pointer"><i class="bi bi-arrow-clockwise bi-2x" style="margin: 0 5px 0 5px" title="Bild neu laden"></i>Bild neu laden</span><br/>
                     </div>
-                    @Html.LabelFor(m => m.Captcha)
-                    @Html.TextBoxFor(m => m.Captcha, new {maxlength = "7", @class = "form-control", style = "width:12rem"})
-                    @Html.ValidationMessageFor(m => m.Captcha, null, new {@class = "msg-error-text"})
+                    <label asp-for="@Model.Captcha"></label>
+                    <input asp-for="@Model.Captcha" type="text" maxlength="7" class="form-control" style="width:12rem">
+                    <span asp-validation-for="@Model.Captcha" class="msg-error-text"></span>
                 }
                 <div class="mt-2">
                     @* class="cancel" will stop jquery.validate from validation *@
@@ -308,7 +301,7 @@
             </div>
         </div>
     </fieldset>
-}
+</form>
 @section CssSection
 {<link href="@Url.Content(CssName.Lib.JqueryUiDateTimePickerCss)" rel="stylesheet" />}
 @section ScriptStandardSection

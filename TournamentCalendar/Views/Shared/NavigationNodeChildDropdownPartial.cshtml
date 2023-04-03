@@ -14,7 +14,7 @@
         }
         if (!await Model.HasVisibleChildren(childNode))
         {
-            <a href="@Url.Content(Model.AdjustUrl(childNode))" class="@Model.GetClass(childNode.Value, "dropdown-item", "active", true)">@Model.AdjustText(childNode)</a>
+                <a href="@Url.Content(Model.AdjustUrl(childNode))" class="@Model.GetClass(childNode.Value, "dropdown-item", "active", true)">@Model.AdjustText(childNode)</a>
         }
         else
         {

@@ -11,7 +11,7 @@ using Microsoft.Extensions.Configuration;
 namespace TournamentCalendar.Controllers;
 
 [Route("orga")]
-public class Orga : ControllerBase
+public class Organization : ControllerBase
 {
     private readonly string _xmlFileList = "Download-Files/TournamentDownloadfiles.xml";
 
@@ -24,14 +24,14 @@ public class Orga : ControllerBase
         public bool IsProtected { get; set; }
     }
 
-    public Orga(IWebHostEnvironment hostingEnvironment, IConfiguration configuration) : base(hostingEnvironment, configuration)
+    public Organization(IWebHostEnvironment hostingEnvironment, IConfiguration configuration) : base(hostingEnvironment, configuration)
     {}
 
     [HttpGet("")]
     [HttpGet("Index")]
     public IActionResult Index()
     {
-        return RedirectToAction(nameof(Orga.Evaluation), nameof(Controllers.Orga));
+        return RedirectToAction(nameof(Organization.Evaluation), nameof(Controllers.Organization));
     }
 
     [HttpGet("auswertung")]
