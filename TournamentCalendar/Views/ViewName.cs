@@ -131,14 +131,14 @@ public static class ViewName
     #region *** Organisation views ***
 
     /// <summary>
-    /// Organisation - ~/orga
+    /// Software - ~/software
     /// </summary>
-    public static class Orga
+    public static class Organization
     {
         /// <summary>
-        /// ~/Views/Orga/Auswertung.cshtml
+        /// ~/Views/Software/Evaluation.cshtml
         /// </summary>
-        public const string Auswertung = "~/Views/Orga/Auswertung.cshtml";
+        public const string Apps = "~/Views/Organization/Apps.cshtml";
     }
 
     #endregion

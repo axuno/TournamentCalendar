@@ -33,11 +33,17 @@ public class InfoService : ControllerBase
     [HttpGet("")]
     public IActionResult Index()
     {
+        return RedirectToActionPermanent(nameof(InfoService.Register), nameof(InfoService));
+    }
+
+    [HttpGet(nameof(Register))]
+    public IActionResult Register()
+    {
         ViewBag.TitleTagText = "Volley-News abonnieren";
         return View(ViewName.InfoService.Edit, new EditModel(_appDb) { EditMode = EditMode.New });
     }
 
-    [HttpGet("eintrag/{guid}")]
+    [HttpGet("entry/{guid}")]
     public IActionResult Entry(string guid)
     {
         ViewBag.TitleTagText = "Volley-News abonnieren";
@@ -55,7 +61,7 @@ public class InfoService : ControllerBase
     /// <summary>
     /// "save" is the name of the submit button
     /// </summary>
-    [HttpPost("eintrag"), ValidateAntiForgeryToken]
+    [HttpPost(nameof(InfoService.Entry)), ValidateAntiForgeryToken]
     public async Task<IActionResult> Entry([FromForm] EditModel model, CancellationToken cancellationToken)
     {
         model = new EditModel(_appDb);
@@ -69,7 +75,7 @@ public class InfoService : ControllerBase
             // if the entry with this email address was not yet confirmed, just redirect there
             if (!model.ExistingEntryWithSameEmail.ConfirmedOn.HasValue)
             {
-                return RedirectToAction(nameof(InfoService.Entry), nameof(Controllers.InfoService), new {id = model.ExistingEntryWithSameEmail.Guid });
+                return RedirectToAction(nameof(InfoService.Entry), nameof(Controllers.InfoService), new {guid = model.ExistingEntryWithSameEmail.Guid });
             }
 
             // todo: what to do, if the email was already confirmed? Re-send confirmation email without asking?
@@ -120,7 +126,7 @@ public class InfoService : ControllerBase
     /// <summary>
     /// This method is called when using the submit button with attribute formaction = volley-news/unsubscribe
     /// </summary>
-    [HttpPost("[action]")]
+    [HttpPost(nameof(Unsubscribe))]
     public async Task<IActionResult> Unsubscribe([FromForm] EditModel model, CancellationToken cancellationToken)
     {
         ViewBag.TitleTagText = "Volley-News abbestellen";
@@ -128,7 +134,7 @@ public class InfoService : ControllerBase
         return View(ViewName.InfoService.Unsubscribe, await unsubscribeModel.Save(cancellationToken));
     }
 
-    [HttpGet("bestaetigen/{guid}")]
+    [HttpGet("approve/{guid}")]
     public async Task<IActionResult> Approve(string guid, CancellationToken cancellationToken)
     {
         ViewBag.TitleTagText = "Volley-News bestätigen";

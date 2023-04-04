@@ -9,7 +9,7 @@ using TournamentCalendar.Views;
 
 namespace TournamentCalendar.Controllers;
 
-[Route("kontakt")]
+[Route("contact")]
 public class Contact : ControllerBase
 {
     private readonly string _domainName;
@@ -30,7 +30,7 @@ public class Contact : ControllerBase
         return RedirectToActionPermanent(nameof(Message));
     }
 
-    [HttpGet("nachricht")]
+    [HttpGet(nameof(Message))]
     public IActionResult Message()
     {
         ViewBag.TitleTagText = "Volleyball-Turnier.de kontaktieren";
@@ -38,7 +38,7 @@ public class Contact : ControllerBase
         return View(ViewName.Contact.Message, model);
     }
 
-    [HttpPost("nachricht"), ValidateAntiForgeryToken]
+    [HttpPost(nameof(Message)), ValidateAntiForgeryToken]
     public async Task<IActionResult> Message([FromForm] ContactModel model)
     {
         ViewBag.TitleTagText = "Volleyball-Turnier.de kontaktieren";

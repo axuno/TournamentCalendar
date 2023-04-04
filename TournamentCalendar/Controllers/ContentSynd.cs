@@ -20,7 +20,7 @@ public class ContentSynd : ControllerBase
         _logger = logger;
     }
 
-    [HttpGet("kalender.html")]
+    [HttpGet("calendar.html")]
     public async Task<IActionResult> CalendarList(CancellationToken cancellationToken)
     {
         // Cross Origin Request Sharing (CORS) - allow request from any domain:
@@ -31,7 +31,7 @@ public class ContentSynd : ControllerBase
         return PartialView(ViewName.ContentSynd.CalendarListPartial, model);
     }
 
-    [HttpGet("kalender.css")]
+    [HttpGet("calendar.css")]
     public IActionResult CalendarListCss()
     {
         Response.Headers.Add("Access-Control-Allow-Origin", "*");
@@ -39,7 +39,7 @@ public class ContentSynd : ControllerBase
         return PartialView(ViewName.ContentSynd.CalendarListPartialCss);
     }
 
-    [HttpGet("kalender.js")]
+    [HttpGet("calendar.js")]
     public IActionResult CalendarListJs()
     {
         Response.Headers.Add("Access-Control-Allow-Origin", "*");
@@ -92,21 +92,3 @@ public class ContentSynd : ControllerBase
         return "Remote IP unknown";
     }
 }
-/*
-https://dotnetfiddle.net/
-
-@{
-	Layout = null;
-}
-<!DOCTYPE html>
-<html>
-	<head>
-		<meta charset="utf-8">
-		<title>Turnierkalender</title>
-    	<link href="https://volleyball-turnier.de/synd/kalender/liste/css" rel="stylesheet" />
-    </head>
-	<body>
-		@Html.Raw(new System.Net.WebClient().DownloadString("https://volleyball-turnier.de/synd/kalender/liste"))
-	</body>
-</html>
-*/
