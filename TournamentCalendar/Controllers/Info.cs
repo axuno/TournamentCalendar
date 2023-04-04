@@ -6,14 +6,14 @@ namespace TournamentCalendar.Controllers;
 [Route("info")]
 public class Info : ControllerBase
 {
-    [HttpGet("impressum")]
+    [HttpGet("about-us")]
     public ActionResult LegalDetails()
     {
         ViewBag.TitleTagText = "Impressum";
         return View(ViewName.Info.LegalDetailsTournament);
     }
 
-    [HttpGet("datenschutz")]
+    [HttpGet("privacy")]
     public ActionResult PrivacyPolicy()
     {
         ViewBag.TitleTagText = "Datenschutzerklärung";

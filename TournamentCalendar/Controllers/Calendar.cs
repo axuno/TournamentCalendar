@@ -14,7 +14,7 @@ using TournamentCalendar.Data;
 
 namespace TournamentCalendar.Controllers;
 
-[Route("/kalender")]
+[Route(nameof(Calendar))]
 public class Calendar : ControllerBase
 {
     private readonly IMailMergeService _mailMergeService;
@@ -45,7 +45,7 @@ public class Calendar : ControllerBase
         return View(ViewName.Calendar.Overview, model);
     }
 
-    [HttpGet("Id/{id:long}")]
+    [HttpGet("{id:long}")]
     public async Task<IActionResult> Id(long id, CancellationToken cancellationToken)
     {
         ViewBag.TitleTagText = "Volleyball-Turnierkalender";
@@ -63,7 +63,7 @@ public class Calendar : ControllerBase
         return View(ViewName.Calendar.Show, model);
     }
 
-    [HttpGet("eintrag")]
+    [HttpGet("entry")]
     public async Task<IActionResult> NewEntry(CancellationToken cancellationToken)
     {
         ViewBag.TitleTagText = "Volleyballturnier in den Kalender eintragen";
@@ -73,7 +73,7 @@ public class Calendar : ControllerBase
         return View(ViewName.Calendar.Edit, model);
     }
 
-    [HttpGet("eintrag/{guid}")]
+    [HttpGet("entry/{guid}")]
     public async Task<IActionResult> Entry([FromRoute] string guid, CancellationToken cancellationToken)
     {
         ViewBag.TitleTagText = "Volleyballturnier in den Kalender eintragen";
@@ -99,7 +99,7 @@ public class Calendar : ControllerBase
             : View(ViewName.Calendar.Edit, model);
     }
 
-    [HttpPost("eintrag"), ValidateAntiForgeryToken]
+    [HttpPost(nameof(Entry)), ValidateAntiForgeryToken]
     public async Task<IActionResult> Entry([FromForm] EditModel model, CancellationToken cancellationToken)
     {
         ViewBag.TitleTagText = "Volleyballturnier in den Kalender eintragen";
@@ -174,7 +174,7 @@ public class Calendar : ControllerBase
         }
     }
 
-    [HttpGet("bestaetigen/{guid?}")]
+    [HttpGet("approve/{guid?}")]
     public async Task<IActionResult> Approve(string? guid, CancellationToken cancellationToken)
     {
         guid ??= string.Empty;
@@ -184,7 +184,7 @@ public class Calendar : ControllerBase
         return View(ViewName.Calendar.Approve, await approveModel.Save(cancellationToken));
     }
 
-    [HttpGet("integrieren")]
+    [HttpGet(nameof(Integrate))]
     public IActionResult Integrate()
     {
         ViewBag.TitleTagText = "Turnierkalender integrieren";

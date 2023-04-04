@@ -10,7 +10,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace TournamentCalendar.Controllers;
 
-[Route("orga")]
+[Route(nameof(Organization))]
 public class Organization : ControllerBase
 {
     private readonly string _xmlFileList = "Download-Files/TournamentDownloadfiles.xml";
@@ -28,26 +28,25 @@ public class Organization : ControllerBase
     {}
 
     [HttpGet("")]
-    [HttpGet("Index")]
     public IActionResult Index()
     {
-        return RedirectToAction(nameof(Organization.Evaluation), nameof(Controllers.Organization));
+        return RedirectToAction(nameof(Organization.Apps), nameof(Controllers.Organization));
     }
 
-    [HttpGet("auswertung")]
-    public IActionResult Evaluation()
+    [HttpGet(nameof(Apps))]
+    public IActionResult Apps()
     {
         ViewBag.TitleTagText = "Software zur Auswertung von Volleyballturnieren";
-        return View(ViewName.Orga.Auswertung, GetList());
+        return View(ViewName.Organization.Apps, GetList());
     }
 
-    [HttpGet("download/{id?}")]
-    public IActionResult Download(string id)
+    [HttpGet("download/{file}")]
+    public IActionResult Download(string file)
     {
-        if (GetFile(id, out var file) && System.IO.File.Exists(Path.Combine(HostingEnvironment.WebRootPath, file!.Name)))
+        if (GetFile(file, out var fileName) && System.IO.File.Exists(Path.Combine(HostingEnvironment.WebRootPath, fileName!.Name)))
         {
-            var stream = new FileStream(Path.Combine(HostingEnvironment.WebRootPath, file.Name), FileMode.Open);
-            return new FileStreamResult(stream, file.ContentType);
+            var stream = new FileStream(Path.Combine(HostingEnvironment.WebRootPath, fileName.Name), FileMode.Open);
+            return new FileStreamResult(stream, fileName.ContentType);
         }
 
         return NotFound();
@@ -55,11 +54,11 @@ public class Organization : ControllerBase
 
 
     [NonAction]
-    private bool GetFile(string id, out DownloadFile? download)
+    private bool GetFile(string file, out DownloadFile? download)
     {
         try
         {
-            download = GetList().FirstOrDefault(f => f.Id == id);
+            download = GetList().FirstOrDefault(f => f.Id == file);
             return download != null;
         }
         catch (Exception)

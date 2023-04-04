@@ -21,16 +21,14 @@ public class Auth : ControllerBase
         _configuration = configuration;
     }
         
-    [HttpGet("/anmelden")]
-    [HttpGet("[controller]/[action]")]
+    [HttpGet("/sign-in")]
     public IActionResult SignIn([FromQuery] string? returnUrl)
     {
         if (returnUrl != null) ViewData["ReturnUrl"] = returnUrl;
         return View(ViewName.Auth.SignIn);
     }
         
-    [HttpPost("/anmelden"), ValidateAntiForgeryToken]
-    [HttpPost("[controller]/[action]")]
+    [HttpPost("/sign-in"), ValidateAntiForgeryToken]
     public async Task<IActionResult> SignIn([FromForm] SignInViewModel model, [FromQuery] string? returnUrl)
     {
         Library.Authentication.User? foundUser = null;
@@ -82,8 +80,7 @@ public class Auth : ControllerBase
         return RedirectToLocal(returnUrl ?? "/");
     }
 
-    [HttpGet("/abmelden")]
-    [HttpGet("[controller]/[action]")]
+    [HttpGet("/sign-out")]
     public new async Task<IActionResult> SignOut()
     {
         await HttpContext.SignOutAsync();
