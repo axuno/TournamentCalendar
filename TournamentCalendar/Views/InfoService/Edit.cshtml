@@ -97,17 +97,36 @@
                     @Html.TextBoxFor(m => m.City, new { maxlength = InfoServiceFields.City.MaxLength, @class = "form-control" })
                     @Html.LabelFor(m => m.Street)
                     @Html.TextBoxFor(m => m.Street, new { maxlength = InfoServiceFields.Street.MaxLength, @class = "form-control" })
-                    <div style="margin-top: 15px; cursor: pointer" onclick="ShowHideLocation()">
-                        <i class="bi bi-info-circle-fill"></i> Karte mit Standort in Google Maps
+                    <!-- Button trigger modal -->
+                    <div class="pt-3">
+                        <button type="button" class="btn btn-primary" onclick="ShowHideLocation()" data-toggle="modal" data-target="#locationModal">
+                            <i class="bi bi-geo-alt-fill"></i> Karte mit Standort in Google Maps
+                        </button>
                     </div>
-                    <div id="mapPlaceholder" style="@if (!Model.Longitude.HasValue && !Model.Latitude.HasValue)
-                                                        {
-                                                            <text>display: none; </text>
-                                                        }; border: 1px solid #979797; background-color: #e5e3df; width: 100%; height: 400px; margin-top: 15px">
-                        <div style="padding: 1rem; color: gray">
-                            Karte wird mit JavaScript geladen...
+                    <!-- Start Location Modal -->
+                    <div class="modal fade" id="locationModal" data-keyboard="true" tabindex="-1" aria-labelledby="locationMapLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-xl">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="locationMapLabel">Karte mit Standort in Google Maps</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div id="mapPlaceholder" style="@if (!Model.Longitude.HasValue && !Model.Latitude.HasValue)
+                                                                    {
+                                                                        <text>display: none; </text>
+                                                                    }; border: 1px solid #979797; background-color: #e5e3df; width: 100%; height: 400px; margin-top: 15px">
+                                        <div style="padding: 1rem; color: gray">
+                                            Karte wird mit JavaScript geladen...
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
+                    <!-- End Location Modal -->
                 </section>
             </div>
         </div>
@@ -136,11 +155,9 @@
                         <strong> - abgemeldet</strong>
                     }
                 </div>
-
                 <div>
                     <img id="CaptchaImage" class="rounded" src="@Url.Action(nameof(Captcha.Index), nameof(Captcha))@("?guid=" + Guid.NewGuid())" alt="Captcha" style="vertical-align: bottom; width: 12rem" />
                     <span onclick="javascript:if (document.images) document.images.CaptchaImage.src = '@Url.Action(nameof(Captcha.Index), nameof(Captcha))?new=1&amp;time=' + new Date().getTime();" style="cursor: pointer"><i class="bi bi-arrow-clockwise bi-2x" style="margin: 0 5px 0 5px" title="Bild neu laden"></i>Bild neu laden</span><br />
-
                     @Html.LabelFor(m => m.Captcha)
                 </div>
                 @Html.TextBoxFor(m => m.Captcha, new { maxlength = "7", @class = "form-control input-required", style = "width:12rem" })
@@ -159,77 +176,105 @@
 }
 @section CssSection {}
 @section ScriptStandardSection {
-    @* Note: Google requires an API key for all requests since 11 June 2018 - using account of axuno gGmbH *@
+    @* Note: Google requires an API key for all requests since 11 June 2018 *@
     <script type="text/javascript" src="@string.Format("https://maps.googleapis.com/maps/api/js?key={0}", googleConfig.WebApiKey)"></script>
     <script src="@Url.Content(ScriptName.Lib.JqueryValidationAllJs)"></script>
     <script type="text/javascript">
     //<![CDATA[
-    $(document).ready(function () {
-        $('#@Html.NameFor(m => m.IsAddressEntered)').on('change', EnableDisableAddressFields);
+    document.addEventListener('DOMContentLoaded', Înitialize, false);
+    function Înitialize() {
+        document.getElementById('@Html.IdFor(m => m.IsAddressEntered)').addEventListener('change', EnableDisableAddressFields);
         EnableDisableAddressFields();
         @if (Model.Latitude.HasValue && Model.Longitude.HasValue)
         {
-            <text>ShowLocationOnGoogleMaps(@Model.Latitude.Value.ToString(CultureInfo.InvariantCulture), @Model.Longitude.Value.ToString(CultureInfo.InvariantCulture));</text>
+            <text>ShowLocationOnGoogleMaps(@Model.Latitude.Value.ToString(CultureInfo.InvariantCulture), @Model.Longitude.Value.ToString(CultureInfo.InvariantCulture)); </text>
         }
 
-        $('#@Html.NameFor(m => m.Email)').focus();
-    });
-
-    function EnableDisableAddressFields() {
-        if ($('#@Html.NameFor(m => m.IsAddressEntered)').is(':checked')) {
-            $('#@Html.NameFor(m => m.MaxDistance), #@Html.NameFor(m => m.CountryId), #@Html.NameFor(m => m.ZipCode), #@Html.NameFor(m => m.City), #@Html.NameFor(m => m.Street)').removeAttr('disabled');
-            $('#AddressSection').show();
-        }
-        else {
-            $('#@Html.NameFor(m => m.MaxDistance), #@Html.NameFor(m => m.CountryId), #@Html.NameFor(m => m.ZipCode), #@Html.NameFor(m => m.City), #@Html.NameFor(m => m.Street)').attr('disabled', 'disabled');
-            $('#AddressSection').hide();
-        }
+        document.getElementById('@Html.IdFor(m => m.Email)').focus();
     }
 
-    function ShowHideLocation() {
-        if( $("#mapPlaceholder").css('display') === 'none' ) {
-            GetLocation();
-            $("#mapPlaceholder").show();
-        } else {
-            $("#mapPlaceholder").hide();
+    function EnableDisableAddressFields() {
+        if (document.getElementById('@Html.IdFor(m => m.IsAddressEntered)').checked) {
+            GetLocationInputElements().forEach(function (element, index) {
+                element.removeAttribute('disabled');
+            });
+            document.getElementById('@Html.IdFor(m => m.MaxDistance)').removeAttribute('disabled');
+            document.getElementById('AddressSection').style.display = 'block';
         }
+        else {
+            GetLocationInputElements().forEach(function (element, index) {
+                element.setAttribute('disabled', 'disabled');
+            });
+            document.getElementById('@Html.IdFor(m => m.MaxDistance)').setAttribute('disabled', 'disabled');
+            document.getElementById('AddressSection').style.display = 'none';
+        }
+    }
+    
+    function GetLocationInputElements() { @* without MaxDistance field *@
+        return [
+            document.getElementById('@Html.IdFor(m => m.CountryId)'),
+            document.getElementById('@Html.IdFor(m => m.ZipCode)'),
+            document.getElementById('@Html.IdFor(m => m.City)'),
+            document.getElementById('@Html.IdFor(m => m.Street)')
+        ];
+    }
+    
+    function ShowHideLocation() {
+        if (document.getElementById('mapPlaceholder').style.display === 'none' && IsAddressEntered()) {
+            GetLocation();
+            document.getElementById('mapPlaceholder').style.display = 'block';
+        } else {
+            document.getElementById('mapPlaceholder').style.display = 'none';
+        }
+    }
+    
+    function IsAddressEntered() {
+        return GetAddress().length > 3;
+    }
+
+    function GetAddress() {
+        let address = '';
+        GetLocationInputElements().forEach(function (element, index) {
+            address += (element.value + ' ');
+        });
+        return address.trim();
     }
 
     function GetLocation() {
         // requires https://maps.googleapis.com/maps/api/js
-        var geocoder = new google.maps.Geocoder();
-        var address = [$('#@Html.NameFor(m => m.CountryId)').val(), $('#@Html.NameFor(m => m.ZipCode)').val(), $('#@Html.NameFor(m => m.City)').val(), $('#@Html.NameFor(m => m.Street)').val()].join();
+        const geocoder = new google.maps.Geocoder();
+        const address = GetAddress();
         geocoder.geocode({ 'address': address }, function (results, status) {
             if (status == google.maps.GeocoderStatus.OK) {
-                var latitude = results[0].geometry.location.lat();
-                var longitude = results[0].geometry.location.lng();
+                const latitude = results[0].geometry.location.lat();
+                const longitude = results[0].geometry.location.lng();
                 ShowLocationOnGoogleMaps(latitude, longitude);
-                $("#mapPlaceholder").show();
+                document.getElementById('mapPlaceholder').style.display = 'block';
             } else {
-                $("#mapPlaceholder").hide();
+                document.getElementById('mapPlaceholder').style.display = 'none';
             }
         });
     }
 
     function ShowLocationOnGoogleMaps(latitude, longitude) {
         // requires https://maps.googleapis.com/maps/api/js
-        var coords = new google.maps.LatLng(latitude, longitude);
+            const coords = new google.maps.LatLng(latitude, longitude);
 
-        var mapOptions = {
+            const mapOptions = {
             zoom: 14,
             center: coords,
             mapTypeControl: true,
             mapTypeId: google.maps.MapTypeId.ROADMAP
         };
 
-        //create the map, and place it in the HTML map div
-        var map = new google.maps.Map(document.getElementById("mapPlaceholder"), mapOptions);
+            //create the map, and place it in the HTML map div
+            const map = new google.maps.Map(document.getElementById('mapPlaceholder'), mapOptions);
 
-        //place the initial marker
-        var marker = new google.maps.Marker({
+            //place the initial marker
+            const marker = new google.maps.Marker({
             position: coords,
             map: map,
-            title: "Angegebener Standort"
+            title: 'Angegebener Standort'
         });
     }
     //]]>
