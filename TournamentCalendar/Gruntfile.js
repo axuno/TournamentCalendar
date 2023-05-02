@@ -14,6 +14,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks("grunt-contrib-concat");
     grunt.loadNpmTasks("grunt-contrib-copy");
     grunt.loadNpmTasks("grunt-contrib-cssmin");
+    grunt.loadNpmTasks("grunt-contrib-uglify");
 
     grunt.initConfig({
         pkg: grunt.file.readJSON("package.json"),
@@ -62,7 +63,19 @@ module.exports = function (grunt) {
                 }
             }
         },
+        uglify: {
+            Location: {
+                files: {
+                    'ScriptLib/TournamentCalendar/Location.min.js': ['ScriptLib/TournamentCalendar/Location.js']
+                }
+            }
+        },
         concat: {
+            js_nlog: {
+                src: ['node_modules/jsnlog/jsnlog.min.js'],
+                dest: 'wwwroot/lib/jsnlog/jsnlog.min.js',
+                nonull: true
+            },
             jquery: {
                 src: ["node_modules/jquery/dist/jquery.min.js"],
                 dest: "wwwroot/lib/jquery/jquery.min.js",
@@ -131,7 +144,6 @@ module.exports = function (grunt) {
                 nonull: true
             }
         },
-
         copy: {
             bootstrap_icons_fonts: {
                 files: [
@@ -142,6 +154,11 @@ module.exports = function (grunt) {
                 files: [
                     { cwd:"ScriptLib/DateTimePicker/Images/", expand:"true", src:"**/*", dest: "wwwroot/lib/DateTimePicker/Images/" }
                 ]
+            },
+            location: {
+                src: ["ScriptLib/TournamentCalendar/Location.min.js"],
+                dest: "wwwroot/js/Location.min.js",
+                nonull: true
             }
         },
 

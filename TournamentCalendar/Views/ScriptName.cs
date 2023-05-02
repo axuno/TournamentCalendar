@@ -5,6 +5,18 @@ public static class ScriptName
     #region *** Lib scripts ***
 
     /// <summary>
+    /// Libs - ~/wwwroot/js
+    /// </summary>
+    public static class Js
+    {
+        public const string Location = "~/js/Location.min.js";
+    }
+
+    #endregion
+
+    #region *** Lib scripts ***
+
+    /// <summary>
     /// Libs - ~/wwwroot/lib
     /// </summary>
     public static class Lib

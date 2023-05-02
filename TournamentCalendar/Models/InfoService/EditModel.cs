@@ -44,9 +44,8 @@ public class EditModel : InfoServiceEntity, IValidatableObject
         _appDb = appDb;
     }
 
-    public EditModel(IAppDb appDb, string guid)
+    public EditModel(IAppDb appDb, string guid) : this(appDb)
     {
-        _appDb = appDb;
         LoadData(guid);
         IsAddressEntered = true;
     }
@@ -189,7 +188,7 @@ public class EditModel : InfoServiceEntity, IValidatableObject
         if (string.IsNullOrEmpty(Nickname))
             Nickname = FirstName;
 
-        if (MaxDistance.HasValue && MaxDistance.Value != 0)
+        if (MaxDistance.HasValue)
         {
             if (MaxDistance < 50) MaxDistance = 50;
             if (MaxDistance > 6300) MaxDistance = 6300;
@@ -283,7 +282,7 @@ public class EditModel : InfoServiceEntity, IValidatableObject
         [Display(Name="Vereinsname")]
         public string ClubName { get; set; } = string.Empty;
 
-        [ValidateAddressFields("CountryId, ZipCode, City, Street")]
+        [ValidateAddressFields("CountryId, ZipCode, City")]
         [Display(Name="Angaben für die Entfernungsberechnung zum Veranstaltungsort aktivieren")]
         public bool IsAddressEntered { get; set; }
 

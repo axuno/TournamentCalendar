@@ -38,6 +38,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="cloudscribe.Web.Navigation" Version="6.0.2" />
+		<PackageReference Include="JSNLog.NLog" Version="2.30.0" />
 		<PackageReference Include="MailMergeLib" Version="5.9.1" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="6.0.0" />
 		<PackageReference Include="Microsoft.DotNet.PlatformAbstractions" Version="3.1.6" />
@@ -117,7 +118,8 @@
         <Folder Remove="logs\" />
         <Folder Remove="Scripts\" />
         <Folder Remove="ScriptLib\" />
-        <Content Remove="ScriptLib\**" CopyToPublishDirectory="Never" /> 
+        <Content Remove="ScriptLib\**" CopyToPublishDirectory="Never" />
+        <Folder Include="ScriptLib\TournamentCalendar\" /> 
         <Folder Include="wwwroot\js\" />
 	</ItemGroup>
 

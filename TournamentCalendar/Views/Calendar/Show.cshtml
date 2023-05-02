@@ -1,8 +1,6 @@
-﻿@inject IWebHostEnvironment WebHostEnvironment
-@inject IConfiguration Configuration
+﻿@inject IConfiguration Configuration
 @model TournamentCalendar.Models.Calendar.BrowseModel
 @using System.Globalization
-@using Microsoft.AspNetCore.Hosting
 @using Microsoft.Extensions.Configuration
 @using TournamentCalendar.Library
 @using TournamentCalendar.Views
@@ -38,14 +36,14 @@
 @section MetaSection {<meta name="robots" content="noindex, nofollow">}
 @section ScriptStandardSection {
     @* Note: Google requires an API key for all requests since 11 June 2018 - using account of axuno gGmbH *@
-    <script type="text/javascript" src="@string.Format("https://maps.googleapis.com/maps/api/js?key={0}", googleConfig.WebApiKey)"></script>
+    <script type="text/javascript" src="@string.Format("https://maps.googleapis.com/maps/api/js?key={0}&language=de&region=DE", googleConfig.WebApiKey)"></script>
     <script type="text/javascript">
         //<![CDATA[
-        $(document).ready(function () {
-            @if (partialModel.Latitude.HasValue && partialModel.Longitude.HasValue)
-            {
-                <text>ShowLocationOnGoogleMaps(@partialModel.Latitude.Value.ToString(CultureInfo.InvariantCulture), @partialModel.Longitude.Value.ToString(CultureInfo.InvariantCulture));</text>
-            }
+        document.addEventListener('DOMContentLoaded', function() {
+              @if (partialModel.Latitude.HasValue && partialModel.Longitude.HasValue)
+              {
+                  <text>ShowLocationOnGoogleMaps(@partialModel.Latitude.Value.ToString(CultureInfo.InvariantCulture), @partialModel.Longitude.Value.ToString(CultureInfo.InvariantCulture));</text>
+              }      
         });
 
         function ShowLocationOnGoogleMaps(latitude, longitude) {

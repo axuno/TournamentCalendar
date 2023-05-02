@@ -1,10 +1,18 @@
-﻿@model EditModel
+﻿@inject IConfiguration Configuration
+@model EditModel
 @using TournamentCalendar.Models.Calendar
 @using TournamentCalendar.Controllers
+@using TournamentCalendar.Library
 @using TournamentCalendar.Views
 @using TournamentCalendarDAL.HelperClasses
+@using Microsoft.Extensions.Configuration
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Calendar = TournamentCalendar.Controllers.Calendar
+@using System.Globalization
 @{
     ViewContext.ClientValidationEnabled = false;
+    var googleConfig = new GoogleConfiguration();
+    Configuration.Bind(nameof(GoogleConfiguration), googleConfig);
 }
 <article>
     @if (Model.EditMode == EditMode.New)
@@ -25,295 +33,342 @@
 </article>
 
 <form asp-controller="@nameof(Calendar)" asp-action="@nameof(Calendar.Entry)" asp-route-guid="" method="post" class="pb-2">
-    @* Validation summary must be inside form block *@
+@* Validation summary must be inside form block *@
 <div asp-validation-summary="All" class="validation-summary-errors msg-validation rounded">Es sind Fehler aufgetreten. Bitte die markierten Felder korrigieren und erneut speichern.</div>
 <input type="hidden" asp-for="@Model.Guid" value="@Model.Guid"/>
-    <fieldset class="rounded">
-        <legend class="rounded">
-            Bezeichnung
-        </legend>
-        <div class="row">
-            <div class="col-12">
-                <label asp-for="@Model.TournamentName"></label>
-                <input asp-for="@Model.TournamentName" maxlength="@CalendarFields.TournamentName.MaxLength" class="form-control" title="Turniername, z.B. &quot;12. Welfen-Cup&quot;">
-                <span asp-validation-for="@Model.TournamentName" class="msg-error-text"></span>
-                <label asp-for="@Model.Organizer"></label>
-                <input asp-for="@Model.Organizer" maxlength="@CalendarFields.Organizer.MaxLength" class="form-control" title="Veranstalter, z.B. &quot;Volleyballclub Berlin&quot;">
-                <span asp-validation-for="@Model.Organizer" class="msg-error-text"></span>
-                @*
+<fieldset class="rounded">
+    <legend class="rounded">
+        Bezeichnung
+    </legend>
+    <div class="row">
+        <div class="col-12">
+            <label asp-for="@Model.TournamentName"></label>
+            <input asp-for="@Model.TournamentName" maxlength="@CalendarFields.TournamentName.MaxLength" class="form-control" title="Turniername, z.B. &quot;12. Welfen-Cup&quot;">
+            <span asp-validation-for="@Model.TournamentName" class="msg-error-text"></span>
+            <label asp-for="@Model.Organizer"></label>
+            <input asp-for="@Model.Organizer" maxlength="@CalendarFields.Organizer.MaxLength" class="form-control" title="Veranstalter, z.B. &quot;Volleyballclub Berlin&quot;">
+            <span asp-validation-for="@Model.Organizer" class="msg-error-text"></span>
+            @*
                 @Html.LabelFor(m => m.Special)
                 @Html.TextBoxFor(m => m.Special, new { maxlength = TournamentCalendarFields.Special.MaxLength, @class = "form-control", title="Spezialangaben" })
                 @Html.ValidationMessageFor(m => m.Special, null, new { @class = "msg-error-text" })
                 *@
-            </div>
         </div>
-    </fieldset>
+    </div>
+</fieldset>
 
-    <fieldset class="rounded">
-        <legend class="rounded">
-            Datum und Uhrzeit
-        </legend>
-        <div class="row no-gutters">
-            <div class="col-12">
-                <div class="row">
-                    <div class="col-md-5 col-sm-5">
-                        <label asp-for="@Model.DateFromText"></label>
-                        <div class="input-group" style="width: 12rem;">
-                            <input asp-for="@Model.DateFromText" maxlength="10" class="form-control" placeholder = "tt.mm.jjj" data-input-type="date">
-                            <span class="input-group-append input-group-text" data-input-type="date"><i class="bi bi-calendar3 bi-lg"></i></span>
-                        </div>
-                        <span asp-validation-for="@Model.DateFromText" class="msg-error-text"></span>
+<fieldset class="rounded">
+    <legend class="rounded">
+        Datum und Uhrzeit
+    </legend>
+    <div class="row no-gutters">
+        <div class="col-12">
+            <div class="row">
+                <div class="col-md-5 col-sm-5">
+                    <label asp-for="@Model.DateFromText"></label>
+                    <div class="input-group" style="width: 12rem;">
+                        <input asp-for="@Model.DateFromText" maxlength="10" class="form-control" placeholder = "tt.mm.jjj" data-input-type="date">
+                        <span class="input-group-append input-group-text" data-input-type="date"><i class="bi bi-calendar3 bi-lg"></i></span>
                     </div>
-                    <div class="col-md-7 col-sm-7">
-                        <label asp-for="@Model.TimeFrom"></label>
-                        <div class="input-group" style="width: 8rem;">
-                            <input asp-for="@Model.TimeFrom" maxlength="5" class="form-control" placeholder="hh:mm" data-input-type="time" title="Turnierbeginn, oder 00:00 für &quot;unbekannt&quot;">
-                            <span class="input-group-append input-group-text" data-input-type="time"><i class="bi bi-clock bi-lg"></i></span>
-                        </div>
-                        <span asp-validation-for="@Model.TimeFrom" class="msg-error-text"></span>
-                    </div>
+                    <span asp-validation-for="@Model.DateFromText" class="msg-error-text"></span>
                 </div>
-            </div>
-            <div class="col-12">
-                <div class="row">
-                    <div class="col-md-5 col-sm-5">
-                        <label asp-for="@Model.DateToText"></label>
-                        <div class="input-group" style="width: 12rem;">
-                            <input asp-for="@Model.DateToText" maxlength="10" class="form-control" placeholder="tt.mm.jjj" data-input-type="date">
-                            <span class="input-group-append input-group-text" data-input-type="date"><i class="bi bi-calendar3 bi-lg"></i></span>
-                        </div>
-                        <span asp-validation-for="@Model.DateToText" class="msg-error-text"></span>
+                <div class="col-md-7 col-sm-7">
+                    <label asp-for="@Model.TimeFrom"></label>
+                    <div class="input-group" style="width: 8rem;">
+                        <input asp-for="@Model.TimeFrom" maxlength="5" class="form-control" placeholder="hh:mm" data-input-type="time" title="Turnierbeginn, oder 00:00 für &quot;unbekannt&quot;">
+                        <span class="input-group-append input-group-text" data-input-type="time"><i class="bi bi-clock bi-lg"></i></span>
                     </div>
-                    <div class="col-md-7 col-sm-7">
-                        <label asp-for="@Model.TimeTo"></label>
-                        <div class="input-group" style="width: 8rem;">
-                            <input asp-for="@Model.TimeTo" maxlength="5" class="form-control" placeholder="hh:mm" data-input-type="time" title="Turnierbeginn, oder 00:00 für &quot;unbekannt&quot;">
-                            <span class="input-group-append input-group-text" data-input-type="time"><i class="bi bi-clock bi-lg"></i></span>
-                        </div>
-                        <span asp-validation-for="@Model.TimeTo" class="msg-error-text"></span>
-                    </div>
+                    <span asp-validation-for="@Model.TimeFrom" class="msg-error-text"></span>
                 </div>
-            </div>                
-            <div class="col-12">
-                <label asp-for="@Model.ClosingDateText"></label>
-                <div class="input-group" style="width: 12rem;">
-                    <input asp-for="@Model.ClosingDateText" maxlength="10" class="form-control" placeholder="tt.mm.jjj" class="form-control" data-input-type="date">
-                    <span class="input-group-append input-group-text" data-input-type="date"><i class="bi bi-calendar3 bi-lg"></i></span>
-                </div>
-                <span asp-validation-for="@Model.ClosingDateText" class="msg-error-text"></span>
             </div>
         </div>
-    </fieldset>
-    <fieldset class="rounded">
-        <legend class="rounded">
-            Besetzung
-        </legend>
-        <div class="row">
-            <div class="col-12">
-                <label asp-for="@Model.NumOfTeams"></label>
-                <input asp-for="@Model.NumOfTeams" type="text" maxlength="3" class="form-control" style="width:4rem;" title="Max. Anzahl der Mannschaften. 0 = unbekannt bzw. unbegrenzt.">
-                <span asp-validation-for="@Model.NumOfTeams" class="msg-error-text"></span>
+        <div class="col-12">
+            <div class="row">
+                <div class="col-md-5 col-sm-5">
+                    <label asp-for="@Model.DateToText"></label>
+                    <div class="input-group" style="width: 12rem;">
+                        <input asp-for="@Model.DateToText" maxlength="10" class="form-control" placeholder="tt.mm.jjj" data-input-type="date">
+                        <span class="input-group-append input-group-text" data-input-type="date"><i class="bi bi-calendar3 bi-lg"></i></span>
+                    </div>
+                    <span asp-validation-for="@Model.DateToText" class="msg-error-text"></span>
+                </div>
+                <div class="col-md-7 col-sm-7">
+                    <label asp-for="@Model.TimeTo"></label>
+                    <div class="input-group" style="width: 8rem;">
+                        <input asp-for="@Model.TimeTo" maxlength="5" class="form-control" placeholder="hh:mm" data-input-type="time" title="Turnierbeginn, oder 00:00 für &quot;unbekannt&quot;">
+                        <span class="input-group-append input-group-text" data-input-type="time"><i class="bi bi-clock bi-lg"></i></span>
+                    </div>
+                    <span asp-validation-for="@Model.TimeTo" class="msg-error-text"></span>
+                </div>
             </div>
+        </div>                
+        <div class="col-12">
+            <label asp-for="@Model.ClosingDateText"></label>
+            <div class="input-group" style="width: 12rem;">
+                <input asp-for="@Model.ClosingDateText" maxlength="10" class="form-control" placeholder="tt.mm.jjj" class="form-control" data-input-type="date">
+                <span class="input-group-append input-group-text" data-input-type="date"><i class="bi bi-calendar3 bi-lg"></i></span>
+            </div>
+            <span asp-validation-for="@Model.ClosingDateText" class="msg-error-text"></span>
+        </div>
+    </div>
+</fieldset>
+<fieldset class="rounded">
+    <legend class="rounded">
+        Besetzung
+    </legend>
+    <div class="row">
+        <div class="col-12">
+            <label asp-for="@Model.NumOfTeams"></label>
+            <input asp-for="@Model.NumOfTeams" type="text" maxlength="3" class="form-control" style="width:4rem;" title="Max. Anzahl der Mannschaften. 0 = unbekannt bzw. unbegrenzt.">
+            <span asp-validation-for="@Model.NumOfTeams" class="msg-error-text"></span>
+        </div>
 
-            <div class="col-md-5 col-sm-5">
-                <label asp-for="@Model.NumPlayersFemale"></label>
-                <div class="d-inline-flex">
-                    <select asp-for="@Model.MinMaxFemale" asp-items="Model.GetMinMaxPlayerList()" class="form-control" style="width:9rem"></select>&nbsp;
-                    <input asp-for="@Model.NumPlayersFemale" type="text" maxlength="1" class="form-control d-inline" style="width:2rem">
-                </div>
-                <span asp-validation-for="@Model.NumPlayersFemale" class="msg-error-text"></span>
+        <div class="col-md-5 col-sm-5">
+            <label asp-for="@Model.NumPlayersFemale"></label>
+            <div class="d-inline-flex">
+                <select asp-for="@Model.MinMaxFemale" asp-items="Model.GetMinMaxPlayerList()" class="form-control" style="width:9rem"></select>&nbsp;
+                <input asp-for="@Model.NumPlayersFemale" type="text" maxlength="1" class="form-control d-inline" style="width:2rem">
             </div>
-            <div class="col-md-5 col-sm-5">
-                <label asp-for="@Model.NumPlayersMale"></label>
-                <div class="d-inline-flex">
-                    <select asp-for="@Model.MinMaxMale" asp-items="Model.GetMinMaxPlayerList()" class="form-control" style="width: 9rem"></select>&nbsp;
-                    <input asp-for="@Model.NumPlayersMale" type="text" maxlength="1" class="form-control d-inline" style="width:2rem;">
-                </div>
-                <span asp-validation-for="@Model.NumPlayersMale" class="msg-error-text"></span>
+            <span asp-validation-for="@Model.NumPlayersFemale" class="msg-error-text"></span>
+        </div>
+        <div class="col-md-5 col-sm-5">
+            <label asp-for="@Model.NumPlayersMale"></label>
+            <div class="d-inline-flex">
+                <select asp-for="@Model.MinMaxMale" asp-items="Model.GetMinMaxPlayerList()" class="form-control" style="width: 9rem"></select>&nbsp;
+                <input asp-for="@Model.NumPlayersMale" type="text" maxlength="1" class="form-control d-inline" style="width:2rem;">
             </div>
-            <div class="col-md-2 col-sm-2"></div>
+            <span asp-validation-for="@Model.NumPlayersMale" class="msg-error-text"></span>
+        </div>
+        <div class="col-md-2 col-sm-2"></div>
 
-            <div class="col-md-5 col-sm-5">
-                <label asp-for="@Model.PlayingAbilityFrom"></label>
-                <select asp-for="@Model.PlayingAbilityFrom" asp-items="Model.GetPlayingAbilityList()" class="form-control" style="width:11rem"></select>
-            </div>
-            <div class="col-md-5 col-sm-5">
-                <label asp-for="@Model.PlayingAbilityTo"></label>
-                <select asp-for="@Model.PlayingAbilityTo" asp-items="Model.GetPlayingAbilityList()" class="form-control" style="width:11rem"></select>
-            </div>
-            <div class="col-md-2 col-sm-2"></div>
+        <div class="col-md-5 col-sm-5">
+            <label asp-for="@Model.PlayingAbilityFrom"></label>
+            <select asp-for="@Model.PlayingAbilityFrom" asp-items="Model.GetPlayingAbilityList()" class="form-control" style="width:11rem"></select>
         </div>
-    </fieldset>
-    <fieldset class="rounded">
-        <legend class="rounded">
-            Austragungsort
-        </legend>
-        <div class="row">
-            <div class="col-md-12">
-                <label asp-for="@Model.Surface"></label>
-                <select asp-for="@Model.Surface" asp-items="Model.GetSurfaceList()" class="form-control" style="width:11rem"></select>
-                <div class="pt-3">
-                    Nur <strong>genaue Angaben</strong> mit Postleitzahl, Ort und Straße ermöglichen die Anzeige einer Karte für die Anfahrt.<br/>
-                </div>
-                <label asp-for="@Model.Venue"></label>
-                <input asp-for="@Model.Venue" type="text" maxlength="@CalendarFields.Venue.MaxLength" class="form-control" title="Hallenbezeichung, z.B. &quot;Jahn-Turnhalle&quot;">
-                <span asp-validation-for="@Model.Venue" class="msg-error-text"></span>
-                <label asp-for="@Model.Street"></label>
-                <input asp-for="@Model.Street" type="text" maxlength="@CalendarFields.Street.MaxLength" class="form-control">
-                <span asp-validation-for="@Model.Street" class="msg-error-text"></span>
-            </div>
+        <div class="col-md-5 col-sm-5">
+            <label asp-for="@Model.PlayingAbilityTo"></label>
+            <select asp-for="@Model.PlayingAbilityTo" asp-items="Model.GetPlayingAbilityList()" class="form-control" style="width:11rem"></select>
         </div>
-        <div class="row">
-            <div class="col-md-4">
-                <label asp-for="@Model.CountryId"></label>
-                <select asp-for="@Model.CountryId" asp-items="Model.GetCountriesList()" class="form-control" style="width:11rem"></select>
+        <div class="col-md-2 col-sm-2"></div>
+    </div>
+</fieldset>
+<fieldset class="rounded">
+    <legend class="rounded">
+        Austragungsort
+    </legend>
+    <div class="row">
+        <div class="col-md-12">
+            <label asp-for="@Model.Surface"></label>
+            <select asp-for="@Model.Surface" asp-items="Model.GetSurfaceList()" class="form-control" style="width:11rem"></select>
+            <div class="pt-3">
+                Nur <strong>genaue Angaben</strong> mit Postleitzahl, Ort und Straße ermöglichen die Anzeige einer Karte für die Anfahrt.<br/>
             </div>
-            <div class="col-md-8">
-                <label asp-for="@Model.PostalCode"></label>
-                <input asp-for="@Model.PostalCode" type="text" maxlength="@CalendarFields.PostalCode.MaxLength" class="form-control" style="width:8rem">
-                <span asp-validation-for="@Model.PostalCode" class="msg-error-text"></span>
-            </div>
-            <div class="col-md-12">
-                <label asp-for="@Model.City"></label>
-                <input asp-for="@Model.City" type="text" maxlength="@CalendarFields.City.MaxLength" class="form-control">
-                <span asp-validation-for="@Model.City" class="msg-error-text"></span>
-            </div>
+            <label asp-for="@Model.Venue"></label>
+            <input asp-for="@Model.Venue" type="text" maxlength="@CalendarFields.Venue.MaxLength" class="form-control" title="Hallenbezeichung, z.B. &quot;Jahn-Turnhalle&quot;">
+            <span asp-validation-for="@Model.Venue" class="msg-error-text"></span>
         </div>
-    </fieldset>
-    <fieldset class="rounded">
-        <legend class="rounded">
-            Kontaktdaten
-        </legend>
-        <div class="row">
-            <div class="col-md-12">
-                <label asp-for="@Model.ContactAddress"></label>
-                <textarea asp-for="@Model.ContactAddress" class="form-control" style="height: 7rem" title="Ansprechpartner, Postanschrift, Telefon, usw."></textarea>
-                <span asp-validation-for="@Model.ContactAddress" class="msg-error-text"></span>
-                <label asp-for="@Model.Email"></label>
-                <input asp-for="@Model.Email" type="text" maxlength="@CalendarFields.Email.MaxLength" class="form-control" title="E-Mail für Rückfragen oder Anmeldungen">
-                <span asp-validation-for="@Model.Email" class="msg-error-text"></span>
-                <label asp-for="@Model.Website"></label>
-                <input asp-for="@Model.Website" type="text" maxlength="@CalendarFields.Website.MaxLength" class="form-control" title="Web-Adresse, z.B. https://volleyball-liga.de">
-                <span asp-validation-for="@Model.Website" class="msg-error-text"></span>
-            </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <label asp-for="@Model.CountryId"></label>
+            <select asp-for="@Model.CountryId" asp-items="Model.GetCountriesList()" class="form-control" style="width:11rem"></select>
         </div>
-    </fieldset>
-    <fieldset class="rounded">
-        <legend class="rounded">
-            Weitere Angaben
-        </legend>
-        <div class="row">
-            <div class="col-md-4">
-                <label asp-for="@Model.EntryFee"></label>
-                <div class="input-group" style="width: 8rem;">
-                    <input asp-for="@Model.EntryFee" type="text" maxlength="6" class="form-control">
-                    <span class="input-group-append input-group-text">€</span>
-                </div>
-                <span asp-validation-for="@Model.EntryFee" class="msg-error-text"></span>
-            </div>
-            <div class="col-md-8">
-                <label asp-for="@Model.Bond"></label>
-                <div class="input-group" style="width: 8rem;">
-                    <input asp-for="@Model.Bond" type="text" maxlength="6" class="form-control">
-                    <span class="input-group-append input-group-text">€</span>
-                </div>
-                <span asp-validation-for="@Model.Bond" class="msg-error-text"></span>
-            </div>
-            <div class="col-md-12">
-                <label asp-for="@Model.Info"></label>
-                <textarea asp-for="@Model.Info" class="form-control" style="height: 8rem" title="Weitere Infos wie Hallenöffnung, Anfahrt, Verpflegung u.dgl."></textarea>
-                <span asp-validation-for="@Model.Info" class="msg-error-text"></span>
-            </div>
+        <div class="col-md-8">
+            <label asp-for="@Model.PostalCode"></label>
+            <input asp-for="@Model.PostalCode" type="text" maxlength="@CalendarFields.PostalCode.MaxLength" class="form-control" style="width:8rem">
+            <span asp-validation-for="@Model.PostalCode" class="msg-error-text"></span>
         </div>
-    </fieldset>
-    <fieldset class="rounded">
-        <legend class="rounded">
-            Absender des Turniereintrags
-        </legend>
-        <div class="row">
-            <div class="col-md-12">
+        <div class="col-md-12">
+            <label asp-for="@Model.City"></label>
+            <input asp-for="@Model.City" type="text" maxlength="@CalendarFields.City.MaxLength" class="form-control">
+            <span asp-validation-for="@Model.City" class="msg-error-text"></span>
+            <label asp-for="@Model.Street"></label>
+            <input asp-for="@Model.Street" type="text" maxlength="@CalendarFields.Street.MaxLength" class="form-control">
+            <span asp-validation-for="@Model.Street" class="msg-error-text"></span>
+        </div>
+    </div>
+    <!-- Button trigger modal -->
+    <div class="pt-3">
+        <button type="button" id="btnModal" class="btn btn-primary" disabled="disabled" data-toggle="modal" data-target="#locationModal">
+            <i class="bi bi-geo-alt-fill"></i> Standort auf Karte zeigen
+        </button>
+    </div>
+</fieldset>
+<fieldset class="rounded">
+    <legend class="rounded">
+        Kontaktdaten
+    </legend>
+    <div class="row">
+        <div class="col-md-12">
+            <label asp-for="@Model.ContactAddress"></label>
+            <textarea asp-for="@Model.ContactAddress" class="form-control" style="height: 7rem" title="Ansprechpartner, Postanschrift, Telefon, usw."></textarea>
+            <span asp-validation-for="@Model.ContactAddress" class="msg-error-text"></span>
+            <label asp-for="@Model.Email"></label>
+            <input asp-for="@Model.Email" type="text" maxlength="@CalendarFields.Email.MaxLength" class="form-control" title="E-Mail für Rückfragen oder Anmeldungen">
+            <span asp-validation-for="@Model.Email" class="msg-error-text"></span>
+            <label asp-for="@Model.Website"></label>
+            <input asp-for="@Model.Website" type="text" maxlength="@CalendarFields.Website.MaxLength" class="form-control" title="Web-Adresse, z.B. https://volleyball-liga.de">
+            <span asp-validation-for="@Model.Website" class="msg-error-text"></span>
+        </div>
+    </div>
+</fieldset>
+<fieldset class="rounded">
+    <legend class="rounded">
+        Weitere Angaben
+    </legend>
+    <div class="row">
+        <div class="col-md-4">
+            <label asp-for="@Model.EntryFee"></label>
+            <div class="input-group" style="width: 8rem;">
+                <input asp-for="@Model.EntryFee" type="text" maxlength="6" class="form-control">
+                <span class="input-group-append input-group-text">€</span>
+            </div>
+            <span asp-validation-for="@Model.EntryFee" class="msg-error-text"></span>
+        </div>
+        <div class="col-md-8">
+            <label asp-for="@Model.Bond"></label>
+            <div class="input-group" style="width: 8rem;">
+                <input asp-for="@Model.Bond" type="text" maxlength="6" class="form-control">
+                <span class="input-group-append input-group-text">€</span>
+            </div>
+            <span asp-validation-for="@Model.Bond" class="msg-error-text"></span>
+        </div>
+        <div class="col-md-12">
+            <label asp-for="@Model.Info"></label>
+            <textarea asp-for="@Model.Info" class="form-control" style="height: 8rem" title="Weitere Infos wie Hallenöffnung, Anfahrt, Verpflegung u.dgl."></textarea>
+            <span asp-validation-for="@Model.Info" class="msg-error-text"></span>
+        </div>
+    </div>
+</fieldset>
+<fieldset class="rounded">
+    <legend class="rounded">
+        Absender des Turniereintrags
+    </legend>
+    <div class="row">
+        <div class="col-md-12">
+            <div>
+                <label><b>Notwendige Angaben</b>, die im Turnierkalender <b>nicht angezeigt</b> werden</label>
+            </div>
+            <div>
+                Nach dem Speichern wird eine E-Mail mit dem Link zum Freischalten des Turniers im Turnierkalender an folgende Adresse geschickt.
+                <b>Ohne Freischalten erscheint das Turnier nicht im Kalender.</b>
+                Über den Link in der E-Mail kann das Turnier auch jederzeit bearbeitet werden.
+            </div>
+            <label asp-for="@Model.PostedByName"></label>
+            <input asp-for="@Model.PostedByName" type="text" maxlength="@CalendarFields.PostedByName.MaxLength" class="form-control">
+            <span asp-validation-for="@Model.PostedByName" class="msg-error-text"></span>
+            <label asp-for="@Model.PostedByEmail"></label>
+            <input asp-for="@Model.PostedByEmail" type="text" maxlength="@CalendarFields.PostedByEmail.MaxLength" class="form-control">
+            <span asp-validation-for="@Model.PostedByEmail" class="msg-error-text"></span>
+        </div>
+    </div>
+</fieldset>
+<fieldset class="rounded">
+    <legend class="rounded">
+        Speichern
+    </legend>
+    <div class="row">
+        <div class="col-md-12">
+            @if (Model.EditMode == EditMode.New && User.IsInRole(TournamentCalendar.Library.Authentication.Constants.RoleName.Editor))
+            {
+                <input asp-for="@Model.ShowTournament" type="checkbox" class="form-check-label" checked="checked" style="display: inline" />
+                <label asp-for="@Model.ShowTournament" style="display: inline"> Turnier im Kalender anzeigen</label>
+            }
+            @if (Model.EditMode == EditMode.Change)
+            {
                 <div>
-                    <label><b>Notwendige Angaben</b>, die im Turnierkalender <b>nicht angezeigt</b> werden</label>
-                </div>
-                <div>
-                    Nach dem Speichern wird eine E-Mail mit dem Link zum Freischalten des Turniers im Turnierkalender an folgende Adresse geschickt.
-                    <b>Ohne Freischalten erscheint das Turnier nicht im Kalender.</b>
-                    Über den Link in der E-Mail kann das Turnier auch jederzeit bearbeitet werden.
-                </div>
-                <label asp-for="@Model.PostedByName"></label>
-                <input asp-for="@Model.PostedByName" type="text" maxlength="@CalendarFields.PostedByName.MaxLength" class="form-control">
-                <span asp-validation-for="@Model.PostedByName" class="msg-error-text"></span>
-                <label asp-for="@Model.PostedByEmail"></label>
-                <input asp-for="@Model.PostedByEmail" type="text" maxlength="@CalendarFields.PostedByEmail.MaxLength" class="form-control">
-                <span asp-validation-for="@Model.PostedByEmail" class="msg-error-text"></span>
-            </div>
-        </div>
-    </fieldset>
-    <fieldset class="rounded">
-        <legend class="rounded">
-            Speichern
-        </legend>
-        <div class="row">
-            <div class="col-md-12">
-                @if (Model.EditMode == EditMode.New && User.IsInRole(TournamentCalendar.Library.Authentication.Constants.RoleName.Editor))
-                {
+                    @if (Model.ShowTournament)
+                    {
+                        <div>Das Turnier ist bis zum Veranstaltungsdatum im Turnierkalender sichtbar.</div>
+                    }
+                    else
+                    {
+                        <div>Das Turnier ist im Kalender <strong>derzeit nicht sichtbar</strong>.</div>
+                    }
                     <input asp-for="@Model.ShowTournament" type="checkbox" class="form-check-label" checked="checked" style="display: inline" />
                     <label asp-for="@Model.ShowTournament" style="display: inline"> Turnier im Kalender anzeigen</label>
-                }
-                @if (Model.EditMode == EditMode.Change)
-                {
-                    <div>
-                        @if (Model.ShowTournament)
-                        {
-                            <div>Das Turnier ist bis zum Veranstaltungsdatum im Turnierkalender sichtbar.</div>
-                        }
-                        else
-                        {
-                            <div>Das Turnier ist im Kalender <strong>derzeit nicht sichtbar</strong>.</div>
-                        }
-                        <input asp-for="@Model.ShowTournament" type="checkbox" class="form-check-label" checked="checked" style="display: inline" />
-                        <label asp-for="@Model.ShowTournament" style="display: inline"> Turnier im Kalender anzeigen</label>
-                    </div>
-                }
-                <div>
-                    Letzte Änderung: @(Model.EditMode == EditMode.New || Model.ModifiedOn == DateTime.MinValue ? "keine" : Model.ModifiedOn.ToString("dd.MM.yyyy - HH:mm:ss"))
                 </div>
-                @if (User.IsInRole(TournamentCalendar.Library.Authentication.Constants.RoleName.Editor))
-                {
-                    // Captcha won't be checked for authenticated users, but the field is still 'required'
-                    Model.Captcha = "Valid";
-                    <input type="hidden" asp-for="@Model.Captcha" value="Valid" />
-                }
-                else
-                {
-                    <div>
-                        <img id="CaptchaImage" style="vertical-align: bottom; width: 200px; display: inline" class="rounded" src="@Url.Action(nameof(Captcha.Index), nameof(Captcha))@("?guid=" + Guid.NewGuid())" alt="Captcha" />
-                        <span onclick="javascript:if (document.images) document.images.CaptchaImage.src = '@Url.Action(nameof(Captcha.Index), nameof(Captcha))?new=1&amp;time=' + new Date().getTime();" style="cursor: pointer"><i class="bi bi-arrow-clockwise bi-2x" style="margin: 0 5px 0 5px" title="Bild neu laden"></i>Bild neu laden</span><br/>
-                    </div>
-                    <label asp-for="@Model.Captcha"></label>
-                    <input asp-for="@Model.Captcha" type="text" maxlength="7" class="form-control" style="width:12rem">
-                    <span asp-validation-for="@Model.Captcha" class="msg-error-text"></span>
-                }
-                <div class="mt-2">
-                    @* class="cancel" will stop jquery.validate from validation *@
-                    <input type="submit" name="save" value="Turnier speichern" class="col-12 col-sm-6 btn btn-lg btn-success" />
+            }
+            <div>
+                Letzte Änderung: @(Model.EditMode == EditMode.New || Model.ModifiedOn == DateTime.MinValue ? "keine" : Model.ModifiedOn.ToString("dd.MM.yyyy - HH:mm:ss"))
+            </div>
+            @if (User.IsInRole(TournamentCalendar.Library.Authentication.Constants.RoleName.Editor))
+            {
+                // Captcha won't be checked for authenticated users, but the field is still 'required'
+                Model.Captcha = "Valid";
+                <input type="hidden" asp-for="@Model.Captcha" value="Valid" />
+            }
+            else
+            {
+                <div>
+                    <img id="CaptchaImage" style="vertical-align: bottom; width: 200px; display: inline" class="rounded" src="@Url.Action(nameof(Captcha.Index), nameof(Captcha))@("?guid=" + Guid.NewGuid())" alt="Captcha" />
+                    <span id="ReloadCaptcha" style="cursor: pointer"><i class="bi bi-arrow-clockwise bi-2x" style="margin: 0 5px 0 5px" title="Bild neu laden"></i>Bild neu laden</span><br/>
+                </div>
+                <label asp-for="@Model.Captcha"></label>
+                <input asp-for="@Model.Captcha" type="text" maxlength="7" class="form-control" style="width:12rem">
+                <span asp-validation-for="@Model.Captcha" class="msg-error-text"></span>
+            }
+            <div class="mt-2">
+                @* class="cancel" will stop jquery.validate from validation *@
+                <input type="submit" name="save" value="Turnier speichern" class="col-12 col-sm-6 btn btn-lg btn-success" />
+            </div>
+        </div>
+    </div>
+</fieldset>
+</form>
+<!-- Start Location Modal -->
+<div class="modal fade" id="locationModal" data-keyboard="true" tabindex="-1" aria-labelledby="locationMapLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" style="max-width: 58rem;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="locationMapLabel">Karte mit Standort in Google Maps</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="mapPlaceholder" style="border: 1px solid #979797; background-color: #e5e3df; width: 100%; height: 400px; margin-top: 15px">
                 </div>
             </div>
         </div>
-    </fieldset>
-</form>
+    </div>
+</div>
+<!-- End Location Modal -->
 @section CssSection
 {<link href="@Url.Content(CssName.Lib.JqueryUiDateTimePickerCss)" rel="stylesheet" />}
 @section ScriptStandardSection
 {
-    <script src="@Url.Content(ScriptName.Lib.JqueryValidationAllJs)"></script>
-    <script src="@Url.Content(ScriptName.Lib.JqueryUiDateTimePickerJs)"></script>
-    <script src="@Url.Content(ScriptName.Lib.MomentJs)"></script>
+    <script type="text/javascript" src="@string.Format("https://maps.googleapis.com/maps/api/js?key={0}&language=de&region=DE", googleConfig.WebApiKey)"></script>
+    <script type="text/javascript" src="@Url.Content(ScriptName.Lib.JqueryValidationAllJs)"></script>
+    <script type="text/javascript" src="@Url.Content(ScriptName.Lib.JqueryUiDateTimePickerJs)"></script>
+    <script type="text/javascript" src="@Url.Content(ScriptName.Lib.MomentJs)"></script>
+    <script type="text/javascript" src="@Url.Content(ScriptName.Js.Location)"></script>
     <script type="text/javascript">
-//<![CDATA[
-	$(document).ready(function () {
+    //<![CDATA[
+    'use strict';
+    document.addEventListener('DOMContentLoaded', OnDOMContentLoaded, false);
+    function OnDOMContentLoaded() {
+        
+        document.getElementById('@Html.IdFor(m => m.TournamentName)').focus();
 
-        $('#@Html.NameFor(m => m.TournamentName)').focus();
+        const loc = new Location('@Html.IdFor(m => m.CountryId)', '@Html.IdFor(m => m.PostalCode)', '@Html.IdFor(m => m.City)', '@Html.IdFor(m => m.Street)', 'btnModal', 'mapPlaceholder');
+        loc.update();
+        $('#locationModal').on('shown.bs.modal', (e) => {
+            loc.update();
+        });
+        
+        @if (Model.Latitude.HasValue && Model.Longitude.HasValue)
+        {
+            <text>loc.showLocationOnGoogleMaps(@Model.Latitude.Value.ToString(CultureInfo.InvariantCulture), @Model.Longitude.Value.ToString(CultureInfo.InvariantCulture)); </text>
+        }
+        
+        const reloadCaptcha = document.getElementById('ReloadCaptcha');
+        if (reloadCaptcha)  {
+            reloadCaptcha.addEventListener('click', function () {
+                if (document.images) document.images.CaptchaImage.src = '@Url.Action(nameof(Captcha.Index), nameof(Captcha))?new=1&amp;time=' + new Date().getTime();
+                document.getElementById('@Html.IdFor(m => m.Captcha)').focus();
+            });
+        }
 
         $.validator.methods.range = function(value, element, param) {
             // Helper for date range validation
@@ -345,16 +400,16 @@
             maxDate: '+12M'
         });
 
-        $('#@Html.NameFor(m => m.DateFromText)').bind('change', function () {
+        $('#@Html.IdFor(m => m.DateFromText)').bind('change', function () {
 			var dateFormat = $(this).datepicker('option', 'dateFormat');
-			var from = $('#@Html.NameFor(m => m.DateFromText)').val();
-            $('#@Html.NameFor(m => m.DateToText)').val(from);
+            var from = $('#@Html.IdFor(m => m.DateFromText)').val();
+            $('#@Html.IdFor(m => m.DateToText)').val(from);
 			try {
 				var dateFrom = $.datepicker.parseDate(dateFormat, from);
 				var closingDate = dateFrom;
 				closingDate.setDate(closingDate.getDate() - 10);
                 if (closingDate <= new Date()) closingDate = (new Date()).getDate() + 1;
-                $('#@Html.NameFor(m => m.ClosingDateText)').val($.datepicker.formatDate(dateFormat, closingDate));
+                $('#@Html.IdFor(m => m.ClosingDateText)').val($.datepicker.formatDate(dateFormat, closingDate));
 			}
 			catch (e) { }
 		});
@@ -369,38 +424,47 @@
         });
 
         // click on date & time icons focus on input field
-	    $('span[data-input-type="date"], span[data-input-type="time"]').bind('click', function(){
-	        $(this).parent().find('input[data-input-type="date"], input[data-input-type="time"]').trigger('focus');
+        [].forEach.call(document.querySelectorAll('span[data-input-type="date"]'), function (el) {
+            el.addEventListener('click', function () {
+                this.parentNode.querySelector('input[data-input-type="date"]').dispatchEvent(new Event('focus'));
+            });
+        });
+        [].forEach.call(document.querySelectorAll('span[data-input-type="time"]'), function (el) {
+            el.addEventListener('click', function () {
+                this.parentNode.querySelector('input[data-input-type="time"]').dispatchEvent(new Event('focus'));
+            });
         });
 
-		$('#@Html.NameFor(m => m.MinMaxFemale)').on('change', function () {
-			switch ($(this).val()) {
+        document.getElementById('@Html.IdFor(m => m.MinMaxFemale)').addEventListener('change', function () {
+            const minMaxMale = document.getElementById('@Html.IdFor(m => m.MinMaxMale)');
+            switch (this.value) {
 				case '0':
-					$('#@Html.NameFor(m => m.MinMaxMale)').val(0);
+                    minMaxMale.value = 0;
 					break;
 				case '1':
-					$('#@Html.NameFor(m => m.MinMaxMale)').val(2);
+                    minMaxMale.value = 2;
 					break;
 				case '2':
-					$('#@Html.NameFor(m => m.MinMaxMale)').val(1);
+                    minMaxMale.value = 1;
 					break;
             }
 		});
 
-		$('#@Html.NameFor(m => m.MinMaxMale)').on('change', function () {
-			switch ($(this).val()) {
+        document.getElementById('@Html.IdFor(m => m.MinMaxMale)').addEventListener('change', function () {
+            const minMaxFemale = document.getElementById('@Html.IdFor(m => m.MinMaxFemale)');
+            switch (this.value) {
 				case '0':
-					$('#@Html.NameFor(m => m.MinMaxFemale)').val(0);
+                    minMaxFemale.value = 0;
 					break;
 				case '1':
-					$('#@Html.NameFor(m => m.MinMaxFemale)').val(2);
-					break;
+                    minMaxFemale.value = 2;
+		    			break;
 				case '2':
-					$('#@Html.NameFor(m => m.MinMaxFemale)').val(1);
+                    minMaxFemale.value = 1;
 					break;
             }
 		});
-	});
-//]]>
+	};
+    //]]>
     </script>
 }
