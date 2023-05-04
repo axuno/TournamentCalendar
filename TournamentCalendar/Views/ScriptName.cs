@@ -41,14 +41,14 @@ public static class ScriptName
         public const string DatatablesGermanJson = "~/lib/DataTables/dataTables.german.lang.json";
 
         /// <summary>
-        /// ~/lib/DateTimePicker/jquery-ui-date-time-picker.min.js
+        /// ~/lib/flatpickr/flatpickr_all.min.js
         /// </summary>
-        public const string JqueryUiDateTimePickerJs = "~/lib/DateTimePicker/jquery-ui-date-time-picker.min.js";
+        public const string FlatpickrJs = "~/lib/flatpickr/flatpickr_all.min.js";
 
         /// <summary>
         /// ~/lib/jquery-validation/jquery-validation-all.min.js
         /// </summary>
-        public const string JqueryValidationAllJs = "~/lib/jquery-validation/jquery-validation-all.min.js";
+        public const string FlatpickrCss = "~/lib/flatpickr/flatpickr.css";
 
         /// <summary>
         /// ~/lib/jquery/jquery.min.js

@@ -1,7 +1,6 @@
 ﻿@inject IConfiguration Configuration
 @model EditModel
 @using System.Globalization
-@using Microsoft.AspNetCore.Hosting
 @using Microsoft.Extensions.Configuration
 @using TournamentCalendar.Controllers
 @using TournamentCalendar.Library
@@ -9,6 +8,7 @@
 @using TournamentCalendar.Views
 @using TournamentCalendarDAL.HelperClasses
 @{
+    ViewContext.ClientValidationEnabled = false;
     var googleConfig = new GoogleConfiguration();
     Configuration.Bind(nameof(GoogleConfiguration), googleConfig);
 }
@@ -171,13 +171,13 @@
     @* Note: Google requires an API key for all requests since 11 June 2018 *@
     <script type="text/javascript" src="@string.Format("https://maps.googleapis.com/maps/api/js?key={0}&language=de&region=DE", googleConfig.WebApiKey)"></script>
     @* Note: Bootstrap 4 relies on jQuery *@
-    <script type="text/javascript" src="@Url.Content(ScriptName.Lib.JqueryValidationAllJs)"></script>
     <script type="text/javascript" src="@Url.Content(ScriptName.Js.Location)"></script>
     <script type="text/javascript">
     //<![CDATA[
     'use strict';
-    document.addEventListener('DOMContentLoaded', InitializeLocation, false);
-    function InitializeLocation() {
+    document.addEventListener('DOMContentLoaded', OnDOMContentLoaded, false);
+    function OnDOMContentLoaded() {
+        document.getElementById('@Html.IdFor(m => m.Email)').focus();
         const address = new AddressSection('@Html.IdFor(m => m.IsAddressEntered)', 'AddressSection');
         const loc = new Location('@Html.IdFor(m => m.CountryId)', '@Html.IdFor(m => m.ZipCode)', '@Html.IdFor(m => m.City)', '@Html.IdFor(m => m.Street)', 'btnModal', 'mapPlaceholder');
         @* Disable input fields, if checkbox for address details is disabled *@

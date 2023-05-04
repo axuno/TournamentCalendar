@@ -81,16 +81,6 @@ module.exports = function (grunt) {
                 dest: "wwwroot/lib/jquery/jquery.min.js",
                 nonull: true
             },
-            jquery_validation: {
-                src: [
-                    "node_modules/jquery-validation/dist/jquery.validate.min.js",
-                    "node_modules/jquery-validation/dist/localization/methods_de.js",
-                    "node_modules/jquery-validation/dist/localization/messages_de.js",
-                    "node_modules/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.js"
-                ],
-                dest: "wwwroot/lib/jquery-validation/jquery-validation-all.min.js",
-                nonull: true
-            },
             bootstrap_js_all: {
                 src: ["node_modules/popper.js/dist/umd/popper.min.js",
                     "node_modules/popper.js/dist/umd/popper-utils.min.js",
@@ -112,6 +102,18 @@ module.exports = function (grunt) {
                 dest: "wwwroot/lib/Moment/moment.min.js",
                 nonull: true
             },
+            flatpickr_js: {
+                src: ["node_modules/flatpickr/dist/flatpickr.min.js", 
+                    "node_modules/flatpickr/dist/l10n/default.js", 
+                    "node_modules/flatpickr/dist/l10n/de.js"],
+                dest: "wwwroot/lib/flatpickr/flatpickr_all.min.js",
+                nonull: true
+            },
+            flatpickr_css: {
+                src: ["Styles/flatpickr/flatpickr_custom.css"],
+                dest: "wwwroot/lib/flatpickr/flatpickr.css",
+                nonull: true
+            },
             datatables_js: {
                 src: ["ScriptLib/DataTables/datatables.min.js",
                     "ScriptLib/DataTables/datetime-moment.min.js"],
@@ -125,22 +127,6 @@ module.exports = function (grunt) {
             datatables_txt: {
                 src: ["ScriptLib/DataTables/dataTables.german.lang.json"],
                 dest: "wwwroot/lib/DataTables/dataTables.german.lang.json",
-                nonull: true
-            },
-            jquery_ui_date_time_picker_js: {
-                src: ["ScriptLib/DateTimePicker/jquery-ui.min.js",
-                    "ScriptLib/DateTimePicker/datepicker-de.js",
-                    "ScriptLib/DateTimePicker/jquery.ui.timepicker.min.js"],
-                dest: "wwwroot/lib/DateTimePicker/jquery-ui-date-time-picker.min.js",
-                nonull: true
-            },
-            jquery_ui_date_time_picker_css: {
-                src: ["ScriptLib/DateTimePicker/jquery-ui.min.css",
-                    "ScriptLib/DateTimePicker/jquery-ui.structure.min.css",
-                    "ScriptLib/DateTimePicker/jquery-ui.theme.min.css",
-                    "ScriptLib/DateTimePicker/jquery.ui.timepicker.css",
-                    "ScriptLib/DateTimePicker/tournament-modifications.css"],
-                dest: "wwwroot/lib/DateTimePicker/jquery-ui-date-time-picker.min.css",
                 nonull: true
             }
         },
