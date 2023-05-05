@@ -76,11 +76,6 @@ module.exports = function (grunt) {
                 dest: 'wwwroot/lib/jsnlog/jsnlog.min.js',
                 nonull: true
             },
-            jquery: {
-                src: ["node_modules/jquery/dist/jquery.min.js"],
-                dest: "wwwroot/lib/jquery/jquery.min.js",
-                nonull: true
-            },
             bootstrap_js_all: {
                 src: ["node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"],
                 dest: "wwwroot/lib/bootstrap/bootstrap-all.min.js",
@@ -93,9 +88,14 @@ module.exports = function (grunt) {
                 dest: "wwwroot/lib/bootstrap/bootstrap.min.css",
                 nonull: true
             },
-            moment_js: {
-                src: ["ScriptLib/Moment/moment.min.js"],
-                dest: "wwwroot/lib/Moment/moment.min.js",
+            simple_datatables_js: {
+                src: ["node_modules/simple-datatables/dist/umd/simple-datatables.js"],
+                dest: "wwwroot/lib/simple-datatables/simple-datatables.min.js",
+                nonull: true
+            },
+            simple_datatables_css: {
+                src: ["node_modules/simple-datatables/dist/css/style.css"],
+                dest: "wwwroot/lib/simple-datatables/simple-datatables.css",
                 nonull: true
             },
             flatpickr_js: {
@@ -108,21 +108,6 @@ module.exports = function (grunt) {
             flatpickr_css: {
                 src: ["Styles/flatpickr/flatpickr_custom.css"],
                 dest: "wwwroot/lib/flatpickr/flatpickr.css",
-                nonull: true
-            },
-            datatables_js: {
-                src: ["ScriptLib/DataTables/datatables.min.js",
-                    "ScriptLib/DataTables/datetime-moment.min.js"],
-                dest: "wwwroot/lib/DataTables/datatables-for-moment.min.js"
-            },
-            datatables_css: {
-                src: ["ScriptLib/DataTables/datatables.min.css",
-                    "ScriptLib/DataTables/datetime-moment.min.css"],
-                dest: "wwwroot/lib/DataTables/datatables-for-moment.min.css"
-            },
-            datatables_txt: {
-                src: ["ScriptLib/DataTables/dataTables.german.lang.json"],
-                dest: "wwwroot/lib/DataTables/dataTables.german.lang.json",
                 nonull: true
             }
         },
