@@ -1,11 +1,13 @@
 // Bootstrap dependencies - javascript and fonts must be copied manually!!
 // font-awesome is included by site.scss
-@import '../../node_modules/tether/src/css/tether.sass';
+
+// Does not exist in BS5
+//@import '../../node_modules/tether/src/css/tether.sass';
 
 // Always required for Bootstrap
 @import "node_modules/bootstrap/scss/functions";
-@import "node_modules/bootstrap/scss/variables";
-@import "node_modules/bootstrap/scss/mixins";
+//@import "node_modules/bootstrap/scss/variables";
+//@import "node_modules/bootstrap/scss/mixins";
 
 // Bootstrap overrides
 //
@@ -15,6 +17,10 @@
 //
 // Color system
 //
+
+// This value is used in color-contrast(...) function
+// and influences the required contrast between background and text color.
+$min-contrast-ratio: 1; // default is 4.5
 
 $white: #fff;
 $gray-100: #f8f9fa;
@@ -28,30 +34,39 @@ $gray-800: #343a40;
 $gray-900: #212529;
 $black: #000;
 
+$primary: #3299BB;
+$secondary: $gray-600;
+$success: #32BB99;
+$info: #3299BB;
+$warning: #FFA500;
+$danger: #BB3299;
+$light: $gray-100;
+$dark: $gray-800;
 
 // Reassign color vars to semantic color scheme
-$theme-colors: ( primary: #3299BB, secondary: $gray-600, success: #32BB99, info: #3299BB, warning: #FFA500, danger: #BB3299, light: $gray-100, dark: $gray-800 );
+$theme-colors: ( primary: $primary, secondary: $secondary, success: $success, info: $info, warning: $warning, danger: $danger, light: $light, dark: $dark );
 
 // Dropdowns
 //
 // Dropdown menu container and contents.
 
 $dropdown-link-hover-bg: $gray-100 !default; /* unchanged! */
-$dropdown-link-hover-bg: darken($dropdown-link-hover-bg, 10%);
+$dropdown-link-hover-bg: shade-color($dropdown-link-hover-bg, 10%);
 
 $dropdown-link-active-color: $black;
-$dropdown-link-active-bg: lighten(theme-color("primary"), 40%);
+$dropdown-link-active-bg: tint-color($primary, 80%);
 
 // Body
 //
 // Settings for the `<body>` element.
-$body-bg: #bcbcbc;
-$body-color: $black;
+$body-bg: #bcbcbc;  // default: white
 
 // Fonts
 //
 // Font, line-height, and color for body text, headings, and more.
-$font-family-sans-serif: Arial, "Helvetica Neue", Helvetica, sans-serif;
+//$font-family-sans-serif: Arial, "Helvetica Neue", Helvetica, sans-serif;
+// This is the definition from Bootstrap 4:
+$font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 
 // Borders
 $border-radius: 0.4rem;
@@ -69,7 +84,8 @@ $link-hover-decoration: underline;
 
 //$input-color: theme-color("primary");
 //$input-focus-color: theme-color("primary");
-$input-focus-bg: lighten(theme-color("success"), 50%);
+$input-focus-bg: tint-color($success, 90%);
+$input-bg: $white;
 
 
 // Navbar

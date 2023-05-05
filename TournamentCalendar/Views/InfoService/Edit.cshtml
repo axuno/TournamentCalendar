@@ -97,7 +97,7 @@
                     @Html.TextBoxFor(m => m.Street, new { maxlength = InfoServiceFields.Street.MaxLength, @class = "form-control" })
                     <!-- Button trigger modal -->
                     <div class="pt-3">
-                        <button type="button" id="btnModal" class="btn btn-primary" disabled="disabled" data-toggle="modal" data-target="#locationModal">
+                        <button type="button" id="btnModal" class="btn btn-primary" disabled="disabled" data-bs-toggle="modal" data-bs-target="#locationModal">
                             <i class="bi bi-geo-alt-fill"></i> Standort auf Karte zeigen
                         </button>
                     </div>
@@ -216,14 +216,17 @@
 
             enableDisableInputFields() {
                 const allFormControls = this.addressSectionEle.querySelectorAll('.form-control');
+                const bsCollapse = new bootstrap.Collapse(this.addressSectionEle, {
+                    toggle: false
+                })
 
                 if (this.enterAddrToggleEle.checked) {
                     allFormControls.forEach(input => { input.removeAttribute('disabled'); });
-                    this.addressSectionEle.style.display = 'block';
+                    bsCollapse.show();
                 }
                 else {
+                    bsCollapse.hide();
                     allFormControls.forEach(input => { input.setAttribute('disabled', 'disabled'); });
-                    this.addressSectionEle.style.display = 'none';
                 }
             }
         }

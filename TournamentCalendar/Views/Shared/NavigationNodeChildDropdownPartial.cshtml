@@ -2,25 +2,31 @@
 @addTagHelper *, cloudscribe.Web.Navigation
 @if (Model.TempNode != null && await Model.HasVisibleChildren(Model.TempNode))
 {
-    <div class="dropdown-menu" style="margin-top: -0.3rem">
+    <ul class="dropdown-menu" style="margin-top: -0.3rem">
     @foreach (var childNode in Model.TempNode.Children)
     {
         if (!await Model.ShouldAllowView(childNode)) { continue; }
 
         if (childNode.Value.Text == "Separator")
         {
-            <div class="dropdown-divider"></div>
+            <li>
+                <span class="dropdown-divider"></span>
+            </li>
             continue;
         }
         if (!await Model.HasVisibleChildren(childNode))
         {
+            <li>
                 <a href="@Url.Content(Model.AdjustUrl(childNode))" class="@Model.GetClass(childNode.Value, "dropdown-item", "active", true)">@Model.AdjustText(childNode)</a>
+            </li>
         }
         else
         {
-            <a href="@Url.Content(Model.AdjustUrl(childNode))" class="@Model.GetClass(childNode.Value, "dropdown-item", "active", true)">@Model.AdjustText(childNode)</a>
+            <li>
+                <a href="@Url.Content(Model.AdjustUrl(childNode))" class="@Model.GetClass(childNode.Value, "dropdown-item", "active", true)">@Model.AdjustText(childNode)</a>
+            </li>
             @Model.UpdateTempNode(childNode)@await Html.PartialAsync("NavigationNodeChildDropdownPartial", Model) @* recursion *@
         }
     }
-    </div>
+    </ul>
 }
