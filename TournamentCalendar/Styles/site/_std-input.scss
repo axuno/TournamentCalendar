@@ -3,26 +3,26 @@
 // **************************************
 @import '../bootstrap/custom';
 
-$label-color: theme-color("success");
+$label-color: $success;
 $label-bgcolor: transparent;
 
-$error-color: theme-color("danger");
-$error-bgcolor: lighten($error-color,50%);
+$error-color: $danger;
+$error-bgcolor: tint-color($error-color,90%);
 
-$info-color: theme-color("info");
-$info-bgcolor: lighten($info-color,50%);
+$info-color: $info;
+$info-bgcolor: tint-color($info-color,90%);
 
-$success-color: theme-color("success");
-$success-bgcolor: lighten($success-color,50%);
+$success-color: $success;
+$success-bgcolor: tint-color($success-color,90%);
 
-$warning-color: theme-color("warning");
-$warning-bgcolor: lighten($warning-color,50%);
+$warning-color: $warning;
+$warning-bgcolor: tint-color($warning-color,90%);
 
-$question-color: theme-color("info");
-$question-bgcolor: lighten($question-color,50%);
+$question-color: $info;
+$question-bgcolor: tint-color($question-color,90%);
 
-$validation-color: theme-color("danger");
-$validation-bgcolor: lighten($validation-color,50%);
+$validation-color: $danger;
+$validation-bgcolor: tint-color($validation-color,90%);
 
 // **************************************
 // Styles
@@ -45,7 +45,7 @@ label {
 }
 
 .input-required {
-    border-left: .5rem solid theme-color("success");
+    border-left: .5rem solid $success;
 }
 
 .field-validation-error {

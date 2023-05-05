@@ -97,7 +97,7 @@
                     @Html.TextBoxFor(m => m.Street, new { maxlength = InfoServiceFields.Street.MaxLength, @class = "form-control" })
                     <!-- Button trigger modal -->
                     <div class="pt-3">
-                        <button type="button" id="btnModal" class="btn btn-primary" disabled="disabled" data-toggle="modal" data-target="#locationModal">
+                        <button type="button" id="btnModal" class="btn btn-primary" disabled="disabled" data-bs-toggle="modal" data-bs-target="#locationModal">
                             <i class="bi bi-geo-alt-fill"></i> Standort auf Karte zeigen
                         </button>
                     </div>
@@ -108,8 +108,7 @@
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="locationMapLabel">Karte mit Standort in Google Maps</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                                 </button>
                             </div>
                             <div class="modal-body">
@@ -186,7 +185,8 @@
         {
             <text>loc.showLocationOnGoogleMaps(@Model.Latitude.Value.ToString(CultureInfo.InvariantCulture), @Model.Longitude.Value.ToString(CultureInfo.InvariantCulture)); </text>
         }
-        $('#locationModal').on('shown.bs.modal', (e) => {
+
+        document.getElementById('locationModal').addEventListener('shown.bs.modal', (e) => {
             loc.update();
         });
 
@@ -216,14 +216,17 @@
 
             enableDisableInputFields() {
                 const allFormControls = this.addressSectionEle.querySelectorAll('.form-control');
+                const bsCollapse = new bootstrap.Collapse(this.addressSectionEle, {
+                    toggle: false
+                })
 
                 if (this.enterAddrToggleEle.checked) {
                     allFormControls.forEach(input => { input.removeAttribute('disabled'); });
-                    this.addressSectionEle.style.display = 'block';
+                    bsCollapse.show();
                 }
                 else {
+                    bsCollapse.hide();
                     allFormControls.forEach(input => { input.setAttribute('disabled', 'disabled'); });
-                    this.addressSectionEle.style.display = 'none';
                 }
             }
         }

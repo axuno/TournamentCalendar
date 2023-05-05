@@ -189,7 +189,7 @@
     </div>
     <!-- Button trigger modal -->
     <div class="pt-3">
-        <button type="button" id="btnModal" class="btn btn-primary" disabled="disabled" data-toggle="modal" data-target="#locationModal">
+        <button type="button" id="btnModal" class="btn btn-primary" disabled="disabled" data-bs-toggle="modal" data-bs-target="#locationModal">
             <i class="bi bi-geo-alt-fill"></i> Standort auf Karte zeigen
         </button>
     </div>
@@ -322,8 +322,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="locationMapLabel">Karte mit Standort in Google Maps</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                 </button>
             </div>
             <div class="modal-body">
@@ -353,7 +352,7 @@
 
         const loc = new Location('@Html.IdFor(m => m.CountryId)', '@Html.IdFor(m => m.PostalCode)', '@Html.IdFor(m => m.City)', '@Html.IdFor(m => m.Street)', 'btnModal', 'mapPlaceholder');
         loc.update();
-        $('#locationModal').on('shown.bs.modal', (e) => {
+        document.getElementById('locationModal').addEventListener('shown.bs.modal', (e) => {
             loc.update();
         });
         

@@ -27,14 +27,9 @@ public static class ScriptName
         public const string BootstrapAllJs = "~/lib/bootstrap/bootstrap-all.min.js";
 
         /// <summary>
-        /// ~/lib/Moment/moment.min.js
+        /// ~/lib/simple-datatables/simple-datatables.min.js
         /// </summary>
-        public const string MomentJs = "~/lib/Moment/moment.min.js";
-
-        /// <summary>
-        /// ~/lib/DataTables/datatables-for-moment.min.js
-        /// </summary>
-        public const string DatatablesJs = "~/lib/DataTables/datatables-for-moment.min.js";
+        public const string SimpleDataTablesJs = "~/lib/simple-datatables/simple-datatables.min.js";
         /// <summary>
         /// ~/lib/DataTables/dataTables.german.lang.json
         /// </summary>

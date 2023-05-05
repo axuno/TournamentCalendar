@@ -41,12 +41,14 @@
         </div>
     </header>
     <nav id="nav-main" class="navbar navbar-expand-md navbar-dark sticky-top rounded">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-header">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div id="navbar-header" class="collapse navbar-collapse">
+        <div class="container-fluid">
             @* <a class="navbar-brand" href="#">axuno</a>*@
-            @await (Component.InvokeAsync<NavigationViewComponent>(new { viewName = "BootstrapTopNavWithDropdowns", filterName = NamedNavigationFilters.TopNav, startingNodeKey = "" }))
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-content">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div id="navbar-content" class="collapse navbar-collapse">
+                @(await Component.InvokeAsync<NavigationViewComponent>(new { viewName = "BootstrapTopNavWithDropdowns", filterName = NamedNavigationFilters.TopNav, startingNodeKey = "" }))
+            </div>
         </div>
     </nav>
     <div id="content" class="container-fluid rounded">
@@ -60,7 +62,6 @@
             &copy; 2000-@DateTime.Now.Year, powered by <b><a href="https://www.axuno.net/" style="text-decoration: none">axuno</a></b>
         </div>
     </footer>
-<script src="@Url.Content(ScriptName.Lib.JqueryJs)"></script>
 <script src="@Url.Content(ScriptName.Lib.BootstrapAllJs)"></script>
 <jl-javascript-logger-definitions request-id="@ViewContext.HttpContext.TraceIdentifier" />
 <script src="~/lib/jsnlog/jsnlog.min.js"></script>
