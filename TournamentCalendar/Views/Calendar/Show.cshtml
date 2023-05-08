@@ -21,7 +21,8 @@
         {
             <p>
                 @(Model.Count > 0 ? string.Format("{0} Turniere sind im Kalender eingetragen (sortiert nach Datum):", Model.Count) : "Leider keine Turniere im Kalender gefunden.")
-            </p>}
+            </p>
+        }
     </article>
     <article class="col d-none d-sm-block text-right">
         <img src="@Url.Content("~/images/turniere_annahme.jpg")" height="120" alt="Turniere" class="rounded float-end" />

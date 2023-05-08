@@ -66,7 +66,7 @@
             <div class="row">
                 <div class="col-md-5 col-sm-5 flatpickr" data-input-type="date">
                     <label asp-for="@Model.DateFromText"></label>
-                    <div class="input-group" style="width: 12rem;">
+                    <div class="input-group" style="width: 11rem;">
                         <input asp-for="@Model.DateFromText" maxlength="10" class="form-control" placeholder="tt.mm.jjj" data-input title="Maximal 1 Jahr in der Zukunft">
                         <span class="input-group-append input-group-text" data-toggle><i class="bi bi-calendar3 bi-lg"></i></span>
                     </div>
@@ -86,7 +86,7 @@
             <div class="row">
                 <div class="col-md-5 col-sm-5 flatpickr" data-input-type="date">
                     <label asp-for="@Model.DateToText"></label>
-                    <div class="input-group" style="width: 12rem;">
+                    <div class="input-group" style="width: 11rem;">
                         <input asp-for="@Model.DateToText" maxlength="10" class="form-control" placeholder="tt.mm.jjj" data-input>
                         <span class="input-group-append input-group-text" data-toggle><i class="bi bi-calendar3 bi-lg"></i></span>
                     </div>
@@ -104,7 +104,7 @@
         </div>
         <div class="col-12 flatpickr" data-input-type="date">
             <label asp-for="@Model.ClosingDateText"></label>
-            <div class="input-group" style="width: 12rem;">
+            <div class="input-group" style="width: 11rem;">
                 <input asp-for="@Model.ClosingDateText" maxlength="10" class="form-control" placeholder="tt.mm.jjj" class="form-control" data-input>
                 <span class="input-group-append input-group-text" data-toggle><i class="bi bi-calendar3 bi-lg"></i></span>
             </div>
@@ -339,10 +339,10 @@
 }
 @section ScriptStandardSection
 {
-    <script type="text/javascript" src="@string.Format("https://maps.googleapis.com/maps/api/js?key={0}&language=de&region=DE", googleConfig.WebApiKey)"></script>
-    <script type="text/javascript" src="@Url.Content(ScriptName.Lib.FlatpickrJs)"></script>
-    <script type="text/javascript" src="@Url.Content(ScriptName.Js.Location)"></script>
-    <script type="text/javascript">
+<script type="text/javascript" src="@string.Format("https://maps.googleapis.com/maps/api/js?key={0}&language=de&region=DE", googleConfig.WebApiKey)"></script>
+<script type="text/javascript" src="@Url.Content(ScriptName.Lib.FlatpickrJs)"></script>
+<script type="text/javascript" src="@Url.Content(ScriptName.Js.Location)"></script>
+<script type="text/javascript">
     //<![CDATA[
     'use strict';
     document.addEventListener('DOMContentLoaded', OnDOMContentLoaded, false);
@@ -375,21 +375,37 @@
                 noCalendar: false,
                 allowInput: true,
                 clickOpens: true,
-                dateFormat: "d.m.Y",
-                timeFormat: "H:i",
-                time_24hr: true,
+                dateFormat: 'd.m.Y',
                 wrap: true,
-                minDate: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000), // set min date to 2 days from now
-                maxDate: addYearFromNow(), // set max date to 1 year from now
+                minDate: addDays(new Date(), 0),  // set min date to today for all dates
+                maxDate: addYears(new Date(), 1), // set max date to 1 year from now for all dates
+                onReady: flatpickrReady,
                 'locale': 'de'
             };
-            flatpickr(el, config);
+            const fp = flatpickr(el, config);
         });
         
-        function addYearFromNow() {
-            const currentDate = new Date();
-            currentDate.setFullYear(currentDate.getFullYear() + 1);
-            return currentDate;
+        function flatpickrReady(selectedDates, dateStr, fp) {
+            const isMobile = document.querySelector('.flatpickr-mobile');
+            if (isMobile) {
+                [].forEach.call(document.querySelectorAll('.flatpickr[data-input-type="date"]'), function (el) {
+                    el.style.width = '13rem';
+                    const icon = el.querySelector('.input-group-append');
+                    if (icon) {
+                        icon.style.display = 'none';
+                    }
+                });
+            }
+        }
+        
+        function addYears(date, years) {
+            date.setFullYear(date.getFullYear() + years);
+            return date;
+        };
+
+        function addDays(date, days) {
+            date.setDate(date.getDate() + days);
+            return date;
         };
         
         @* Try to set the 'To' and 'Closing' dates when 'From' date changes *@
@@ -397,14 +413,15 @@
             var from = document.getElementById('@Html.IdFor(m => m.DateFromText)').value;
             document.getElementById('@Html.IdFor(m => m.DateToText)').value = from;
 			try {
-                const dateFrom = flatpickr.parseDate(from, "d.m.Y");
+                let dateFrom = flatpickr.parseDate(from, "d.m.Y");
+                if (!dateFrom) dateFrom = flatpickr.parseDate(from, "m/d/Y");
                 const closing = document.getElementById('@Html.IdFor(m => m.ClosingDateText)');
                 if(!dateFrom) {
                     closing.value = '';
                     return;
                 };
-                let closingDate = new Date(dateFrom - (10 * 24 * 60 * 60 * 1000)); // 10 days before
-                if (closingDate <= Date.now()) closingDate = new Date(Date.now() + (1 * 24 * 60 * 60 * 1000)); // 1 day in the future
+                let closingDate = addDays(dateFrom, -10); // 10 days before
+                if (closingDate <= Date.now()) closingDate = addDays(Date.now(), 1); // 1 day in the future
                 closing.value = flatpickr.formatDate(closingDate, 'd.m.Y');
 			}
 			catch (e) { }
@@ -416,25 +433,28 @@
                 noCalendar: true,
                 allowInput: true,
                 clickOpens: true,
-                timeFormat: "H:i",
+                timeFormat: 'H:i',
                 minuteIncrement: 15,
                 time_24hr: true,
                 wrap: true,
+                //onReady: flatpickrReady,
                 'locale': 'de'
             };
-            flatpickr(el, config);
+            const fp = flatpickr(el, config);
         });
         
         // Date/Time popups can be closed by click on the toggle element or by Escape key
-        [].forEach.call(document.querySelectorAll('.flatpickr input'), function (el) {
-            el.addEventListener('keydown', function (event) {
-                if (event.keyCode === 27 && this.parentElement.parentElement._flatpickr) {
-                    this.parentElement.parentElement._flatpickr.setDate(this.value, false); // save unsubmitted changes
-                    this.parentElement.parentElement._flatpickr.close();
+        document.addEventListener('keydown', function (event) {
+            if (event.keyCode !== 27) return;
+            [].forEach.call(document.querySelectorAll('.flatpickr-input.active'), function (el) {
+                const fp = el.parentElement.parentElement._flatpickr;
+                if (fp)
+                {
+                    fp.close();
                 }
             });
         });
-        
+
         // Modify number of males after changing the number of females
         document.getElementById('@Html.IdFor(m => m.MinMaxFemale)').addEventListener('change', function () {
             const minMaxMale = document.getElementById('@Html.IdFor(m => m.MinMaxMale)');

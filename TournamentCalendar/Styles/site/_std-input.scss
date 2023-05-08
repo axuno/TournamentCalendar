@@ -67,6 +67,7 @@ label {
 }
 
 // end: css classes coming from MVC
+
 .msg-info, .msg-success, .msg-warning, .msg-question, .msg-error, .msg-validation {
     border: 2px solid;
     // margin: 13px 0 13px 0;
@@ -94,7 +95,6 @@ label {
 	color: $error-color;
 }
 
-
 .msg-info {
     color: $info-color;
     background-color: $info-bgcolor;
@@ -103,7 +103,6 @@ label {
         content: '\F431';
     }
 }
-
 
 .msg-success {
     color: $success-color;
@@ -149,7 +148,6 @@ label {
         content: '\F567';
     }
 }
-
 
 // Override Bootstrap
 .form-control {

@@ -79,6 +79,7 @@ fieldset legend {
     color: $white;
     background-color: $primary;
     padding: 0 .5rem;
+    float: none !important; /* BS5 default: left */
 }
 
 
@@ -87,6 +88,7 @@ fieldset legend {
     width: 100%;
     font-size: 1rem;
     border: 1px solid $gray-500;
+    margin-bottom: .5rem;
 
     th {
         color: $black;
@@ -96,15 +98,6 @@ fieldset legend {
     tr:hover {
         background-color: tint-color($primary, 85%);
     }
-}
-#tournaments-table_wrapper {
-    /* from dataTables.js */
-    padding-left: 0;
-    padding-right: 0;
-}
-#tournaments-table_info{
-    padding: 0;
-    text-align: right;
 }
 
 /* Show.cshtml */

@@ -154,27 +154,20 @@ fieldset legend {
   font-size: .9rem;
   color: #fff;
   background-color: #3299BB;
-  padding: 0 .5rem; }
+  padding: 0 .5rem;
+  float: none !important; }
 
 /* Overview.cshtml */
 #tournaments-table {
   width: 100%;
   font-size: 1rem;
-  border: 1px solid #adb5bd; }
+  border: 1px solid #adb5bd;
+  margin-bottom: .5rem; }
   #tournaments-table th {
     color: #000;
     background-color: #e0f0f5; }
   #tournaments-table tr:hover {
     background-color: #e0f0f5; }
-
-#tournaments-table_wrapper {
-  /* from dataTables.js */
-  padding-left: 0;
-  padding-right: 0; }
-
-#tournaments-table_info {
-  padding: 0;
-  text-align: right; }
 
 /* Show.cshtml */
 #single-tournament-table {
