@@ -17,19 +17,19 @@
     </article>
     <article class="col-md-6 d-none d-md-block">
         @* Hide on devices smaller than MD *@
-    <img src="@Url.Content("~/images/ball-crown.jpg")" class="rounded text-right" alt="Turniere" style="width: 100%" />
-</article>
-<article class="col-md-12">
+        <img src="@Url.Content("~/images/ball-crown.jpg")" class="rounded text-right" alt="Turniere" style="width: 100%" />
+    </article>
+    <article class="col-md-12">
     @if (Model.DisplayModel.Any())
     {
         var rec = Model.DisplayModel.Last();
-        <input id="searchInput" placeholder="Begriff(e) zum Filtern der Tabelle" class="form-control" style="max-width: 350px; margin-top: 10px" />
-            <label for="searchInput" style="margin: 0 0 10px 0; font-size: 1rem">(z.B.: &quot;<b>.@rec.DateFrom.ToString("MM"). @string.Join(string.Empty, rec.GetTournamentType().Take(3)).ToLower()</b>&quot; für &quot;alle @rec.GetTournamentType()-Turniere im @rec.DateFrom.ToString("MMMM")&quot; oder &quot;<b>de-10</b>&quot; für Turniere im PLZ-Bereich 10...)</label>
-            <noscript><div>Dafür muss Javascript im Browser aktiviert sein.</div></noscript>
+        <label style="margin: 0 10px 10px 0; font-size: 1rem; display: inline-block">
+                <strong>Filtern der Tabelle</strong><br />(z.B.: &quot;<b>.@rec.DateFrom.ToString("MM.yy")</b>&quot; für &quot;alle Turniere im @rec.DateFrom.ToString("MMMM")&quot; oder &quot;<b>@string.Join(string.Empty, rec.GetTournamentType().Take(5)).ToLower()</b>&quot; für @rec.GetTournamentType()-Turniere)
+        </label>
     }
-</article>
+    </article>
     <article class="col-md-12 pb-2 table-responsive">
-    <table id="tournaments-table" class="table table-striped table-bordered table-hover nowrap rounded">
+        <table id="tournaments-table" class="table table-striped table-bordered border-light table-hover nowrap rounded">
         <thead>
             <tr>
                 <th>Datum</th>
@@ -38,13 +38,13 @@
                 <th>Art</th>
                 <th>Belag</th>
                 <th>PLZ</th>
-                    <th class="text-right"><i class="bi bi-info-circle-fill"></i></th>
+                <th class="text-right"><i class="bi bi-info-circle-fill"></i></th>
             </tr>
         </thead>
         <tbody>
             @foreach (var m in Model.DisplayModel)
             {
-                <tr title="Details zu &quot;@m.TournamentName&quot; - @m.Organizer" style="cursor: pointer" onclick="document.location = '@Url.Action(nameof(Calendar.Id), nameof(Calendar), new {id = m.Id})';return false;">
+                <tr title="Details zu &quot;@m.TournamentName&quot; - @m.Organizer">
                     <td>@m.DateFrom.ToString("dd.MM.yy")</td>
                     <td>@m.GetTournamentNameShort(60)</td>
                     @*<td>@m.GetOrganizerShort(20)</td>*@
@@ -56,46 +56,95 @@
             }
         </tbody>
     </table>
-</article>
+    <div class="small text-primary">Insgesamt @Model.DisplayModel.Count() Turniere im Kalender</div>
+    </article>
 </div>
 @section MetaSection {<meta name="robots" content="index, follow">}
-@section CssSection {<link href="@Url.Content(CssName.Lib.DatatablesCss)" rel="stylesheet" />}
-@section ScriptStandardSection {
-    <script src="@Url.Content(ScriptName.Lib.MomentJs)"></script>
-    <script src="@Url.Content(ScriptName.Lib.DatatablesJs)"></script>
-    <script type="text/javascript">
-//<![CDATA[
-$(document).ready(function() {
-    $.fn.dataTable.moment('DD.MM.YY');
-        var table = $('#tournaments-table').DataTable({
-        "dom": 'lrtip',
-        "language": {
-            "url": "@Url.Content(ScriptName.Lib.DatatablesGermanJson)"
-        },
-        "responsive": false,
-        "paging": false,
-        "ordering": true,
-        "info": true,
-        "infoCallback": function(settings, start, end, max, total, pre) {
-            var api = this.api();
-            var pageInfo = api.page.info();
-            if (max === total)
-                return total + (total === 1 ? ' Eintrag' : ' Einträge');
-            else {
-                return total + (total === 1 ? ' Eintrag' : ' Einträge') + ' gefiltert von insgesamt ' + max;
-            }
-        },
-        "columnDefs": [
-            { "orderable": false, "targets": 5 }
-        ],
-        "order": [[0, 'asc']]
-    });
+@section CssSection {
+    <link href="@Url.Content(CssName.Lib.SimpleDataTablesCss)" rel="stylesheet" />
+    <style>
+        @* Styles used in wrappers inserted by simpleDatatables javaScript *@
+        .datatable-top {
+            padding-left: 0 !important;
+            padding-top: .25rem !important;
+            padding-bottom: 1rem !important;
+        }
 
-    $('#searchInput').on('keyup',
-        function() {
-            table.search(this.value).draw();
-        }).focus();
-});
+        .datatable-search {
+            float: left !important;
+        }
+
+        .datatable-container {
+            border-bottom: 0 !important;
+        }
+
+        .datatable-bottom {
+            display: none !important;    
+        }
+    </style>
+}
+@section ScriptStandardSection {
+<script src="@Url.Content(ScriptName.Lib.SimpleDataTablesJs)"></script>
+<script type="text/javascript">
+//<![CDATA[
+    'use strict';
+    document.addEventListener('DOMContentLoaded', OnDOMContentLoaded, false);
+    function OnDOMContentLoaded() {
+        const tournamentsTableElement = document.querySelector("#tournaments-table");
+        const labelsEN = {
+            placeholder: "Search...",
+            searchTitle: "Search within table",
+            perPage: "entries per page",
+            noRows: "No entries found",
+            info: "Showing {start} to {end} of {rows} entries",
+            noResults: "No results match your search query"
+        };
+        const labelsDE = {
+            placeholder: "Tabelle filtern...",
+            searchTitle: "Begriff(e) zum Filtern der Tabelle",
+            perPage: "Einträge pro Seite",
+            noRows: "Keine Einträge gefunden",
+            info: "Anzeige von {start} bis {end} von {rows} Einträgen",
+            noResults: "Keine Einträge für die Suchbegriffe gefunden"
+        };
+        const options = {
+            searchable: true,
+            sortable: true,
+            paging: false,
+            columns: [
+                {
+                    select: 0,
+                    type: 'date',
+                    format: 'DD.MM.YY'
+                },
+                {
+                    select: 5,
+                    sortable: false
+                }
+            ],
+            labels: labelsDE,
+            classes: {
+                input: 'form-control',
+            } 
+        }
+        const tournamentsTable = new window.simpleDatatables.DataTable(tournamentsTableElement, options);
+        makeRowsClickable();
+        tournamentsTable.on('datatable.update', makeRowsClickable);
+        
+        function makeRowsClickable()
+        {
+            // Make each table row clickable
+            [].forEach.call(document.querySelectorAll('#tournaments-table td a'), function (el) {
+                const row = el.closest('tr');
+                row.style.cursor = 'pointer';
+                row.addEventListener('click', function (event) {
+                    const link = this.querySelector('td a');
+                    if (!link) return;
+                    window.location = link.href;
+                });
+            });
+        }
+    }
 //]]>
-    </script>
+</script>
 }

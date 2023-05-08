@@ -14,6 +14,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks("grunt-contrib-concat");
     grunt.loadNpmTasks("grunt-contrib-copy");
     grunt.loadNpmTasks("grunt-contrib-cssmin");
+    grunt.loadNpmTasks("grunt-contrib-uglify");
 
     grunt.initConfig({
         pkg: grunt.file.readJSON("package.json"),
@@ -62,28 +63,21 @@ module.exports = function (grunt) {
                 }
             }
         },
+        uglify: {
+            Location: {
+                files: {
+                    'ScriptLib/TournamentCalendar/Location.min.js': ['ScriptLib/TournamentCalendar/Location.js']
+                }
+            }
+        },
         concat: {
-            jquery: {
-                src: ["node_modules/jquery/dist/jquery.min.js"],
-                dest: "wwwroot/lib/jquery/jquery.min.js",
-                nonull: true
-            },
-            jquery_validation: {
-                src: [
-                    "node_modules/jquery-validation/dist/jquery.validate.min.js",
-                    "node_modules/jquery-validation/dist/localization/methods_de.js",
-                    "node_modules/jquery-validation/dist/localization/messages_de.js",
-                    "node_modules/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.js"
-                ],
-                dest: "wwwroot/lib/jquery-validation/jquery-validation-all.min.js",
+            js_nlog: {
+                src: ['node_modules/jsnlog/jsnlog.min.js'],
+                dest: 'wwwroot/lib/jsnlog/jsnlog.min.js',
                 nonull: true
             },
             bootstrap_js_all: {
-                src: ["node_modules/popper.js/dist/umd/popper.min.js",
-                    "node_modules/popper.js/dist/umd/popper-utils.min.js",
-                    "node_modules/tether/dist/js/tether.min.js",
-                    "node_modules/bootstrap/dist/js/bootstrap.min.js",
-                    ],
+                src: ["node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"],
                 dest: "wwwroot/lib/bootstrap/bootstrap-all.min.js",
                 nonull: true
             },
@@ -94,44 +88,29 @@ module.exports = function (grunt) {
                 dest: "wwwroot/lib/bootstrap/bootstrap.min.css",
                 nonull: true
             },
-            moment_js: {
-                src: ["ScriptLib/Moment/moment.min.js"],
-                dest: "wwwroot/lib/Moment/moment.min.js",
+            simple_datatables_js: {
+                src: ["node_modules/simple-datatables/dist/umd/simple-datatables.js"],
+                dest: "wwwroot/lib/simple-datatables/simple-datatables.min.js",
                 nonull: true
             },
-            datatables_js: {
-                src: ["ScriptLib/DataTables/datatables.min.js",
-                    "ScriptLib/DataTables/datetime-moment.min.js"],
-                dest: "wwwroot/lib/DataTables/datatables-for-moment.min.js"
-            },
-            datatables_css: {
-                src: ["ScriptLib/DataTables/datatables.min.css",
-                    "ScriptLib/DataTables/datetime-moment.min.css"],
-                dest: "wwwroot/lib/DataTables/datatables-for-moment.min.css"
-            },
-            datatables_txt: {
-                src: ["ScriptLib/DataTables/dataTables.german.lang.json"],
-                dest: "wwwroot/lib/DataTables/dataTables.german.lang.json",
+            simple_datatables_css: {
+                src: ["node_modules/simple-datatables/dist/css/style.css"],
+                dest: "wwwroot/lib/simple-datatables/simple-datatables.css",
                 nonull: true
             },
-            jquery_ui_date_time_picker_js: {
-                src: ["ScriptLib/DateTimePicker/jquery-ui.min.js",
-                    "ScriptLib/DateTimePicker/datepicker-de.js",
-                    "ScriptLib/DateTimePicker/jquery.ui.timepicker.min.js"],
-                dest: "wwwroot/lib/DateTimePicker/jquery-ui-date-time-picker.min.js",
+            flatpickr_js: {
+                src: ["node_modules/flatpickr/dist/flatpickr.min.js", 
+                    "node_modules/flatpickr/dist/l10n/default.js", 
+                    "node_modules/flatpickr/dist/l10n/de.js"],
+                dest: "wwwroot/lib/flatpickr/flatpickr_all.min.js",
                 nonull: true
             },
-            jquery_ui_date_time_picker_css: {
-                src: ["ScriptLib/DateTimePicker/jquery-ui.min.css",
-                    "ScriptLib/DateTimePicker/jquery-ui.structure.min.css",
-                    "ScriptLib/DateTimePicker/jquery-ui.theme.min.css",
-                    "ScriptLib/DateTimePicker/jquery.ui.timepicker.css",
-                    "ScriptLib/DateTimePicker/tournament-modifications.css"],
-                dest: "wwwroot/lib/DateTimePicker/jquery-ui-date-time-picker.min.css",
+            flatpickr_css: {
+                src: ["Styles/flatpickr/flatpickr_custom.css"],
+                dest: "wwwroot/lib/flatpickr/flatpickr.css",
                 nonull: true
             }
         },
-
         copy: {
             bootstrap_icons_fonts: {
                 files: [
@@ -142,6 +121,11 @@ module.exports = function (grunt) {
                 files: [
                     { cwd:"ScriptLib/DateTimePicker/Images/", expand:"true", src:"**/*", dest: "wwwroot/lib/DateTimePicker/Images/" }
                 ]
+            },
+            location: {
+                src: ["ScriptLib/TournamentCalendar/Location.min.js"],
+                dest: "wwwroot/js/Location.min.js",
+                nonull: true
             }
         },
 

@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TournamentCalendarDAL.DbGen
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TournamentCalendarDAL.DbSpecific", "DAL\DatabaseSpecific\TournamentCalendarDAL.DbSpecific.csproj", "{A72A57EE-DA90-43C4-8E33-511DA341D374}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TournamentCalendar.Tests", "TournamentCalendar.Tests\TournamentCalendar.Tests.csproj", "{09BDE2CA-BA40-4C67-8B5D-8DD654E1315C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TournamentCalendar.Tests", "TournamentCalendar.Tests\TournamentCalendar.Tests.csproj", "{09BDE2CA-BA40-4C67-8B5D-8DD654E1315C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

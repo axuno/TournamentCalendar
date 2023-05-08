@@ -110,7 +110,7 @@ public class EditModel : CalendarEntity, IValidatableObject
                 throw new InvalidOperationException("Date is invalid");
             }
 
-            if (TimeSpan.TryParse(TimeTo, out var time))
+            if (TimeSpan.TryParse(TimeFrom, out var time))
                 DateFrom = DateFrom.Date + time;
         }
     }

@@ -5,6 +5,7 @@
 @inject IViewLocalizer Localizer
 @{
     ViewData["Title"] = "Anmelden";
+    ViewContext.ClientValidationEnabled = false;
 }
 <h2 class="h2">@ViewData["Title"]</h2>
 <div class="col-md-8 col-sm-10 col-12 pl-0 pb-3">
@@ -46,12 +47,13 @@
 </div>
 @section ScriptStandardSection
 {
-<script src="@Url.Content(ScriptName.Lib.JqueryValidationAllJs)"></script>
-<script type="text/javascript">
+    <script type="text/javascript">
     //<![CDATA[
-    $(document).ready(function() {
-        $('#@Html.NameFor(m => m.EmailOrUsername)').focus();
-    });
+        'use strict';
+        document.addEventListener('DOMContentLoaded', OnDOMContentLoaded, false);
+        function OnDOMContentLoaded() {
+            document.getElementById('@Html.IdFor(m => m.EmailOrUsername)').focus();
+        }
     //]]>
 </script>
 }

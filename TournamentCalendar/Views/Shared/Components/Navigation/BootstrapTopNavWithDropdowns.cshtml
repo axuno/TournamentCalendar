@@ -1,7 +1,6 @@
 ﻿@model NavigationViewModel
 @addTagHelper *, cloudscribe.Web.Navigation
-<ul class="navbar-nav mr-auto mt-2 mt-md-0">
-    @*<li role="presentation" cwn-data-attributes="@Model.RootNode.Value.DataAttributes" class='@Model.GetClass(Model.RootNode.Value)'><a href="@Url.Content(Model.AdjustUrl(Model.RootNode))">@Html.Raw(Model.GetIcon(Model.RootNode.Value))@Model.AdjustText(Model.RootNode)</a></li>*@
+<ul class="navbar-nav me-auto mt-2 mt-md-0">
     @if (await Model.HasVisibleChildren(Model.RootNode))
     {
         foreach (var node in Model.RootNode.Children)
@@ -9,17 +8,17 @@
             if (!await Model.ShouldAllowView(node)) { continue; }
             if (!await Model.HasVisibleChildren(node))
             {
-                <li class="@Model.GetClass(node.Value, "nav-item", "active", true)">
-                    <a class="nav-link" href="@Url.Content(Model.AdjustUrl(node))">@Html.Raw(Model.GetIcon(node.Value))@Model.AdjustText(node)</a>
+                <li class="nav-item">
+                    <a class="@Model.GetClass(node.Value, "nav-link", "active", true)" href="@Url.Content(Model.AdjustUrl(node))">@Html.Raw(Model.GetIcon(node.Value))@Model.AdjustText(node)</a>
                 </li>
             }
             else
             {
-                <li class="@Model.GetClass(node.Value, "nav-item dropdown", "active", true)">
-                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="@Url.Content(Model.AdjustUrl(node))" role="button">
+                <li class="nav-item dropdown">
+                    <a class="@Model.GetClass(node.Value, "nav-link dropdown-toggle", "active", true)" data-bs-toggle="dropdown" href="@Url.Content(Model.AdjustUrl(node))" role="button">
                         @Html.Raw(Model.GetIcon(node.Value))@Model.AdjustText(node)@Model.UpdateTempNode(node)
                     </a>
-                    @await Html.PartialAsync("NavigationNodeChildDropdownPartial", Model)
+                    @(await Html.PartialAsync("NavigationNodeChildDropdownPartial", Model))
                 </li>
             }
         }

@@ -1,6 +1,6 @@
 ﻿@model TournamentCalendar.Models.Calendar.CalendarEntityDisplayModel
 @using TournamentCalendar.Controllers
-    <table id="single-tournament-table" class="table-striped table-bordered rounded col-12 shadow">
+<table id="single-tournament-table" class="table table-striped table-bordered rounded col-12 shadow">
         @if (ViewContext.HttpContext.User.IsInRole(TournamentCalendar.Library.Authentication.Constants.RoleName.Editor))
         {
             <tr>
@@ -18,7 +18,7 @@
             </tr>
         }
         <tr>
-            <th>
+        <th style="width:1px; white-space:nowrap;">@* Fits the column to content *@
                 Turniername:
             </th>
             <td>
@@ -145,12 +145,11 @@
 {
     <div class="rounded pb-3 col-12 shadow">
         <div class="py-2">
-            <a href="@Model.GetVenueGoogleMapsLink()" class="link" title="Karte auf Google Maps Website anzeigen"
-               onclick="window.open(this.href, this.target).focus();return false;">Karte auf Google Maps Website anzeigen</a>
+            <a href="@Model.GetVenueGoogleMapsLink()" class="link" title="Karte auf Google Maps Website anzeigen" target="_blank">Karte auf Google Maps Website anzeigen</a>
         </div>
         <div id="mapPlaceholder" class="rounded" style="border: 1px solid #979797; background-color: #e5e3df; width: 100%; height: 400px">
             <div style="padding: 1rem; color: gray">
-                Karte wird mit JavaScript geladen...
+                Karte wird angezeigt,<br/>wenn der Standort gefunden wurde.
             </div>
         </div>
     </div>

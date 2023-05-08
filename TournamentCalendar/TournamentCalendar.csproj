@@ -3,8 +3,8 @@
 	<PropertyGroup>
         <Product>TournamentCalendar</Product>
         <TargetFramework>net6.0</TargetFramework>
-        <Version>2.3.0</Version>
-        <FileVersion>2.3.0</FileVersion>
+        <Version>3.0.0</Version>
+        <FileVersion>3.0.0</FileVersion>
         <EnableDefaultContentItems>true</EnableDefaultContentItems>
         <Authors>axuno gGmbH</Authors>
         <CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</CurrentYear>
@@ -13,7 +13,7 @@
         <Nullable>enable</Nullable>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageIcon>TournamentCalender-192x192.png</PackageIcon>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion> <!--only update AssemblyVersion with major releases -->
+        <AssemblyVersion>3.0.0.0</AssemblyVersion> <!--only update AssemblyVersion with major releases -->
         <LangVersion>latest</LangVersion>
         <EnableNETAnalyzers>true</EnableNETAnalyzers>
         <AnalysisLevel>latest</AnalysisLevel>
@@ -38,6 +38,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="cloudscribe.Web.Navigation" Version="6.0.2" />
+		<PackageReference Include="JSNLog.NLog" Version="2.30.0" />
 		<PackageReference Include="MailMergeLib" Version="5.9.1" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="6.0.0" />
 		<PackageReference Include="Microsoft.DotNet.PlatformAbstractions" Version="3.1.6" />
@@ -117,7 +118,8 @@
         <Folder Remove="logs\" />
         <Folder Remove="Scripts\" />
         <Folder Remove="ScriptLib\" />
-        <Content Remove="ScriptLib\**" CopyToPublishDirectory="Never" /> 
+        <Content Remove="ScriptLib\**" CopyToPublishDirectory="Never" />
+        <Folder Include="ScriptLib\TournamentCalendar\" /> 
         <Folder Include="wwwroot\js\" />
 	</ItemGroup>
 

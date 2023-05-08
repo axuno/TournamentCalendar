@@ -1,9 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using Microsoft.Net.Http.Headers;
 using System.Text;
+using JSNLog;
 using MailMergeLib;
 using MailMergeLib.MessageStore;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -23,7 +25,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using SD.LLBLGen.Pro.ORMSupportClasses;
 using TournamentCalendar.Data;
-using AngleSharp.Dom;
 
 namespace TournamentCalendar;
 
@@ -259,6 +260,21 @@ public static class WebAppStartup
             app.UseDeveloperExceptionPage();
             app.UseStatusCodePages();
         }
+
+        #endregion
+
+        #region *** Javascript logging ***
+
+        // add the JSNLog middleware before the UseStaticFiles middleware.
+        var jsNLogConfiguration =
+            new JsnlogConfiguration
+            {
+                loggers = new List<Logger>
+                {
+                    new() { name = "JsLogger" }
+                }
+            };
+        app.UseJSNLog(new LoggingAdapter(loggerFactory), jsNLogConfiguration);
 
         #endregion
 

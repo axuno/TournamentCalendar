@@ -16,9 +16,9 @@ public static class CssName
         public const string BootstrapAllCss = "~/lib/bootstrap/bootstrap.min.css";
             
         /// <summary>
-        /// ~/lib/DataTables/datatables-for-moment.min.css
+        /// ~/lib/simple-datatables/simple-datatables.css
         /// </summary>
-        public const string DatatablesCss = "~/lib/DataTables/datatables-for-moment.min.css";
+        public const string SimpleDataTablesCss = "~/lib/simple-datatables/simple-datatables.css";
 
         /// <summary>
         /// ~/lib/DateTimePicker/jquery-ui-date-time-picker.min.css
