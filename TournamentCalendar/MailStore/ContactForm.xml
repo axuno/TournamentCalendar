@@ -8,14 +8,14 @@
   </Info>
   <MailMergeAddresses>
     <MailMergeAddress>
-      <AddrType>To</AddrType>
+      <AddrType>Bcc</AddrType>
       <Address>info@volleyball-turnier.de</Address>
       <DisplayName>Volleyball-Turnier.de</DisplayName>
       <DisplayNameCharacterEncoding>utf-8</DisplayNameCharacterEncoding>
     </MailMergeAddress>
     <MailMergeAddress>
       <AddrType>From</AddrType>
-      <Address>info@volleyball-turnier.de</Address>
+      <Address>noreply@volleyball-turnier.de</Address>
       <DisplayName>Volleyball-Turnier.de</DisplayName>
       <DisplayNameCharacterEncoding>utf-8</DisplayNameCharacterEncoding>
     </MailMergeAddress>

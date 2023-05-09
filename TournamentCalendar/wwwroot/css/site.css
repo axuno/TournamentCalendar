@@ -155,7 +155,8 @@ fieldset legend {
   color: #fff;
   background-color: #3299BB;
   padding: 0 .5rem;
-  float: none !important; }
+  float: none !important;
+  /* BS5 default: left */ }
 
 /* Overview.cshtml */
 #tournaments-table {
