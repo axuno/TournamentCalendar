@@ -11,7 +11,7 @@
         "autoprefixer": "9.8.8",
         "bootstrap": "5.2.3",
         "bootstrap-icons": "1.10.3",
-        "cssnano": "4.1.11",
+        "cssnano": "6.0.1",
         "flatpickr": "^4.6.13",
         "simple-datatables": "7.2.0",
         "grunt": "^1.2.0",
