@@ -15,7 +15,7 @@
     </MailMergeAddress>
     <MailMergeAddress>
       <AddrType>From</AddrType>
-      <Address>info@volleyball-turnier.de</Address>
+      <Address>noreply@volleyball-turnier.de</Address>
       <DisplayName>Volleyball-Turnier.de</DisplayName>
       <DisplayNameCharacterEncoding>utf-8</DisplayNameCharacterEncoding>
     </MailMergeAddress>

@@ -5,7 +5,7 @@ VisualStudioVersion = 17.0.31919.166
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TournamentCalendar", "TournamentCalendar\TournamentCalendar.csproj", "{45114523-7D83-407C-85B1-45ADF4F3146C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TournamentCalender.Data", "Data\Data\TournamentCalender.Data.csproj", "{12D72F84-9A0F-48DE-A016-0A4860666305}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TournamentCalender.Data", "Data\TournamentCalender.Data.csproj", "{12D72F84-9A0F-48DE-A016-0A4860666305}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TournamentCalendarDAL.DbGeneric", "DAL\DatabaseGeneric\TournamentCalendarDAL.DbGeneric.csproj", "{2BB7A5AA-454E-4334-A566-53F3AFC65578}"
 EndProject

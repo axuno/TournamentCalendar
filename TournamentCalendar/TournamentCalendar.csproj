@@ -3,8 +3,8 @@
 	<PropertyGroup>
         <Product>TournamentCalendar</Product>
         <TargetFramework>net6.0</TargetFramework>
-        <Version>3.0.0</Version>
-        <FileVersion>3.0.0</FileVersion>
+        <Version>3.0.1</Version>
+        <FileVersion>3.0.1</FileVersion>
         <EnableDefaultContentItems>true</EnableDefaultContentItems>
         <Authors>axuno gGmbH</Authors>
         <CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</CurrentYear>
@@ -85,10 +85,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Data\Data\TournamentCalender.Data.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<Compile Update="Models\Error\StatusCodes.Designer.cs">
 		  <DesignTime>True</DesignTime>
 		  <AutoGen>True</AutoGen>
@@ -121,6 +117,10 @@
         <Content Remove="ScriptLib\**" CopyToPublishDirectory="Never" />
         <Folder Include="ScriptLib\TournamentCalendar\" /> 
         <Folder Include="wwwroot\js\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Data\TournamentCalender.Data.csproj" />
 	</ItemGroup>
 
 	<!-- Custom PropertyGroup to add the Environment name during publish. The EnvironmentName property is used for the 'Environment' variable in web.config when publishing. -->

@@ -222,7 +222,7 @@ public class EditModel : InfoServiceEntity, IValidatableObject
         else
         {
             IsNew = false;
-            if (!ConfirmedOn.HasValue) ConfirmedOn = DateTime.Now;
+            ConfirmedOn ??= DateTime.Now;
             UnSubscribedOn = null;
             ModifiedOn = DateTime.Now;
         }
@@ -233,6 +233,8 @@ public class EditModel : InfoServiceEntity, IValidatableObject
         {
             // Id will be zero if Guid does not exist
             Id = _appDb!.InfoServiceRepository.GetIdForGuid(Guid);
+            // CountryId may be NULL, but not "" because of foreign key
+            if (string.IsNullOrWhiteSpace(CountryId)) CountryId = null;
 
             confirmModel.SaveSuccessful = await _appDb!.GenericRepository.Save(this, true, cancellationToken);
             confirmModel.Entity = this;
