@@ -14,7 +14,7 @@ namespace TournamentCalendar.Models.Newsletter;
 public class NewsletterModel
 {
     private readonly IAppDb _appDb;
-    private EntityCollection<CalendarEntity> _tournaments = new();
+    private readonly EntityCollection<CalendarEntity> _tournaments = new();
     private readonly EntityCollection<SurfaceEntity> _surfaces = new();
     private readonly EntityCollection<PlayingAbilityEntity> _playingAbilities = new();
 
@@ -57,7 +57,9 @@ public class NewsletterModel
         await _appDb.CalendarRepository.GetAllActiveTournaments(_tournaments, cancellationToken);
         await _appDb.CalendarRepository.GetTournamentRelationshipEntities(_surfaces, _playingAbilities, cancellationToken);
 
-        _tournaments = await _appDb.CalendarRepository.GetActiveTournaments(LastSendDate);
+        _tournaments.Clear();
+        var newTournaments = await _appDb.CalendarRepository.GetActiveTournaments(LastSendDate, cancellationToken);
+        _tournaments.AddRange(newTournaments);
     }
 
     public ICollection<SentNewsletterEntity> Newsletters { get; private set; } = new HashSet<SentNewsletterEntity>();

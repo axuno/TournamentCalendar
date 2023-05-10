@@ -26,7 +26,6 @@ public class InfoServiceRepository : GenericRepository
     {
         using var da = _dbContext.GetNewAdapter();
         var success = da.FetchEntityUsingUniqueConstraint(entity, filter);
-        da.CloseConnection();
         return success;
     }
 
