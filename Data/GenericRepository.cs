@@ -8,7 +8,7 @@ namespace TournamentCalendar.Data;
 
 public class GenericRepository
 {
-    private static readonly ILogger _logger = AppLogging.CreateLogger<GenericRepository>();
+    protected static readonly ILogger Logger = AppLogging.CreateLogger<GenericRepository>();
     protected readonly IDbContext _dbContext;
 
     public GenericRepository(IDbContext dbContext)
@@ -20,7 +20,6 @@ public class GenericRepository
     {
         using var da = _dbContext.GetNewAdapter();
         var success = await da.SaveEntityAsync(registration, refetchAfterSave, cancellationToken);
-        da.CloseConnection();
         return success;
     }
 

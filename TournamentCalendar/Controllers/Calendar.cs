@@ -169,8 +169,14 @@ public class Calendar : ControllerBase
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Email: {PostedByEmail}, PostedBy: {PostedByName},  TournamentName: {TournamentName}", model.PostedByEmail, model.PostedByName, model.TournamentName);
+            _logger.LogError(ex, "Email: {PostedByEmail}, PostedBy: {PostedByName},  TournamentName: {TournamentName}",
+                model.PostedByEmail, model.PostedByName, model.TournamentName);
             return View(ViewName.Calendar.Confirm, confirmationModel);
+        }
+        finally
+        {
+            // Updating the calendar requires to clear the cached results.
+            CalendarRepository.PurgeCalendarCaches();
         }
     }
 

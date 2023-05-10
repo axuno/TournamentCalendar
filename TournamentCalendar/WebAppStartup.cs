@@ -210,6 +210,7 @@ public static class WebAppStartup
     public static void Configure(WebApplication app, ILoggerFactory loggerFactory)
     {
         var env = app.Environment;
+        AppLogging.Configure(loggerFactory);
 
         app.UseHttpsRedirection();
 

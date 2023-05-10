@@ -13,6 +13,16 @@ namespace TournamentCalendar.Data;
 
 public class CalendarRepository : GenericRepository
 {
+    /// <summary>
+    /// Duration for caching query results.
+    /// </summary>
+    public readonly TimeSpan CacheDuration = TimeSpan.FromMinutes(60);
+
+    /// <summary>
+    /// The tag for all calendar caches. Caches can be purged using this tag.
+    /// </summary>
+    public static readonly string CacheTag = "Calendar";
+
     public CalendarRepository(IDbContext dbContext) : base(dbContext) { }
 
     public virtual bool GetTournamentByGuid(CalendarEntity entity, string guid, CancellationToken cancellationToken)
@@ -34,7 +44,7 @@ public class CalendarRepository : GenericRepository
     {
         using var da = _dbContext.GetNewAdapter();
         tournaments.Clear();
-        var at = await GetActiveTournaments(da).ExecuteAsync<ICollection<CalendarEntity>>(cancellationToken);
+        var at = await GetActiveTournaments(cancellationToken);
         tournaments.AddRange(at);
     }
 
@@ -68,7 +78,7 @@ public class CalendarRepository : GenericRepository
     {
         using var da = _dbContext.GetNewAdapter();
         tournaments.Clear();
-        var at = await GetActiveTournaments(da).Where(t => t.Guid == guid).ExecuteAsync<ICollection<CalendarEntity>>(cancellationToken);
+        var at = (await GetActiveTournaments(cancellationToken)).Where(t => t.Guid == guid);
         tournaments.AddRange(at);
     }
 
@@ -76,7 +86,7 @@ public class CalendarRepository : GenericRepository
     {
         using var da = _dbContext.GetNewAdapter();
         tournaments.Clear();
-        var at = await GetActiveTournaments(da).Where(t => t.Id == id).ExecuteAsync<ICollection<CalendarEntity>>(cancellationToken);
+        var at = (await GetActiveTournaments(cancellationToken)).Where(t => t.Id == id);
         tournaments.AddRange(at);
     }
 
@@ -86,20 +96,21 @@ public class CalendarRepository : GenericRepository
         return await da.SaveEntityAsync(entity, refetchAfterSave);
     }
 
-    public virtual async Task<EntityCollection<CalendarEntity>> GetActiveTournaments(DateTime sinceDate)
+    public virtual async Task<List<CalendarEntity>> GetActiveTournaments(DateTime sinceDate, CancellationToken cancellationToken)
     {
         using var da = _dbContext.GetNewAdapter();
-        return await GetActiveTournaments(da).Where(t => t.ModifiedOn >= sinceDate).ExecuteAsync<EntityCollection<CalendarEntity>>();
+        return (await GetActiveTournaments(cancellationToken)).Where(t => t.ModifiedOn >= sinceDate).ToList();
     }
 
-    private static IOrderedQueryable<CalendarEntity> GetActiveTournaments(IDataAccessAdapter da)
+    private async Task<List<CalendarEntity>> GetActiveTournaments(CancellationToken cancellationToken)
     {
+        using var da = _dbContext.GetNewAdapter();
         var metaData = new LinqMetaData(da);
-        var result = from tc in metaData.Calendar
+        var result = await (from tc in metaData.Calendar
             where tc.DateFrom > DateTime.Today.Date && tc.ApprovedOn != null && tc.DeletedOn == null
             orderby tc.DateFrom ascending
-            select tc;
-        return result;
+            select tc).CacheResultset(CacheDuration, CacheTag).ExecuteAsync<EntityCollection<CalendarEntity>>(cancellationToken);
+        return result.ToList();
     }
 
     /// <summary>
@@ -144,8 +155,15 @@ public class CalendarRepository : GenericRepository
     public virtual async Task GetTournamentRelationshipEntities(EntityCollection<SurfaceEntity> surface, EntityCollection<PlayingAbilityEntity> ability, CancellationToken cancellationToken)
     {
         using var da = _dbContext.GetNewAdapter();
-        await da.FetchEntityCollectionAsync(new QueryParameters { CollectionToFetch = surface }, cancellationToken);
-        await da.FetchEntityCollectionAsync(new QueryParameters { CollectionToFetch = ability }, cancellationToken);
-        da.CloseConnection();
+        await da.FetchEntityCollectionAsync(new QueryParameters { CollectionToFetch = surface, CacheResultset = true, CacheDuration = CacheDuration, CacheTag = CacheTag}, cancellationToken);
+        await da.FetchEntityCollectionAsync(new QueryParameters { CollectionToFetch = ability, CacheResultset = true, CacheDuration = CacheDuration, CacheTag = CacheTag}, cancellationToken);
+    }
+
+    /// <summary>
+    /// Remove tagged result sets from the <see cref="CacheController"/>.
+    /// </summary>
+    public static void PurgeCalendarCaches()
+    {
+        CacheController.PurgeResultsets(CacheTag);
     }
 }

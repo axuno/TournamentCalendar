@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using SD.LLBLGen.Pro.ORMSupportClasses;
 using TournamentCalendarDAL.DatabaseSpecific;
 
@@ -18,7 +17,6 @@ public class DbContext : IDbContext
     {
         AppDb = new AppDb(this);
     }
-        
        
     /// <summary>
     /// The connection key used to retrieve the <see cref="ConnectionString"/>.
@@ -48,7 +46,7 @@ public class DbContext : IDbContext
     /// Set this prior to calling a method which executes database logic.
     /// </remarks>
     public virtual int CommandTimeOut { get; set; } = 30;
-        
+
     /// <summary>
     /// Gets a new instance of an <see cref="IDataAccessAdapter"/> which will be used to access repositories.
     ///  </summary>
@@ -59,11 +57,10 @@ public class DbContext : IDbContext
         {
             if (!_cacheIsRegistered)
             {
-                var csb = new SqlConnectionStringBuilder(ConnectionString);
-                // see docs: https://www.llblgen.com/Documentation/4.2/LLBLGen%20Pro%20RTF/Using%20the%20generated%20code/gencode_resultsetcaching.htm
-                if (csb.PersistSecurityInfo == false) { csb.Password = string.Empty; }
+                // see docs: https://www.llblgen.com/Documentation/5.9/LLBLGen%20Pro%20RTF/Using%20the%20generated%20code/gencode_resultsetcaching.htm
                 // if connection string exists, the method simply returns without creating a new cache
-                CacheController.RegisterCache(csb.ConnectionString, new ResultsetCache(TimeSpan.FromDays(1).Seconds));
+                // ** Note ** The connection string must be EXACTLY as it's used for queries.
+                CacheController.RegisterCache(ConnectionString, new ResultsetCache(TimeSpan.FromDays(1).Seconds));
                 _cacheIsRegistered = true;
             }
                 

@@ -20,6 +20,5 @@ public class CountriesRepository : GenericRepository
         }
 
         da.FetchEntityCollection(countries, bucket);
-        da.CloseConnection();
     }
 }
