@@ -284,12 +284,12 @@ public class EditModel : CalendarEntity, IValidatableObject
         };
     }
 
-    public IEnumerable<SelectListItem> GetCountriesList()
+    public async Task<IEnumerable<SelectListItem>> GetCountriesList(CancellationToken cancellationToken)
     {
         var countryIds = new[] { "DE", "AT", "CH", "LI", "IT", "NL", "BE", "LU", "FR", "PL", "DK", "CZ", "SK" };
 
         EntityCollection<CountryEntity> countries = new();
-        _appDb!.CountriesRepository.GetCountriesList(countries, countryIds);
+        await _appDb!.CountriesRepository.GetCountriesList(countries, countryIds, cancellationToken);
 
         // add to countries list in the sequence of countryIds array
         return countryIds.Select(id => countries.First(c => c.Id == id)).Select(
