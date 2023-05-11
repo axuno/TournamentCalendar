@@ -24,6 +24,11 @@ public static class CssName
         /// ~/lib/DateTimePicker/jquery-ui-date-time-picker.min.css
         /// </summary>
         public const string JqueryUiDateTimePickerCss = "~/lib/DateTimePicker/jquery-ui-date-time-picker.min.css";
+
+        /// <summary>
+        /// ~/lib/jquery-validation/jquery-validation-all.min.js
+        /// </summary>
+        public const string FlatpickrCss = "~/lib/flatpickr/flatpickr.css";
     }
 
     public static class General
