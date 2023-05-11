@@ -88,7 +88,7 @@
                     @Html.TextBoxFor(m => m.MaxDistance, new { maxlength = 4, @class = "form-control", style = "width: 5rem" })
                     @Html.ValidationMessageFor(m => m.MaxDistance, null, new { @class = "msg-error-text" })
                     @Html.LabelFor(m => m.CountryId)
-                    @Html.DropDownListFor(m => m.CountryId, Model.GetCountriesList(), new { @class = "form-control", style = "width:12rem" })
+                    @Html.DropDownListFor(m => m.CountryId, await Model.GetCountriesList(), new { @class = "form-control", style = "width:12rem" })
                     @Html.LabelFor(m => m.ZipCode)
                     @Html.TextBoxFor(m => m.ZipCode, new { maxlength = InfoServiceFields.ZipCode.MaxLength, @class = "form-control", style = "width:6rem" })
                     @Html.LabelFor(m => m.City)

@@ -173,11 +173,6 @@ public class Calendar : ControllerBase
                 model.PostedByEmail, model.PostedByName, model.TournamentName);
             return View(ViewName.Calendar.Confirm, confirmationModel);
         }
-        finally
-        {
-            // Updating the calendar requires to clear the cached results.
-            CalendarRepository.PurgeCalendarCaches();
-        }
     }
 
     [HttpGet("approve/{guid?}")]

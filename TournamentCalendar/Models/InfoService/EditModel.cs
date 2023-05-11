@@ -138,12 +138,12 @@ public class EditModel : InfoServiceEntity, IValidatableObject
 
     public string Captcha { get; set; } = string.Empty;
 
-    public IEnumerable<SelectListItem> GetCountriesList()
+    public async Task<IEnumerable<SelectListItem>> GetCountriesList()
     {
         var countryIds = new[] { "DE", "AT", "CH", "LI", "IT", "NL", "BE", "LU", "FR", "PL", "DK", "CZ", "SK" };
 
         var countries = new EntityCollection<CountryEntity>();
-        _appDb!.CountriesRepository.GetCountriesList(countries, countryIds);
+        await _appDb!.CountriesRepository.GetCountriesList(countries, countryIds, CancellationToken.None);
 
         // add to countries list in the sequence of countryIds array
         return countryIds.Select(id => countries.First(c => c.Id == id)).Select(

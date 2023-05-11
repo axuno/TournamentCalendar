@@ -93,7 +93,9 @@ public class CalendarRepository : GenericRepository
     public virtual async Task<bool> SaveEntity<T>(T entity, bool refetchAfterSave) where T : EntityBase2, new()
     {
         using var da = _dbContext.GetNewAdapter();
-        return await da.SaveEntityAsync(entity, refetchAfterSave);
+        var result = await da.SaveEntityAsync(entity, refetchAfterSave);
+        PurgeCalendarCaches();
+        return result;
     }
 
     public virtual async Task<List<CalendarEntity>> GetActiveTournaments(DateTime sinceDate, CancellationToken cancellationToken)
@@ -162,7 +164,7 @@ public class CalendarRepository : GenericRepository
     /// <summary>
     /// Remove tagged result sets from the <see cref="CacheController"/>.
     /// </summary>
-    public static void PurgeCalendarCaches()
+    private static void PurgeCalendarCaches()
     {
         CacheController.PurgeResultsets(CacheTag);
     }
