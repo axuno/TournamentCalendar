@@ -25,6 +25,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using SD.LLBLGen.Pro.ORMSupportClasses;
 using TournamentCalendar.Data;
+using TournamentCalendar.Middleware;
+using Microsoft.AspNetCore.Builder.Extensions;
 
 namespace TournamentCalendar;
 
@@ -135,6 +137,8 @@ public static class WebAppStartup
         services.TryAddSingleton<IDbContext>(dbContext);
         services.AddScoped<IAppDb>(s => s.GetRequiredService<IDbContext>().AppDb);
 
+        services.AddTransient<ClientAbortMiddleware>();
+
         #region *** Add CloudScribeNavigation ***
 
         // CloudscribeNavigation requires:
@@ -244,6 +248,8 @@ public static class WebAppStartup
 
         #region * Setup error handling *
 
+       
+
         // Error handling must be one of the very first things to configure
         if (env.IsProduction())
         {
@@ -257,7 +263,6 @@ public static class WebAppStartup
         }
         else
         {
-            app.UseMiddleware<StackifyMiddleware.RequestTracerMiddleware>();
             app.UseDeveloperExceptionPage();
             app.UseStatusCodePages();
         }
@@ -324,13 +329,15 @@ public static class WebAppStartup
         app.UseAuthentication();
         app.UseAuthorization();
 
+        // Suppress exceptions when the connection is closed by the client
+        app.UseMiddleware<ClientAbortMiddleware>();
         app.UseEndpoints(endpoints =>
         {
             // We use attribute routing,
             // so we don't implement endpoints.MapControllerRoute(...)
             endpoints.MapControllers();
             endpoints.MapRazorPages();
-        });
+        }).UseMiddleware<ClientAbortMiddleware>();
 
         // They will sustain until 31 March 2024
         app.AddPermanentRedirections();
