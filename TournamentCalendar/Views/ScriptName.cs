@@ -2,10 +2,10 @@
 
 public static class ScriptName
 {
-    #region *** Lib scripts ***
+    #region *** Js scripts ***
 
     /// <summary>
-    /// Libs - ~/wwwroot/js
+    /// Js - ~/wwwroot/js
     /// </summary>
     public static class Js
     {
@@ -27,29 +27,19 @@ public static class ScriptName
         public const string BootstrapAllJs = "~/lib/bootstrap/bootstrap-all.min.js";
 
         /// <summary>
+        /// ~/lib/jsnlog/jsnlog.min.js
+        /// </summary>
+        public const string JsNLog = "~/lib/jsnlog/jsnlog.min.js";
+
+        /// <summary>
         /// ~/lib/simple-datatables/simple-datatables.min.js
         /// </summary>
         public const string SimpleDataTablesJs = "~/lib/simple-datatables/simple-datatables.min.js";
-        /// <summary>
-        /// ~/lib/DataTables/dataTables.german.lang.json
-        /// </summary>
-        public const string DatatablesGermanJson = "~/lib/DataTables/dataTables.german.lang.json";
 
         /// <summary>
         /// ~/lib/flatpickr/flatpickr_all.min.js
         /// </summary>
         public const string FlatpickrJs = "~/lib/flatpickr/flatpickr_all.min.js";
-
-        /// <summary>
-        /// ~/lib/jquery-validation/jquery-validation-all.min.js
-        /// </summary>
-        public const string FlatpickrCss = "~/lib/flatpickr/flatpickr.css";
-
-        /// <summary>
-        /// ~/lib/jquery/jquery.min.js
-        /// </summary>
-        public const string JqueryJs = "~/lib/jquery/jquery.min.js";
-
     }
 
     #endregion

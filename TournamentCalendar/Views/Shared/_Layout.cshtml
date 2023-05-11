@@ -64,7 +64,7 @@
     </footer>
 <script src="@Url.Content(ScriptName.Lib.BootstrapAllJs)"></script>
 <jl-javascript-logger-definitions request-id="@ViewContext.HttpContext.TraceIdentifier" />
-<script src="~/lib/jsnlog/jsnlog.min.js"></script>
+<script src="@Url.Content(ScriptName.Lib.JsNLog)"></script>
 @if (IsSectionDefined(SectionName.ScriptStandardSection))
 {@await RenderSectionAsync(SectionName.ScriptStandardSection, false)}
 <environment include="Production"><partial name="_GoogleAnalytics.cshtml" /></environment>

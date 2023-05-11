@@ -37,8 +37,8 @@ public class Error : ControllerBase
 
         if (exceptionFeature?.Error != null)
         {
-            viewModel.OrigPath = exceptionFeature?.Path;
-            viewModel.Exception = exceptionFeature?.Error;
+            viewModel.OrigPath = exceptionFeature.Path;
+            viewModel.Exception = exceptionFeature.Error;
             _logger.LogCritical(viewModel.Exception, "Path: {origPath}", viewModel.OrigPath);
         }
         else
