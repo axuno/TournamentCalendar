@@ -8,8 +8,8 @@
 @using Microsoft.Extensions.Configuration
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @using Calendar = TournamentCalendar.Controllers.Calendar
-@using System.Globalization
 @using System.Threading
+@using System.Globalization
 @{
     ViewContext.ClientValidationEnabled = false;
     var googleConfig = new GoogleConfiguration();
@@ -66,19 +66,19 @@
     <div class="row no-gutters">
         <div class="col-12">
             <div class="row">
-                <div class="col-md-5 col-sm-5 flatpickr" data-input-type="date">
+                <div class="col-md-5 col-sm-5">
                     <label asp-for="@Model.DateFromText"></label>
-                    <div class="input-group" style="width: 11rem;">
-                        <input asp-for="@Model.DateFromText" maxlength="10" class="form-control" placeholder="tt.mm.jjj" data-input title="Maximal 1 Jahr in der Zukunft">
-                        <span class="input-group-append input-group-text" data-toggle><i class="bi bi-calendar3 bi-lg"></i></span>
+                    <div id="@(Model.DateFromText)-c" class="input-group" data-input-type="date" data-td-target-input="nearest" data-td-target-toggle="nearest" style="width: 11rem;">
+                        <input asp-for="@Model.DateFromText" maxlength="10" class="form-control" placeholder="tt.mm.jjj" title="Maximal 1 Jahr in der Zukunft">
+                        <span class="input-group-append input-group-text" data-td-target="@(Model.DateFromText)-c" data-td-toggle="datetimepicker"><i class="bi bi-calendar3 bi-lg"></i></span>
                     </div>
                     <span asp-validation-for="@Model.DateFromText" class="msg-error-text"></span>
                 </div>
-                <div class="col-md-7 col-sm-7 flatpickr" data-input-type="time">
+                <div class="col-md-7 col-sm-7">
                     <label asp-for="@Model.TimeFrom"></label>
-                    <div class="input-group" style="width: 8rem;">
-                        <input asp-for="@Model.TimeFrom" maxlength="5" class="form-control" placeholder="hh:mm" data-input title="Turnierbeginn, oder 00:00 für &quot;unbekannt&quot;">
-                        <span class="input-group-append input-group-text" data-toggle><i class="bi bi-clock bi-lg"></i></span>
+                    <div class="input-group" data-input-type="time" data-td-target-input="nearest" data-td-target-toggle="nearest" style="width: 8rem;">
+                        <input asp-for="@Model.TimeFrom" maxlength="5" class="form-control" placeholder="hh:mm" title="Turnierbeginn, oder 00:00 für &quot;unbekannt&quot;">
+                        <span class="input-group-append input-group-text" data-td-target="@(Model.TimeFrom)-c" data-td-toggle="datetimepicker"><i class="bi bi-clock bi-lg"></i></span>
                     </div>
                     <span asp-validation-for="@Model.TimeFrom" class="msg-error-text"></span>
                 </div>
@@ -86,29 +86,29 @@
         </div>
         <div class="col-12">
             <div class="row">
-                <div class="col-md-5 col-sm-5 flatpickr" data-input-type="date">
+                <div class="col-md-5 col-sm-5">
                     <label asp-for="@Model.DateToText"></label>
-                    <div class="input-group" style="width: 11rem;">
-                        <input asp-for="@Model.DateToText" maxlength="10" class="form-control" placeholder="tt.mm.jjj" data-input>
-                        <span class="input-group-append input-group-text" data-toggle><i class="bi bi-calendar3 bi-lg"></i></span>
+                    <div id="@(Model.DateToText)-c" class="input-group" data-input-type="date" data-td-target-input="nearest" data-td-target-toggle="nearest" style="width: 11rem;">
+                        <input asp-for="@Model.DateToText" maxlength="10" class="form-control" placeholder="tt.mm.jjj" title="Maximal 1 Jahr in der Zukunft">
+                        <span class="input-group-append input-group-text" data-td-target="@(Model.DateToText)-c" data-td-toggle="datetimepicker"><i class="bi bi-calendar3 bi-lg"></i></span>
                     </div>
                     <span asp-validation-for="@Model.DateToText" class="msg-error-text"></span>
                 </div>
-                <div class="col-md-7 col-sm-7 flatpickr" data-input-type="time">
+                <div class="col-md-7 col-sm-7">
                     <label asp-for="@Model.TimeTo"></label>
-                    <div class="input-group" style="width: 8rem;">
-                        <input asp-for="@Model.TimeTo" maxlength="5" class="form-control" placeholder="hh:mm" data-input title="Turnierbeginn, oder 00:00 für &quot;unbekannt&quot;">
-                        <span class="input-group-append input-group-text" data-toggle><i class="bi bi-clock bi-lg"></i></span>
+                    <div class="input-group" data-input-type="time" data-td-target-input="nearest" data-td-target-toggle="nearest" style="width: 8rem;">
+                        <input asp-for="@Model.TimeTo" maxlength="5" class="form-control" placeholder="hh:mm">
+                        <span class="input-group-append input-group-text" data-td-target="@(Model.TimeTo)-c" data-td-toggle="datetimepicker"><i class="bi bi-clock bi-lg"></i></span>
                     </div>
                     <span asp-validation-for="@Model.TimeTo" class="msg-error-text"></span>
                 </div>
             </div>
         </div>
-        <div class="col-12 flatpickr" data-input-type="date">
+        <div class="col-12">
             <label asp-for="@Model.ClosingDateText"></label>
-            <div class="input-group" style="width: 11rem;">
-                <input asp-for="@Model.ClosingDateText" maxlength="10" class="form-control" placeholder="tt.mm.jjj" class="form-control" data-input>
-                <span class="input-group-append input-group-text" data-toggle><i class="bi bi-calendar3 bi-lg"></i></span>
+            <div id="@(Model.ClosingDateText)-c" class="input-group" data-input-type="date" data-td-target-input="nearest" data-td-target-toggle="nearest" style="width: 11rem;">
+                <input asp-for="@Model.ClosingDateText" maxlength="10" class="form-control" placeholder="tt.mm.jjj">
+                <span class="input-group-append input-group-text" data-td-target="@(Model.ClosingDateText)-c" data-td-toggle="datetimepicker"><i class="bi bi-calendar3 bi-lg"></i></span>
             </div>
             <span asp-validation-for="@Model.ClosingDateText" class="msg-error-text"></span>
         </div>
@@ -124,7 +124,6 @@
             <input asp-for="@Model.NumOfTeams" type="text" maxlength="3" class="form-control" style="width:4rem;" title="Max. Anzahl der Mannschaften. 0 = unbekannt bzw. unbegrenzt.">
             <span asp-validation-for="@Model.NumOfTeams" class="msg-error-text"></span>
         </div>
-
         <div class="col-md-5 col-sm-5">
             <label asp-for="@Model.NumPlayersFemale"></label>
             <div class="d-inline-flex">
@@ -337,19 +336,51 @@
 <!-- End Location Modal -->
 @section CssSection
 {
-    <link rel="stylesheet" href="@Url.Content(CssName.Lib.FlatpickrCss)" />
+    <link rel="stylesheet" href="@Url.Content(CssName.Lib.TempusDominusCss)" />
+    <style>
+        /* Settings for light and dark mode */
+        .tempus-dominus-widget {
+            border: 2px solid #c1e0ea !important;
+        }
+        .tempus-dominus-widget .date-container-days .day.active,
+        .tempus-dominus-widget .date-container-months .month.active,
+        .tempus-dominus-widget .date-container-years .year.active {
+            color: #fff;
+            background-color: #3299bb !important;
+        }
+        .tempus-dominus-widget button {
+            color: #fff;
+            background-color: #3299bb;
+            border-color: #3299bb;
+        }
+        /* Settings for light mode only */
+        .tempus-dominus-widget.light .calendar-header {
+            background-color: #c1e0ea !important;
+        }
+        .tempus-dominus-widget.light .date-container-days .dow {
+                height: 30px !important;
+            background-color: #f1fbf9 !important;
+            color: #000 !important;
+            height: 30px !important;
+        }
+        .tempus-dominus-widget.light .toolbar {
+            background-color: #f1fbf9 !important;
+            grid-auto-rows: 30px;
+        }
+    </style>
 }
 @section ScriptStandardSection
 {
-<script type="text/javascript" src="@string.Format("https://maps.googleapis.com/maps/api/js?key={0}&language=de&region=DE", googleConfig.WebApiKey)"></script>
-<script type="text/javascript" src="@Url.Content(ScriptName.Lib.FlatpickrJs)"></script>
-<script type="text/javascript" src="@Url.Content(ScriptName.Js.Location)"></script>
-<script type="text/javascript">
+    <script type="text/javascript" src="@string.Format("https://maps.googleapis.com/maps/api/js?key={0}&language=de&region=DE", googleConfig.WebApiKey)"></script>
+    <script type="text/javascript" src="@Url.Content(ScriptName.Lib.TempusDominusJs)"></script>
+    <script type="text/javascript" src="@Url.Content(ScriptName.Js.Location)"></script>
+    <script type="text/javascript">
     //<![CDATA[
     'use strict';
+
     document.addEventListener('DOMContentLoaded', OnDOMContentLoaded, false);
     function OnDOMContentLoaded() {
-        
+
         document.getElementById('@Html.IdFor(m => m.TournamentName)').focus();
 
         const loc = new Location('@Html.IdFor(m => m.CountryId)', '@Html.IdFor(m => m.PostalCode)', '@Html.IdFor(m => m.City)', '@Html.IdFor(m => m.Street)', 'btnModal', 'mapPlaceholder');
@@ -357,7 +388,7 @@
         document.getElementById('locationModal').addEventListener('shown.bs.modal', (e) => {
             loc.update();
         });
-        
+
         @if (Model.Latitude.HasValue && Model.Longitude.HasValue)
         {
             <text>loc.showLocationOnGoogleMaps(@Model.Latitude.Value.ToString(CultureInfo.InvariantCulture), @Model.Longitude.Value.ToString(CultureInfo.InvariantCulture)); </text>
@@ -371,123 +402,171 @@
             });
         }
 
-        [].forEach.call(document.querySelectorAll('.flatpickr[data-input-type="date"]'), function (el) {
-            const config = {
-                enableTime: false,
-                noCalendar: false,
-                allowInput: true,
-                clickOpens: true,
-                dateFormat: 'd.m.Y',
-                wrap: true,
-                minDate: addDays(new Date(), 0),  // set min date to today for all dates
-                maxDate: addYears(new Date(), 1), // set max date to 1 year from now for all dates
-                onReady: flatpickrReady,
-                'locale': 'de'
-            };
-            const fp = flatpickr(el, config);
-        });
-        
-        function flatpickrReady(selectedDates, dateStr, fp) {
-            const isMobile = document.querySelector('.flatpickr-mobile');
-            if (isMobile) {
-                [].forEach.call(document.querySelectorAll('.flatpickr[data-input-type="date"]'), function (el) {
-                    el.style.width = '13rem';
-                    const icon = el.querySelector('.input-group-append');
-                    if (icon) {
-                        icon.style.display = 'none';
-                    }
-                });
-            }
+        if ('de' === 'de')
+        {
+            // Set the locale, if it's not the default (en):
+            tempusDominus.DefaultOptions.localization = tempusDominus.locales.de.localization;
+            // Hours from 00-23 ('de' default to 'h24')
+            tempusDominus.DefaultOptions.localization.hourCycle = 'h23';
         }
-        
-        function addYears(date, years) {
-            date.setFullYear(date.getFullYear() + years);
-            return date;
+
+        // Change year to 4 digits instead of 2:
+        tempusDominus.DefaultOptions.localization.dayViewHeaderFormat = { month: 'long', year: 'numeric' };
+        @* Does not seem to work on mobiles: tempusDominus.extend(tempusDominus.plugins.bi_one.load); *@
+        tempusDominus.DefaultOptions.display.icons = {
+            time: 'bi bi-clock',
+            date: 'bi bi-calendar',
+            up: 'bi bi-arrow-up',
+            down: 'bi bi-arrow-down',
+            previous: 'bi bi-chevron-left',
+            next: 'bi bi-chevron-right',
+            today: 'bi bi-calendar-check',
+            clear: 'bi bi-trash',
+            close: 'bi bi-x bi-lg'
+        };
+        tempusDominus.DefaultOptions.display.buttons = {
+            today: false,
+            clear: true,
+            close: true
         };
 
-        function addDays(date, days) {
-            date.setDate(date.getDate() + days);
-            return date;
-        };
-        
-        @* Try to set the 'To' and 'Closing' dates when 'From' date changes *@
-        document.getElementById('@Html.IdFor(m => m.DateFromText)').addEventListener('change', function () {
-            var from = document.getElementById('@Html.IdFor(m => m.DateFromText)').value;
-            document.getElementById('@Html.IdFor(m => m.DateToText)').value = from;
-			try {
-                let dateFrom = flatpickr.parseDate(from, "d.m.Y");
-                if (!dateFrom) dateFrom = flatpickr.parseDate(from, "m/d/Y");
-                const closing = document.getElementById('@Html.IdFor(m => m.ClosingDateText)');
-                if(!dateFrom) {
-                    closing.value = '';
-                    return;
-                };
-                let closingDate = addDays(dateFrom, -10); // 10 days before
-                if (closingDate <= Date.now()) closingDate = addDays(Date.now(), 1); // 1 day in the future
-                closing.value = flatpickr.formatDate(closingDate, 'd.m.Y');
-			}
-			catch (e) { }
-		});
-        
-        [].forEach.call(document.querySelectorAll('.flatpickr[data-input-type="time"]'), function (el) {
-            const config = {
-                enableTime: true,
-                noCalendar: true,
-                allowInput: true,
-                clickOpens: true,
-                timeFormat: 'H:i',
-                minuteIncrement: 15,
-                time_24hr: true,
-                wrap: true,
-                //onReady: flatpickrReady,
-                'locale': 'de'
-            };
-            const fp = flatpickr(el, config);
+        [].forEach.call(document.querySelectorAll('[data-input-type="date"]'), function (el) {
+            el._tempusDominus = new tempusDominus.TempusDominus(el, {
+                allowInputToggle: false,
+                localization: {
+                    format: 'L'
+                },
+                display: {
+                    viewMode: 'calendar',
+                    components: {
+                        clock: false
+                    },
+                },
+                restrictions: {
+                    minDate: new tempusDominus.DateTime().manipulate(2, 'date').startOf('date'), // +2 days
+                    maxDate: new tempusDominus.DateTime().manipulate(1, 'year').endOf('date')    // +1 year
+                }
+            });
+
+            fixUncaughtExceptions(el._tempusDominus);
+        });
+
+        [].forEach.call(document.querySelectorAll('[data-input-type="time"]'), function (el) {
+            el._tempusDominus = new tempusDominus.TempusDominus(el, {
+                allowInputToggle: false,
+                stepping: 15,
+                localization: {
+                    format: 'LT'
+                },
+                display: {
+                    viewMode: 'clock',
+                    components: {
+                        decades: false,
+                        year: false,
+                        month: false,
+                        date: false,
+                        hours: true,
+                        minutes: true,
+                        seconds: false
+                    },
+                    buttons: {
+                        today: false,
+                        clear: true,
+                        close: true
+                    }
+                }
+            });
+
+            fixUncaughtExceptions(el._tempusDominus);
         });
         
+        /**
+         * TempusDominus v6.7.7 throws when illegal dates/times
+         * are entered. This workaround catches the exception by
+         * overriding the default 'parseInput' method.
+         * See: https://github.com/Eonasdan/tempus-dominus/discussions/2656#discussioncomment-5713755
+         * param {tempusDominus.TempusDominus} widget - The widget instance to be fixed.
+         */
+        function fixUncaughtExceptions (widget) {
+            widget.dates.buggyParseInput = widget.dates.parseInput;
+            widget.dates.parseInput = (input) => {
+                try {
+                    return widget.dates.buggyParseInput(input);
+                }
+                catch (err) {
+                    widget.dates.clear();
+                }
+            };
+        }
+
         // Date/Time popups can be closed by click on the toggle element or by Escape key
         document.addEventListener('keydown', function (event) {
             if (event.keyCode !== 27) return;
-            [].forEach.call(document.querySelectorAll('.flatpickr-input.active'), function (el) {
-                const fp = el.parentElement.parentElement._flatpickr;
-                if (fp)
-                {
-                    fp.close();
+            [].forEach.call(document.querySelectorAll('[data-input-type]'), function (el) {
+                const td = el._tempusDominus;
+                if (td) {
+                    td.hide();
                 }
             });
+        });
+
+        @* Try to set the 'To' and 'Closing' dates when 'From' date changes *@
+        document.getElementById('@Html.IdFor(m => m.DateFromText)').addEventListener('change', function () {
+            const from = document.getElementById('@Html.IdFor(m => m.DateFromText)').parentElement._tempusDominus;
+            const to = document.getElementById('@Html.IdFor(m => m.DateToText)').parentElement._tempusDominus;
+            const closing = document.getElementById('@Html.IdFor(m => m.ClosingDateText)').parentElement._tempusDominus;
+            if (from.dates.picked.length == 0)
+            {
+                to.dates.clear();
+                closing.dates.clear();
+                return;
+            }
+            to.dates.setValue(from.dates.picked[0], to.dates.lastPickedIndex);
+            try {
+                const dateFrom = from.dates.picked[0];
+                let closingDate = dateFrom.clone.manipulate(-10, 'date'); // 10 days before
+                const tomorrow = new tempusDominus.DateTime().manipulate(1, 'date');
+                if (closingDate < tomorrow) {
+                    closingDate = dateFrom.clone.manipulate(-1, 'date');
+                }
+                closing.dates.setValue(closingDate, closing.dates.lastPickedIndex);
+            }
+            catch {
+                // no action
+            }
         });
 
         // Modify number of males after changing the number of females
         document.getElementById('@Html.IdFor(m => m.MinMaxFemale)').addEventListener('change', function () {
             const minMaxMale = document.getElementById('@Html.IdFor(m => m.MinMaxMale)');
             switch (this.value) {
-				case '0':
+                case '0':
                     minMaxMale.value = 0;
-					break;
-				case '1':
+                    break;
+                case '1':
                     minMaxMale.value = 2;
-					break;
-				case '2':
+                    break;
+                case '2':
                     minMaxMale.value = 1;
-					break;
+                    break;
             }
-		});
-        
+        });
+
         // Modify number of females after changing the number of males
         document.getElementById('@Html.IdFor(m => m.MinMaxMale)').addEventListener('change', function () {
             const minMaxFemale = document.getElementById('@Html.IdFor(m => m.MinMaxFemale)');
             switch (this.value) {
-				case '0':
+                case '0':
                     minMaxFemale.value = 0;
-					break;
-				case '1':
+                    break;
+                case '1':
                     minMaxFemale.value = 2;
-		    			break;
-				case '2':
+                    break;
+                case '2':
                     minMaxFemale.value = 1;
-					break;
+                    break;
             }
-		});
+        });
 	};
     //]]>
     </script>
