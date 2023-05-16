@@ -77,7 +77,8 @@ module.exports = function (grunt) {
                 nonull: true
             },
             bootstrap_js_all: {
-                src: ["node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"],
+                src: ["node_modules/@popperjs/core/dist/umd/popper.min.js",
+                      "node_modules/bootstrap/dist/js/bootstrap.min.js"],
                 dest: "wwwroot/lib/bootstrap/bootstrap-all.min.js",
                 nonull: true
             },
@@ -98,16 +99,16 @@ module.exports = function (grunt) {
                 dest: "wwwroot/lib/simple-datatables/simple-datatables.css",
                 nonull: true
             },
-            flatpickr_js: {
-                src: ["node_modules/flatpickr/dist/flatpickr.min.js", 
-                    "node_modules/flatpickr/dist/l10n/default.js", 
-                    "node_modules/flatpickr/dist/l10n/de.js"],
-                dest: "wwwroot/lib/flatpickr/flatpickr_all.min.js",
+            tempus_dominus_js: {
+                src: ["node_modules/@eonasdan/tempus-dominus/dist/js/tempus-dominus.min.js",
+                "node_modules/@eonasdan/tempus-dominus/dist/locales/de.js",
+                "node_modules/@eonasdan/tempus-dominus/dist/plugins/bi-one.js"],
+                dest: "wwwroot/lib/tempus-dominus/tempus-dominus.all.js",
                 nonull: true
             },
-            flatpickr_css: {
-                src: ["Styles/flatpickr/flatpickr_custom.css"],
-                dest: "wwwroot/lib/flatpickr/flatpickr.css",
+            tempus_dominus_css: {
+                src: ["node_modules/@eonasdan/tempus-dominus/dist/css/tempus-dominus.min.css"],
+                dest: "wwwroot/lib/tempus-dominus/tempus-dominus.min.css",
                 nonull: true
             }
         },
@@ -142,5 +143,5 @@ module.exports = function (grunt) {
     });
 
     grunt.registerTask("dev", ["watch"]);
-    grunt.registerTask("prod", ["sass", "postcss", "concat", "copy"]);
+    grunt.registerTask("prod", ["sass", "postcss", "uglify", "concat", "copy"]);
 };

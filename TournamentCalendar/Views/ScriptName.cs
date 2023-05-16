@@ -37,9 +37,9 @@ public static class ScriptName
         public const string SimpleDataTablesJs = "~/lib/simple-datatables/simple-datatables.min.js";
 
         /// <summary>
-        /// ~/lib/flatpickr/flatpickr_all.min.js
+        /// "~/lib/tempus-dominus/tempus-dominus.all.js
         /// </summary>
-        public const string FlatpickrJs = "~/lib/flatpickr/flatpickr_all.min.js";
+        public const string TempusDominusJs = "~/lib/tempus-dominus/tempus-dominus.all.js";
     }
 
     #endregion

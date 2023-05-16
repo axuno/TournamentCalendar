@@ -21,14 +21,9 @@ public static class CssName
         public const string SimpleDataTablesCss = "~/lib/simple-datatables/simple-datatables.css";
 
         /// <summary>
-        /// ~/lib/DateTimePicker/jquery-ui-date-time-picker.min.css
+        /// ~/lib/tempus-dominus/tempus-dominus.min.css
         /// </summary>
-        public const string JqueryUiDateTimePickerCss = "~/lib/DateTimePicker/jquery-ui-date-time-picker.min.css";
-
-        /// <summary>
-        /// ~/lib/jquery-validation/jquery-validation-all.min.js
-        /// </summary>
-        public const string FlatpickrCss = "~/lib/flatpickr/flatpickr.css";
+        public const string TempusDominusCss = "~/lib/tempus-dominus/tempus-dominus.min.css";
     }
 
     public static class General

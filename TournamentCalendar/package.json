@@ -26,7 +26,8 @@
         "pixrem": "5.0.0",
         "postcss": "^8.4.23",
         "simple-datatables": "7.2.0",
-        "flatpickr": "^4.6.13"
+        "@eonasdan/tempus-dominus": "6.7.7",
+        "@popperjs/core": "2.11.7"
     },
     "dependencies": {
         "npm-install-peers": "^1.2.1"

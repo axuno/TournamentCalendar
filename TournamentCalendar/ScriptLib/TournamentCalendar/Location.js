@@ -37,9 +37,11 @@ class Location {
         if (this.isAddressEntered) {
             this.btnMapModalEle.removeAttribute('disabled');
             this.btnMapModalEle.style.cursor = 'pointer';
+			this.btnMapModalEle.style.pointerEvents = 'auto';
         } else {
             this.btnMapModalEle.setAttribute('disabled', 'disabled');
             this.btnMapModalEle.style.cursor = 'not-allowed';
+			this.btnMapModalEle.style.pointerEvents = 'all'; /* Needed to show the disabled cursor with BS5 - see https://github.com/twbs/bootstrap/issues/16088 */
         }
     }
 
@@ -87,12 +89,13 @@ class Location {
         // Example for async/await: https://gabrieleromanato.name/javascript-how-to-use-the-google-maps-api-with-promises-and-async-await
         const address = this.getAddress(true);
         var response = await this.geocoder.geocode({ 'address': address })
-        if (response.results[0]) {
-            const latitude = response.results[0].geometry.location.lat();
-            const longitude = response.results[0].geometry.location.lng();
+        const results = response.results;
+        if (Array.isArray(results)) {
+            const latitude = results[0].geometry.location.lat();
+            const longitude = results[0].geometry.location.lng();
             return [latitude, longitude];
         } else {
-            return null;
+            throw new Error('Error getting location from Google');
         }
     }
 

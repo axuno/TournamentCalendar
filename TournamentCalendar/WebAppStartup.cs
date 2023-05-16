@@ -337,7 +337,7 @@ public static class WebAppStartup
             // so we don't implement endpoints.MapControllerRoute(...)
             endpoints.MapControllers();
             endpoints.MapRazorPages();
-        }).UseMiddleware<ClientAbortMiddleware>();
+        });
 
         // They will sustain until 31 March 2024
         app.AddPermanentRedirections();
