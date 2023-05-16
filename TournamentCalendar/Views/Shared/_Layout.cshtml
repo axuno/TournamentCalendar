@@ -24,8 +24,8 @@
     <meta name="msapplication-config" content="/favicon/browserconfig.xml">
     <meta name="theme-color" content="#ffffff">
     <!-- favicons end -->
-    <link rel="stylesheet" href="@Url.Content(CssName.Lib.BootstrapAllCss)" />
-    <link rel="stylesheet" href="@Url.Content(CssName.General.SiteCss)" />
+    <link rel="stylesheet" href="@Url.Content(CssName.Lib.BootstrapAllCss)" asp-append-version="true"/>
+    <link rel="stylesheet" href="@Url.Content(CssName.General.SiteCss)" asp-append-version="true"/>
     @if (IsSectionDefined(SectionName.CssSection))
     {@await RenderSectionAsync(SectionName.CssSection, false)}
     @if (IsSectionDefined(SectionName.ScriptHeadSection))
@@ -62,9 +62,9 @@
             &copy; 2000-@DateTime.Now.Year, powered by <b><a href="https://www.axuno.net/" style="text-decoration: none">axuno</a></b>
         </div>
     </footer>
-<script src="@Url.Content(ScriptName.Lib.BootstrapAllJs)"></script>
+<script src="@Url.Content(ScriptName.Lib.BootstrapAllJs)" asp-append-version="true"></script>
 <jl-javascript-logger-definitions request-id="@ViewContext.HttpContext.TraceIdentifier" />
-    <script src="@Url.Content(ScriptName.Lib.JsNLog)"></script>
+<script src="@Url.Content(ScriptName.Lib.JsNLog)" asp-append-version="true"></script>
 @if (IsSectionDefined(SectionName.ScriptStandardSection))
 {@await RenderSectionAsync(SectionName.ScriptStandardSection, false)}
 <environment include="Production"><partial name="_GoogleAnalytics.cshtml" /></environment>
