@@ -372,8 +372,8 @@
 @section ScriptStandardSection
 {
     <script type="text/javascript" src="@string.Format("https://maps.googleapis.com/maps/api/js?key={0}&language=de&region=DE", googleConfig.WebApiKey)"></script>
-    <script type="text/javascript" src="@Url.Content(ScriptName.Lib.TempusDominusJs)"></script>
-    <script type="text/javascript" src="@Url.Content(ScriptName.Js.Location)"></script>
+    <script type="text/javascript" src="@Url.Content(ScriptName.Lib.TempusDominusJs)" asp-append-version="true"></script>
+    <script type="text/javascript" src="@Url.Content(ScriptName.Js.Location)" asp-append-version="true"></script>
     <script type="text/javascript">
     //<![CDATA[
     'use strict';
@@ -432,6 +432,7 @@
 
         [].forEach.call(document.querySelectorAll('[data-input-type="date"]'), function (el) {
             el._tempusDominus = new tempusDominus.TempusDominus(el, {
+                container: el,
                 allowInputToggle: false,
                 localization: {
                     format: 'L'
@@ -453,6 +454,7 @@
 
         [].forEach.call(document.querySelectorAll('[data-input-type="time"]'), function (el) {
             el._tempusDominus = new tempusDominus.TempusDominus(el, {
+                container: el,
                 allowInputToggle: false,
                 stepping: 15,
                 localization: {
