@@ -49,27 +49,27 @@
         </legend>
         <div class="row">
             <div class="col-sm-12">
-                @Html.LabelFor(m => m.Email)
+                @Html.LabelFor(m => m.Email, new { @class = "form-label" })
                 @Html.TextBoxFor(m => m.Email, new { maxlength = InfoServiceFields.Email.MaxLength, @class = "form-control input-required" })
                 @Html.ValidationMessageFor(m => m.Email, null, new { @class = "msg-error-text" })
-                @Html.LabelFor(m => m.Gender)
+                @Html.LabelFor(m => m.Gender, new { @class = "form-label" })
                 @Html.DropDownListFor(m => m.Gender, Model.GetGenderList(), new { @class = "input-required form-control", style = "width:10rem" })
                 @Html.ValidationMessageFor(m => m.Gender, null, new { @class = "msg-error-text" })
-                @Html.LabelFor(m => m.Title)
+                @Html.LabelFor(m => m.Title, new { @class = "form-label" })
                 @Html.TextBoxFor(m => m.Title, new { maxlength = InfoServiceFields.Title.MaxLength, @class = "form-control" })
                 @Html.ValidationMessageFor(m => m.Title, null, new { @class = "msg-error-text" })
-                @Html.LabelFor(m => m.FirstName)
+                @Html.LabelFor(m => m.FirstName, new { @class = "form-label" })
                 @Html.TextBoxFor(m => m.FirstName, new { maxlength = InfoServiceFields.FirstName.MaxLength, @class = "form-control input-required" })
                 @Html.ValidationMessageFor(m => m.FirstName, null, new { @class = "msg-error-text" })
-                @Html.LabelFor(m => m.Nickname)
+                @Html.LabelFor(m => m.Nickname, new { @class = "form-label" })
                 @Html.TextBoxFor(m => m.Nickname, new { maxlength = InfoServiceFields.Nickname.MaxLength, @class = "form-control" })
                 @Html.ValidationMessageFor(m => m.Nickname, null, new { @class = "msg-error-text" })
-                @Html.LabelFor(m => m.LastName)
+                @Html.LabelFor(m => m.LastName, new { @class = "form-label" })
                 @Html.TextBoxFor(m => m.LastName, new { maxlength = InfoServiceFields.LastName.MaxLength, @class = "form-control input-required" })
                 @Html.ValidationMessageFor(m => m.LastName, null, new { @class = "msg-error-text" })
-                @Html.LabelFor(m => m.ClubName)
+                @Html.LabelFor(m => m.ClubName, new { @class = "form-label" })
                 @Html.TextBoxFor(m => m.ClubName, new { maxlength = InfoServiceFields.ClubName.MaxLength, @class = "form-control" })
-                @Html.LabelFor(m => m.TeamName)
+                @Html.LabelFor(m => m.TeamName, new { @class = "form-label" })
                 @Html.TextBoxFor(m => m.TeamName, new { maxlength = InfoServiceFields.TeamName.MaxLength, @class = "form-control" })
             </div>
         </div>
@@ -80,20 +80,22 @@
         </legend>
         <div class="row">
             <div class="col">
-                @Html.CheckBoxFor(m => m.IsAddressEntered)
-                @Html.LabelFor(m => m.IsAddressEntered, null, new { @class = "form-check-label", style = "display: inline" })
+                <div class="form-check">
+                    @Html.CheckBoxFor(m => m.IsAddressEntered, new { @class = "form-check-input" })
+                    @Html.LabelFor(m => m.IsAddressEntered, null, new { @class = "form-check-label" })
+                </div>
                 @Html.ValidationMessageFor(m => m.IsAddressEntered, null, new { @class = "msg-error-text" })
                 <section id="AddressSection">
-                    <label for="@Html.NameFor(m => m.MaxDistance)">Maximale Entfernung in Kilometern von nachfolgendem Standort (ab 50 km)</label>
+                    <label for="@Html.NameFor(m => m.MaxDistance)" class="form-label">Maximale Entfernung in Kilometern von nachfolgendem Standort (ab 50 km)</label>
                     @Html.TextBoxFor(m => m.MaxDistance, new { maxlength = 4, @class = "form-control", style = "width: 5rem" })
                     @Html.ValidationMessageFor(m => m.MaxDistance, null, new { @class = "msg-error-text" })
-                    @Html.LabelFor(m => m.CountryId)
+                    @Html.LabelFor(m => m.CountryId, new { @class = "form-label" })
                     @Html.DropDownListFor(m => m.CountryId, await Model.GetCountriesList(), new { @class = "form-control", style = "width:12rem" })
-                    @Html.LabelFor(m => m.ZipCode)
+                    @Html.LabelFor(m => m.ZipCode, new { @class = "form-label" })
                     @Html.TextBoxFor(m => m.ZipCode, new { maxlength = InfoServiceFields.ZipCode.MaxLength, @class = "form-control", style = "width:6rem" })
-                    @Html.LabelFor(m => m.City)
+                    @Html.LabelFor(m => m.City, new { @class = "form-label" })
                     @Html.TextBoxFor(m => m.City, new { maxlength = InfoServiceFields.City.MaxLength, @class = "form-control" })
-                    @Html.LabelFor(m => m.Street)
+                    @Html.LabelFor(m => m.Street, new { @class = "form-label" })
                     @Html.TextBoxFor(m => m.Street, new { maxlength = InfoServiceFields.Street.MaxLength, @class = "form-control" })
                     <!-- Button trigger modal -->
                     <div class="pt-3">
@@ -149,7 +151,7 @@
                 <div>
                     <img id="CaptchaImage" class="rounded" src="@Url.Action(nameof(Captcha.Index), nameof(Captcha))@("?guid=" + Guid.NewGuid())" alt="Captcha" style="vertical-align: bottom; width: 12rem" />
                     <span id="ReloadCaptcha" style="cursor: pointer"><i class="bi bi-arrow-clockwise bi-2x" style="margin: 0 5px 0 5px" title="Bild neu laden"></i>Bild neu laden</span><br />
-                    @Html.LabelFor(m => m.Captcha)
+                    @Html.LabelFor(m => m.Captcha, new { @class="form-label" })
                 </div>
                 @Html.TextBoxFor(m => m.Captcha, new { maxlength = "7", @class = "form-control input-required", style = "width:12rem" })
                 @Html.ValidationMessageFor(m => m.Captcha, null, new { @class = "msg-error-text" })

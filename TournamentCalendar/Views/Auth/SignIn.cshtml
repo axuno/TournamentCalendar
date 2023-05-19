@@ -8,27 +8,27 @@
     ViewContext.ClientValidationEnabled = false;
 }
 <h2 class="h2">@ViewData["Title"]</h2>
-<div class="col-md-8 col-sm-10 col-12 pl-0 pb-3">
-    <form asp-controller="@nameof(Auth)" asp-action="@nameof(Auth.SignIn)" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" role="form" class="pl-0">
+<div class="col-md-8 col-sm-10 col-12 ps-0 pb-3">
+    <form asp-controller="@nameof(Auth)" asp-action="@nameof(Auth.SignIn)" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" role="form" class="ps-0">
         <asp-validation-summary></asp-validation-summary>
         <div asp-validation-summary="All" class="validation-summary-errors msg-validation rounded">
             <b>Die Eingaben enthalten Fehler:</b>
         </div>
         <div class="form-group">
-            <label asp-for="EmailOrUsername"></label>
+            <label asp-for="EmailOrUsername" class="form-label"></label>
             <div class="input-group">
                 <input asp-for="EmailOrUsername" class="form-control" required="required" />
-                <span class="input-group-append input-group-text">
+                <span class="input-group-text">
                     <i class="bi bi-person-fill" style="font-size:1.2em"></i>
                 </span>
             </div>
             <span asp-validation-for="EmailOrUsername" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label asp-for="Password"></label>
+            <label asp-for="Password" class="form-label"></label>
             <div class="input-group">
                 <input asp-for="Password" class="form-control" required="required" type="password" />
-                <span class="input-group-append input-group-text">
+                <span class="input-group-text">
                     <i class="bi bi-unlock-fill" style="font-size:1.2em"></i>
                 </span>
             </div>

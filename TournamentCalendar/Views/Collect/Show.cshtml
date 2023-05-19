@@ -20,10 +20,10 @@
             @if (Model.CollectionDates.Length > 0)
             {
                 <h4 class="h4">Gesammelte Einträge im Vergleich zum markierten Datum</h4>
-                <a class="btn btn-primary mr-2 mb-3@(DateTime.MinValue == Model.LastCollectionDate ? " active" : "")" href="@Url.Action(nameof(Collect.Show), nameof(Collect), new {id = DateTime.MinValue.ToString("yyyy-MM-dd")})" role="button">Alle aktuellen</a>
+                <a class="btn btn-primary me-2 mb-3@(DateTime.MinValue == Model.LastCollectionDate ? " active" : "")" href="@Url.Action(nameof(Collect.Show), nameof(Collect), new {id = DateTime.MinValue.ToString("yyyy-MM-dd")})" role="button">Alle aktuellen</a>
                 foreach (var date in Model.CollectionDates)
                 {
-                    <a class="btn btn-primary mr-2 mb-3@(date == Model.LastCollectionDate ? " active" : "")" href="@Url.Action(nameof(Collect.Show), nameof(Collect), new {id = date.ToString("yyyy-MM-dd")})" role="button">@date.ToString("dd.MM.yyyy")</a>
+                    <a class="btn btn-primary me-2 mb-3@(date == Model.LastCollectionDate ? " active" : "")" href="@Url.Action(nameof(Collect.Show), nameof(Collect), new {id = date.ToString("yyyy-MM-dd")})" role="button">@date.ToString("dd.MM.yyyy")</a>
                 }
             }
             else
