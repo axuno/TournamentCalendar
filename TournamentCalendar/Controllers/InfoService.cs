@@ -43,6 +43,12 @@ public class InfoService : ControllerBase
         return View(ViewName.InfoService.Edit, new EditModel(_appDb) { EditMode = EditMode.New });
     }
 
+    [HttpGet(nameof(Entry))]
+    public IActionResult Entry()
+    {
+        return RedirectToAction(nameof(Register));
+    }
+
     [HttpGet("entry/{guid}")]
     public IActionResult Entry(string guid)
     {

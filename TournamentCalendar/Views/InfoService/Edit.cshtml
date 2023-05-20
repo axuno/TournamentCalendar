@@ -49,28 +49,30 @@
         </legend>
         <div class="row">
             <div class="col-sm-12">
-                @Html.LabelFor(m => m.Email, new { @class = "form-label" })
-                @Html.TextBoxFor(m => m.Email, new { maxlength = InfoServiceFields.Email.MaxLength, @class = "form-control input-required" })
-                @Html.ValidationMessageFor(m => m.Email, null, new { @class = "msg-error-text" })
-                @Html.LabelFor(m => m.Gender, new { @class = "form-label" })
-                @Html.DropDownListFor(m => m.Gender, Model.GetGenderList(), new { @class = "input-required form-control", style = "width:10rem" })
-                @Html.ValidationMessageFor(m => m.Gender, null, new { @class = "msg-error-text" })
-                @Html.LabelFor(m => m.Title, new { @class = "form-label" })
-                @Html.TextBoxFor(m => m.Title, new { maxlength = InfoServiceFields.Title.MaxLength, @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.Title, null, new { @class = "msg-error-text" })
-                @Html.LabelFor(m => m.FirstName, new { @class = "form-label" })
-                @Html.TextBoxFor(m => m.FirstName, new { maxlength = InfoServiceFields.FirstName.MaxLength, @class = "form-control input-required" })
-                @Html.ValidationMessageFor(m => m.FirstName, null, new { @class = "msg-error-text" })
-                @Html.LabelFor(m => m.Nickname, new { @class = "form-label" })
-                @Html.TextBoxFor(m => m.Nickname, new { maxlength = InfoServiceFields.Nickname.MaxLength, @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.Nickname, null, new { @class = "msg-error-text" })
-                @Html.LabelFor(m => m.LastName, new { @class = "form-label" })
-                @Html.TextBoxFor(m => m.LastName, new { maxlength = InfoServiceFields.LastName.MaxLength, @class = "form-control input-required" })
-                @Html.ValidationMessageFor(m => m.LastName, null, new { @class = "msg-error-text" })
-                @Html.LabelFor(m => m.ClubName, new { @class = "form-label" })
-                @Html.TextBoxFor(m => m.ClubName, new { maxlength = InfoServiceFields.ClubName.MaxLength, @class = "form-control" })
-                @Html.LabelFor(m => m.TeamName, new { @class = "form-label" })
-                @Html.TextBoxFor(m => m.TeamName, new { maxlength = InfoServiceFields.TeamName.MaxLength, @class = "form-control" })
+                <label asp-for="@Model.Email" class="form-label"></label>
+                <input asp-for="@Model.Email" maxlength="@InfoServiceFields.Email.MaxLength" class="form-control input-required">
+                <span asp-validation-for="@Model.Email" class="msg-error-text"></span>
+                <label asp-for="@Model.Gender" class="form-label"></label>
+                <select asp-for="@Model.Gender" asp-items="Model.GetGenderList()" class="form-select input-required" style="width: 10rem"></select>
+                <span asp-validation-for="@Model.Gender" class="msg-error-text"></span>
+                <label asp-for="@Model.Title" class="form-label"></label>
+                <input asp-for="@Model.Title" maxlength="@InfoServiceFields.Title.MaxLength" class="form-control">
+                <span asp-validation-for="@Model.Title" class="msg-error-text"></span>
+                <label asp-for="@Model.FirstName" class="form-label"></label>
+                <input asp-for="@Model.FirstName" maxlength="@InfoServiceFields.FirstName.MaxLength" class="form-control input-required">
+                <span asp-validation-for="@Model.FirstName" class="msg-error-text"></span>
+                <label asp-for="@Model.Nickname" class="form-label"></label>
+                <input asp-for="@Model.Nickname" maxlength="@InfoServiceFields.Nickname.MaxLength" class="form-control">
+                <span asp-validation-for="@Model.Nickname" class="msg-error-text"></span>
+                <label asp-for="@Model.LastName" class="form-label"></label>
+                <input asp-for="@Model.LastName" maxlength="@InfoServiceFields.LastName.MaxLength" class="form-control input-required">
+                <span asp-validation-for="@Model.LastName" class="msg-error-text"></span>
+                <label asp-for="@Model.ClubName" class="form-label"></label>
+                <input asp-for="@Model.ClubName" maxlength="@InfoServiceFields.ClubName.MaxLength" class="form-control">
+                <span asp-validation-for="@Model.ClubName" class="msg-error-text"></span>
+                <label asp-for="@Model.TeamName" class="form-label"></label>
+                <input asp-for="@Model.TeamName" maxlength="@InfoServiceFields.TeamName.MaxLength" class="form-control">
+                <span asp-validation-for="@Model.TeamName" class="msg-error-text"></span>
             </div>
         </div>
     </fieldset>
@@ -81,22 +83,26 @@
         <div class="row">
             <div class="col">
                 <div class="form-check">
-                    @Html.CheckBoxFor(m => m.IsAddressEntered, new { @class = "form-check-input" })
-                    @Html.LabelFor(m => m.IsAddressEntered, null, new { @class = "form-check-label" })
+                    <input asp-for="@Model.IsAddressEntered" type="checkbox" class="form-check-input" />
+                    <label asp-for="@Model.IsAddressEntered" class="form-check-label"></label>
                 </div>
-                @Html.ValidationMessageFor(m => m.IsAddressEntered, null, new { @class = "msg-error-text" })
-                <section id="AddressSection">
-                    <label for="@Html.NameFor(m => m.MaxDistance)" class="form-label">Maximale Entfernung in Kilometern von nachfolgendem Standort (ab 50 km)</label>
-                    @Html.TextBoxFor(m => m.MaxDistance, new { maxlength = 4, @class = "form-control", style = "width: 5rem" })
-                    @Html.ValidationMessageFor(m => m.MaxDistance, null, new { @class = "msg-error-text" })
-                    @Html.LabelFor(m => m.CountryId, new { @class = "form-label" })
-                    @Html.DropDownListFor(m => m.CountryId, await Model.GetCountriesList(), new { @class = "form-control", style = "width:12rem" })
-                    @Html.LabelFor(m => m.ZipCode, new { @class = "form-label" })
-                    @Html.TextBoxFor(m => m.ZipCode, new { maxlength = InfoServiceFields.ZipCode.MaxLength, @class = "form-control", style = "width:6rem" })
-                    @Html.LabelFor(m => m.City, new { @class = "form-label" })
-                    @Html.TextBoxFor(m => m.City, new { maxlength = InfoServiceFields.City.MaxLength, @class = "form-control" })
-                    @Html.LabelFor(m => m.Street, new { @class = "form-label" })
-                    @Html.TextBoxFor(m => m.Street, new { maxlength = InfoServiceFields.Street.MaxLength, @class = "form-control" })
+                <span asp-validation-for="@Model.IsAddressEntered" class="msg-error-text"></span>
+                <section id="AddressSection" class="@(Model.IsAddressEntered ? "collapse show" : "collapse")">
+                    <label asp-for="@Model.MaxDistance" class="form-label">Maximale Entfernung in Kilometern von nachfolgendem Standort (ab 50 km)</label>
+                    <input asp-for="@Model.MaxDistance" type="text" maxlength="4" class="form-control" style="width: 5rem">
+                    <span asp-validation-for="@Model.MaxDistance" class="msg-error-text"></span>
+                    <label asp-for="@Model.CountryId" class="form-label"></label>
+                    <select asp-for="@Model.CountryId" asp-items="(await Model.GetCountriesList())" class="form-select" style="width: 12rem"></select>
+                    <span asp-validation-for="@Model.CountryId" class="msg-error-text"></span>
+                    <label asp-for="@Model.ZipCode" class="form-label"></label>
+                    <input asp-for="@Model.ZipCode" maxlength="@InfoServiceFields.ZipCode.MaxLength" class="form-control" style="width:6rem">
+                    <span asp-validation-for="@Model.ZipCode" class="msg-error-text"></span>
+                    <label asp-for="@Model.City" class="form-label"></label>
+                    <input asp-for="@Model.City" maxlength="@InfoServiceFields.City.MaxLength" class="form-control">
+                    <span asp-validation-for="@Model.City" class="msg-error-text"></span>
+                    <label asp-for="@Model.Street" class="form-label"></label>
+                    <input asp-for="@Model.Street" maxlength="@InfoServiceFields.Street.MaxLength" class="form-control">
+                    <span asp-validation-for="@Model.Street" class="msg-error-text"></span>
                     <!-- Button trigger modal -->
                     <div class="pt-3">
                         <button type="button" id="btnModal" class="btn btn-primary" disabled="disabled" data-bs-toggle="modal" data-bs-target="#locationModal">
@@ -124,13 +130,10 @@
             </div>
         </div>
     </fieldset>
-
     <fieldset class="rounded">
-
         <legend class="rounded">
             Speichern
         </legend>
-
         <div class="row">
             <div class="col-sm-12">
                 <div>
@@ -151,19 +154,17 @@
                 <div>
                     <img id="CaptchaImage" class="rounded" src="@Url.Action(nameof(Captcha.Index), nameof(Captcha))@("?guid=" + Guid.NewGuid())" alt="Captcha" style="vertical-align: bottom; width: 12rem" />
                     <span id="ReloadCaptcha" style="cursor: pointer"><i class="bi bi-arrow-clockwise bi-2x" style="margin: 0 5px 0 5px" title="Bild neu laden"></i>Bild neu laden</span><br />
-                    @Html.LabelFor(m => m.Captcha, new { @class="form-label" })
+                    <label asp-for="@Model.Captcha" class="form-label"></label>
                 </div>
-                @Html.TextBoxFor(m => m.Captcha, new { maxlength = "7", @class = "form-control input-required", style = "width:12rem" })
-                @Html.ValidationMessageFor(m => m.Captcha, null, new { @class = "msg-error-text" })
+                <input asp-for="@Model.Captcha" maxlength="7" class="form-control input-required" style="width:12rem">
+                <span asp-validation-for="@Model.Captcha" class="msg-error-text"></span>
             </div>
             <div class="col-md-7 col-sm-7 mt-3">
-                @* class="cancel" will stop jquery.validate from validation *@
                 <input type="submit" name="save" value="Eintrag speichern" class="col-12 btn btn-lg btn-success" />
             </div>
             <div class="col-md-5 col-sm-5 mt-3">
                 <input type="submit" formaction="@Url.Action(nameof(InfoService.Unsubscribe), nameof(InfoService))" name="unsubscribe" value="Von Volley-News abmelden" @if ((Model.EditMode == EditMode.New) || (Model.ConfirmedOn.HasValue && Model.UnSubscribedOn.HasValue)) { <text> disabled="disabled" </text> } class="cancel col-12 btn btn-lg btn-success" />
             </div>
-
         </div>
     </fieldset>
 }
@@ -216,19 +217,19 @@
             }
 
             enableDisableInputFields() {
-                const allFormControls = this.addressSectionEle.querySelectorAll('.form-control');
+                const allFormControls = this.addressSectionEle.querySelectorAll('.form-control, .form-select');
                 @* Animate with Bootstrap 5 *@
                 const bsCollapse = new bootstrap.Collapse(this.addressSectionEle, {
                     toggle: false
                 })
 
                 if (this.enterAddrToggleEle.checked) {
-                    allFormControls.forEach(input => { input.removeAttribute('disabled'); });
+                    allFormControls.forEach(element => { element.removeAttribute('disabled'); });
                     bsCollapse.show();
                 }
                 else {
                     bsCollapse.hide();
-                    allFormControls.forEach(input => { input.setAttribute('disabled', 'disabled'); });
+                    allFormControls.forEach(element => { element.setAttribute('disabled', 'disabled'); });
                 }
             }
         }
