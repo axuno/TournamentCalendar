@@ -110,6 +110,7 @@ public static class WebAppStartup
             .AddDataAnnotationsLocalization()
             .AddControllersAsServices()
             .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
+            .AddViewOptions(options => options.HtmlHelperOptions.ClientValidationEnabled = false)
             .AddMvcOptions(options =>
             {
                 // Insert e.g. custom model binder providers
