@@ -2,36 +2,35 @@
 @model TournamentCalendar.Models.Contact.ContactModel
 <div class="pb-2">
     <h3 class="h3">Nachricht an volleyball-turnier.de</h3>
-    @using (Html.BeginForm(nameof(TournamentCalendar.Controllers.Contact.Message), nameof(TournamentCalendar.Controllers.Contact), FormMethod.Post))
-    {
-        @* Validation summary must be insinde BeginForm block *@
-        @Html.ValidationSummary(false, "Die Eingaben enthalten Fehler. Bitte korrigieren.", new { @class = "validation-summary-errors msg-validation rounded" })
-        @await Html.PartialAsync("_AddressFieldsPartial", Model)
+    <form asp-controller="@nameof(Contact)" asp-action="@nameof(Contact.Message)" asp-route-guid="" method="post">
+        <div asp-validation-summary="All" class="validation-summary-errors msg-validation rounded">Die Eingaben enthalten Fehler. Bitte korrigieren.</div>
+        <partial name="_AddressFieldsPartial" model="Model" />
         <h4 class="h4">Nachricht</h4>
         <fieldset class="rounded">
-            @Html.LabelFor(m => m.Subject)
-            @Html.TextBoxFor(m => m.Subject, new { @class = "form-control input-required col-12 col-sm-10 col-md-8", maxlength = 100 })
-            @Html.ValidationMessageFor(m => m.Subject, null, new { @class = "msg-error-text" })
-            @Html.LabelFor(m => m.Message)
-            @Html.TextAreaFor(m => m.Message, new { @class = "form-control input-required col-12 col-sm-10 col-md-8", style = "height: 12em" })
-            @Html.ValidationMessageFor(m => m.Message, null, new { @class = "msg-error-text" })
+            <label asp-for="@Model.Subject" class="form-label"></label>
+            <input asp-for="@Model.Email" maxlength="100" class="form-control input-required col-12 col-sm-10 col-md-8"/>
+            <span asp-validation-for="@Model.Subject" class="msg-error-text"></span>
+            <label asp-for="@Model.Message" class="form-label"></label>
+            <textarea asp-for="@Model.Message" class="form-control input-required col-12 col-sm-10 col-md-8" style="height: 12em"></textarea>
+            <span asp-validation-for="@Model.Message" class="msg-error-text"></span>
         </fieldset>
         <fieldset class="rounded my-2">
             <div class="mt-2">
                 <img id="CaptchaImage" style="vertical-align: bottom; width: 200px; display:inline" class="rounded" src="@Url.Action(nameof(Captcha.Index), nameof(Captcha))@("?guid=" + Guid.NewGuid())" alt="Captcha" />
                 <span id="ReloadCaptcha" style="cursor: pointer"><i class="bi bi-arrow-clockwise bi-2x" style="margin: 0 5px 0 5px" title="Bild neu laden"></i>Bild neu laden</span><br />
             </div>
-            @Html.LabelFor(m => m.Captcha)
-            @Html.TextBoxFor(m => m.Captcha, new { maxlength = "7", @class = "form-control input-required", style = "width:12rem" })
-            @Html.ValidationMessageFor(m => m.Captcha, null, new { @class = "msg-error-text" })
-            <div class="my-2">
-                @Html.CheckBoxFor(m => m.CarbonCopyToSender) @Html.LabelFor(m => m.CarbonCopyToSender, new { style = "display:inline" })
+            <label asp-for="@Model.Captcha" class="form-label"></label>
+            <input asp-for="@Model.Captcha" maxlength="7" class="form-control input-required" style="width:12rem"/>
+            <span asp-validation-for="@Model.Captcha" class="msg-error-text"></span>
+            <div class="form-check my-2">
+                <input asp-for="@Model.CarbonCopyToSender" type="checkbox" class="form-check-input"/>
+                <label asp-for="@Model.CarbonCopyToSender" class="form-check-label"></label>
             </div>
             <div class="my-1">
                 <input type="submit" name="Submit" value="Abschicken" id="Submit" class="col-12 col-sm-6 btn btn btn-lg btn-success" />
             </div>
         </fieldset>
-    }
+    </form>
 </div>
 @section CssSection {}
 @section ScriptStandardSection {

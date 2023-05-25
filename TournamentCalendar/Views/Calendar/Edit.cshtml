@@ -11,7 +11,6 @@
 @using System.Threading
 @using System.Globalization
 @{
-    ViewContext.ClientValidationEnabled = false;
     var googleConfig = new GoogleConfiguration();
     Configuration.Bind(nameof(GoogleConfiguration), googleConfig);
     var countriesList = await Model.GetCountriesList(CancellationToken.None);
@@ -51,9 +50,9 @@
             <input asp-for="@Model.Organizer" maxlength="@CalendarFields.Organizer.MaxLength" class="form-control" title="Veranstalter, z.B. &quot;Volleyballclub Berlin&quot;">
             <span asp-validation-for="@Model.Organizer" class="msg-error-text"></span>
             @*
-                @Html.LabelFor(m => m.Special)
-                @Html.TextBoxFor(m => m.Special, new { maxlength = TournamentCalendarFields.Special.MaxLength, @class = "form-control", title="Spezialangaben" })
-                @Html.ValidationMessageFor(m => m.Special, null, new { @class = "msg-error-text" })
+                <label asp-for="@Model.Special" class="form-label"></label>
+                <input asp-for="@Model.Special" maxlength="@CalendarFields.Special.MaxLength" class="form-control" title="Spezialangaben">
+                <span asp-validation-for="@Model.Special" class="msg-error-text"></span>
             *@
         </div>
     </div>
@@ -405,18 +404,26 @@
                 document.getElementById('@Html.IdFor(m => m.Captcha)').focus();
             });
         }
-
-        if ('de' === 'de')
+        
+        const locale = 'de-DE';
+        
+        const langRegion = locale.split('-');
+        let tdLocale = tempusDominus.locales[locale];
+        if (!tdLocale) tdLocale = tempusDominus.locales[langRegion[0]];
+        
+        if (tdLocale)
         {
             // Set the locale, if it's not the default (en):
-            tempusDominus.DefaultOptions.localization = tempusDominus.locales.de.localization;
-            // Hours from 00-23 ('de' default to 'h24')
+            tempusDominus.DefaultOptions.localization = tdLocale.localization;
+        }
+        
+        if (tdLocale && tdLocale.name.startsWith('de')) {
+            // Hours from 00-23 ('de' default is 'h24')
             tempusDominus.DefaultOptions.localization.hourCycle = 'h23';
         }
 
         // Change year to 4 digits instead of 2:
         tempusDominus.DefaultOptions.localization.dayViewHeaderFormat = { month: 'long', year: 'numeric' };
-        @* Does not seem to work on mobiles: tempusDominus.extend(tempusDominus.plugins.bi_one.load); *@
         tempusDominus.DefaultOptions.display.icons = {
             time: 'bi bi-clock',
             date: 'bi bi-calendar',
@@ -433,10 +440,11 @@
             clear: true,
             close: true
         };
-
-        [].forEach.call(document.querySelectorAll('[data-input-type="date"]'), function (el) {
-            el._tempusDominus = new tempusDominus.TempusDominus(el, {
-                container: el,
+        
+        function CreateTempusDominusCalendarPicker(element)
+        {
+            const calPicker = new tempusDominus.TempusDominus(element, {
+                container: element,
                 allowInputToggle: false,
                 localization: {
                     format: 'L'
@@ -448,17 +456,17 @@
                     },
                 },
                 restrictions: {
-                    minDate: new tempusDominus.DateTime().manipulate(2, 'date').startOf('date'), // +2 days
-                    maxDate: new tempusDominus.DateTime().manipulate(1, 'year').endOf('date')    // +1 year
                 }
             });
 
-            fixUncaughtExceptions(el._tempusDominus);
-        });
-
-        [].forEach.call(document.querySelectorAll('[data-input-type="time"]'), function (el) {
-            el._tempusDominus = new tempusDominus.TempusDominus(el, {
-                container: el,
+            fixUncaughtExceptions(calPicker);
+            return calPicker;
+        }
+        
+        function CreateTempusDominusTimePicker(element)
+        {
+            const timePicker = new tempusDominus.TempusDominus(element, {
+                container: element,
                 allowInputToggle: false,
                 stepping: 15,
                 localization: {
@@ -483,9 +491,11 @@
                 }
             });
 
-            fixUncaughtExceptions(el._tempusDominus);
-        });
-        
+            fixUncaughtExceptions(timePicker);
+            fixMeridiemButtonType(element);
+            return timePicker;
+        }
+
         /**
          * TempusDominus v6.7.7 throws when illegal dates/times
          * are entered. This workaround catches the exception by
@@ -493,7 +503,8 @@
          * See: https://github.com/Eonasdan/tempus-dominus/discussions/2656#discussioncomment-5713755
          * param {tempusDominus.TempusDominus} widget - The widget instance to be fixed.
          */
-        function fixUncaughtExceptions (widget) {
+        function fixUncaughtExceptions (widget) 
+        {
             widget.dates.buggyParseInput = widget.dates.parseInput;
             widget.dates.parseInput = (input) => {
                 try {
@@ -504,6 +515,46 @@
                 }
             };
         }
+
+        /**
+        * TempusDominus v6.7.7 does not set the 'type=button' attribute
+        * for the "toggle meridiem button" of the time picker.
+        * Without this type, clicking the button submits form where the button is located.
+        * See: https://github.com/Eonasdan/tempus-dominus/issues/2820
+        * param {HtmlElement} element - The element used to create the TempusDominus instance.
+        */
+        function fixMeridiemButtonType(element) 
+        {
+            element.addEventListener('show.td', function () {
+                const container = this._tempusDominus.optionsStore.options.container;
+                const btn = container.querySelector('button[data-action="toggleMeridiem"]')
+                if (btn) btn.setAttribute('type', 'button');
+            });
+        }
+
+        [].forEach.call(document.querySelectorAll('[data-input-type="date"]'), function (el) {
+            try {
+                el._tempusDominus = CreateTempusDominusCalendarPicker(el);
+            } catch {
+                el.querySelector('input').value = '';
+                el._tempusDominus = CreateTempusDominusCalendarPicker(el);
+            }
+            el._tempusDominus.updateOptions({
+                restrictions: {
+                    minDate: new tempusDominus.DateTime().manipulate(2, 'date').startOf('date'), // +2 days
+                    maxDate: new tempusDominus.DateTime().manipulate(1, 'year').endOf('date')    // +1 year
+                }
+            });
+        });
+
+        [].forEach.call(document.querySelectorAll('[data-input-type="time"]'), function (el) {
+            try {
+                el._tempusDominus = CreateTempusDominusTimePicker(el);
+            } catch {
+                el.querySelector('input').value = '';
+                el._tempusDominus = CreateTempusDominusTimePicker(el);
+            }
+        });
 
         // Date/Time popups can be closed by click on the toggle element or by Escape key
         document.addEventListener('keydown', function (event) {
