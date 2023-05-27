@@ -402,7 +402,7 @@ public class EditModel : CalendarEntity, IValidatableObject
             // Id will be zero if the Guid does not exist:
             Id = await _appDb!.CalendarRepository.GetIdForGuid(Guid, cancellationToken);
 
-            confirmModel.SaveSuccessful = await _appDb.GenericRepository.Save(this, true, cancellationToken);
+            confirmModel.SaveSuccessful = await _appDb.CalendarRepository.Save(this, true, cancellationToken);
             confirmModel.Entity = this;
         }
         catch (Exception ex)

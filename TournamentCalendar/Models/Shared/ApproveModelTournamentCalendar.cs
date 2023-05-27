@@ -69,7 +69,14 @@ public class ApproveModelTournamentCalendar<T> where T : EntityBase2, new()
 
             if (Entity.IsDirty)
             {
-                SaveSuccessFul = await _appDb.CalendarRepository.SaveEntity(Entity, true);
+                if (Entity is not CalendarEntity calendarEntity)
+                {
+                    SaveSuccessFul = await _appDb.GenericRepository.Save(Entity, true, cancellationToken);
+                }
+                else
+                {
+                    SaveSuccessFul = await _appDb.CalendarRepository.Save(calendarEntity, true, cancellationToken);
+                }
             }
             else
             {

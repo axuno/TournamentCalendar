@@ -11,8 +11,10 @@ using TournamentCalendarDAL.Linq;
 
 namespace TournamentCalendar.Data;
 
-public class CalendarRepository : GenericRepository
+public class CalendarRepository
 {
+    private readonly IDbContext _dbContext;
+
     /// <summary>
     /// Duration for caching query results.
     /// </summary>
@@ -23,7 +25,10 @@ public class CalendarRepository : GenericRepository
     /// </summary>
     public static readonly string CacheTag = "Calendar";
 
-    public CalendarRepository(IDbContext dbContext) : base(dbContext) { }
+    public CalendarRepository(IDbContext dbContext)
+    {
+        _dbContext = dbContext;
+    }
 
     public virtual bool GetTournamentByGuid(CalendarEntity entity, string guid, CancellationToken cancellationToken)
     {
@@ -90,10 +95,10 @@ public class CalendarRepository : GenericRepository
         tournaments.AddRange(at);
     }
 
-    public virtual async Task<bool> SaveEntity<T>(T entity, bool refetchAfterSave) where T : EntityBase2, new()
+    public virtual async Task<bool> Save(CalendarEntity entity, bool refetchAfterSave, CancellationToken cancellationToken)
     {
         using var da = _dbContext.GetNewAdapter();
-        var result = await da.SaveEntityAsync(entity, refetchAfterSave);
+        var result = await da.SaveEntityAsync(entity, refetchAfterSave, cancellationToken);
         PurgeCalendarCaches();
         return result;
     }
@@ -164,8 +169,8 @@ public class CalendarRepository : GenericRepository
     /// <summary>
     /// Remove tagged result sets from the <see cref="CacheController"/>.
     /// </summary>
-    private static void PurgeCalendarCaches()
+    private void PurgeCalendarCaches()
     {
-        CacheController.PurgeResultsets(CacheTag);
+        CacheController.PurgeResultsets(CacheTag, _dbContext.ConnectionString);
     }
 }
