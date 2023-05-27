@@ -3,8 +3,8 @@
 	<PropertyGroup>
         <Product>TournamentCalendar</Product>
         <TargetFramework>net6.0</TargetFramework>
-        <Version>3.1.1</Version>
-        <FileVersion>3.1.1</FileVersion>
+        <Version>3.2.0</Version>
+        <FileVersion>3.2.0</FileVersion>
         <EnableDefaultContentItems>true</EnableDefaultContentItems>
         <Authors>axuno gGmbH</Authors>
         <CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</CurrentYear>
@@ -115,7 +115,7 @@
         <Folder Remove="Scripts\" />
         <Folder Remove="ScriptLib\" />
         <Content Remove="ScriptLib\**" CopyToPublishDirectory="Never" />
-        <Folder Include="ScriptLib\TournamentCalendar\" /> 
+        <Folder Include="ScriptLib\TournamentCalendar\" />
         <Folder Include="wwwroot\js\" />
 	</ItemGroup>
 

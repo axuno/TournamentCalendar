@@ -8,7 +8,6 @@
 @using TournamentCalendar.Views
 @using TournamentCalendarDAL.HelperClasses
 @{
-    ViewContext.ClientValidationEnabled = false;
     var googleConfig = new GoogleConfiguration();
     Configuration.Bind(nameof(GoogleConfiguration), googleConfig);
 }

@@ -2,32 +2,29 @@
 <h3 class="h4">Absender</h3>
 <fieldset class="rounded">
     <legend class="rounded">Erforderliche Angaben</legend>
-    @Html.LabelFor(m => m.Email)
-    @Html.TextBoxFor(m => m.Email, new { @class = "form-control input-required col-12 col-sm-10 col-md-8", maxlength = 100 })
-    @Html.ValidationMessageFor(m => m.Email, null, new { @class = "msg-error-text" })
-    @Html.LabelFor(m => m.Gender)
-    @Html.DropDownListFor(m => m.Gender, Model.GetGenderList(), new { @class = "form-control input-required", style = "width:10rem" })
-    @Html.ValidationMessageFor(m => m.Gender, null, new { @class = "msg-error-text" })
-    @Html.LabelFor(m => m.Title)
-    @Html.TextBoxFor(m => m.Title, new { @class = "form-control col-12 col-sm-10 col-md-8", maxlength = 50 })
-    @Html.LabelFor(m => m.FirstName)
-    @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control input-required col-12 col-sm-10 col-md-8", maxlength = 50 })
-    @Html.ValidationMessageFor(m => m.FirstName, null, new { @class = "msg-error-text" })
-    @Html.LabelFor(m => m.LastName)
-    @Html.TextBoxFor(m => m.LastName, new { @class = "form-control input-required col-12 col-sm-10 col-md-8", maxlength = 50 })
-    @Html.ValidationMessageFor(m => m.LastName, null, new { @class = "msg-error-text" })
+    <label asp-for="@Model.Email" class="form-label"></label>
+    <input asp-for="@Model.Email" maxlength="100" class="form-control input-required col-12 col-sm-10 col-md-8" />
+    <span asp-validation-for="@Model.Email" class="msg-error-text"></span>
+    <label asp-for="@Model.Gender" class="form-label"></label>
+    <select asp-for="@Model.Gender" asp-items="Model.GetGenderList()" class="form-select input-required" style="width: 10rem"></select>
+    <span asp-validation-for="@Model.Gender" class="msg-error-text"></span>
+    <label asp-for="@Model.Title" class="form-label"></label>
+    <input asp-for="@Model.Title" maxlength="50" class="form-control col-12 col-sm-10 col-md-8" />
+    <label asp-for="@Model.FirstName" class="form-label"></label>
+    <input asp-for="@Model.FirstName" maxlength="50" class="form-control input-required col-12 col-sm-10 col-md-8" />
+    <span asp-validation-for="@Model.FirstName" class="msg-error-text"></span>
+    <label asp-for="@Model.LastName" class="form-label"></label>
+    <input asp-for="@Model.LastName" maxlength="50" class="form-control input-required col-12 col-sm-10 col-md-8" />
+    <span asp-validation-for="@Model.LastName" class="msg-error-text"></span>
 </fieldset>
 <fieldset class="rounded" style="margin-top: 10pt">
 	<legend class="rounded">Freiwillige Angaben</legend>
-		@Html.LabelFor(m => m.Street)
-		@Html.TextBoxFor(m => m.Street, new { @class = "form-control col-12 col-sm-10 col-md-8", maxlength = 100 })
-		@Html.LabelFor(m => m.PostalCode)
-		@Html.TextBoxFor(m => m.PostalCode, new { @class = "form-control col-6 col-sm-4 col-md-2", maxlength = 5 })
-		@Html.LabelFor(m => m.City)
-		@Html.TextBoxFor(m => m.City, new { @class = "form-control col-12 col-sm-10 col-md-8", maxlength = 100 })
-		@Html.LabelFor(m => m.Fone)
-		@Html.TextBoxFor(m => m.Fone, new { @class = "form-control col-12 col-sm-10 col-md-8", maxlength = 30 })
+    <label asp-for="@Model.Street" class="form-label"></label>
+    <input asp-for="@Model.Street" maxlength="100" class="form-control col-12 col-sm-10 col-md-8" />
+    <label asp-for="@Model.PostalCode" class="form-label"></label>
+    <input asp-for="@Model.PostalCode" maxlength="7" class="form-control col-6 col-sm-4 col-md-2" />
+    <label asp-for="@Model.City" class="form-label"></label>
+    <input asp-for="@Model.City" maxlength="100" class="form-control col-12 col-sm-10 col-md-8" />
+    <label asp-for="@Model.Fone" class="form-label"></label>
+    <input asp-for="@Model.Fone" maxlength="30" class="form-control col-12 col-sm-10 col-md-8" />
 </fieldset>
-
-
-

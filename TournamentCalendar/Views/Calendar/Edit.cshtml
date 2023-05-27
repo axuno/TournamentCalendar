@@ -11,7 +11,6 @@
 @using System.Threading
 @using System.Globalization
 @{
-    ViewContext.ClientValidationEnabled = false;
     var googleConfig = new GoogleConfiguration();
     Configuration.Bind(nameof(GoogleConfiguration), googleConfig);
     var countriesList = await Model.GetCountriesList(CancellationToken.None);
@@ -51,9 +50,9 @@
             <input asp-for="@Model.Organizer" maxlength="@CalendarFields.Organizer.MaxLength" class="form-control" title="Veranstalter, z.B. &quot;Volleyballclub Berlin&quot;">
             <span asp-validation-for="@Model.Organizer" class="msg-error-text"></span>
             @*
-                @Html.LabelFor(m => m.Special)
-                @Html.TextBoxFor(m => m.Special, new { maxlength = TournamentCalendarFields.Special.MaxLength, @class = "form-control", title="Spezialangaben" })
-                @Html.ValidationMessageFor(m => m.Special, null, new { @class = "msg-error-text" })
+                <label asp-for="@Model.Special" class="form-label"></label>
+                <input asp-for="@Model.Special" maxlength="@CalendarFields.Special.MaxLength" class="form-control" title="Spezialangaben">
+                <span asp-validation-for="@Model.Special" class="msg-error-text"></span>
             *@
         </div>
     </div>
@@ -376,7 +375,7 @@
 @section ScriptStandardSection
 {
     <script type="text/javascript" src="@string.Format("https://maps.googleapis.com/maps/api/js?key={0}&language=de&region=DE", googleConfig.WebApiKey)"></script>
-    <script type="text/javascript" src="@Url.Content(ScriptName.Lib.TempusDominusJs)" asp-append-version="true"></script>
+    <script type="text/javascript" src="@Url.Content(ScriptName.Lib.TempusDominusAllJs)" asp-append-version="true"></script>
     <script type="text/javascript" src="@Url.Content(ScriptName.Js.Location)" asp-append-version="true"></script>
     <script type="text/javascript">
     //<![CDATA[
@@ -405,116 +404,28 @@
                 document.getElementById('@Html.IdFor(m => m.Captcha)').focus();
             });
         }
-
-        if ('de' === 'de')
-        {
-            // Set the locale, if it's not the default (en):
-            tempusDominus.DefaultOptions.localization = tempusDominus.locales.de.localization;
-            // Hours from 00-23 ('de' default to 'h24')
-            tempusDominus.DefaultOptions.localization.hourCycle = 'h23';
-        }
-
-        // Change year to 4 digits instead of 2:
-        tempusDominus.DefaultOptions.localization.dayViewHeaderFormat = { month: 'long', year: 'numeric' };
-        @* Does not seem to work on mobiles: tempusDominus.extend(tempusDominus.plugins.bi_one.load); *@
-        tempusDominus.DefaultOptions.display.icons = {
-            time: 'bi bi-clock',
-            date: 'bi bi-calendar',
-            up: 'bi bi-arrow-up',
-            down: 'bi bi-arrow-down',
-            previous: 'bi bi-chevron-left',
-            next: 'bi bi-chevron-right',
-            today: 'bi bi-calendar-check',
-            clear: 'bi bi-trash',
-            close: 'bi bi-x bi-lg'
-        };
-        tempusDominus.DefaultOptions.display.buttons = {
-            today: false,
-            clear: true,
-            close: true
-        };
+        
+        const locale ='@(CultureInfo.CurrentCulture.ToString())';
+        const parentLocale = '@(CultureInfo.CurrentCulture.Parent.TwoLetterISOLanguageName)';
+        const hourCycle = '@(CultureInfo.CurrentCulture.DateTimeFormat.ShortTimePattern.Contains("t") ? 12 : 24)';
+        
+        const tdFactory = new TempusDominusFactory(locale, parentLocale, hourCycle, true);
 
         [].forEach.call(document.querySelectorAll('[data-input-type="date"]'), function (el) {
-            el._tempusDominus = new tempusDominus.TempusDominus(el, {
-                container: el,
-                allowInputToggle: false,
-                localization: {
-                    format: 'L'
-                },
-                display: {
-                    viewMode: 'calendar',
-                    components: {
-                        clock: false
-                    },
-                },
+            tdFactory.CreateCalendarPicker(el, '@(CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern)');
+            el._tempusDominus.updateOptions({
                 restrictions: {
                     minDate: new tempusDominus.DateTime().manipulate(2, 'date').startOf('date'), // +2 days
                     maxDate: new tempusDominus.DateTime().manipulate(1, 'year').endOf('date')    // +1 year
                 }
             });
-
-            fixUncaughtExceptions(el._tempusDominus);
         });
 
         [].forEach.call(document.querySelectorAll('[data-input-type="time"]'), function (el) {
-            el._tempusDominus = new tempusDominus.TempusDominus(el, {
-                container: el,
-                allowInputToggle: false,
-                stepping: 15,
-                localization: {
-                    format: 'LT'
-                },
-                display: {
-                    viewMode: 'clock',
-                    components: {
-                        decades: false,
-                        year: false,
-                        month: false,
-                        date: false,
-                        hours: true,
-                        minutes: true,
-                        seconds: false
-                    },
-                    buttons: {
-                        today: false,
-                        clear: true,
-                        close: true
-                    }
-                }
-            });
-
-            fixUncaughtExceptions(el._tempusDominus);
+            tdFactory.CreateTimePicker(el, '@(CultureInfo.CurrentCulture.DateTimeFormat.ShortTimePattern)');
         });
-        
-        /**
-         * TempusDominus v6.7.7 throws when illegal dates/times
-         * are entered. This workaround catches the exception by
-         * overriding the default 'parseInput' method.
-         * See: https://github.com/Eonasdan/tempus-dominus/discussions/2656#discussioncomment-5713755
-         * param {tempusDominus.TempusDominus} widget - The widget instance to be fixed.
-         */
-        function fixUncaughtExceptions (widget) {
-            widget.dates.buggyParseInput = widget.dates.parseInput;
-            widget.dates.parseInput = (input) => {
-                try {
-                    return widget.dates.buggyParseInput(input);
-                }
-                catch (err) {
-                    widget.dates.clear();
-                }
-            };
-        }
 
-        // Date/Time popups can be closed by click on the toggle element or by Escape key
-        document.addEventListener('keydown', function (event) {
-            if (event.keyCode !== 27) return;
-            [].forEach.call(document.querySelectorAll('[data-input-type]'), function (el) {
-                const td = el._tempusDominus;
-                if (td) {
-                    td.hide();
-                }
-            });
-        });
+        tdFactory.SetEscapeKeyClosesPicker(document.querySelectorAll('[data-input-type]'));
 
         @* Try to set the 'To' and 'Closing' dates when 'From' date changes *@
         document.getElementById('@Html.IdFor(m => m.DateFromText)').addEventListener('change', function () {

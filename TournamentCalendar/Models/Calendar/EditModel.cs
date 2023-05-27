@@ -99,7 +99,7 @@ public class EditModel : CalendarEntity, IValidatableObject
     {
         get
         {
-            return DateFrom.ToString("dd.MM.yyyy");
+            return DateFrom.ToShortDateString();
         }
         set
         {
@@ -122,7 +122,7 @@ public class EditModel : CalendarEntity, IValidatableObject
     {
         get
         {
-            return DateTo.ToString("dd.MM.yyyy");
+            return DateTo.ToShortDateString();
         }
         set
         {
@@ -145,7 +145,7 @@ public class EditModel : CalendarEntity, IValidatableObject
     {
         get
         {
-            return DateFrom.ToString("HH:mm");
+            return DateFrom.ToShortTimeString();
         }
         set
         {
@@ -165,7 +165,7 @@ public class EditModel : CalendarEntity, IValidatableObject
     {
         get
         {
-            return DateTo.ToString("HH:mm");
+            return DateTo.ToShortTimeString();
         }
         set
         {
@@ -178,7 +178,7 @@ public class EditModel : CalendarEntity, IValidatableObject
     {
         get
         {
-            return ClosingDate.ToString("dd.MM.yyyy");
+            return ClosingDate.ToShortDateString();
         }
         set
         {
@@ -431,13 +431,13 @@ public class EditModel : CalendarEntity, IValidatableObject
         public string? Special { get; set; }
 
         [ValidateDate]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd.MM.yyyy}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:d}")]
         [Required(ErrorMessageResourceName = "PropertyValueRequired", ErrorMessageResourceType = typeof(DataAnnotationResource))]
         [Display(Name="Datum von")]
         public string? DateFromText { get; set; }
 
         [ValidateDate]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd.MM.yyyy}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:d}")]
         [Required(ErrorMessageResourceName = "PropertyValueRequired", ErrorMessageResourceType = typeof(DataAnnotationResource))]
         [Display(Name="Datum bis")]
         public string? DateToText { get; set; }
@@ -453,7 +453,7 @@ public class EditModel : CalendarEntity, IValidatableObject
         public string? TimeTo { get; set; }
 
         [ValidateClosingDate("DateFromText")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd.MM.yyyy}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:d}")]
         [Required(ErrorMessageResourceName = "PropertyValueRequired", ErrorMessageResourceType = typeof(DataAnnotationResource))]
         [Display(Name="Anmeldeschluss")]
         public string? ClosingDateText { get; set; }
@@ -577,40 +577,12 @@ public class EditModel : CalendarEntity, IValidatableObject
 [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
 public sealed class ValidateDateAttribute : RangeAttribute
 {
-    /*
-    // Range attribute requires the following javascript extension
-    $.validator.methods.range = function(value, element, param) {
-        if ($(element).attr('data-input-type') === 'date') {
-            var min = $(element).attr('data-val-range-min');
-            var max = $(element).attr('data-val-range-max');
-            var date = moment(value, 'DD.MM.YYYY');
-            var minDate = new Date(min).getTime();
-            var maxDate = new Date(max).getTime();
-            return this.optional(element) || (date >= minDate && date <= maxDate);
-        }		 
-    }
-    */
     public ValidateDateAttribute()
         : base(typeof(DateTime), DateTime.Now.Date.AddDays(2).ToShortDateString(), DateTime.Now.Date.AddYears(1).ToShortDateString())
     {
         ErrorMessage = "'{0}' muss mind. 2 Tage, max. 1 Jahr in der Zukunft liegen";
     }
 }
-
-/*[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
-public sealed class ValidateDateAttribute : ValidationAttribute
-{
-    protected override ValidationResult IsValid(object value, ValidationContext validationContext)
-    {
-        if (value is DateTime date && DateTime.Now.AddDays(2).CompareTo(date) >= 0 && DateTime.Now.AddYears(1).CompareTo(date) <= 0)
-        {
-            return ValidationResult.Success;
-        }
-
-        return new ValidationResult($"'{validationContext.DisplayName}' muss mind. 2 Tage, max. 1 Jahr in der Zukunft liegen",
-            new[] { validationContext.MemberName });
-    }
-}*/
 
 [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
 public sealed class ValidateClosingDateAttribute : ValidationAttribute
