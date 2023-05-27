@@ -1,4 +1,4 @@
-﻿/// <binding AfterBuild="prod" />
+﻿/// <binding AfterBuild='prod' />
 /*
 This file in the main entry point for defining grunt tasks and using grunt plugins.
 Click here to learn more. https://go.microsoft.com/fwlink/?LinkID=513275&clcid=0x409
@@ -8,29 +8,29 @@ module.exports = function (grunt) {
     'use strict';
     var sass = require('node-sass'); // used in grunt-sass options, must be included in package.json
     
-    grunt.loadNpmTasks("grunt-sass");
-    grunt.loadNpmTasks("grunt-postcss");
-    grunt.loadNpmTasks("grunt-contrib-watch");
-    grunt.loadNpmTasks("grunt-contrib-concat");
-    grunt.loadNpmTasks("grunt-contrib-copy");
-    grunt.loadNpmTasks("grunt-contrib-cssmin");
-    grunt.loadNpmTasks("grunt-contrib-uglify");
+    grunt.loadNpmTasks('grunt-sass');
+    grunt.loadNpmTasks('grunt-postcss');
+    grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-contrib-cssmin');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
 
     grunt.initConfig({
-        pkg: grunt.file.readJSON("package.json"),
+        pkg: grunt.file.readJSON('package.json'),
 
         // Sass
         sass: {
             options: {
                 implementation: sass,
                 sourceMap: false, // Create source map
-                outputStyle: "nested" // Minify output with "compressed"
+                outputStyle: 'nested' // Minify output with 'compressed'
             },
             dist: {
                 files: [
                     {
-                        "wwwroot/lib/bootstrap/bootstrap.css": "Styles/bootstrap/bootstrap-custom.scss",  // "destination": "source"
-                        "wwwroot/css/site.css": "Styles/site/site.scss"
+                        'wwwroot/lib/bootstrap/bootstrap.css': 'Styles/bootstrap/bootstrap-custom.scss',  // 'destination': 'source'
+                        'wwwroot/css/site.css': 'Styles/site/site.scss'
                     }
                 ]
             }
@@ -43,23 +43,23 @@ module.exports = function (grunt) {
                 // or
                 map: {
                     inline: false, // save all sourcemaps as separate files...
-                    annotation: "wwwroot/css/maps/", // ...to the specified directory relative to the project root
+                    annotation: 'wwwroot/css/maps/', // ...to the specified directory relative to the project root
                     sourcesContent: true // whether original contents (e.g. Sass sources) will be included to a sourcemap. 
                 },
 
                 processors: [
-                    require("pixrem")(), // add fallbacks for rem units
-                    require("autoprefixer")(), // add vendor prefixes
-                    require("cssnano")() // minify the result
+                    require('pixrem')(), // add fallbacks for rem units
+                    require('autoprefixer')(), // add vendor prefixes
+                    require('cssnano')() // minify the result
                 ]
             },
             dist: {  // the dist object will hold information on where our CSS files should be read from and written to.
-                // src: "css/*.css"
-                //src: "css/bootstrap.css"
-                //dest: "css/bootstrap.min.css" // if dest: is missing, src will be replaced
+                // src: 'css/*.css'
+                //src: 'css/bootstrap.css'
+                //dest: 'css/bootstrap.min.css' // if dest: is missing, src will be replaced
                 files: {
-                    "wwwroot/lib/bootstrap/bootstrap.min.css": "wwwroot/lib/bootstrap/bootstrap.css",
-                    "wwwroot/css/site.min.css": "wwwroot/css/site.css"
+                    'wwwroot/lib/bootstrap/bootstrap.min.css': 'wwwroot/lib/bootstrap/bootstrap.css',
+                    'wwwroot/css/site.min.css': 'wwwroot/css/site.css'
                 }
             }
         },
@@ -67,6 +67,11 @@ module.exports = function (grunt) {
             Location: {
                 files: {
                     'ScriptLib/TournamentCalendar/Location.min.js': ['ScriptLib/TournamentCalendar/Location.js']
+                }
+            },
+            TempusDominusFactory: {
+                files: {
+                    'ScriptLib/TournamentCalendar/TempusDominusFactory.min.js': ['ScriptLib/TournamentCalendar/TempusDominusFactory.js']
                 }
             }
         },
@@ -77,38 +82,39 @@ module.exports = function (grunt) {
                 nonull: true
             },
             bootstrap_js_all: {
-                src: ["node_modules/@popperjs/core/dist/umd/popper.min.js",
-                      "node_modules/bootstrap/dist/js/bootstrap.min.js"],
-                dest: "wwwroot/lib/bootstrap/bootstrap-all.min.js",
+                src: ['node_modules/@popperjs/core/dist/umd/popper.min.js',
+                      'node_modules/bootstrap/dist/js/bootstrap.min.js'],
+                dest: 'wwwroot/lib/bootstrap/bootstrap-all.min.js',
                 nonull: true
             },
             bootstrap_css_all: {
-                src: ["wwwroot/lib/bootstrap/bootstrap.min.css",
-                    "node_modules/bootstrap-icons/font/bootstrap-icons.css"
+                src: ['wwwroot/lib/bootstrap/bootstrap.min.css',
+                    'node_modules/bootstrap-icons/font/bootstrap-icons.css'
                 ],
-                dest: "wwwroot/lib/bootstrap/bootstrap.min.css",
+                dest: 'wwwroot/lib/bootstrap/bootstrap.min.css',
                 nonull: true
             },
             simple_datatables_js: {
-                src: ["node_modules/simple-datatables/dist/umd/simple-datatables.js"],
-                dest: "wwwroot/lib/simple-datatables/simple-datatables.min.js",
+                src: ['node_modules/simple-datatables/dist/umd/simple-datatables.js'],
+                dest: 'wwwroot/lib/simple-datatables/simple-datatables.min.js',
                 nonull: true
             },
             simple_datatables_css: {
-                src: ["node_modules/simple-datatables/dist/css/style.css"],
-                dest: "wwwroot/lib/simple-datatables/simple-datatables.css",
+                src: ['node_modules/simple-datatables/dist/css/style.css'],
+                dest: 'wwwroot/lib/simple-datatables/simple-datatables.css',
                 nonull: true
             },
-            tempus_dominus_js: {
-                src: ["node_modules/@eonasdan/tempus-dominus/dist/js/tempus-dominus.min.js",
-                "node_modules/@eonasdan/tempus-dominus/dist/locales/de.js",
-                "node_modules/@eonasdan/tempus-dominus/dist/plugins/bi-one.js"],
-                dest: "wwwroot/lib/tempus-dominus/tempus-dominus.all.js",
+            tempus_dominus_all_js: {
+                src: ['node_modules/@eonasdan/tempus-dominus/dist/js/tempus-dominus.min.js',
+                'node_modules/@eonasdan/tempus-dominus/dist/locales/de.js',
+                'node_modules/@eonasdan/tempus-dominus/dist/plugins/bi-one.js',
+                'ScriptLib/TournamentCalendar/TempusDominusFactory.min.js'],
+                dest: 'wwwroot/lib/tempus-dominus/tempus-dominus.all.min.js',
                 nonull: true
             },
             tempus_dominus_css: {
-                src: ["node_modules/@eonasdan/tempus-dominus/dist/css/tempus-dominus.min.css"],
-                dest: "wwwroot/lib/tempus-dominus/tempus-dominus.min.css",
+                src: ['node_modules/@eonasdan/tempus-dominus/dist/css/tempus-dominus.min.css'],
+                dest: 'wwwroot/lib/tempus-dominus/tempus-dominus.min.css',
                 nonull: true
             }
         },
@@ -120,12 +126,12 @@ module.exports = function (grunt) {
             },
             jquery_ui_date_time_picker_img: {
                 files: [
-                    { cwd:"ScriptLib/DateTimePicker/Images/", expand:"true", src:"**/*", dest: "wwwroot/lib/DateTimePicker/Images/" }
+                    { cwd:'ScriptLib/DateTimePicker/Images/', expand:'true', src:'**/*', dest: 'wwwroot/lib/DateTimePicker/Images/' }
                 ]
             },
             location: {
-                src: ["ScriptLib/TournamentCalendar/Location.min.js"],
-                dest: "wwwroot/js/Location.min.js",
+                src: ['ScriptLib/TournamentCalendar/Location.min.js'],
+                dest: 'wwwroot/js/Location.min.js',
                 nonull: true
             }
         },
@@ -133,8 +139,8 @@ module.exports = function (grunt) {
         // Watch
         watch: {
             css: {
-                files: ["Styles/**/*.scss"],
-                tasks: ["sass", "postcss"],
+                files: ['Styles/**/*.scss'],
+                tasks: ['sass', 'postcss'],
                 options: {
                     spawn: false
                 }
@@ -142,6 +148,6 @@ module.exports = function (grunt) {
         }
     });
 
-    grunt.registerTask("dev", ["watch"]);
-    grunt.registerTask("prod", ["sass", "postcss", "uglify", "concat", "copy"]);
+    grunt.registerTask('dev', ['watch']);
+    grunt.registerTask('prod', ['sass', 'postcss', 'uglify', 'concat', 'copy']);
 };
