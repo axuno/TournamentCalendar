@@ -5,11 +5,13 @@ class TempusDominusFactory {
     * @constructor
     * @param {string} locale - The locale name including region, e.g. "en-US".
     * @param {string} fallbackLocale - The fallback locale to use, e.g. "en".
-    * @param {int} hourCycle - The hour cycle, which can be 12 or 24
+    * @param {int} hourCycle - The hour cycle, which can be 12 or 24. Used to make TempusDominus behave like .NET
     * @param {boolean} useBiIcons - True, when Bootstrap Icons shall be used
     */
     constructor(locale, fallbackLocale, hourCycle, useBiIcons) {
         this.tdLocale = tempusDominus.locales[locale] || tempusDominus.locales[fallbackLocale];
+        // .NET always uses ante meridiem designator for hours 0:00:00 (midnight) to 11:59:59.999,
+        // and post meridiem designator for later hours (after noon).
         this.tdHourCycle = hourCycle == 12 ? 'h11' : 'h23';
         this.useBiIcons = useBiIcons;
 
