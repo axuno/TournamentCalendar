@@ -1,4 +1,10 @@
-class Location {
+// All Site scripts go into the same namespace
+if (Site === undefined) {
+    var Site = {};
+}
+
+Site.Location = class {
+    'use strict';
     /**
     * Represents a Location.
     * @constructor
@@ -119,5 +125,21 @@ class Location {
             map: map,
             title: 'Angegebener Standort'
         });
+    }
+
+    /**
+     * Initializes the Google Maps canvas element
+     * @param {string} mapPlaceholderId - The Id of the map placeholder
+     * @param {any} coords - Optional: the LatLng coodinates to center the map initially. Default location is Kassel/Germany.
+     */
+    static initMap(mapPlaceholderId, coords) {
+        const mapPlaceholderEle = document.getElementById(mapPlaceholderId);
+        const mapOptions = {
+            zoom: 14,
+            center: coords || new google.maps.LatLng(51.312801,9.481544), // default: Kassel
+            mapTypeControl: true,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        new google.maps.Map(mapPlaceholderEle, mapOptions);
     }
 }

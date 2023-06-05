@@ -170,16 +170,20 @@
 @section CssSection {}
 @section ScriptStandardSection {
     @* Note: Google requires an API key for all requests since 11 June 2018 *@
-    <script type="text/javascript" src="@string.Format("https://maps.googleapis.com/maps/api/js?key={0}&language=de&region=DE", googleConfig.WebApiKey)"></script>
+    <script type="text/javascript" src="@string.Format("https://maps.googleapis.com/maps/api/js?callback=initMap&key={0}&language=de&region=DE", googleConfig.WebApiKey)" defer></script>
     <script type="text/javascript" src="@Url.Content(ScriptName.Js.Location)" asp-append-version="true"></script>
     <script type="text/javascript">
     //<![CDATA[
     'use strict';
+    const mapPlaceholder = 'mapPlaceholder';
+    function initMap() {
+        Site.Location.initMap(mapPlaceholder);
+    }
     document.addEventListener('DOMContentLoaded', OnDOMContentLoaded, false);
     function OnDOMContentLoaded() {
         document.getElementById('@Html.IdFor(m => m.Email)').focus();
-        const address = new AddressSection('@Html.IdFor(m => m.IsAddressEntered)', 'AddressSection');
-        const loc = new Location('@Html.IdFor(m => m.CountryId)', '@Html.IdFor(m => m.ZipCode)', '@Html.IdFor(m => m.City)', '@Html.IdFor(m => m.Street)', 'btnModal', 'mapPlaceholder');
+        const address = new Site.AddressSection('@Html.IdFor(m => m.IsAddressEntered)', 'AddressSection');
+        const loc = new Site.Location('@Html.IdFor(m => m.CountryId)', '@Html.IdFor(m => m.ZipCode)', '@Html.IdFor(m => m.City)', '@Html.IdFor(m => m.Street)', 'btnModal', mapPlaceholder);
         @* Disable input fields, if checkbox for address details is disabled *@
         address.enableDisableInputFields();
         @if (Model.Latitude.HasValue && Model.Longitude.HasValue)
@@ -200,8 +204,8 @@
         }
     }
 
-    class AddressSection {
-        @* // Using https://jsdoc.app/ syntax
+    Site.AddressSection = class {
+        @*
         /**
         * An address section with child input elements.
         * @constructor
@@ -209,29 +213,29 @@
         * @param {string} addressSectionId - Id of the section element which has input elements as children.
         */
         *@
-            constructor(enterAddrToggleId, addressSectionId) {
-                this.enterAddrToggleEle = document.getElementById(enterAddrToggleId);
-                this.enterAddrToggleEle.addEventListener('change', this.enableDisableInputFields.bind(this), false);
-                this.addressSectionEle = document.getElementById(addressSectionId);
+        constructor(enterAddrToggleId, addressSectionId) {
+            this.enterAddrToggleEle = document.getElementById(enterAddrToggleId);
+            this.enterAddrToggleEle.addEventListener('change', this.enableDisableInputFields.bind(this), false);
+            this.addressSectionEle = document.getElementById(addressSectionId);
+        }
+
+        enableDisableInputFields() {
+            const allFormControls = this.addressSectionEle.querySelectorAll('.form-control, .form-select');
+            @* Animate with Bootstrap 5 *@
+            const bsCollapse = new bootstrap.Collapse(this.addressSectionEle, {
+                toggle: false
+            })
+
+            if (this.enterAddrToggleEle.checked) {
+                allFormControls.forEach(element => { element.removeAttribute('disabled'); });
+                bsCollapse.show();
             }
-
-            enableDisableInputFields() {
-                const allFormControls = this.addressSectionEle.querySelectorAll('.form-control, .form-select');
-                @* Animate with Bootstrap 5 *@
-                const bsCollapse = new bootstrap.Collapse(this.addressSectionEle, {
-                    toggle: false
-                })
-
-                if (this.enterAddrToggleEle.checked) {
-                    allFormControls.forEach(element => { element.removeAttribute('disabled'); });
-                    bsCollapse.show();
-                }
-                else {
-                    bsCollapse.hide();
-                    allFormControls.forEach(element => { element.setAttribute('disabled', 'disabled'); });
-                }
+            else {
+                bsCollapse.hide();
+                allFormControls.forEach(element => { element.setAttribute('disabled', 'disabled'); });
             }
         }
+    }
     //]]>
     </script>
 }
