@@ -9,7 +9,7 @@ public static class ScriptName
     /// </summary>
     public static class Js
     {
-        public const string Location = "~/js/Location.min.js";
+        public const string Location = "~/js/Site.Location.min.js";
     }
 
     #endregion

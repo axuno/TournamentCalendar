@@ -1,4 +1,9 @@
-class TempusDominusFactory {
+// All scripts go into the same namespace
+if (Site === undefined) {
+    var Site = {};
+}
+
+Site.TempusDominusFactory = class {
     'use strict';
     /**
     * Represents a TempusDominusFactory.

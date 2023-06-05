@@ -1,4 +1,10 @@
-class Location {
+// All scripts go into the same namespace
+if (Site === undefined) {
+    var Site = {};
+}
+
+Site.Location = class {
+    'use strict';
     /**
     * Represents a Location.
     * @constructor

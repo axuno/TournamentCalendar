@@ -66,12 +66,12 @@ module.exports = function (grunt) {
         uglify: {
             Location: {
                 files: {
-                    'ScriptLib/TournamentCalendar/Location.min.js': ['ScriptLib/TournamentCalendar/Location.js']
+                    'Scripts/Site.Location.min.js': ['Scripts/Site.Location.js']
                 }
             },
             TempusDominusFactory: {
                 files: {
-                    'ScriptLib/TournamentCalendar/TempusDominusFactory.min.js': ['ScriptLib/TournamentCalendar/TempusDominusFactory.js']
+                    'Scripts/Site.TempusDominusFactory.min.js': ['Scripts/Site.TempusDominusFactory.js']
                 }
             }
         },
@@ -108,7 +108,7 @@ module.exports = function (grunt) {
                 src: ['node_modules/@eonasdan/tempus-dominus/dist/js/tempus-dominus.min.js',
                 'node_modules/@eonasdan/tempus-dominus/dist/locales/de.js',
                 'node_modules/@eonasdan/tempus-dominus/dist/plugins/bi-one.js',
-                'ScriptLib/TournamentCalendar/TempusDominusFactory.min.js'],
+                'Scripts/Site.TempusDominusFactory.min.js'],
                 dest: 'wwwroot/lib/tempus-dominus/tempus-dominus.all.min.js',
                 nonull: true
             },
@@ -124,14 +124,9 @@ module.exports = function (grunt) {
                     { cwd: 'node_modules/bootstrap-icons/font/fonts/', expand: 'true', src: '**/*', dest: 'wwwroot/lib/bootstrap/fonts/' }
                 ]
             },
-            jquery_ui_date_time_picker_img: {
-                files: [
-                    { cwd:'ScriptLib/DateTimePicker/Images/', expand:'true', src:'**/*', dest: 'wwwroot/lib/DateTimePicker/Images/' }
-                ]
-            },
             location: {
-                src: ['ScriptLib/TournamentCalendar/Location.min.js'],
-                dest: 'wwwroot/js/Location.min.js',
+                src: ['Scripts/Site.Location.min.js'],
+                dest: 'wwwroot/js/Site.Location.min.js',
                 nonull: true
             }
         },

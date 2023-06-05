@@ -178,8 +178,8 @@
     document.addEventListener('DOMContentLoaded', OnDOMContentLoaded, false);
     function OnDOMContentLoaded() {
         document.getElementById('@Html.IdFor(m => m.Email)').focus();
-        const address = new AddressSection('@Html.IdFor(m => m.IsAddressEntered)', 'AddressSection');
-        const loc = new Location('@Html.IdFor(m => m.CountryId)', '@Html.IdFor(m => m.ZipCode)', '@Html.IdFor(m => m.City)', '@Html.IdFor(m => m.Street)', 'btnModal', 'mapPlaceholder');
+        const address = new Site.AddressSection('@Html.IdFor(m => m.IsAddressEntered)', 'AddressSection');
+        const loc = new Site.Location('@Html.IdFor(m => m.CountryId)', '@Html.IdFor(m => m.ZipCode)', '@Html.IdFor(m => m.City)', '@Html.IdFor(m => m.Street)', 'btnModal', 'mapPlaceholder');
         @* Disable input fields, if checkbox for address details is disabled *@
         address.enableDisableInputFields();
         @if (Model.Latitude.HasValue && Model.Longitude.HasValue)
@@ -200,7 +200,7 @@
         }
     }
 
-    class AddressSection {
+    Site.AddressSection = class {
         @* // Using https://jsdoc.app/ syntax
         /**
         * An address section with child input elements.
