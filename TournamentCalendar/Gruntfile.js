@@ -125,9 +125,9 @@ module.exports = function (grunt) {
                 ]
             },
             location: {
-                src: ['Scripts/Site.Location.min.js'],
-                dest: 'wwwroot/js/Site.Location.min.js',
-                nonull: true
+                files: [
+                    { cwd: 'Scripts', expand: 'true', src: 'Site.Location*.js', dest: 'wwwroot/js/' }
+                ]
             }
         },
 

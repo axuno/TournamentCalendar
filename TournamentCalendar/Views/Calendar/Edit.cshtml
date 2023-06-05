@@ -374,19 +374,22 @@
 }
 @section ScriptStandardSection
 {
-    <script type="text/javascript" src="@string.Format("https://maps.googleapis.com/maps/api/js?key={0}&language=de&region=DE", googleConfig.WebApiKey)"></script>
+    <script type="text/javascript" src="@string.Format("https://maps.googleapis.com/maps/api/js?callback=initMap&key={0}&language=de&region=DE", googleConfig.WebApiKey)" defer></script>
     <script type="text/javascript" src="@Url.Content(ScriptName.Lib.TempusDominusAllJs)" asp-append-version="true"></script>
     <script type="text/javascript" src="@Url.Content(ScriptName.Js.Location)" asp-append-version="true"></script>
     <script type="text/javascript">
     //<![CDATA[
     'use strict';
-
+    const mapPlaceholder = 'mapPlaceholder';
+    function initMap() {
+        Site.Location.initMap(mapPlaceholder);
+    }
     document.addEventListener('DOMContentLoaded', OnDOMContentLoaded, false);
     function OnDOMContentLoaded() {
 
         document.getElementById('@Html.IdFor(m => m.TournamentName)').focus();
 
-        const loc = new Site.Location('@Html.IdFor(m => m.CountryId)', '@Html.IdFor(m => m.PostalCode)', '@Html.IdFor(m => m.City)', '@Html.IdFor(m => m.Street)', 'btnModal', 'mapPlaceholder');
+        const loc = new Site.Location('@Html.IdFor(m => m.CountryId)', '@Html.IdFor(m => m.PostalCode)', '@Html.IdFor(m => m.City)', '@Html.IdFor(m => m.Street)', 'btnModal', mapPlaceholder);
         loc.update();
         document.getElementById('locationModal').addEventListener('shown.bs.modal', (e) => {
             loc.update();

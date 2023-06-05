@@ -1,4 +1,4 @@
-// All scripts go into the same namespace
+// All Site scripts go into the same namespace
 if (Site === undefined) {
     var Site = {};
 }

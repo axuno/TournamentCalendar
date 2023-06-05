@@ -170,16 +170,20 @@
 @section CssSection {}
 @section ScriptStandardSection {
     @* Note: Google requires an API key for all requests since 11 June 2018 *@
-    <script type="text/javascript" src="@string.Format("https://maps.googleapis.com/maps/api/js?key={0}&language=de&region=DE", googleConfig.WebApiKey)"></script>
+    <script type="text/javascript" src="@string.Format("https://maps.googleapis.com/maps/api/js?callback=initMap&key={0}&language=de&region=DE", googleConfig.WebApiKey)" defer></script>
     <script type="text/javascript" src="@Url.Content(ScriptName.Js.Location)" asp-append-version="true"></script>
     <script type="text/javascript">
     //<![CDATA[
     'use strict';
+    const mapPlaceholder = 'mapPlaceholder';
+    function initMap() {
+        Site.Location.initMap(mapPlaceholder);
+    }
     document.addEventListener('DOMContentLoaded', OnDOMContentLoaded, false);
     function OnDOMContentLoaded() {
         document.getElementById('@Html.IdFor(m => m.Email)').focus();
         const address = new Site.AddressSection('@Html.IdFor(m => m.IsAddressEntered)', 'AddressSection');
-        const loc = new Site.Location('@Html.IdFor(m => m.CountryId)', '@Html.IdFor(m => m.ZipCode)', '@Html.IdFor(m => m.City)', '@Html.IdFor(m => m.Street)', 'btnModal', 'mapPlaceholder');
+        const loc = new Site.Location('@Html.IdFor(m => m.CountryId)', '@Html.IdFor(m => m.ZipCode)', '@Html.IdFor(m => m.City)', '@Html.IdFor(m => m.Street)', 'btnModal', mapPlaceholder);
         @* Disable input fields, if checkbox for address details is disabled *@
         address.enableDisableInputFields();
         @if (Model.Latitude.HasValue && Model.Longitude.HasValue)
@@ -201,7 +205,6 @@
     }
 
     Site.AddressSection = class {
-        @* // Using https://jsdoc.app/ syntax
         /**
         * An address section with child input elements.
         * @constructor
