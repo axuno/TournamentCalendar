@@ -205,6 +205,7 @@
     }
 
     Site.AddressSection = class {
+        @*
         /**
         * An address section with child input elements.
         * @constructor
@@ -212,29 +213,29 @@
         * @param {string} addressSectionId - Id of the section element which has input elements as children.
         */
         *@
-            constructor(enterAddrToggleId, addressSectionId) {
-                this.enterAddrToggleEle = document.getElementById(enterAddrToggleId);
-                this.enterAddrToggleEle.addEventListener('change', this.enableDisableInputFields.bind(this), false);
-                this.addressSectionEle = document.getElementById(addressSectionId);
+        constructor(enterAddrToggleId, addressSectionId) {
+            this.enterAddrToggleEle = document.getElementById(enterAddrToggleId);
+            this.enterAddrToggleEle.addEventListener('change', this.enableDisableInputFields.bind(this), false);
+            this.addressSectionEle = document.getElementById(addressSectionId);
+        }
+
+        enableDisableInputFields() {
+            const allFormControls = this.addressSectionEle.querySelectorAll('.form-control, .form-select');
+            @* Animate with Bootstrap 5 *@
+            const bsCollapse = new bootstrap.Collapse(this.addressSectionEle, {
+                toggle: false
+            })
+
+            if (this.enterAddrToggleEle.checked) {
+                allFormControls.forEach(element => { element.removeAttribute('disabled'); });
+                bsCollapse.show();
             }
-
-            enableDisableInputFields() {
-                const allFormControls = this.addressSectionEle.querySelectorAll('.form-control, .form-select');
-                @* Animate with Bootstrap 5 *@
-                const bsCollapse = new bootstrap.Collapse(this.addressSectionEle, {
-                    toggle: false
-                })
-
-                if (this.enterAddrToggleEle.checked) {
-                    allFormControls.forEach(element => { element.removeAttribute('disabled'); });
-                    bsCollapse.show();
-                }
-                else {
-                    bsCollapse.hide();
-                    allFormControls.forEach(element => { element.setAttribute('disabled', 'disabled'); });
-                }
+            else {
+                bsCollapse.hide();
+                allFormControls.forEach(element => { element.setAttribute('disabled', 'disabled'); });
             }
         }
+    }
     //]]>
     </script>
 }
