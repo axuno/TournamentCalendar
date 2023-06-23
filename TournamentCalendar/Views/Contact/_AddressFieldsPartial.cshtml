@@ -3,28 +3,28 @@
 <fieldset class="rounded">
     <legend class="rounded">Erforderliche Angaben</legend>
     <label asp-for="@Model.Email" class="form-label"></label>
-    <input asp-for="@Model.Email" maxlength="100" class="form-control input-required col-12 col-sm-10 col-md-8" />
+    <input asp-for="@Model.Email" maxlength="100" class="form-control input-required col-12 col-sm-10 col-md-8" novalidate />
     <span asp-validation-for="@Model.Email" class="msg-error-text"></span>
     <label asp-for="@Model.Gender" class="form-label"></label>
     <select asp-for="@Model.Gender" asp-items="Model.GetGenderList()" class="form-select input-required" style="width: 10rem"></select>
     <span asp-validation-for="@Model.Gender" class="msg-error-text"></span>
     <label asp-for="@Model.Title" class="form-label"></label>
-    <input asp-for="@Model.Title" maxlength="50" class="form-control col-12 col-sm-10 col-md-8" />
+    <input asp-for="@Model.Title" maxlength="50" class="form-control col-12 col-sm-10 col-md-8" novalidate/>
     <label asp-for="@Model.FirstName" class="form-label"></label>
-    <input asp-for="@Model.FirstName" maxlength="50" class="form-control input-required col-12 col-sm-10 col-md-8" />
+    <input asp-for="@Model.FirstName" maxlength="50" class="form-control input-required col-12 col-sm-10 col-md-8" novalidate/>
     <span asp-validation-for="@Model.FirstName" class="msg-error-text"></span>
     <label asp-for="@Model.LastName" class="form-label"></label>
-    <input asp-for="@Model.LastName" maxlength="50" class="form-control input-required col-12 col-sm-10 col-md-8" />
+    <input asp-for="@Model.LastName" maxlength="50" class="form-control input-required col-12 col-sm-10 col-md-8" novalidate/>
     <span asp-validation-for="@Model.LastName" class="msg-error-text"></span>
 </fieldset>
 <fieldset class="rounded" style="margin-top: 10pt">
 	<legend class="rounded">Freiwillige Angaben</legend>
     <label asp-for="@Model.Street" class="form-label"></label>
-    <input asp-for="@Model.Street" maxlength="100" class="form-control col-12 col-sm-10 col-md-8" />
+    <input asp-for="@Model.Street" maxlength="100" class="form-control col-12 col-sm-10 col-md-8" novalidate/>
     <label asp-for="@Model.PostalCode" class="form-label"></label>
-    <input asp-for="@Model.PostalCode" maxlength="7" class="form-control col-6 col-sm-4 col-md-2" />
+    <input asp-for="@Model.PostalCode" maxlength="7" class="form-control col-6 col-sm-4 col-md-2" novalidate/>
     <label asp-for="@Model.City" class="form-label"></label>
-    <input asp-for="@Model.City" maxlength="100" class="form-control col-12 col-sm-10 col-md-8" />
+    <input asp-for="@Model.City" maxlength="100" class="form-control col-12 col-sm-10 col-md-8" novalidate/>
     <label asp-for="@Model.Fone" class="form-label"></label>
-    <input asp-for="@Model.Fone" maxlength="30" class="form-control col-12 col-sm-10 col-md-8" />
+    <input asp-for="@Model.Fone" maxlength="30" class="form-control col-12 col-sm-10 col-md-8" novalidate/>
 </fieldset>
