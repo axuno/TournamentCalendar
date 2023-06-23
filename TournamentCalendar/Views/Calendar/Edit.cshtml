@@ -44,14 +44,14 @@
     <div class="row">
         <div class="col-12">
             <label asp-for="@Model.TournamentName" class="form-label"></label>
-            <input asp-for="@Model.TournamentName" maxlength="@CalendarFields.TournamentName.MaxLength" class="form-control" title="Turniername, z.B. &quot;12. Welfen-Cup&quot;">
+            <input asp-for="@Model.TournamentName" maxlength="@CalendarFields.TournamentName.MaxLength" class="form-control" title="Turniername, z.B. &quot;12. Welfen-Cup&quot;" novalidate>
             <span asp-validation-for="@Model.TournamentName" class="msg-error-text"></span>
             <label asp-for="@Model.Organizer" class="form-label"></label>
-            <input asp-for="@Model.Organizer" maxlength="@CalendarFields.Organizer.MaxLength" class="form-control" title="Veranstalter, z.B. &quot;Volleyballclub Berlin&quot;">
+            <input asp-for="@Model.Organizer" maxlength="@CalendarFields.Organizer.MaxLength" class="form-control" title="Veranstalter, z.B. &quot;Volleyballclub Berlin&quot;" novalidate>
             <span asp-validation-for="@Model.Organizer" class="msg-error-text"></span>
             @*
                 <label asp-for="@Model.Special" class="form-label"></label>
-                <input asp-for="@Model.Special" maxlength="@CalendarFields.Special.MaxLength" class="form-control" title="Spezialangaben">
+                <input asp-for="@Model.Special" maxlength="@CalendarFields.Special.MaxLength" class="form-control" title="Spezialangaben" novalidate>
                 <span asp-validation-for="@Model.Special" class="msg-error-text"></span>
             *@
         </div>
@@ -68,7 +68,7 @@
                 <div class="col-md-5 col-sm-5">
                     <label asp-for="@Model.DateFromText" class="form-label"></label>
                     <div id="@(Model.DateFromText)-c" class="input-group" data-input-type="date" data-td-target-input="nearest" data-td-target-toggle="nearest" style="width: 11rem;">
-                        <input asp-for="@Model.DateFromText" maxlength="10" class="form-control" placeholder="tt.mm.jjj" title="Maximal 1 Jahr in der Zukunft">
+                        <input asp-for="@Model.DateFromText" maxlength="10" class="form-control" placeholder="tt.mm.jjj" title="Maximal 1 Jahr in der Zukunft" novalidate>
                         <span class="input-group-text" data-td-target="@(Model.DateFromText)-c" data-td-toggle="datetimepicker"><i class="bi bi-calendar3 bi-lg"></i></span>
                     </div>
                     <span asp-validation-for="@Model.DateFromText" class="msg-error-text"></span>
@@ -76,7 +76,7 @@
                 <div class="col-md-7 col-sm-7">
                     <label asp-for="@Model.TimeFrom" class="form-label"></label>
                     <div class="input-group" data-input-type="time" data-td-target-input="nearest" data-td-target-toggle="nearest" style="width: 8rem;">
-                        <input asp-for="@Model.TimeFrom" maxlength="5" class="form-control" placeholder="hh:mm" title="Turnierbeginn, oder 00:00 für &quot;unbekannt&quot;">
+                        <input asp-for="@Model.TimeFrom" maxlength="5" class="form-control" placeholder="hh:mm" title="Turnierbeginn, oder 00:00 für &quot;unbekannt&quot;" novalidate>
                         <span class="input-group-text" data-td-target="@(Model.TimeFrom)-c" data-td-toggle="datetimepicker"><i class="bi bi-clock bi-lg"></i></span>
                     </div>
                     <span asp-validation-for="@Model.TimeFrom" class="msg-error-text"></span>
@@ -88,7 +88,7 @@
                 <div class="col-md-5 col-sm-5">
                     <label asp-for="@Model.DateToText" class="form-label"></label>
                     <div id="@(Model.DateToText)-c" class="input-group" data-input-type="date" data-td-target-input="nearest" data-td-target-toggle="nearest" style="width: 11rem;">
-                        <input asp-for="@Model.DateToText" maxlength="10" class="form-control" placeholder="tt.mm.jjj" title="Maximal 1 Jahr in der Zukunft">
+                        <input asp-for="@Model.DateToText" maxlength="10" class="form-control" placeholder="tt.mm.jjj" title="Maximal 1 Jahr in der Zukunft" novalidate>
                         <span class="input-group-text" data-td-target="@(Model.DateToText)-c" data-td-toggle="datetimepicker"><i class="bi bi-calendar3 bi-lg"></i></span>
                     </div>
                     <span asp-validation-for="@Model.DateToText" class="msg-error-text"></span>
@@ -96,7 +96,7 @@
                 <div class="col-md-7 col-sm-7">
                     <label asp-for="@Model.TimeTo" class="form-label"></label>
                     <div class="input-group" data-input-type="time" data-td-target-input="nearest" data-td-target-toggle="nearest" style="width: 8rem;">
-                        <input asp-for="@Model.TimeTo" maxlength="5" class="form-control" placeholder="hh:mm">
+                        <input asp-for="@Model.TimeTo" maxlength="5" class="form-control" placeholder="hh:mm" novalidate>
                         <span class="input-group-text" data-td-target="@(Model.TimeTo)-c" data-td-toggle="datetimepicker"><i class="bi bi-clock bi-lg"></i></span>
                     </div>
                     <span asp-validation-for="@Model.TimeTo" class="msg-error-text"></span>
@@ -106,7 +106,7 @@
         <div class="col-12">
             <label asp-for="@Model.ClosingDateText" class="form-label"></label>
             <div id="@(Model.ClosingDateText)-c" class="input-group" data-input-type="date" data-td-target-input="nearest" data-td-target-toggle="nearest" style="width: 11rem;">
-                <input asp-for="@Model.ClosingDateText" maxlength="10" class="form-control" placeholder="tt.mm.jjj">
+                <input asp-for="@Model.ClosingDateText" maxlength="10" class="form-control" placeholder="tt.mm.jjj" novalidate>
                 <span class="input-group-text" data-td-target="@(Model.ClosingDateText)-c" data-td-toggle="datetimepicker"><i class="bi bi-calendar3 bi-lg"></i></span>
             </div>
             <span asp-validation-for="@Model.ClosingDateText" class="msg-error-text"></span>
@@ -120,14 +120,14 @@
     <div class="row">
         <div class="col-12">
             <label asp-for="@Model.NumOfTeams" class="form-label"></label>
-            <input asp-for="@Model.NumOfTeams" type="text" maxlength="3" class="form-control" style="width:4rem;" title="Max. Anzahl der Mannschaften. 0 = unbekannt bzw. unbegrenzt.">
+            <input asp-for="@Model.NumOfTeams" type="text" maxlength="3" class="form-control" style="width:4rem;" title="Max. Anzahl der Mannschaften. 0 = unbekannt bzw. unbegrenzt." novalidate>
             <span asp-validation-for="@Model.NumOfTeams" class="msg-error-text"></span>
         </div>
         <div class="col-md-5 col-sm-5">
             <label asp-for="@Model.NumPlayersFemale" class="form-label"></label>
             <div class="d-inline-flex">
                 <select asp-for="@Model.MinMaxFemale" asp-items="Model.GetMinMaxPlayerList()" class="form-select me-1" style="width:9rem"></select>
-                <input asp-for="@Model.NumPlayersFemale" type="text" maxlength="1" class="form-control d-inline" style="width:2rem">
+                <input asp-for="@Model.NumPlayersFemale" type="text" maxlength="1" class="form-control d-inline" style="width:2rem" novalidate>
             </div>
             <span asp-validation-for="@Model.NumPlayersFemale" class="msg-error-text"></span>
         </div>
@@ -135,7 +135,7 @@
             <label asp-for="@Model.NumPlayersMale" class="form-label"></label>
             <div class="d-inline-flex">
                 <select asp-for="@Model.MinMaxMale" asp-items="Model.GetMinMaxPlayerList()" class="form-select me-1" style="width: 9rem"></select>
-                <input asp-for="@Model.NumPlayersMale" type="text" maxlength="1" class="form-control d-inline" style="width:2rem;">
+                <input asp-for="@Model.NumPlayersMale" type="text" maxlength="1" class="form-control d-inline" style="width:2rem;" novalidate>
             </div>
             <span asp-validation-for="@Model.NumPlayersMale" class="msg-error-text"></span>
         </div>
@@ -164,7 +164,7 @@
                 Nur <strong>genaue Angaben</strong> mit Postleitzahl, Ort und Straße ermöglichen die Anzeige einer Karte für die Anfahrt.<br/>
             </div>
             <label asp-for="@Model.Venue" class="form-label"></label>
-            <input asp-for="@Model.Venue" type="text" maxlength="@CalendarFields.Venue.MaxLength" class="form-control" title="Hallenbezeichung, z.B. &quot;Jahn-Turnhalle&quot;">
+            <input asp-for="@Model.Venue" type="text" maxlength="@CalendarFields.Venue.MaxLength" class="form-control" title="Hallenbezeichung, z.B. &quot;Jahn-Turnhalle&quot;" novalidate>
             <span asp-validation-for="@Model.Venue" class="msg-error-text"></span>
         </div>
     </div>
@@ -175,15 +175,15 @@
         </div>
         <div class="col-md-8">
             <label asp-for="@Model.PostalCode" class="form-label"></label>
-            <input asp-for="@Model.PostalCode" type="text" maxlength="@CalendarFields.PostalCode.MaxLength" class="form-control" style="width:8rem">
+            <input asp-for="@Model.PostalCode" type="text" maxlength="@CalendarFields.PostalCode.MaxLength" class="form-control" style="width:8rem" novalidate>
             <span asp-validation-for="@Model.PostalCode" class="msg-error-text"></span>
         </div>
         <div class="col-md-12">
             <label asp-for="@Model.City" class="form-label"></label>
-            <input asp-for="@Model.City" type="text" maxlength="@CalendarFields.City.MaxLength" class="form-control">
+            <input asp-for="@Model.City" type="text" maxlength="@CalendarFields.City.MaxLength" class="form-control" novalidate>
             <span asp-validation-for="@Model.City" class="msg-error-text"></span>
             <label asp-for="@Model.Street" class="form-label"></label>
-            <input asp-for="@Model.Street" type="text" maxlength="@CalendarFields.Street.MaxLength" class="form-control">
+            <input asp-for="@Model.Street" type="text" maxlength="@CalendarFields.Street.MaxLength" class="form-control" novalidate>
             <span asp-validation-for="@Model.Street" class="msg-error-text"></span>
         </div>
     </div>
@@ -204,10 +204,10 @@
             <textarea asp-for="@Model.ContactAddress" class="form-control" style="height: 7rem" title="Ansprechpartner, Postanschrift, Telefon, usw."></textarea>
             <span asp-validation-for="@Model.ContactAddress" class="msg-error-text"></span>
             <label asp-for="@Model.Email" class="form-label"></label>
-            <input asp-for="@Model.Email" type="text" maxlength="@CalendarFields.Email.MaxLength" class="form-control" title="E-Mail für Rückfragen oder Anmeldungen">
+            <input asp-for="@Model.Email" type="text" maxlength="@CalendarFields.Email.MaxLength" class="form-control" title="E-Mail für Rückfragen oder Anmeldungen" novalidate>
             <span asp-validation-for="@Model.Email" class="msg-error-text"></span>
             <label asp-for="@Model.Website" class="form-label"></label>
-            <input asp-for="@Model.Website" type="text" maxlength="@CalendarFields.Website.MaxLength" class="form-control" title="Web-Adresse, z.B. https://volleyball-liga.de">
+            <input asp-for="@Model.Website" type="text" maxlength="@CalendarFields.Website.MaxLength" class="form-control" title="Web-Adresse, z.B. https://volleyball-liga.de" novalidate>
             <span asp-validation-for="@Model.Website" class="msg-error-text"></span>
         </div>
     </div>
@@ -220,7 +220,7 @@
         <div class="col-md-4">
             <label asp-for="@Model.EntryFee" class="form-label"></label>
             <div class="input-group" style="width: 8rem;">
-                <input asp-for="@Model.EntryFee" type="text" maxlength="6" class="form-control">
+                <input asp-for="@Model.EntryFee" type="text" maxlength="6" class="form-control" novalidate>
                 <span class="input-group-text">€</span>
             </div>
             <span asp-validation-for="@Model.EntryFee" class="msg-error-text"></span>
@@ -228,7 +228,7 @@
         <div class="col-md-8">
             <label asp-for="@Model.Bond" class="form-label"></label>
             <div class="input-group" style="width: 8rem;">
-                <input asp-for="@Model.Bond" type="text" maxlength="6" class="form-control">
+                <input asp-for="@Model.Bond" type="text" maxlength="6" class="form-control" novalidate>
                 <span class="input-group-text">€</span>
             </div>
             <span asp-validation-for="@Model.Bond" class="msg-error-text"></span>
@@ -255,10 +255,10 @@
                 Über den Link in der E-Mail kann das Turnier auch jederzeit bearbeitet werden.
             </div>
             <label asp-for="@Model.PostedByName" class="form-label"></label>
-            <input asp-for="@Model.PostedByName" type="text" maxlength="@CalendarFields.PostedByName.MaxLength" class="form-control">
+            <input asp-for="@Model.PostedByName" type="text" maxlength="@CalendarFields.PostedByName.MaxLength" class="form-control" novalidate>
             <span asp-validation-for="@Model.PostedByName" class="msg-error-text"></span>
             <label asp-for="@Model.PostedByEmail" class="form-label"></label>
-            <input asp-for="@Model.PostedByEmail" type="text" maxlength="@CalendarFields.PostedByEmail.MaxLength" class="form-control">
+            <input asp-for="@Model.PostedByEmail" type="text" maxlength="@CalendarFields.PostedByEmail.MaxLength" class="form-control" novalidate>
             <span asp-validation-for="@Model.PostedByEmail" class="msg-error-text"></span>
         </div>
     </div>
@@ -272,7 +272,7 @@
             @if (Model.EditMode == EditMode.New && User.IsInRole(TournamentCalendar.Library.Authentication.Constants.RoleName.Editor))
             {
                 <div class="form-check">
-                    <input asp-for="@Model.ShowTournament" type="checkbox" class="form-check-input" checked="checked" />
+                    <input asp-for="@Model.ShowTournament" type="checkbox" class="form-check-input" checked="checked" novalidate />
                     <label asp-for="@Model.ShowTournament" class="form-check-label"> Turnier im Kalender anzeigen</label>
                 </div>
             }
@@ -288,7 +288,7 @@
                         <div>Das Turnier ist im Kalender <strong>derzeit nicht sichtbar</strong>.</div>
                     }
                     <div class="form-check">
-                        <input asp-for="@Model.ShowTournament" type="checkbox" class="form-check-input" checked="checked" />
+                        <input asp-for="@Model.ShowTournament" type="checkbox" class="form-check-input" checked="checked" novalidate />
                         <label asp-for="@Model.ShowTournament" class="form-check-label"> Turnier im Kalender anzeigen</label>
                     </div>
                 </div>
@@ -300,7 +300,7 @@
             {
                 // Captcha won't be checked for authenticated users, but the field is still 'required'
                 Model.Captcha = "Valid";
-                <input type="hidden" asp-for="@Model.Captcha" value="Valid" />
+                <input type="hidden" asp-for="@Model.Captcha" value="Valid" novalidate />
             }
             else
             {
@@ -309,7 +309,7 @@
                     <span id="ReloadCaptcha" style="cursor: pointer"><i class="bi bi-arrow-clockwise bi-2x" style="margin: 0 5px 0 5px" title="Bild neu laden"></i>Bild neu laden</span><br/>
                 </div>
                 <label asp-for="@Model.Captcha" class="form-label"></label>
-                <input asp-for="@Model.Captcha" type="text" maxlength="7" class="form-control" style="width:12rem">
+                <input asp-for="@Model.Captcha" type="text" maxlength="7" class="form-control" style="width:12rem" novalidate>
                 <span asp-validation-for="@Model.Captcha" class="msg-error-text"></span>
             }
             <div class="mt-2">

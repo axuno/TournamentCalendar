@@ -8,7 +8,7 @@
         <h4 class="h4">Nachricht</h4>
         <fieldset class="rounded">
             <label asp-for="@Model.Subject" class="form-label"></label>
-            <input asp-for="@Model.Email" maxlength="100" class="form-control input-required col-12 col-sm-10 col-md-8"/>
+            <input asp-for="@Model.Subject" maxlength="100" class="form-control input-required col-12 col-sm-10 col-md-8" novalidate/>
             <span asp-validation-for="@Model.Subject" class="msg-error-text"></span>
             <label asp-for="@Model.Message" class="form-label"></label>
             <textarea asp-for="@Model.Message" class="form-control input-required col-12 col-sm-10 col-md-8" style="height: 12em"></textarea>
@@ -20,10 +20,10 @@
                 <span id="ReloadCaptcha" style="cursor: pointer"><i class="bi bi-arrow-clockwise bi-2x" style="margin: 0 5px 0 5px" title="Bild neu laden"></i>Bild neu laden</span><br />
             </div>
             <label asp-for="@Model.Captcha" class="form-label"></label>
-            <input asp-for="@Model.Captcha" maxlength="7" class="form-control input-required" style="width:12rem"/>
+            <input asp-for="@Model.Captcha" maxlength="7" class="form-control input-required" style="width:12rem" novalidate />
             <span asp-validation-for="@Model.Captcha" class="msg-error-text"></span>
             <div class="form-check my-2">
-                <input asp-for="@Model.CarbonCopyToSender" type="checkbox" class="form-check-input"/>
+                <input asp-for="@Model.CarbonCopyToSender" type="checkbox" class="form-check-input" novalidate/>
                 <label asp-for="@Model.CarbonCopyToSender" class="form-check-label"></label>
             </div>
             <div class="my-1">
