@@ -52,7 +52,7 @@ public class BasicIntegrationTests
 
     // Tests for (mostly localized) Urls before April 2023
     [TestCase("/kalender")]
-    [TestCase("/kalender/id/1")]
+    [TestCase("/kalender/id/21375")]
     [TestCase("/kalender/eintrag")]
     [TestCase("/volley-news")]
     [TestCase("/info/impressum")]
@@ -62,7 +62,7 @@ public class BasicIntegrationTests
     // Tests for Urls used from April 2023
     [TestCase("/")]
     [TestCase("/calendar")]
-    [TestCase("/calendar/1")]
+    [TestCase("/calendar/21375")]
     [TestCase("/calendar/entry")]
     [TestCase("/calendar/entry/0a98470df3424be2acf75d36dcc08ebd")]
     [TestCase("/volley-news/register")]
