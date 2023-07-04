@@ -6,6 +6,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Net.Http.Headers;
 using NUnit.Framework;
+using TournamentCalendar.Data;
+using TournamentCalendarDAL.EntityClasses;
+using TournamentCalendarDAL.HelperClasses;
 
 namespace TournamentCalendar.Tests;
 
@@ -14,6 +17,8 @@ public class BasicIntegrationTests
 {
     private readonly WebApplicationFactory<Program> _factory;
     private readonly HttpClient _client;
+    private readonly TestServer _server;
+    private readonly IServiceProvider _serverServices;
     
     private readonly string _credentials = @"{
     // Password is 'password'
@@ -35,7 +40,19 @@ public class BasicIntegrationTests
                     builder.ConfigureAppConfiguration((context, configurationBuilder) =>
                     {
                         // runs AFTER Program.cs
+                        var absoluteConfigurationPath = Path.Combine(context.HostingEnvironment.ContentRootPath,
+                            "Configuration");
+                        configurationBuilder.SetBasePath(absoluteConfigurationPath);
                         configurationBuilder.AddJsonStream(new MemoryStream(Encoding.ASCII.GetBytes(_credentials)));
+                    });
+                    builder.ConfigureServices((context, services) =>
+                    {
+                        var dbContext = new DbContext();
+                        context.Configuration.Bind(nameof(DbContext), dbContext);
+                        dbContext.ConnectionString = context.Configuration.GetConnectionString(dbContext.ConnectionKey);
+
+                        services.AddSingleton<IDbContext>(dbContext);
+                        services.AddScoped<IAppDb>(s => s.GetRequiredService<IDbContext>().AppDb);
                     });
                     builder.ConfigureTestServices(services =>
                     {
@@ -48,12 +65,14 @@ public class BasicIntegrationTests
                 });
 
         _client = _factory.CreateClient();
+        // _factory.Server is null until factory.CreateClient() has been called
+        _server = _factory.Server;
     }
 
     // Tests for (mostly localized) Urls before April 2023
     [TestCase("/kalender")]
-    [TestCase("/kalender/id/21375")]
-    [TestCase("/kalender/eintrag")]
+    [TestCase("/kalender/id/#id#")]
+    [TestCase("/kalender/eintrag/#guid#")]
     [TestCase("/volley-news")]
     [TestCase("/info/impressum")]
     [TestCase("/info/datenschutz")]
@@ -62,9 +81,9 @@ public class BasicIntegrationTests
     // Tests for Urls used from April 2023
     [TestCase("/")]
     [TestCase("/calendar")]
-    [TestCase("/calendar/21375")]
+    [TestCase("/calendar/#id#")]
     [TestCase("/calendar/entry")]
-    [TestCase("/calendar/entry/0a98470df3424be2acf75d36dcc08ebd")]
+    [TestCase("/calendar/entry/#guid#")]
     [TestCase("/volley-news/register")]
     [TestCase("/contact/message")]
     [TestCase("/organization/apps")]
@@ -128,10 +147,21 @@ public class BasicIntegrationTests
         // Only for endpoints that do not require authentication
 
         // Act
+        if (url.Contains('#')) url = await GetUrlForAnyActiveTournament(url);
         var response = await _client.GetAsync(url);
-        
+
         // Assert
         response.EnsureSuccessStatusCode(); // Status Code 200-299 or throws
+    }
+
+    private async Task<string> GetUrlForAnyActiveTournament(string url)
+    {
+        using var scope = _factory.Services.CreateScope();
+        var appDb = scope.ServiceProvider.GetRequiredService<IAppDb>();
+        var tournaments = new EntityCollection<CalendarEntity>();
+        await appDb.CalendarRepository.GetAllActiveTournaments(tournaments, CancellationToken.None);
+        var t = tournaments.First();
+        return url.Replace("#id#", t.Id.ToString()).Replace("#guid#", t.Guid);
     }
 
     [Test]

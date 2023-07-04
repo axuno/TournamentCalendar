@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Testing;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Hosting;
 
 namespace TournamentCalendar.Tests;
@@ -10,6 +11,14 @@ internal class TournamentAppFactory : WebApplicationFactory<Program>
     public TournamentAppFactory(string environment = nameof(Environments.Development))
     {
         _environment = environment;
+    }
+
+    protected override void ConfigureWebHost(IWebHostBuilder builder)
+    {
+        builder.ConfigureServices((context, services) =>
+        {
+        });
+        base.ConfigureWebHost(builder);
     }
 
     protected override IHost CreateHost(IHostBuilder builder)
