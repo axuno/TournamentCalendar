@@ -408,14 +408,14 @@
             });
         }
         
-        const locale ='@(CultureInfo.CurrentCulture.ToString())';
-        const parentLocale = '@(CultureInfo.CurrentCulture.Parent.TwoLetterISOLanguageName)';
-        const hourCycle = '@(CultureInfo.CurrentCulture.DateTimeFormat.ShortTimePattern.Contains("t") ? 12 : 24)';
+        const locale ='@(CultureInfo.CurrentUICulture.ToString())';
+        const parentLocale = '@(CultureInfo.CurrentUICulture.Parent.TwoLetterISOLanguageName)';
+        const hourCycle = '@(CultureInfo.CurrentUICulture.DateTimeFormat.ShortTimePattern.Contains("t") ? 12 : 24)';
         
         const tdFactory = new Site.TempusDominusFactory(locale, parentLocale, hourCycle, true);
 
         [].forEach.call(document.querySelectorAll('[data-input-type="date"]'), function (el) {
-            tdFactory.CreateCalendarPicker(el, '@(CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern)');
+            tdFactory.CreateCalendarPicker(el, '@(CultureInfo.CurrentUICulture.DateTimeFormat.ShortDatePattern)');
             el._tempusDominus.updateOptions({
                 restrictions: {
                     minDate: new tempusDominus.DateTime().manipulate(2, 'date').startOf('date'), // +2 days
@@ -425,7 +425,7 @@
         });
 
         [].forEach.call(document.querySelectorAll('[data-input-type="time"]'), function (el) {
-            tdFactory.CreateTimePicker(el, '@(CultureInfo.CurrentCulture.DateTimeFormat.ShortTimePattern)');
+            tdFactory.CreateTimePicker(el, '@(CultureInfo.CurrentUICulture.DateTimeFormat.ShortTimePattern.Replace("tt", "T"))');
         });
 
         tdFactory.SetEscapeKeyClosesPicker(document.querySelectorAll('[data-input-type]'));

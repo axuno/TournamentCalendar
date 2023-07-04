@@ -174,9 +174,9 @@ public static class WebAppStartup
                 options.Settings = Settings.Deserialize(
                     Path.Combine(context.HostingEnvironment.ContentRootPath, Program.ConfigurationFolder,
                         $@"MailMergeLib.{context.HostingEnvironment.EnvironmentName}.config"),
-                    Encoding.UTF8);
+                    Encoding.UTF8)!;
                 var fms = FileMessageStore.Deserialize(Path.Combine(context.HostingEnvironment.ContentRootPath, Program.ConfigurationFolder,
-                    "MailMergeLibMessageStore.config"), Encoding.UTF8);
+                    "MailMergeLibMessageStore.config"), Encoding.UTF8)!;
                 for (var i = 0; i < fms.SearchFolders.Length; i++)
                 {
                     // make relative paths absolute - ready to use

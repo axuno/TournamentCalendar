@@ -18,7 +18,6 @@ public class Mailer
     private readonly string _domainName; 
 
     private readonly IMailMergeService _mailMergeService;
-    private readonly MailMergeAddress _contactFormFrom = new(MailAddressType.From, "Volleyball-Turnier.de", "info@volleyball-turnier.de");
 
     public Mailer(IMailMergeService mailMergeService, string domainName)
     {
@@ -28,7 +27,7 @@ public class Mailer
 
     public async Task<ContactModel> ContactForm(ContactModel model, string contactFormUrl)
     {
-        var mmm = _mailMergeService.MessageStore.ScanForMessages().First(m => m.Category == "ContactForm").LoadMessage();
+        var mmm = _mailMergeService.MessageStore.ScanForMessages().First(m => m.Category == "ContactForm").LoadMessage()!;
 
         var so = (model,
             new Dictionary<string, string>
@@ -75,7 +74,7 @@ public class Mailer
         model.EmailSuccessful = false;
         try
         {
-            var mmm = _mailMergeService.MessageStore.ScanForMessages().First(m => m.Category == "CalenderEntry").LoadMessage();
+            var mmm = _mailMergeService.MessageStore.ScanForMessages().First(m => m.Category == "CalenderEntry").LoadMessage()!;
             await _mailMergeService.Sender.SendAsync(mmm, so);
             model.EmailSuccessful = true;
         }
@@ -105,7 +104,7 @@ public class Mailer
         model.EmailSuccessful = false;
         try
         {
-            var mmm = _mailMergeService.MessageStore.ScanForMessages().First(m => m.Category == "InfoServiceEntry").LoadMessage();
+            var mmm = _mailMergeService.MessageStore.ScanForMessages().First(m => m.Category == "InfoServiceEntry").LoadMessage()!;
             await _mailMergeService.Sender.SendAsync(mmm, so);
             model.EmailSuccessful = true;
         }
