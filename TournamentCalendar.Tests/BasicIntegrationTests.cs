@@ -18,7 +18,6 @@ public class BasicIntegrationTests
     private readonly WebApplicationFactory<Program> _factory;
     private readonly HttpClient _client;
     private readonly TestServer _server;
-    private readonly IServiceProvider _serverServices;
     
     private readonly string _credentials = @"{
     // Password is 'password'
