@@ -30,6 +30,6 @@
         "@popperjs/core": "2.11.7"
     },
     "dependencies": {
-        "npm-install-peers": "^1.2.1"
+        "tough-cookie": ">=4.1.3"
     }
 }
