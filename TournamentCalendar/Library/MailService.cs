@@ -1,8 +1,5 @@
-﻿using System;
-using MailMergeLib;
+﻿using MailMergeLib;
 using MailMergeLib.MessageStore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 
 namespace TournamentCalendar;
 

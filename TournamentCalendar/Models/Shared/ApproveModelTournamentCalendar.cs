@@ -1,7 +1,4 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using SD.LLBLGen.Pro.ORMSupportClasses;
+﻿using SD.LLBLGen.Pro.ORMSupportClasses;
 using TournamentCalendar.Data;
 using TournamentCalendarDAL.EntityClasses;
 

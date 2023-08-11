@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using TournamentCalendar.Data;
+﻿using TournamentCalendar.Data;
 using TournamentCalendar.Models.Calendar;
 using TournamentCalendarDAL.EntityClasses;
 using TournamentCalendarDAL.HelperClasses;
 using MailMergeLib;
-using System.Threading;
 
 namespace TournamentCalendar.Models.Newsletter;
 

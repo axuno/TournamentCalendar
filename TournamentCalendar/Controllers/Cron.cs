@@ -1,11 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Net;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
+﻿using System.Net;
 using TournamentCalendar.Collecting;
 
 namespace TournamentCalendar.Controllers;

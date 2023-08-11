@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using TournamentCalendar.Collecting;
+﻿using TournamentCalendar.Collecting;
 
 namespace TournamentCalendar.Models.Collect;
 

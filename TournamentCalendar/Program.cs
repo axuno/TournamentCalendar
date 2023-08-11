@@ -1,16 +1,6 @@
-﻿using System;
-using System.IO;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.AspNetCore;
 using NLog;
 using NLog.Web;
-using NLog.Extensions.Logging;
 
 namespace TournamentCalendar;
 

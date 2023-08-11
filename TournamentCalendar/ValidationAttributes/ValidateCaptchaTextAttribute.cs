@@ -1,8 +1,5 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Http;
+﻿using System.ComponentModel.DataAnnotations;
 using Axuno.Web;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace TournamentCalendar.ValidationAttributes;
 

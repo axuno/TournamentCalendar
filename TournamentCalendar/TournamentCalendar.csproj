@@ -18,12 +18,36 @@
         <EnableNETAnalyzers>true</EnableNETAnalyzers>
         <AnalysisLevel>latest</AnalysisLevel>
         <Features>strict</Features>
+        <!-- With dotnet, add parameter: -p:SatelliteResourceLanguages="""en;de""" -->
+        <SatelliteResourceLanguages>en;de</SatelliteResourceLanguages>
+        <ImplicitUsings>enable</ImplicitUsings>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
 		<TreatWarningsAsErrors>false</TreatWarningsAsErrors>
 		<WarningsAsErrors>NU1605</WarningsAsErrors>
 	</PropertyGroup>
+
+    
+    <ItemGroup>
+        <Using Include="System.Globalization" />
+        <Using Include="Microsoft.AspNetCore.Authorization" />
+        <Using Include="Microsoft.AspNetCore.Builder" />
+        <Using Include="Microsoft.AspNetCore.Hosting" />
+        <Using Include="Microsoft.AspNetCore.Hosting" />
+        <Using Include="Microsoft.AspNetCore.Http" />
+        <Using Include="Microsoft.AspNetCore.Identity" />
+        <Using Include="Microsoft.AspNetCore.Localization" />
+        <Using Include="Microsoft.AspNetCore.Mvc" />
+        <Using Include="Microsoft.AspNetCore.Mvc.Localization" />
+        <Using Include="Microsoft.AspNetCore.Routing" />
+        <Using Include="Microsoft.Extensions.Configuration" />
+        <Using Include="Microsoft.Extensions.DependencyInjection" />
+        <Using Include="Microsoft.Extensions.Hosting" />
+        <Using Include="Microsoft.Extensions.Localization" />
+        <Using Include="Microsoft.Extensions.Logging" />
+        <Using Include="Microsoft.Extensions.Options" />
+    </ItemGroup>
 
 	<ItemGroup>
 		<None Include="TournamentCalender-192x192.png">

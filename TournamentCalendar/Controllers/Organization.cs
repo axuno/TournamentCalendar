@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Microsoft.AspNetCore.Mvc;
-using System.Xml.Linq;
+﻿using System.Xml.Linq;
 using TournamentCalendar.Views;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 
 namespace TournamentCalendar.Controllers;
 

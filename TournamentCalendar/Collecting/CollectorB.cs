@@ -1,11 +1,5 @@
-﻿using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Threading.Tasks;
-using AngleSharp.Dom;
+﻿using AngleSharp.Dom;
 using AngleSharp.Html.Dom;
-using Microsoft.Extensions.Logging;
 
 namespace TournamentCalendar.Collecting;
 

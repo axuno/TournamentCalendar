@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Primitives;
@@ -13,7 +7,6 @@ using TournamentCalendar.Data;
 using TournamentCalendarDAL.EntityClasses;
 using TournamentCalendarDAL.HelperClasses;
 using TournamentCalendar.Library;
-using System.Threading;
 
 namespace TournamentCalendar.Models.Calendar;
 

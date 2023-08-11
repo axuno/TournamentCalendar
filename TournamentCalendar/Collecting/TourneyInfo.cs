@@ -1,5 +1,4 @@
-﻿using System;
-using YAXLib.Attributes;
+﻿using YAXLib.Attributes;
 
 namespace TournamentCalendar.Collecting;
 

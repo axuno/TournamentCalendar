@@ -1,7 +1,4 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using TournamentCalendar.Data;
+﻿using TournamentCalendar.Data;
 using TournamentCalendarDAL.EntityClasses;
 
 namespace TournamentCalendar.Models.InfoService;

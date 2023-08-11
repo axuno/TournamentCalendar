@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using TournamentCalendar.Data;
+﻿using TournamentCalendar.Data;
 using TournamentCalendarDAL.EntityClasses;
 using TournamentCalendarDAL.HelperClasses;
 

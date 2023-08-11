@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using SD.LLBLGen.Pro.LinqSupportClasses;
-using SD.LLBLGen.Pro.ORMSupportClasses;
 using TournamentCalendarDAL.EntityClasses;
 using TournamentCalendarDAL.HelperClasses;
 using TournamentCalendarDAL.Linq;

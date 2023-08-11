@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using MailMergeLib;
+﻿using MailMergeLib;
 using TournamentCalendarDAL.EntityClasses;
 using TournamentCalendar.Models.Contact;
 using TournamentCalendar.Models.Shared;

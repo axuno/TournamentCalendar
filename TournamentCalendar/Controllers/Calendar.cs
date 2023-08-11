@@ -1,15 +1,8 @@
-﻿using System;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
-using TournamentCalendar.Library;
+﻿using TournamentCalendar.Library;
 using TournamentCalendarDAL.EntityClasses;
 using TournamentCalendarDAL.HelperClasses;
 using TournamentCalendar.Models.Calendar;
 using TournamentCalendar.Views;
-using System.Threading;
 using TournamentCalendar.Data;
 
 namespace TournamentCalendar.Controllers;

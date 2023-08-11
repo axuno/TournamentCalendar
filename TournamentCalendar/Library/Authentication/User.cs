@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace TournamentCalendar.Library.Authentication;
+﻿namespace TournamentCalendar.Library.Authentication;
 
 public class User
 {
