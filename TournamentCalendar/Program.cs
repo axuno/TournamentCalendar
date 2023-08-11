@@ -26,9 +26,10 @@ public class Program
     {
         // NLog: setup the logger first to catch all errors
         var currentDir = Directory.GetCurrentDirectory();
+        var logConfigFile = Path.Combine(currentDir, ConfigurationFolder, "NLog.Internal.config");
+
         var logger = LogManager.Setup()
-            .LoadConfigurationFromFile(
-                $@"{currentDir}{Path.DirectorySeparatorChar}{Program.ConfigurationFolder}{Path.DirectorySeparatorChar}NLog.Internal.config")
+            .LoadConfigurationFromFile(logConfigFile)
             .GetCurrentClassLogger();
         // Allows for <target name="file" xsi:type="File" fileName = "${var:logDirectory}logfile.log"... >
         NLog.LogManager.Configuration.Variables["logDirectory"] = currentDir + Path.DirectorySeparatorChar;
@@ -41,13 +42,15 @@ public class Program
                 
             var builder = SetupBuilder(args);
 
-            var loggingConfig = builder.Configuration.GetSection("Logging");
             builder.Logging.ClearProviders();
             // Enable NLog as logging provider for Microsoft.Extension.Logging
-            builder.Logging.AddNLog(loggingConfig);
-            LogManager.Setup()
-                .LoadConfigurationFromFile(
-                    $"NLog.{builder.Environment.EnvironmentName}.config");
+            logConfigFile = Path.Combine(currentDir, ConfigurationFolder, $"NLog.{builder.Environment.EnvironmentName}.config");
+            var nLogConfiguration = LogManager.Setup()
+                .LoadConfigurationFromFile(logConfigFile)
+                .LogFactory.Configuration;
+            var nLogOptions = new NLogAspNetCoreOptions { AutoShutdown = true, IncludeScopes = true };
+            builder.Logging.AddNLog(nLogConfiguration, nLogOptions);
+            builder.Host.UseNLog();
 
             builder.WebHost.ConfigureServices(WebAppStartup.ConfigureServices);
 
