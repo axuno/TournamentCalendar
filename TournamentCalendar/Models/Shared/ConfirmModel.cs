@@ -1,5 +1,4 @@
-﻿using System;
-using SD.LLBLGen.Pro.ORMSupportClasses;
+﻿using SD.LLBLGen.Pro.ORMSupportClasses;
 
 namespace TournamentCalendar.Models.Shared;
 

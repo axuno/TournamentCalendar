@@ -1,6 +1,4 @@
-﻿using System;
-using System.Drawing;
-using System.Globalization;
+﻿using System.Drawing;
 using System.Security.Cryptography;
 using System.Xml.Linq;
 

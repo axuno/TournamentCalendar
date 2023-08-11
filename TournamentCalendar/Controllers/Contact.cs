@@ -1,10 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using TournamentCalendar.Models.Contact;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
+﻿using TournamentCalendar.Models.Contact;
 using TournamentCalendar.Views;
 
 namespace TournamentCalendar.Controllers;

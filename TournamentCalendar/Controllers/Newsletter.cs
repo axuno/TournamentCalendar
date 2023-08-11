@@ -1,7 +1,4 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using TournamentCalendar.Data;
+﻿using TournamentCalendar.Data;
 using TournamentCalendar.Models.Newsletter;
 
 namespace TournamentCalendar.Controllers;

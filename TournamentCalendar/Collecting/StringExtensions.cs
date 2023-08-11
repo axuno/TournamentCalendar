@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace TournamentCalendar.Collecting;
+﻿namespace TournamentCalendar.Collecting;
 
 public static class StringExtensions
 {

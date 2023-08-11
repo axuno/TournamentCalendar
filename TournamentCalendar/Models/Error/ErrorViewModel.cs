@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace TournamentCalendar.Models.Error;
+﻿namespace TournamentCalendar.Models.Error;
 
 public class ErrorViewModel
 {

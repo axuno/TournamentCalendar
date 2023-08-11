@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Localization;
-using Microsoft.Extensions.Logging;
-using TournamentCalendar.Models.Error;
+﻿using TournamentCalendar.Models.Error;
 using TournamentCalendar.Views;
 
 namespace TournamentCalendar.Controllers;
@@ -60,7 +57,7 @@ public class Error : ControllerBase
         }
 
         viewModel.StatusCode = id;
-        viewModel.StatusText = StatusCodes.ResourceManager.GetString("E" + id) ?? _localizer["Error"];
+        viewModel.StatusText = Models.Error.StatusCodes.ResourceManager.GetString("E" + id) ?? _localizer["Error"];
         viewModel.Description = StatusDescriptions.ResourceManager.GetString("E" + id) ??
                                 _localizer["An error has occured"];
 

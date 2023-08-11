@@ -11,10 +11,8 @@
 // http://jscolor.com/
 // and https://www.w3schools.com/colors/colors_picker.asp
 
-using System;
 using System.ComponentModel;
 using System.Drawing;
-using System.Linq;
 
 namespace Axuno.ColorTools
 {

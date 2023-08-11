@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using TournamentCalendar.Collecting;
+﻿using TournamentCalendar.Collecting;
 using TournamentCalendar.Data;
 
 namespace TournamentCalendar.Models.Collect;

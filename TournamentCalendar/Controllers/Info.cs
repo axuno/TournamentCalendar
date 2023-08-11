@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using TournamentCalendar.Views;
+﻿using TournamentCalendar.Views;
 
 namespace TournamentCalendar.Controllers;
 
