@@ -11,13 +11,12 @@ namespace TournamentCalendar.Data;
 public class DbContext : IDbContext
 {
     private readonly object _locker = new();
-    private bool _cacheIsRegistered = false;
 
     public DbContext()
     {
         AppDb = new AppDb(this);
     }
-       
+
     /// <summary>
     /// The connection key used to retrieve the <see cref="ConnectionString"/>.
     /// </summary>
@@ -37,7 +36,7 @@ public class DbContext : IDbContext
     /// The schema inside the database.
     /// </summary>
     public virtual string Schema { get; set; } = string.Empty;
-        
+
     /// <summary>
     /// Gets or sets the timeout value to use with the command object(s) created by <see cref="IDataAccessAdapter"/>s.
     /// Default is 30 seconds
@@ -55,15 +54,11 @@ public class DbContext : IDbContext
     {
         lock (_locker)
         {
-            if (!_cacheIsRegistered)
-            {
-                // see docs: https://www.llblgen.com/Documentation/5.9/LLBLGen%20Pro%20RTF/Using%20the%20generated%20code/gencode_resultsetcaching.htm
-                // if connection string exists, the method simply returns without creating a new cache
-                // ** Note ** The connection string must be EXACTLY as it's used for queries.
-                CacheController.RegisterCache(ConnectionString, new ResultsetCache(TimeSpan.FromDays(1).Seconds));
-                _cacheIsRegistered = true;
-            }
-                
+            // see docs: https://www.llblgen.com/Documentation/5.9/LLBLGen%20Pro%20RTF/Using%20the%20generated%20code/gencode_resultsetcaching.htm
+            // if connection string exists, the method simply returns without creating a new cache
+            // ** Note ** The connection string must be EXACTLY as it's used for queries.
+            CacheController.RegisterCache(ConnectionString, new ResultsetCache(TimeSpan.FromDays(1).Seconds));
+
             return new DataAccessAdapter(ConnectionString)
             {
                 KeepConnectionOpen = true,
@@ -85,7 +80,7 @@ public class DbContext : IDbContext
             };
         }
     }
-        
+
     /// <summary>
     /// Gives access to the repositories.
     /// </summary>
