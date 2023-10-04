@@ -24,7 +24,7 @@
         "jsnlog": "^2.30.0",
         "node-sass": "8.0.0",
         "pixrem": "5.0.0",
-        "postcss": "^8.4.23",
+        "postcss": "^8.4.31",
         "simple-datatables": "7.2.0",
         "@eonasdan/tempus-dominus": "6.7.10",
         "@popperjs/core": "2.11.7"
