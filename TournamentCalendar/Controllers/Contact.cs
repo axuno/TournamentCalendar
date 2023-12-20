@@ -13,7 +13,7 @@ public class Contact : ControllerBase
 
     public Contact(IWebHostEnvironment hostingEnvironment, IConfiguration configuration, ILogger<Contact> logger, IMailMergeService mailMergeService) : base(hostingEnvironment, configuration)
     {
-        _domainName = configuration["DomainName"];
+        _domainName = configuration["DomainName"]!;
         _mailMergeService = mailMergeService;
         _logger = logger;
     }

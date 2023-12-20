@@ -18,7 +18,7 @@ public class Calendar : ControllerBase
     public Calendar(IWebHostEnvironment hostingEnvironment, IConfiguration configuration, IAppDb appDb, ILogger<Calendar> logger, IMailMergeService mailMergeService) : base(hostingEnvironment, configuration)
     {
         _mailMergeService = mailMergeService;
-        _domainName = configuration["DomainName"];
+        _domainName = configuration["DomainName"]!;
         _appDb = appDb;
         _logger = logger;
     }
