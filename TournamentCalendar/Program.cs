@@ -42,14 +42,9 @@ public class Program
             builder.Logging.AddNLog(nLogConfiguration, nLogOptions);
             builder.Host.UseNLog();
 
-            builder.WebHost.ConfigureServices(WebAppStartup.ConfigureServices);
-
+            WebAppStartup.ConfigureServices(builder);
             var app = builder.Build();
-
-            builder.WebHost.ConfigureAppConfiguration(_ =>
-            {
-                WebAppStartup.Configure(app, app.Services.GetRequiredService<ILoggerFactory>());
-            });
+            WebAppStartup.Configure(app);
             
             await app.RunAsync();
         }

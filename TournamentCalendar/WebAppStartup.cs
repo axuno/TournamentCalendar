@@ -25,8 +25,12 @@ public static class WebAppStartup
     /// <summary>
     /// The method gets called by <see cref="Program"/> at startup, BEFORE building the app is completed.
     /// </summary>
-    public static void ConfigureServices(WebHostBuilderContext context, IServiceCollection services)
+    public static void ConfigureServices(WebApplicationBuilder builder)
     {
+        var services = builder.Services;
+        var context = new WebHostBuilderContext
+            { Configuration = builder.Configuration, HostingEnvironment = builder.Environment };
+
         #region * DataProtection service configuration *
 
         // required for cookies and session cookies (will throw CryptographicException without)
@@ -199,9 +203,10 @@ public static class WebAppStartup
     /// <summary>
     /// The method gets called by <see cref="Program"/> at startup, AFTER building the app is completed.
     /// </summary>
-    public static void Configure(WebApplication app, ILoggerFactory loggerFactory)
+    public static void Configure(WebApplication app)
     {
         var env = app.Environment;
+        var loggerFactory = app.Services.GetRequiredService<ILoggerFactory>();
         AppLogging.Configure(loggerFactory);
 
         app.UseHttpsRedirection();
