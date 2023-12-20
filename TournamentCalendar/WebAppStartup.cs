@@ -314,7 +314,15 @@ public static class WebAppStartup
 
         app.UseCookiePolicy();
         app.UseSession();
-        app.UseRouting();
+        app
+            .UseRouting()
+            .UseEndpoints(r =>
+            {
+                // We use attribute routing,
+                // so we don't implement endpoints.MapControllerRoute(...)
+                r.MapControllers();
+                r.MapRazorPages();
+            });
 
         // UseAuthentication and UseAuthorization: after UseRouting and UseCors, but before UseEndpoints
         app.UseAuthentication();
@@ -322,13 +330,6 @@ public static class WebAppStartup
 
         // Suppress exceptions when the connection is closed by the client
         app.UseMiddleware<ClientAbortMiddleware>();
-        app.UseEndpoints(endpoints =>
-        {
-            // We use attribute routing,
-            // so we don't implement endpoints.MapControllerRoute(...)
-            endpoints.MapControllers();
-            endpoints.MapRazorPages();
-        });
 
         // They will sustain until 31 March 2024
         app.AddPermanentRedirections();
