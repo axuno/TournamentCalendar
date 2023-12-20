@@ -122,7 +122,7 @@ public static class WebAppStartup
 
         var dbContext = new DbContext();
         context.Configuration.Bind(nameof(DbContext), dbContext);
-        dbContext.ConnectionString = context.Configuration.GetConnectionString(dbContext.ConnectionKey);
+        dbContext.ConnectionString = context.Configuration.GetConnectionString(dbContext.ConnectionKey)!;
 
         ConfigureLlblgenPro(dbContext, context.HostingEnvironment);
         
@@ -139,7 +139,7 @@ public static class WebAppStartup
         // ~/Views/Shared/NavigationNodeSideNavPartial.cshtml
         // ~/Views/Shared/Components/Navigation/*.cshtml
         // ~/Views/_ViewImports.cshtml: @using cloudscribe.Web.Navigation
-        services.AddCloudscribeNavigation(context.Configuration.GetSection("NavigationOptions")); //.Configure<NavigationOptions>(o => o.NavigationMapXmlFileName = ConfigurationFolder + @"\Navigation.xml");
+        services.AddCloudscribeNavigation(context.Configuration.GetSection("NavigationOptions")!); //.Configure<NavigationOptions>(o => o.NavigationMapXmlFileName = ConfigurationFolder + @"\Navigation.xml");
 
         #endregion
 

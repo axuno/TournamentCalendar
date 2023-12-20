@@ -18,7 +18,7 @@ public class InfoService : ControllerBase
     public InfoService(IAppDb appDb, IWebHostEnvironment hostingEnvironment, IConfiguration configuration, ILogger<InfoService> logger, IMailMergeService mailMergeService) : base(hostingEnvironment, configuration)
     {
         _appDb = appDb;
-        _domainName = configuration["DomainName"];
+        _domainName = configuration["DomainName"]!;
         _mailMergeService = mailMergeService;
         _logger = logger;
     }

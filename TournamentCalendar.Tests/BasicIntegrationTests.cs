@@ -48,7 +48,7 @@ public class BasicIntegrationTests
                     {
                         var dbContext = new DbContext();
                         context.Configuration.Bind(nameof(DbContext), dbContext);
-                        dbContext.ConnectionString = context.Configuration.GetConnectionString(dbContext.ConnectionKey);
+                        dbContext.ConnectionString = context.Configuration.GetConnectionString(dbContext.ConnectionKey)!;
 
                         services.AddSingleton<IDbContext>(dbContext);
                         services.AddScoped<IAppDb>(s => s.GetRequiredService<IDbContext>().AppDb);

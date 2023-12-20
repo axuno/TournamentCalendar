@@ -20,8 +20,8 @@ public class ContentSynd : ControllerBase
     public async Task<IActionResult> CalendarList(CancellationToken cancellationToken)
     {
         // Cross Origin Request Sharing (CORS) - allow request from any domain:
-        Response.Headers.Add("Access-Control-Allow-Origin", "*");
-        _logger.LogInformation("Host: {RemoteIp}, Referrer: {Referrer}", GetRemoteIpAddress(), string.IsNullOrEmpty(Request.Headers["Referer"]) ? Request.Headers["Referrer"] : Request.Headers["Referer"]);
+        Response.Headers.Append("Access-Control-Allow-Origin", "*");
+        _logger.LogInformation("Host: {RemoteIp}, Referrer: {Referrer}", GetRemoteIpAddress(), string.IsNullOrEmpty(Request.Headers.Referer) ? Request.Headers["Referrer"] : Request.Headers.Referer);
         var model = new Models.Calendar.BrowseModel(_appDb);
         await model.Load(cancellationToken);
         return PartialView(ViewName.ContentSynd.CalendarListPartial, model);
@@ -30,7 +30,7 @@ public class ContentSynd : ControllerBase
     [HttpGet("calendar.css")]
     public IActionResult CalendarListCss()
     {
-        Response.Headers.Add("Access-Control-Allow-Origin", "*");
+        Response.Headers.Append("Access-Control-Allow-Origin", "*");
         Response.ContentType = "text/css";
         return PartialView(ViewName.ContentSynd.CalendarListPartialCss);
     }
@@ -38,9 +38,9 @@ public class ContentSynd : ControllerBase
     [HttpGet("calendar.js")]
     public IActionResult CalendarListJs()
     {
-        Response.Headers.Add("Access-Control-Allow-Origin", "*");
+        Response.Headers.Append("Access-Control-Allow-Origin", "*");
         Response.ContentType = "text/javascript"; // IE < 9 does not support application/javascript
-        _logger.LogInformation("Host: {Host}, Referrer: {Referrer}", GetRemoteIpAddress(), string.IsNullOrEmpty(Request.Headers["Referer"]) ? Request.Headers["Referrer"] : Request.Headers["Referer"]);
+        _logger.LogInformation("Host: {Host}, Referrer: {Referrer}", GetRemoteIpAddress(), string.IsNullOrEmpty(Request.Headers.Referer) ? Request.Headers["Referrer"] : Request.Headers.Referer);
         return PartialView(ViewName.ContentSynd.CalendarListPartialJs);
     }
 
