@@ -12,7 +12,6 @@ using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using SD.LLBLGen.Pro.ORMSupportClasses;
-using TournamentCalendar.Data;
 using TournamentCalendar.Middleware;
 
 namespace TournamentCalendar;
@@ -120,14 +119,14 @@ public static class WebAppStartup
             options.RedirectStatusCode = StatusCodes.Status301MovedPermanently;
         });
 
-        var dbContext = new DbContext();
-        context.Configuration.Bind(nameof(DbContext), dbContext);
+        var dbContext = new Data.DbContext();
+        context.Configuration.Bind(nameof(Data.DbContext), dbContext);
         dbContext.ConnectionString = context.Configuration.GetConnectionString(dbContext.ConnectionKey)!;
 
         ConfigureLlblgenPro(dbContext, context.HostingEnvironment);
         
-        services.TryAddSingleton<IDbContext>(dbContext);
-        services.AddScoped<IAppDb>(s => s.GetRequiredService<IDbContext>().AppDb);
+        services.TryAddSingleton<Data.IDbContext>(dbContext);
+        services.AddScoped<Data.IAppDb>(s => s.GetRequiredService<Data.IDbContext>().AppDb);
 
         services.AddTransient<ClientAbortMiddleware>();
 
@@ -179,7 +178,7 @@ public static class WebAppStartup
         #endregion
     }
 
-    private static void ConfigureLlblgenPro(IDbContext dbContext, IWebHostEnvironment environment)
+    private static void ConfigureLlblgenPro(Data.IDbContext dbContext, IWebHostEnvironment environment)
     {
         RuntimeConfiguration.AddConnectionString(dbContext.ConnectionKey, dbContext.ConnectionString);
 
@@ -207,7 +206,7 @@ public static class WebAppStartup
     {
         var env = app.Environment;
         var loggerFactory = app.Services.GetRequiredService<ILoggerFactory>();
-        AppLogging.Configure(loggerFactory);
+        Data.AppLogging.Configure(loggerFactory);
 
         app.UseHttpsRedirection();
 
