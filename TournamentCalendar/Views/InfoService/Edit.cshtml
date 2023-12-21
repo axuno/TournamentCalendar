@@ -12,7 +12,7 @@
     Configuration.Bind(nameof(GoogleConfiguration), googleConfig);
 }
 <div class="row">
-    <article class="col-sm-6">
+    <div class="col-sm-6">
         @if (string.IsNullOrEmpty(Model.Guid))
         {
             <h3 class="h3">Jetzt bei Volley-News anmelden!</h3>
@@ -27,12 +27,12 @@
                 Aktuelle Volleyballinfos zu Turnieren und Veranstaltungen
                 weiter bequem per E-Mail erhalten.
             </p>}
-    </article>
-    <article class="col-sm-6">
+    </div>
+    <div class="col-sm-6">
         <img src="@Url.Content("~/images/volleynews-anmeldung.jpg")" alt="" class="rounded img-fluid" style="width: 100%" />
-    </article>
+    </div>
 </div>
-@using (Model.EditMode == EditMode.New ? Html.BeginForm(nameof(InfoService.Entry), nameof(InfoService), new { guid = string.Empty }, FormMethod.Post, null, new { @class = "pb-2" }) : Html.BeginForm(nameof(InfoService.Entry), nameof(InfoService), new { guid = string.Empty }, FormMethod.Post, true, new { @class = "pb-2" }))
+@using (Model.EditMode == EditMode.New ? Html.BeginForm(nameof(InfoService.Entry), nameof(InfoService), new { guid = string.Empty }, FormMethod.Post, null, new { @class = "pb-2", novalidate = "" }) : Html.BeginForm(nameof(InfoService.Entry), nameof(InfoService), new { guid = string.Empty }, FormMethod.Post, true, new { @class = "pb-2", novalidate = "" }))
 {
     @* Validation summary must be inside BeginForm block *@
     @Html.ValidationSummary(false, "Es sind Fehler aufgetreten. Bitte korrigieren und erneut speichern.", new { @class = "validation-summary-errors msg-validation rounded" })
@@ -49,28 +49,28 @@
         <div class="row">
             <div class="col-sm-12">
                 <label asp-for="@Model.Email" class="form-label"></label>
-                <input asp-for="@Model.Email" maxlength="@InfoServiceFields.Email.MaxLength" class="form-control input-required" novalidate>
+                <input asp-for="@Model.Email" maxlength="@InfoServiceFields.Email.MaxLength" class="form-control input-required" >
                 <span asp-validation-for="@Model.Email" class="msg-error-text"></span>
                 <label asp-for="@Model.Gender" class="form-label"></label>
                 <select asp-for="@Model.Gender" asp-items="Model.GetGenderList()" class="form-select input-required" style="width: 10rem"></select>
                 <span asp-validation-for="@Model.Gender" class="msg-error-text"></span>
                 <label asp-for="@Model.Title" class="form-label"></label>
-                <input asp-for="@Model.Title" maxlength="@InfoServiceFields.Title.MaxLength" class="form-control" novalidate>
+                <input asp-for="@Model.Title" maxlength="@InfoServiceFields.Title.MaxLength" class="form-control" >
                 <span asp-validation-for="@Model.Title" class="msg-error-text"></span>
                 <label asp-for="@Model.FirstName" class="form-label"></label>
-                <input asp-for="@Model.FirstName" maxlength="@InfoServiceFields.FirstName.MaxLength" class="form-control input-required" novalidate>
+                <input asp-for="@Model.FirstName" maxlength="@InfoServiceFields.FirstName.MaxLength" class="form-control input-required" >
                 <span asp-validation-for="@Model.FirstName" class="msg-error-text"></span>
                 <label asp-for="@Model.Nickname" class="form-label"></label>
-                <input asp-for="@Model.Nickname" maxlength="@InfoServiceFields.Nickname.MaxLength" class="form-control" novalidate>
+                <input asp-for="@Model.Nickname" maxlength="@InfoServiceFields.Nickname.MaxLength" class="form-control" >
                 <span asp-validation-for="@Model.Nickname" class="msg-error-text"></span>
                 <label asp-for="@Model.LastName" class="form-label"></label>
-                <input asp-for="@Model.LastName" maxlength="@InfoServiceFields.LastName.MaxLength" class="form-control input-required" novalidate>
+                <input asp-for="@Model.LastName" maxlength="@InfoServiceFields.LastName.MaxLength" class="form-control input-required" >
                 <span asp-validation-for="@Model.LastName" class="msg-error-text"></span>
                 <label asp-for="@Model.ClubName" class="form-label"></label>
-                <input asp-for="@Model.ClubName" maxlength="@InfoServiceFields.ClubName.MaxLength" class="form-control" novalidate>
+                <input asp-for="@Model.ClubName" maxlength="@InfoServiceFields.ClubName.MaxLength" class="form-control" >
                 <span asp-validation-for="@Model.ClubName" class="msg-error-text"></span>
                 <label asp-for="@Model.TeamName" class="form-label"></label>
-                <input asp-for="@Model.TeamName" maxlength="@InfoServiceFields.TeamName.MaxLength" class="form-control" novalidate>
+                <input asp-for="@Model.TeamName" maxlength="@InfoServiceFields.TeamName.MaxLength" class="form-control" >
                 <span asp-validation-for="@Model.TeamName" class="msg-error-text"></span>
             </div>
         </div>
@@ -86,21 +86,21 @@
                     <label asp-for="@Model.IsAddressEntered" class="form-check-label"></label>
                 </div>
                 <span asp-validation-for="@Model.IsAddressEntered" class="msg-error-text"></span>
-                <section id="AddressSection" class="@(Model.IsAddressEntered ? "collapse show" : "collapse")">
+                <div id="AddressSection" class="@(Model.IsAddressEntered ? "collapse show" : "collapse")">
                     <label asp-for="@Model.MaxDistance" class="form-label">Maximale Entfernung in Kilometern von nachfolgendem Standort (ab 50 km)</label>
-                    <input asp-for="@Model.MaxDistance" type="text" maxlength="4" class="form-control" style="width: 5rem" novalidate>
+                    <input asp-for="@Model.MaxDistance" type="text" maxlength="4" class="form-control" style="width: 5rem" >
                     <span asp-validation-for="@Model.MaxDistance" class="msg-error-text"></span>
                     <label asp-for="@Model.CountryId" class="form-label"></label>
                     <select asp-for="@Model.CountryId" asp-items="(await Model.GetCountriesList())" class="form-select" style="width: 12rem"></select>
                     <span asp-validation-for="@Model.CountryId" class="msg-error-text"></span>
                     <label asp-for="@Model.ZipCode" class="form-label"></label>
-                    <input asp-for="@Model.ZipCode" maxlength="@InfoServiceFields.ZipCode.MaxLength" class="form-control" style="width:6rem" novalidate>
+                    <input asp-for="@Model.ZipCode" maxlength="@InfoServiceFields.ZipCode.MaxLength" class="form-control" style="width:6rem" >
                     <span asp-validation-for="@Model.ZipCode" class="msg-error-text"></span>
                     <label asp-for="@Model.City" class="form-label"></label>
-                    <input asp-for="@Model.City" maxlength="@InfoServiceFields.City.MaxLength" class="form-control" novalidate>
+                    <input asp-for="@Model.City" maxlength="@InfoServiceFields.City.MaxLength" class="form-control" >
                     <span asp-validation-for="@Model.City" class="msg-error-text"></span>
                     <label asp-for="@Model.Street" class="form-label"></label>
-                    <input asp-for="@Model.Street" maxlength="@InfoServiceFields.Street.MaxLength" class="form-control" novalidate>
+                    <input asp-for="@Model.Street" maxlength="@InfoServiceFields.Street.MaxLength" class="form-control" >
                     <span asp-validation-for="@Model.Street" class="msg-error-text"></span>
                     <!-- Button trigger modal -->
                     <div class="pt-3">
@@ -108,7 +108,7 @@
                             <i class="bi bi-geo-alt-fill"></i> Standort auf Karte zeigen
                         </button>
                     </div>
-                </section>
+                </div>
                 <!-- Start Location Modal -->
                 <div class="modal fade" id="locationModal" data-keyboard="true" tabindex="-1" aria-labelledby="locationMapLabel" aria-hidden="true">
                     <div class="modal-dialog modal-xl" style="max-width: 58rem;">
@@ -155,7 +155,7 @@
                     <span id="ReloadCaptcha" style="cursor: pointer"><i class="bi bi-arrow-clockwise bi-2x" style="margin: 0 5px 0 5px" title="Bild neu laden"></i>Bild neu laden</span><br />
                     <label asp-for="@Model.Captcha" class="form-label"></label>
                 </div>
-                <input asp-for="@Model.Captcha" maxlength="7" class="form-control input-required" style="width:12rem" novalidate>
+                <input asp-for="@Model.Captcha" maxlength="7" class="form-control input-required" style="width:12rem" >
                 <span asp-validation-for="@Model.Captcha" class="msg-error-text"></span>
             </div>
             <div class="col-md-7 col-sm-7 mt-3">
@@ -170,9 +170,9 @@
 @section CssSection {}
 @section ScriptStandardSection {
     @* Note: Google requires an API key for all requests since 11 June 2018 *@
-    <script type="text/javascript" src="@string.Format("https://maps.googleapis.com/maps/api/js?callback=initMap&key={0}&language=de&region=DE", googleConfig.WebApiKey)" defer></script>
-    <script type="text/javascript" src="@Url.Content(ScriptName.Js.Location)" asp-append-version="true"></script>
-    <script type="text/javascript">
+    <script src="@string.Format("https://maps.googleapis.com/maps/api/js?callback=initMap&key={0}&language=de&region=DE", googleConfig.WebApiKey)" defer></script>
+    <script src="@Url.Content(ScriptName.Js.Location)" asp-append-version="true"></script>
+    <script>
     //<![CDATA[
     'use strict';
     const mapPlaceholder = 'mapPlaceholder';

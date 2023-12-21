@@ -2,7 +2,7 @@
 @model IEnumerable<Organization.DownloadFile>
 <section class="pb-2">
     <div class="row">
-        <article class="col-sm-9">
+        <div class="col-sm-9">
             <h3 class="h3">Turnierauswertung</h3>
             <p>
                 Turniere kann man selbstverständlich mit Papier, Bleistift und Radiergummi organisieren und auswerten.
@@ -16,15 +16,15 @@
                 Die Excel-Tabellen auf dieser Seite wurden bereits vielfach erfolgreich in Turnieren eingesetzt,
                 und sie sind einfach zu bedienen.
             </p>
-        </article>
-        <article class="col-6 col-sm-3">
+        </div>
+        <div class="col-6 col-sm-3">
             <img src="@Url.Content("~/images/excel-turnier.png")" class="text-right img-fluid" alt="Turnierauswertung"/>
-        </article>
+        </div>
     </div>
     <div class="card shadow p-2">
         <div class="row">
 
-            <article class="col-sm-8">
+            <div class="col-sm-8">
                 <h5 class="h5">
                     Turnierauswertung
                     für Microsoft Excel (ab 2007)<br />
@@ -36,19 +36,19 @@
                     <li>Zwischenrunde: Überkreuz der Gruppenersten/-zweiten, Gruppendritten/-vierten, usw.</li>
                     <li>Endrunde: Die Sieger der Zwischenrunde spielen um die Plätze 1, 5, 9 - die Verlierer um die Plätze 3, 7 und 11.</li>
                 </ul>
-            </article>
-            <article class="col-sm-4">
+            </div>
+            <div class="col-sm-4">
                 @{var file1 = Model.First(m => m.Id == "turnier-ausw-12-2.xlsm"); }
                 <i class="bi bi-arrow-down-circle-fill bi-2x text-success" aria-hidden="true"></i>
                 @Html.ActionLink("Download", nameof(Organization.Download), nameof(Organization), new { file = file1.Id }, null)
                 <br />(@file1.Size Bytes)
-            </article>
+            </div>
 
         </div>
     </div>
     <div class="card shadow p-2 my-4">
         <div class="row">
-            <article class="col-sm-8">
+            <div class="col-sm-8">
                 <h5 class="h5">
                     Turnierauswertung
                     für Microsoft Excel (ab 2007)<br />
@@ -61,13 +61,13 @@
                     <li>Zwischenrunde 2: Sieger gg. Sieger, Verlierer gg. Verlierer der Zwischenrunde</li>
                     <li>Endrunde: Die Sieger der Zwischenrunde 2 spielen um die Plätze 1, 5, 9, 13 - die Verlierer um die Plätze 3, 7, 11 und 15.</li>
                 </ul>
-            </article>
-            <article class="col-sm-4">
+            </div>
+            <div class="col-sm-4">
                 @{var file2 = Model.First(m => m.Id == "turnier-ausw-16-4.xlsm"); }
                 <i class="bi bi-arrow-down-circle-fill bi-2x text-success" aria-hidden="true"></i>
                 @Html.ActionLink("Download", nameof(Organization.Download), nameof(Organization), new { file = file2.Id }, null)
                 <br />(@file2.Size Bytes)
-            </article>
+            </div>
         </div>
     </div>
     <div class="row">
@@ -79,7 +79,7 @@
     </div>
     <div class="card shadow p-2 my-4">
         <div class="row">
-            <article class="col-sm-8">
+            <div class="col-sm-8">
                 <h5 class="h5">
                     Volleyballturnierorganisator
                 </h5>
@@ -92,12 +92,12 @@
                 <div>
                     Mehr Infos gibt es auf der <a href="https://www.turnierprogramm.de/" class="link">Website des Anbieters</a>.
                 </div>
-            </article>
+            </div>
         </div>
     </div>
     <div class="card shadow p-2 my-4">
         <div class="row">
-            <article class="col-sm-8">
+            <div class="col-sm-8">
                 <h5 class="h5">
                     SPORT-Software
                 </h5>
@@ -111,12 +111,12 @@
                 <div>
                     Mehr Infos gibt es auf der <a href="https://www.sport-software.de/" class="link">Website des Anbieters</a>.
                 </div>
-            </article>
+            </div>
         </div>
     </div>
     <div class="card shadow p-2 my-4">
         <div class="row">
-            <article class="col-sm-8">
+            <div class="col-sm-8">
                 <h5 class="h5">
                     Tournify - Online-Turnierplaner
                 </h5>
@@ -129,7 +129,7 @@
                 <div>
                     Mehr Infos gibt es auf der <a href="https://tournify.de/" class="link">Website des Anbieters</a>.
                 </div>
-            </article>
+            </div>
         </div>
     </div>
 </section>

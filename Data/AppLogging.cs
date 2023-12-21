@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 
-namespace TournamentCalendar;
+namespace TournamentCalendar.Data;
 
 /// <summary>
 /// Allows for using the <see cref="Microsoft.Extensions.Logging"/> facade in library classes 
