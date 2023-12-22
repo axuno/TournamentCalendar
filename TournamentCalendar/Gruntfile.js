@@ -100,7 +100,7 @@ module.exports = function (grunt) {
                 nonull: true
             },
             simple_datatables_css: {
-                src: ['node_modules/simple-datatables/dist/css/style.css'],
+                src: ['node_modules/simple-datatables/dist/style.css'],
                 dest: 'wwwroot/lib/simple-datatables/simple-datatables.css',
                 nonull: true
             },

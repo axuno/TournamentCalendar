@@ -395,7 +395,7 @@
             loc.update();
         });
 
-        @if (Model.Latitude.HasValue && Model.Longitude.HasValue)
+        @if (Model is { Latitude: not null,Longitude: not null })
         {
             <text>loc.showLocationOnGoogleMaps(@Model.Latitude.Value.ToString(CultureInfo.InvariantCulture), @Model.Longitude.Value.ToString(CultureInfo.InvariantCulture)); </text>
         }

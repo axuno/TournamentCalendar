@@ -1,6 +1,6 @@
 {
     "version": "1.0.0",
-    "name": "asp.net",
+    "name": "tournament-calendar",
     "private": true,
     "description": "volleyball-turnier.de",
     "main": "index.js",
@@ -10,11 +10,11 @@
     "devDependencies": {
         "autoprefixer": "9.8.8",
         "bootstrap": "5.2.3",
-        "bootstrap-icons": "1.10.3",
+        "bootstrap-icons": "1.11.2",
         "cssnano": "4.1.11",
-        "grunt": "^1.2.0",
-        "grunt-cli": "1.2.0",
-        "grunt-contrib-concat": "1.0.1",
+        "grunt": "^1.6.1",
+        "grunt-cli": "1.4.3",
+        "grunt-contrib-concat": "2.1.0",
         "grunt-contrib-copy": "1.0.0",
         "grunt-contrib-cssmin": "3.0.0",
         "grunt-contrib-uglify": "5.2.2",
@@ -22,12 +22,12 @@
         "grunt-postcss": "^0.9.0",
         "grunt-sass": "3.1.0",
         "jsnlog": "^2.30.0",
-        "node-sass": "8.0.0",
+        "node-sass": "9.0.0",
         "pixrem": "5.0.0",
         "postcss": "^8.4.31",
-        "simple-datatables": "7.2.0",
-        "@eonasdan/tempus-dominus": "6.7.10",
-        "@popperjs/core": "2.11.7"
+        "simple-datatables": "9.0.0",
+        "@eonasdan/tempus-dominus": "6.9.4",
+        "@popperjs/core": "2.11.8"
     },
     "dependencies": {
         "tough-cookie": ">=4.1.3"
