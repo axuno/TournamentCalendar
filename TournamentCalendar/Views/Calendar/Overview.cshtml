@@ -51,7 +51,7 @@
                     <td>@m.GetTournamentTypeShort()</td>
                     <td>@m.GetSurface()</td>
                     <td>@m.CountryId-@m.PostalCode</td>
-                    <td class="text-right"><a href="@Url.Action(nameof(Calendar.Id), nameof(Calendar), new {id = m.Id})" style="text-decoration: none"><i class="bi bi-info-circle @((DateTime.Now.Date - m.ModifiedOn.Date).Days < 2 ? "text-primary" : "")"></i></a></td>
+                    <td class="text-right"><a href="@Url.Action(nameof(Calendar.Id), nameof(Calendar), new {id = m.Id})" style="text-decoration: none" aria-label="@(m.TournamentName)"><i class="bi bi-info-circle @((DateTime.Now.Date - m.ModifiedOn.Date).Days < 2 ? "text-primary" : "")"></i></a></td>
                 </tr>
             }
         </tbody>
