@@ -32,9 +32,9 @@
         <img src="@Url.Content("~/images/volleynews-anmeldung.jpg")" alt="" class="rounded img-fluid" style="width: 100%" />
     </div>
 </div>
-@using (Model.EditMode == EditMode.New ? Html.BeginForm(nameof(InfoService.Entry), nameof(InfoService), new { guid = string.Empty }, FormMethod.Post, null, new { @class = "pb-2", novalidate = "" }) : Html.BeginForm(nameof(InfoService.Entry), nameof(InfoService), new { guid = string.Empty }, FormMethod.Post, true, new { @class = "pb-2", novalidate = "" }))
-{
-    @* Validation summary must be inside BeginForm block *@
+
+<form asp-controller="@nameof(InfoService)" asp-action="@nameof(InfoService.Entry)" asp-route-guid="" method="post" class="pb-2" novalidate>
+    @* Validation summary must be inside Form block *@
     @Html.ValidationSummary(false, "Es sind Fehler aufgetreten. Bitte korrigieren und erneut speichern.", new { @class = "validation-summary-errors msg-validation rounded" })
 
     if (Model.EditMode == EditMode.Change)
@@ -166,7 +166,7 @@
             </div>
         </div>
     </fieldset>
-}
+</form>
 @section CssSection {}
 @section ScriptStandardSection {
     @* Note: Google requires an API key for all requests since 11 June 2018 *@
@@ -175,6 +175,7 @@
     <script>
     //<![CDATA[
     'use strict';
+    const bootstrap = window.bootstrap;
     const mapPlaceholder = 'mapPlaceholder';
     function initMap() {
         Site.Location.initMap(mapPlaceholder);
@@ -186,7 +187,7 @@
         const loc = new Site.Location('@Html.IdFor(m => m.CountryId)', '@Html.IdFor(m => m.ZipCode)', '@Html.IdFor(m => m.City)', '@Html.IdFor(m => m.Street)', 'btnModal', mapPlaceholder);
         @* Disable input fields, if checkbox for address details is disabled *@
         address.enableDisableInputFields();
-        @if (Model.Latitude.HasValue && Model.Longitude.HasValue)
+        @if (Model is { Latitude: not null,Longitude: not null })
         {
             <text>loc.showLocationOnGoogleMaps(@Model.Latitude.Value.ToString(CultureInfo.InvariantCulture), @Model.Longitude.Value.ToString(CultureInfo.InvariantCulture)); </text>
         }
@@ -224,7 +225,7 @@
             @* Animate with Bootstrap 5 *@
             const bsCollapse = new bootstrap.Collapse(this.addressSectionEle, {
                 toggle: false
-            })
+            });
 
             if (this.enterAddrToggleEle.checked) {
                 allFormControls.forEach(element => { element.removeAttribute('disabled'); });
