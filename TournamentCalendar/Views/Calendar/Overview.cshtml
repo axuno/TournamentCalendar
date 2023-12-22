@@ -78,8 +78,17 @@
             border-bottom: 0 !important;
         }
 
-        .datatable-bottom {
-            display: none !important;    
+        button.datatable-sorter {
+            text-decoration: none !important;
+        }
+
+        .datatable-table > tbody > tr > td,
+        .datatable-table > tbody > tr > th,
+        .datatable-table > tfoot > tr > td,
+        .datatable-table > tfoot > tr > th,
+        .datatable-table > thead > tr > td,
+        .datatable-table > thead > tr > th {
+            padding: 8px 5px !important;
         }
     </style>
 }
@@ -125,9 +134,11 @@
             labels: labelsDE,
             classes: {
                 input: 'form-control',
+                sorter: 'datatable-sorter btn btn-link btn-sm p-0 m-0'
             } 
         }
         const tournamentsTable = new window.simpleDatatables.DataTable(tournamentsTableElement, options);
+        tournamentsTable.columns.sort(0, 'asc');
         makeRowsClickable();
         tournamentsTable.on('datatable.update', makeRowsClickable);
         

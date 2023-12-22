@@ -2,6 +2,7 @@
 if (Site === undefined) {
     var Site = {};
 }
+if (tempusDominus === undefined) { tempusDominus = window.tempusDominus; }
 
 Site.TempusDominusFactory = class {
     'use strict';
@@ -29,7 +30,7 @@ Site.TempusDominusFactory = class {
             tempusDominus.DefaultOptions.localization = this.tdLocale.localization;
             tempusDominus.DefaultOptions.localization.hourCycle = this.tdHourCycle;
         }
-        
+
         // Change year to 4 digits instead of 2:
         tempusDominus.DefaultOptions.localization.dayViewHeaderFormat = { month: 'long', year: 'numeric' };
 
@@ -71,8 +72,7 @@ Site.TempusDominusFactory = class {
      * @param {HTMLElement} element
      * @param {string} format - Optional: The input format either as TempusDominus constant (e.g.: "L") or custom format (e.g.: "yyyy-MM-dd")
      */
-    CreateCalendarPicker(element, format) 
-    {
+    CreateCalendarPicker(element, format) {
         if (format === undefined) {
             format = 'L';
         }
@@ -82,10 +82,10 @@ Site.TempusDominusFactory = class {
                 // Destroy any existing widget
                 if (element._tempusDominus) element._tempusDominus.dispose();
             }
-            catch {}
-            
+            catch (e) { }
+
             element._tempusDominus = this._tryCreateCalendarPicker(element, format);
-        } catch {
+        } catch (e) {
             element.querySelector('input').value = '';
             element._tempusDominus = this._tryCreateCalendarPicker(element, format);
         }
@@ -97,8 +97,7 @@ Site.TempusDominusFactory = class {
      * @param {HTMLElement} element
      * @param {string} format - Optional: The input format either as TempusDominus constant (e.g.: "LT") or custom format (e.g.: "h:mm")
      */
-    CreateTimePicker(element, format) 
-    {
+    CreateTimePicker(element, format) {
         if (format === undefined) {
             format = 'LT';
         }
@@ -108,10 +107,10 @@ Site.TempusDominusFactory = class {
                 // Destroy any existing widget
                 if (element._tempusDominus) element._tempusDominus.dispose();
             }
-            catch {}
-            
+            catch (e) { }
+
             element._tempusDominus = this._tryCreateTimePicker(element, format);
-        } catch {
+        } catch (e) {
             element.querySelector('input').value = '';
             element._tempusDominus = this._tryCreateTimePicker(element, format);
         }
@@ -121,8 +120,7 @@ Site.TempusDominusFactory = class {
      * Lets the 'Escape' key close the specified picker {elements}
      * @param {Array.<HTMLElement>} elements
      */
-    SetEscapeKeyClosesPicker(elements) 
-    {
+    SetEscapeKeyClosesPicker(elements) {
         document.addEventListener('keydown', function (event) {
             if (event.key !== 'Escape') return;
             [].forEach.call(elements, function (el) {
@@ -141,8 +139,7 @@ Site.TempusDominusFactory = class {
      * @param {string} format - The input format either as TempusDominus constant (e.g.: "L") or custom format (e.g.: "yyyy-MM-dd")
      * @returns {tempusDominus.TempusDominus}
      */
-    _tryCreateCalendarPicker(element, format)
-    {
+    _tryCreateCalendarPicker(element, format) {
         const calPicker = new tempusDominus.TempusDominus(element, {
             container: element,
             allowInputToggle: false,
@@ -170,8 +167,7 @@ Site.TempusDominusFactory = class {
      * @param {string} format - Optional: The input format either as TempusDominus constant (e.g.: "LT") or custom format (e.g.: "h:mm")
      * @returns {tempusDominus.TempusDominus}
      */
-    _tryCreateTimePicker(element, format)
-    {
+    _tryCreateTimePicker(element, format) {
         const timePicker = new tempusDominus.TempusDominus(element, {
             container: element,
             allowInputToggle: false,
@@ -204,14 +200,14 @@ Site.TempusDominusFactory = class {
 
 
     /**
-    * TempusDominus v6.7.10 throws when invalid dates/times
+    * TempusDominus before v6.9.4 throws when invalid dates/times
     * are entered. This workaround catches the exception by
     * overriding the default 'parseInput' method.
     * See: https://github.com/Eonasdan/tempus-dominus/discussions/2656#discussioncomment-5713755
     * @param {tempusDominus.TempusDominus} widget - The widget instance to be fixed.
     */
-    _fixUncaughtExceptions (widget) 
-    {
+    _fixUncaughtExceptions(widget) {
+        return; // fix with v6.9.4
         widget.dates.origParseInput = widget.dates.parseInput;
         widget.dates.parseInput = (input) => {
             try {
@@ -220,6 +216,7 @@ Site.TempusDominusFactory = class {
             catch (err) {
                 widget.dates.clear();
             }
+            return null;
         };
     }
 }
