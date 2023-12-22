@@ -313,19 +313,18 @@ public static class WebAppStartup
 
         app.UseCookiePolicy();
         app.UseSession();
-        app
-            .UseRouting()
-            .UseEndpoints(r =>
-            {
-                // We use attribute routing,
-                // so we don't implement endpoints.MapControllerRoute(...)
-                r.MapControllers();
-                r.MapRazorPages();
-            });
-
+        app.UseRouting();
+        // UseCors: before UseResponseCaching
+        app.UseCors();
         // UseAuthentication and UseAuthorization: after UseRouting and UseCors, but before UseEndpoints
-        app.UseAuthentication();
-        app.UseAuthorization();
+        app.UseAuthentication().UseAuthorization();
+        app.UseEndpoints(r =>
+        {
+            // We use attribute routing,
+            // so we don't implement endpoints.MapControllerRoute(...)
+            r.MapControllers();
+            r.MapRazorPages();
+        });
 
         // Suppress exceptions when the connection is closed by the client
         app.UseMiddleware<ClientAbortMiddleware>();
