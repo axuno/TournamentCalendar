@@ -318,13 +318,10 @@ public static class WebAppStartup
         app.UseCors();
         // UseAuthentication and UseAuthorization: after UseRouting and UseCors, but before UseEndpoints
         app.UseAuthentication().UseAuthorization();
-        app.UseEndpoints(r =>
-        {
-            // We use attribute routing,
-            // so we don't implement endpoints.MapControllerRoute(...)
-            r.MapControllers();
-            r.MapRazorPages();
-        });
+        // The net6.0+ top level replacement for app.UseEndpoints(...)
+        // (WebApplication implements IEndpointRouteBuilder)
+        app.MapControllers();
+        app.MapRazorPages();
 
         // Suppress exceptions when the connection is closed by the client
         app.UseMiddleware<ClientAbortMiddleware>();
