@@ -14,7 +14,7 @@ public class Program
 
     public static async Task Main(string[] args)
     {
-        // NLog: setup the logger first to catch all errors
+        // NLog: set up the logger first to catch all errors
         var currentDir = Directory.GetCurrentDirectory();
         var logConfigFile = Path.Combine(currentDir, ConfigurationFolder, "NLog.Internal.config");
 
@@ -93,7 +93,7 @@ public class Program
             builder.Configuration.AddJsonFile(Path.Combine(secretsFolder, $"credentials.{builder.Environment.EnvironmentName}.json"), false);
         }
 
-        // Use static web assets, also from other referenced projects or packages)
+        // Use static web assets, also from other referenced projects or packages
         builder.WebHost.UseStaticWebAssets();
 
         return builder;

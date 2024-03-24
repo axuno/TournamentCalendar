@@ -1,9 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
     <Product>TournamentCalendar</Product>
-    <TargetFramework>net6.0</TargetFramework>
-    <Version>3.2.5</Version>
-    <FileVersion>3.2.5</FileVersion>
+    <TargetFramework>net8.0</TargetFramework>
+    <Version>4.0.0</Version>
+    <FileVersion>4.0.0</FileVersion>
     <EnableDefaultContentItems>true</EnableDefaultContentItems>
     <Authors>axuno gGmbH</Authors>
     <CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</CurrentYear>
@@ -12,7 +12,8 @@
     <Nullable>enable</Nullable>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageIcon>TournamentCalender-192x192.png</PackageIcon>
-    <AssemblyVersion>3.0.0.0</AssemblyVersion><!--only update AssemblyVersion with major releases -->
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+    <!--only update AssemblyVersion with major releases -->
     <LangVersion>latest</LangVersion>
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
     <AnalysisLevel>latest</AnalysisLevel>
@@ -47,7 +48,8 @@
   <ItemGroup>
     <None Include="TournamentCalender-192x192.png">
       <Pack>True</Pack>
-      <PackagePath></PackagePath>
+      <PackagePath>
+      </PackagePath>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -55,22 +57,23 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="cloudscribe.Web.Navigation" Version="6.0.3" />
-    <PackageReference Include="JSNLog" Version="3.0.2" />
+    <PackageReference Include="JSNLog" Version="3.0.3" />
     <PackageReference Include="MailMergeLib" Version="5.11.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="6.0.25" />
     <PackageReference Include="Microsoft.DotNet.PlatformAbstractions" Version="3.1.6" />
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.16" />
-    <PackageReference Include="NLog.Web.AspNetCore" Version="5.3.7" />
+    <PackageReference Include="NLog.Web.AspNetCore" Version="5.3.8" />
     <PackageReference Include="StackifyMiddleware" Version="3.3.3.4767" />
-    <PackageReference Include="System.Security.Cryptography.Xml" Version="6.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="8.0.3" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.2" />
+    <PackageReference Include="System.Security.Cryptography.Xml" Version="8.0.0" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Update="Models\Error\StatusCodes.de.resx">
-      <Generator></Generator>
+      <Generator>
+      </Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Models\Error\StatusCodes.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -81,14 +84,16 @@
       <LastGenOutput>StatusDescriptions.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\DataAnnotationResource.de.resx">
-      <Generator></Generator>
+      <Generator>
+      </Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\DataAnnotationResource.resx">
       <LastGenOutput>DataAnnotationResource.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\ModelBindingMessageResource.de.resx">
-      <Generator></Generator>
+      <Generator>
+      </Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\ModelBindingMessageResource.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

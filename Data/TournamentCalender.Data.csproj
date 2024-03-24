@@ -1,20 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
-    <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
-        <LangVersion>latest</LangVersion>
-        <Nullable>enable</Nullable>
-    </PropertyGroup>
-
-    <ItemGroup>
-        <PackageReference Include="Microsoft.Extensions.Logging" Version="7.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.0" />
-        <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <ProjectReference Include="..\DAL\DatabaseGeneric\TournamentCalendarDAL.DbGeneric.csproj" />
-        <ProjectReference Include="..\DAL\DatabaseSpecific\TournamentCalendarDAL.DbSpecific.csproj" />
-    </ItemGroup>
-
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DAL\DatabaseGeneric\TournamentCalendarDAL.DbGeneric.csproj" />
+    <ProjectReference Include="..\DAL\DatabaseSpecific\TournamentCalendarDAL.DbSpecific.csproj" />
+  </ItemGroup>
 </Project>
