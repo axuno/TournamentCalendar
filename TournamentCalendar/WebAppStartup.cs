@@ -17,7 +17,7 @@ using TournamentCalendar.Middleware;
 namespace TournamentCalendar;
 
 /// <summary>
-/// The demo startup class to setup and configure the league.
+/// The demo startup class to set up and configure the tournament calendar.
 /// </summary>
 public static class WebAppStartup
 {
