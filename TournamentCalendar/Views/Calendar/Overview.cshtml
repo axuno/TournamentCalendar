@@ -28,8 +28,8 @@
         </label>
     }
     </div>
-    <div class="col-md-12 pb-2 table-responsive">
-        <table id="tournaments-table" class="table table-striped table-bordered border-light table-hover nowrap rounded">
+    <div class="pb-2 table-responsive">
+        <table id="tournaments-table" class="table table-striped table-bordered border-light table-hover rounded">
         <thead>
             <tr>
                 <th>Datum</th>
@@ -38,7 +38,7 @@
                 <th>Art</th>
                 <th>Belag</th>
                 <th>PLZ</th>
-                <th class="text-right"><i class="bi bi-info-circle-fill"></i></th>
+                <th class="text-center"><i class="bi bi-info-circle-fill"></i></th>
             </tr>
         </thead>
         <tbody>
@@ -51,7 +51,7 @@
                     <td>@m.GetTournamentTypeShort()</td>
                     <td>@m.GetSurface()</td>
                     <td>@m.CountryId-@m.PostalCode</td>
-                    <td class="text-right"><a href="@Url.Action(nameof(Calendar.Id), nameof(Calendar), new {id = m.Id})" style="text-decoration: none" aria-label="@(m.TournamentName)"><i class="bi bi-info-circle @((DateTime.Now.Date - m.ModifiedOn.Date).Days < 2 ? "text-primary" : "")"></i></a></td>
+                    <td class="text-center"><a href="@Url.Action(nameof(Calendar.Id), nameof(Calendar), new {id = m.Id})" style="text-decoration: none" aria-label="@(m.TournamentName)"><i class="bi bi-info-circle @((DateTime.Now.Date - m.ModifiedOn.Date).Days < 2 ? "text-primary" : "")"></i></a></td>
                 </tr>
             }
         </tbody>
@@ -120,6 +120,7 @@
             searchable: true,
             sortable: true,
             paging: false,
+            fixedColumns: true,
             columns: [
                 {
                     select: 0,

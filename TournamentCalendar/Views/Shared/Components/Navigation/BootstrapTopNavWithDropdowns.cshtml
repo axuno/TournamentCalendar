@@ -1,6 +1,6 @@
 ﻿@model NavigationViewModel
 @addTagHelper *, cloudscribe.Web.Navigation
-<ul class="navbar-nav me-auto mt-2 mt-md-0">
+<ul class="navbar-nav me-auto mt-2 mt-md-0" data-bs-theme="light">
     @if (await Model.HasVisibleChildren(Model.RootNode))
     {
         foreach (var node in Model.RootNode.Children)

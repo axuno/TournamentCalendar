@@ -2,8 +2,8 @@
   <PropertyGroup>
     <Product>TournamentCalendar</Product>
     <TargetFramework>net8.0</TargetFramework>
-    <Version>4.0.0</Version>
-    <FileVersion>4.0.0</FileVersion>
+    <Version>4.1.0</Version>
+    <FileVersion>4.1.0</FileVersion>
     <EnableDefaultContentItems>true</EnableDefaultContentItems>
     <Authors>axuno gGmbH</Authors>
     <CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</CurrentYear>
@@ -136,6 +136,11 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Data\TournamentCalender.Data.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="app_offline_.htm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <!-- Custom PropertyGroup to add the Environment name during publish. The EnvironmentName property is used for the 'Environment' variable in web.config when publishing. -->
   <PropertyGroup Condition=" '$(Configuration)' == '' Or '$(Configuration)' == 'Debug'">

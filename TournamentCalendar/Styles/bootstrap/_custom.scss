@@ -1,18 +1,15 @@
 // Bootstrap dependencies - javascript and fonts must be copied manually!!
 // font-awesome is included by site.scss
 
-// Does not exist in BS5
-//@import '../../node_modules/tether/src/css/tether.sass';
-
 // Always required for Bootstrap
 @import "node_modules/bootstrap/scss/functions";
-//@import "node_modules/bootstrap/scss/variables";
-//@import "node_modules/bootstrap/scss/mixins";
 
 // Bootstrap overrides
 //
 // Copy variables from `_variables.scss` to this file to override default values
 // without modifying source files.
+// Variable customizations in Bootstrap have to come after @import "functions",
+// but before @import "variables" and the rest of our import stack. The same applies to Sass maps.
 
 //
 // Color system
@@ -55,6 +52,7 @@ $dropdown-link-hover-bg: shade-color($dropdown-link-hover-bg, 10%);
 
 $dropdown-link-active-color: $black;
 $dropdown-link-active-bg: tint-color($primary, 80%);
+$dropdown-bg: $white; /* changed! */
 
 // Body
 //
@@ -98,3 +96,10 @@ $box-shadow-sm: 0 .125rem .25rem rgba($black, .015);
 $box-shadow: 0 .5rem 1rem rgba($black, .30);
 $box-shadow-lg: 0 1rem 3rem rgba($black, .35);
 
+// Tables
+$table-bg: $white;
+$table-hover-bg-factor: .2; /* .075 !default;*/
+$table-hover-bg: rgba(#3299BB, $table-hover-bg-factor);
+
+// Cards
+$card-bg: $white;

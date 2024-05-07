@@ -7,28 +7,27 @@
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"
     },
-    "devDependencies": {
-        "autoprefixer": "9.8.8",
-        "bootstrap": "5.2.3",
-        "bootstrap-icons": "1.11.2",
-        "cssnano": "4.1.11",
-        "grunt": "^1.6.1",
-        "grunt-cli": "1.4.3",
-        "grunt-contrib-concat": "2.1.0",
-        "grunt-contrib-copy": "1.0.0",
-        "grunt-contrib-cssmin": "5.0.0",
-        "grunt-contrib-uglify": "5.2.2",
-        "grunt-contrib-watch": "^1.1.0",
-        "grunt-postcss": "^0.9.0",
-        "grunt-sass": "3.1.0",
-        "jsnlog": "^2.30.0",
-        "node-sass": "9.0.0",
-        "pixrem": "5.0.0",
-        "postcss": "^8.4.38",
-        "simple-datatables": "9.0.0",
-        "@eonasdan/tempus-dominus": "6.9.4",
-        "@popperjs/core": "2.11.8"
-    },
+  "devDependencies": {
+    "autoprefixer": "10.4.19",
+    "bootstrap": "5.3.3",
+    "bootstrap-icons": "1.11.3",
+    "cssnano": "7.0.1",
+    "grunt": "^1.6.1",
+    "grunt-cli": "1.4.3",
+    "grunt-contrib-concat": "2.1.0",
+    "grunt-contrib-copy": "1.0.0",
+    "grunt-contrib-cssmin": "5.0.0",
+    "grunt-contrib-uglify": "5.2.2",
+    "grunt-contrib-watch": "^1.1.0",
+    "@lodder/grunt-postcss": "3.1.1",
+    "grunt-sass": "3.1.0",
+    "jsnlog": "^2.30.0",
+    "node-sass": "9.0.0",
+    "pixrem": "5.0.0",
+    "simple-datatables": "9.0.3",
+    "@eonasdan/tempus-dominus": "6.9.6",
+    "@popperjs/core": "2.11.8"
+  },
     "dependencies": {
         "tough-cookie": ">=4.1.3"
     }
