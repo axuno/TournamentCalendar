@@ -23,6 +23,6 @@ jobs:
       with:
         dotnet-version: 8.0.x
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore ./Src/TournamentCalendar.sln
     - name: Build
-      run: dotnet build --no-restore /p:configuration=release -p:EnvironmentName=Production
+      run: dotnet build ./Src/TournamentCalendar.sln --no-restore /p:configuration=release -p:EnvironmentName=Production
