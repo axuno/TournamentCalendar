@@ -332,12 +332,12 @@ public static class WebAppStartup
 
     /// <summary>
     /// Redirections were introduced in April 2023 when removing localized Urls.
-    /// They will sustain until 31 March 2024.
+    /// They will sustain until 31 December 2024.
     /// </summary>
     /// <param name="app">An <see cref="IEndpointRouteBuilder"/> like <see cref="WebApplication"/></param>
     private static void AddPermanentRedirections(this IEndpointRouteBuilder app)
     {
-        if (DateTime.Now.Date > new DateTime(2024, 3, 31)) return;
+        if (DateTime.Now.Date > new DateTime(2024, 12, 31)) return;
 
         #region *** Calendar controller ***
 

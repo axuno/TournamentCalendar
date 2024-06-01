@@ -8,8 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace TournamentCalendar.Resources
-{
+namespace TournamentCalendar.Resources {
     using System;
     
     
@@ -20,17 +19,17 @@ namespace TournamentCalendar.Resources
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class ModelBindingMessageResource {
+    public class DataAnnotationResource {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal ModelBindingMessageResource() {
+        internal DataAnnotationResource() {
         }
         
         /// <summary>
@@ -40,7 +39,7 @@ namespace TournamentCalendar.Resources
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("TournamentCalendar.Resources.ModelBindingMessageResource", typeof(ModelBindingMessageResource).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("TournamentCalendar.Resources.DataAnnotationResource", typeof(DataAnnotationResource).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -62,65 +61,38 @@ namespace TournamentCalendar.Resources
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The value &apos;{0}&apos; is not valid for {1}..
+        ///   Looks up a localized string similar to &apos;{0}&apos; is not a valid email address..
         /// </summary>
-        public static string AttemptedValueIsInvalid {
+        public static string EmailAddressInvalid {
             get {
-                return ResourceManager.GetString("AttemptedValueIsInvalid", resourceCulture);
+                return ResourceManager.GetString("EmailAddressInvalid", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A value for the &apos;{0}&apos; property was not provided..
+        ///   Looks up a localized string similar to &apos;{0}&apos; is required..
         /// </summary>
-        public static string MissingBindRequiredValue {
+        public static string PropertyValueRequired {
             get {
-                return ResourceManager.GetString("MissingBindRequiredValue", resourceCulture);
+                return ResourceManager.GetString("PropertyValueRequired", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A value is required..
+        ///   Looks up a localized string similar to &apos;{0}&apos; must be from {2} to {1} characters long..
         /// </summary>
-        public static string MissingKeyOrValue {
+        public static string StringLengthBetween {
             get {
-                return ResourceManager.GetString("MissingKeyOrValue", resourceCulture);
+                return ResourceManager.GetString("StringLengthBetween", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The supplied value is invalid for &apos;{0}&apos;..
+        ///   Looks up a localized string similar to &apos;{0}&apos; must be at least {2} characters long..
         /// </summary>
-        public static string UnknownValueIsInvalid {
+        public static string StringLengthMinimum {
             get {
-                return ResourceManager.GetString("UnknownValueIsInvalid", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The value &apos;{0}&apos; is invalid..
-        /// </summary>
-        public static string ValueIsInvalid {
-            get {
-                return ResourceManager.GetString("ValueIsInvalid", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The field &apos;{0}&apos; must be a number..
-        /// </summary>
-        public static string ValueMustBeANumber {
-            get {
-                return ResourceManager.GetString("ValueMustBeANumber", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The value cannot be empty..
-        /// </summary>
-        public static string ValueMustNotBeNull {
-            get {
-                return ResourceManager.GetString("ValueMustNotBeNull", resourceCulture);
+                return ResourceManager.GetString("StringLengthMinimum", resourceCulture);
             }
         }
     }

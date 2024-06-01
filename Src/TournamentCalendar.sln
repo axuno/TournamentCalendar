@@ -1,0 +1,49 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31919.166
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TournamentCalendar", "TournamentCalendar\TournamentCalendar.csproj", "{45114523-7D83-407C-85B1-45ADF4F3146C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TournamentCalendar.Tests", "TournamentCalendar.Tests\TournamentCalendar.Tests.csproj", "{09BDE2CA-BA40-4C67-8B5D-8DD654E1315C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TournamentCalender.Data", "TournamentCalender.Data\TournamentCalender.Data.csproj", "{E9E11696-EC47-4DEE-A56E-D8DEBEEC2A32}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TournamentCalendarDAL.DbGeneric", "DAL\DatabaseGeneric\TournamentCalendarDAL.DbGeneric.csproj", "{63C45BFA-1389-45FE-ACD6-ED0DFE6DF889}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TournamentCalendarDAL.DbSpecific", "DAL\DatabaseSpecific\TournamentCalendarDAL.DbSpecific.csproj", "{71D13384-8ED0-43B9-AE0B-53D6692695B0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{45114523-7D83-407C-85B1-45ADF4F3146C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45114523-7D83-407C-85B1-45ADF4F3146C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45114523-7D83-407C-85B1-45ADF4F3146C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45114523-7D83-407C-85B1-45ADF4F3146C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{09BDE2CA-BA40-4C67-8B5D-8DD654E1315C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09BDE2CA-BA40-4C67-8B5D-8DD654E1315C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09BDE2CA-BA40-4C67-8B5D-8DD654E1315C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09BDE2CA-BA40-4C67-8B5D-8DD654E1315C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E9E11696-EC47-4DEE-A56E-D8DEBEEC2A32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E9E11696-EC47-4DEE-A56E-D8DEBEEC2A32}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E9E11696-EC47-4DEE-A56E-D8DEBEEC2A32}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E9E11696-EC47-4DEE-A56E-D8DEBEEC2A32}.Release|Any CPU.Build.0 = Release|Any CPU
+		{63C45BFA-1389-45FE-ACD6-ED0DFE6DF889}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63C45BFA-1389-45FE-ACD6-ED0DFE6DF889}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63C45BFA-1389-45FE-ACD6-ED0DFE6DF889}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63C45BFA-1389-45FE-ACD6-ED0DFE6DF889}.Release|Any CPU.Build.0 = Release|Any CPU
+		{71D13384-8ED0-43B9-AE0B-53D6692695B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71D13384-8ED0-43B9-AE0B-53D6692695B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71D13384-8ED0-43B9-AE0B-53D6692695B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71D13384-8ED0-43B9-AE0B-53D6692695B0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F7B7A7ED-4A10-4E4B-AEA1-3642C42869DF}
+	EndGlobalSection
+EndGlobal

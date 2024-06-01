@@ -137,7 +137,7 @@
     <Folder Include="wwwroot\js\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Data\TournamentCalender.Data.csproj" />
+    <ProjectReference Include="..\TournamentCalender.Data\TournamentCalender.Data.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Update="app_offline_.htm">
