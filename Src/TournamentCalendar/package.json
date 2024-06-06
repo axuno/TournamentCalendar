@@ -11,7 +11,7 @@
     "autoprefixer": "10.4.19",
     "bootstrap": "5.3.3",
     "bootstrap-icons": "1.11.3",
-    "cssnano": "7.0.1",
+    "cssnano": "7.0.2",
     "grunt": "^1.6.1",
     "grunt-cli": "1.4.3",
     "grunt-contrib-concat": "2.1.0",
