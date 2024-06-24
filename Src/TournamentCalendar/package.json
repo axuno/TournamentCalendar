@@ -11,7 +11,7 @@
     "autoprefixer": "10.4.19",
     "bootstrap": "5.3.3",
     "bootstrap-icons": "1.11.3",
-    "cssnano": "7.0.2",
+    "cssnano": "7.0.3",
     "grunt": "^1.6.1",
     "grunt-cli": "1.4.3",
     "grunt-contrib-concat": "2.1.0",
@@ -23,7 +23,6 @@
     "grunt-sass": "3.1.0",
     "jsnlog": "^2.30.0",
     "node-sass": "9.0.0",
-    "pixrem": "5.0.0",
     "simple-datatables": "9.0.3",
     "@eonasdan/tempus-dominus": "6.9.6",
     "@popperjs/core": "2.11.8"
