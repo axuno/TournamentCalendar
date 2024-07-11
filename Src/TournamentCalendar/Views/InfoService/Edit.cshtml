@@ -37,7 +37,7 @@
     @* Validation summary must be inside Form block *@
     @Html.ValidationSummary(false, "Es sind Fehler aufgetreten. Bitte korrigieren und erneut speichern.", new { @class = "validation-summary-errors msg-validation rounded" })
 
-    if (Model.EditMode == EditMode.Change)
+    @if (Model.EditMode == EditMode.Change)
     {
         @Html.HiddenFor(m => m.Guid)
     }
