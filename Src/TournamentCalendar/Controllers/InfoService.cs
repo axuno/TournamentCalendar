@@ -1,6 +1,5 @@
 ﻿using TournamentCalendarDAL.EntityClasses;
 using TournamentCalendarDAL.HelperClasses;
-using TournamentCalendar.Models.InfoService;
 using TournamentCalendar.Views;
 using TournamentCalendar.Library;
 using TournamentCalendar.Data;
@@ -33,7 +32,7 @@ public class InfoService : ControllerBase
     public IActionResult Register()
     {
         ViewBag.TitleTagText = "Volley-News abonnieren";
-        return View(ViewName.InfoService.Edit, new EditModel(_appDb) { EditMode = EditMode.New });
+        return View(ViewName.InfoService.Edit, new Models.InfoService.EditModel(_appDb) { EditMode = Models.InfoService.EditMode.New });
     }
 
     [HttpGet(nameof(Entry))]
@@ -51,7 +50,7 @@ public class InfoService : ControllerBase
             return RedirectToAction(nameof(InfoService.Index), nameof(Controllers.InfoService));
         }
 
-        var model = new EditModel(_appDb, guid) { EditMode = EditMode.Change };
+        var model = new Models.InfoService.EditModel(_appDb, guid) { EditMode = Models.InfoService.EditMode.Change };
         return model.IsNew  // id not found
             ? RedirectToAction(nameof(InfoService.Index), nameof(Controllers.InfoService))
             : View(ViewName.InfoService.Edit, model);
@@ -61,13 +60,13 @@ public class InfoService : ControllerBase
     /// "save" is the name of the submit button
     /// </summary>
     [HttpPost(nameof(InfoService.Entry)), ValidateAntiForgeryToken]
-    public async Task<IActionResult> Entry([FromForm] EditModel model, CancellationToken cancellationToken)
+    public async Task<IActionResult> Entry([FromForm] Models.InfoService.EditModel model, CancellationToken cancellationToken)
     {
-        model = new EditModel(_appDb);
-        _ = await TryUpdateModelAsync<EditModel>(model);
+        model = new Models.InfoService.EditModel(_appDb);
+        _ = await TryUpdateModelAsync<Models.InfoService.EditModel>(model);
 
         ViewBag.TitleTagText = "Volley-News abonnieren";
-        model.EditMode = string.IsNullOrWhiteSpace(model.Guid) ? EditMode.New : EditMode.Change;
+        model.EditMode = string.IsNullOrWhiteSpace(model.Guid) ? Models.InfoService.EditMode.New : Models.InfoService.EditMode.Change;
 
         if (!ModelState.IsValid && model.ExistingEntryWithSameEmail != null)
         {
@@ -87,9 +86,9 @@ public class InfoService : ControllerBase
         }
 
         ModelState.Clear();
-        if (model.EditMode == EditMode.Change)
+        if (model.EditMode == Models.InfoService.EditMode.Change)
             if (model.TryRefetchEntity())
-                if (!await TryUpdateModelAsync<EditModel>(model))
+                if (!await TryUpdateModelAsync<Models.InfoService.EditModel>(model))
                     return View(ViewName.InfoService.Edit, model);
 
         var googleApi = new GoogleConfiguration();
@@ -126,11 +125,11 @@ public class InfoService : ControllerBase
     /// This method is called when using the submit button with attribute formaction = volley-news/unsubscribe
     /// </summary>
     [HttpPost(nameof(Unsubscribe))]
-    public async Task<IActionResult> Unsubscribe([FromForm] EditModel model, CancellationToken cancellationToken)
+    public async Task<IActionResult> Unsubscribe([FromForm] Models.InfoService.EditModel model, CancellationToken cancellationToken)
     {
-        if(!ModelState.IsValid)
+        if (!ModelState.IsValid)
         {
-            return View(ViewName.InfoService.Edit, model);
+            // We unregister the subsc
         }
 
         ViewBag.TitleTagText = "Volley-News abbestellen";

@@ -112,7 +112,7 @@ public class EditModel : InfoServiceEntity, IValidatableObject
     public EditMode EditMode
     { get; set; }
 
-    [BindNever]
+#pragma warning disable S6964
     public bool IsAddressEntered
     {
         get { return _isAddressEntered; }
@@ -126,6 +126,7 @@ public class EditModel : InfoServiceEntity, IValidatableObject
             }
         }
     }
+#pragma warning restore S6964
 
     public InfoServiceEntity? ExistingEntryWithSameEmail { get; private set; }
 
@@ -166,7 +167,6 @@ public class EditModel : InfoServiceEntity, IValidatableObject
                 modelState.SetModelValue(fieldName, new ValueProviderResult(new StringValues(Fields[i].CurrentValue as string), CultureInfo.InvariantCulture));
         }
     }
-
 
     public void Normalize()
     {
