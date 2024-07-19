@@ -22,7 +22,7 @@
                 // use local variable because action and controller are used twice in this loop
                 const string actionName = nameof(Calendar.Id);
                 const string controllerName = nameof(Calendar);
-                <tr role="link" title="Organisator: @m.Organizer, Ort: @m.City" style="cursor: pointer" onclick="document.location='https://@Configuration["DomainName"]@Url.Action(actionName, controllerName, new {id = m.Id})';return false;">
+                <tr title="Organisator: @m.Organizer, Ort: @m.City" style="cursor: pointer" onclick="document.location='https://@Configuration["DomainName"]@Url.Action(actionName, controllerName, new {id = m.Id})';return false;">
                     <td>@m.DateFrom.ToString("dd.MM.yy")</td>
                     <td>@m.GetTournamentNameShort(60)</td>
                     @*<td>@m.GetOrganizerShort(20)</td>*@
