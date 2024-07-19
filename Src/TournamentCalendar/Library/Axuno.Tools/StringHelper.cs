@@ -670,12 +670,12 @@ public static class StringHelper
 
     public static int StrToInt(object? strValue, int defValue)
     {
-        if ((strValue == null) || (strValue?.ToString()?.Length > 9))
+        if ((strValue == null) || (strValue.ToString()?.Length > 9))
         {
             return defValue;
         }
         var num1 = defValue;
-        if ((strValue != null) && new Regex("^([-]|[0-9])[0-9]*$", RegexOptions.None, TimeSpan.FromMilliseconds(_timeout)).IsMatch(strValue.ToString() ?? string.Empty))
+        if (new Regex("^([-]|[0-9])[0-9]*$", RegexOptions.None, TimeSpan.FromMilliseconds(_timeout)).IsMatch(strValue.ToString() ?? string.Empty))
         {
             num1 = Convert.ToInt32(strValue);
         }
