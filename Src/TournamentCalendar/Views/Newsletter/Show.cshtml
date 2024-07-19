@@ -19,7 +19,7 @@
                 <h4 class="h4">Zuletzt versendete Newsletter</h4>
                 foreach (var nl in Model.Newsletters)
                 {
-                    <a class="btn btn-primary me-2 mb-3" href="@Url.Action(nameof(Newsletter.Send), nameof(Newsletter), new {id = nl.StartedOn.ToString("yyyy-MM-dd")})" role="button">@nl.StartedOn.ToString("dd.MM.yyyy")</a>
+                    <a class="btn btn-primary me-2 mb-3" href="@Url.Action(nameof(Newsletter.Send), nameof(Newsletter), new {id = nl.StartedOn.ToString("yyyy-MM-dd")})" role="link">@nl.StartedOn.ToString("dd.MM.yyyy")</a>
                     <span class="me-2">@nl.NumOfTournaments Turniere</span>
                     <span class="me-2">@nl.NumOfRecipients Empfänger</span>
                 }

@@ -15,7 +15,7 @@
             else
             {
                 <li class="nav-item dropdown">
-                    <a class="@Model.GetClass(node.Value, "nav-link dropdown-toggle", "active", true)" data-bs-toggle="dropdown" href="@Url.Content(Model.AdjustUrl(node))" role="button">
+                    <a class="@Model.GetClass(node.Value, "nav-link dropdown-toggle", "active", true)" data-bs-toggle="dropdown" href="@Url.Content(Model.AdjustUrl(node))">
                         @Html.Raw(Model.GetIcon(node.Value))@Model.AdjustText(node)@Model.UpdateTempNode(node)
                     </a>
                     @(await Html.PartialAsync("NavigationNodeChildDropdownPartial", Model))
