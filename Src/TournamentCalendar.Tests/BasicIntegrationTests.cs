@@ -150,7 +150,7 @@ public class BasicIntegrationTests
         var response = await _client.GetAsync(url);
 
         // Assert
-        response.EnsureSuccessStatusCode(); // Status Code 200-299 or throws
+        Assert.That(() => response.EnsureSuccessStatusCode(), Throws.Nothing); // Status Code 200-299 or throws
     }
 
     private async Task<string> GetUrlForAnyActiveTournament(string url)

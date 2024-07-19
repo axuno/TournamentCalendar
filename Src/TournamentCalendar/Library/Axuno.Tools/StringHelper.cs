@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -10,7 +8,7 @@ using System.Data;
  *Based on C# String Library by Chad Finsterwald, http://www.wtfdeveloper.com/Default5.aspx
  */
 
-namespace NB.Tools.String;
+namespace Axuno.Tools.String;
 
 /// <summary>
 /// Helper functions for String not already found in C#.
@@ -18,6 +16,9 @@ namespace NB.Tools.String;
 /// </summary>
 public static class StringHelper
 {
+    // The timeout for the regular expression match in milliseconds.
+    private static int _timeout = 1000;
+
     /// <summary>
     /// Base64 encodes a string.
     /// </summary>
@@ -41,7 +42,7 @@ public static class StringHelper
     }
 
     /// <summary>
-    /// A case insenstive replace function.
+    /// A case-sensitive replace function.
     /// </summary>
     /// <param name="input">The string to examine.</param>
     /// <param name="newValue">The value to replace.</param>
@@ -49,16 +50,16 @@ public static class StringHelper
     /// <returns>A string</returns>
     public static string CaseInsenstiveReplace(string input, string newValue, string oldValue)
     {
-        var regEx = new Regex(oldValue, RegexOptions.IgnoreCase | RegexOptions.Multiline);
+        var regEx = new Regex(oldValue, RegexOptions.IgnoreCase | RegexOptions.Multiline, TimeSpan.FromMilliseconds(_timeout));
         return regEx.Replace(input, newValue);
     }
 
     /// <summary>
-    /// Removes all the words passed in the filter words parameters. The replace is NOT case
-    /// sensitive.
+    /// Removes all the words passed in the filter words parameters. Replacing is NOT
+    /// case-sensitive.
     /// </summary>
     /// <param name="input">The string to search.</param>
-    /// <param name="filterWords">The words to repace in the input string.</param>
+    /// <param name="filterWords">The words to replace in the input string.</param>
     /// <returns>A string.</returns>
     public static string FilterWords(string input, params string[] filterWords)
     {
@@ -66,12 +67,12 @@ public static class StringHelper
     }
 
     /// <summary>
-    /// Removes all the words passed in the filter words parameters. The replace is NOT case
-    /// sensitive.
+    /// Removes all the words passed in the filter words parameters. Replacing is NOT
+    /// case-sensitive.
     /// </summary>
     /// <param name="input">The string to search.</param>
     /// <param name="mask">A character that is inserted for each letter of the replaced word.</param>
-    /// <param name="filterWords">The words to repace in the input string.</param>
+    /// <param name="filterWords">The words to replace in the input string.</param>
     /// <returns>A string.</returns>
     public static string FilterWords(string input, char mask, params string[] filterWords)
     {
@@ -80,7 +81,7 @@ public static class StringHelper
 
         foreach (var s in filterWords)
         {
-            var regEx = new Regex(s, RegexOptions.IgnoreCase | RegexOptions.Multiline);
+            var regEx = new Regex(s, RegexOptions.IgnoreCase | RegexOptions.Multiline, TimeSpan.FromMilliseconds(_timeout));
 
             if (stringMask.Length > 0)
             {
@@ -115,7 +116,7 @@ public static class StringHelper
         var pattern = sb.ToString();
         pattern = pattern.TrimEnd('|'); // +"]";
 
-        var regEx = new Regex(pattern, RegexOptions.IgnoreCase | RegexOptions.Multiline);
+        var regEx = new Regex(pattern, RegexOptions.IgnoreCase | RegexOptions.Multiline, TimeSpan.FromMilliseconds(_timeout));
         return regEx.Matches(input);
     }
 
@@ -152,7 +153,7 @@ public static class StringHelper
         // Convert the input string to a byte array and compute the hash.
         var data = md5Hasher.ComputeHash(Encoding.Default.GetBytes(input));
 
-        // Create a new Stringbuilder to collect the bytes
+        // Create a new StringBuilder to collect the bytes
         // and create a string.
         var sBuilder = new StringBuilder();
 
@@ -178,7 +179,7 @@ public static class StringHelper
         // Hash the input.
         var hashOfInput = StringHelper.MD5String(input);
 
-        // Create a StringComparer an comare the hashes.
+        // Create a StringComparer and compare the hashes.
         var comparer = StringComparer.OrdinalIgnoreCase;
 
         if (0 == comparer.Compare(hashOfInput, hash))
@@ -324,7 +325,7 @@ public static class StringHelper
             replace = " ";
 
         var pattern = @"[\r|\n]";
-        var regEx = new Regex(pattern, RegexOptions.IgnoreCase | RegexOptions.Multiline);
+        var regEx = new Regex(pattern, RegexOptions.IgnoreCase | RegexOptions.Multiline, TimeSpan.FromMilliseconds(_timeout));
 
         return regEx.Replace(input, replace);
     }
@@ -379,7 +380,7 @@ public static class StringHelper
     /// <returns>A string.</returns>
     public static string StripTags(string input)
     {
-        var stripTags = new Regex("<(.|\n)+?>");
+        var stripTags = new Regex("<(.|\n)+?>", RegexOptions.None, TimeSpan.FromMilliseconds(_timeout));
         return stripTags.Replace(input, "");
     }
 
@@ -477,7 +478,7 @@ public static class StringHelper
     /// <returns>A string.</returns>
     public static string TrimIntraWords(string input)
     {
-        var regEx = new Regex(@"[\s]+");
+        var regEx = new Regex(@"[\s]+", RegexOptions.None, TimeSpan.FromMilliseconds(_timeout));
         return regEx.Replace(input, " ");
     }
 
@@ -489,7 +490,7 @@ public static class StringHelper
     /// <returns>A string.</returns>
     public static string NewLineToBreak(string input)
     {
-        var regEx = new Regex(@"[\n|\r]+");
+        var regEx = new Regex(@"[\n|\r]+", RegexOptions.None, TimeSpan.FromMilliseconds(_timeout));
         return regEx.Replace(input, "<br />");
     }
 
@@ -543,12 +544,12 @@ public static class StringHelper
             {
                 if (input.Length > counter + charCount)
                 {
-                    sb.Append(input.Substring(counter, charCount));
+                    sb.Append(input.AsSpan(counter, charCount));
                     sb.Append(breakText);
                 }
                 else
                 {
-                    sb.Append(input.Substring(counter));
+                    sb.Append(input.AsSpan(counter));
                 }
                 counter += charCount;
             }
@@ -622,12 +623,12 @@ public static class StringHelper
 
     public static bool IsNumber(string strNumber)
     {
-        return new Regex(@"^([0-9])[0-9]*(\.\w*)?$").IsMatch(strNumber);
+        return new Regex(@"^([0-9])[0-9]*(\.\w*)?$", RegexOptions.None, TimeSpan.FromMilliseconds(_timeout)).IsMatch(strNumber);
     }
 
     public static bool IsSafeSqlString(string str)
     {
-        return !Regex.IsMatch(str, @"[-|;|,|\/|\(|\)|\[|\]|\}|\{|%|@|\*|!|\']");
+        return !Regex.IsMatch(str, @"[-|;|,|\/|\(|\)|\[|\]|\}|\{|%|@|\*|!|\']", RegexOptions.None, TimeSpan.FromMilliseconds(_timeout));
     }
 
     public static bool IsTime(string timeval)
@@ -660,7 +661,7 @@ public static class StringHelper
             return defValue;
         }
         var single1 = defValue;
-        if (new Regex(@"^([-]|[0-9])[0-9]*(\.\w*)?$").IsMatch(strValue.ToString() ?? string.Empty))
+        if (new Regex(@"^([-]|[0-9])[0-9]*(\.\w*)?$", RegexOptions.None, TimeSpan.FromMilliseconds(_timeout)).IsMatch(strValue.ToString() ?? string.Empty))
         {
             single1 = Convert.ToSingle(strValue);
         }
@@ -669,12 +670,12 @@ public static class StringHelper
 
     public static int StrToInt(object? strValue, int defValue)
     {
-        if ((strValue == null) || (strValue?.ToString()?.Length > 9))
+        if ((strValue == null) || (strValue.ToString()?.Length > 9))
         {
             return defValue;
         }
         var num1 = defValue;
-        if ((strValue != null) && new Regex("^([-]|[0-9])[0-9]*$").IsMatch(strValue.ToString() ?? string.Empty))
+        if (new Regex("^([-]|[0-9])[0-9]*$", RegexOptions.None, TimeSpan.FromMilliseconds(_timeout)).IsMatch(strValue.ToString() ?? string.Empty))
         {
             num1 = Convert.ToInt32(strValue);
         }
@@ -691,7 +692,7 @@ public static class StringHelper
         const string columnExpression = "<td[^>]*>(.*?)</td>";
             
         // Get a match for all the tables in the HTML
-        var tableMatches = Regex.Matches(html, tableExpression, RegexOptions.Multiline | RegexOptions.Singleline | RegexOptions.IgnoreCase);
+        var tableMatches = Regex.Matches(html, tableExpression, RegexOptions.Multiline | RegexOptions.Singleline | RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(_timeout));
         // Loop through each table element
         foreach (Match tableMatch in tableMatches)
         {

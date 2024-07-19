@@ -34,6 +34,9 @@ public class Cron : ControllerBase
     [HttpGet(nameof(Heartbeat) + "/{id?}")]
     public ContentResult Heartbeat(string? id)
     {
+        if (!ModelState.IsValid)
+            id = "unknown id";
+
         HttpContext.Response.StatusCode = (int)HttpStatusCode.OK;
         return Content($"Completed - {DateTime.Now:G} {id ?? string.Empty}.", "text/plain", System.Text.Encoding.UTF8);
     }
@@ -41,7 +44,7 @@ public class Cron : ControllerBase
     [HttpGet(nameof(Collect) + "/{key}")]
     public async Task<ContentResult> Collect([FromRoute] string key)
     {
-        if (key != Configuration.GetValue<string?>("CronApiKey"))
+        if (!ModelState.IsValid || key != Configuration.GetValue<string?>("CronApiKey"))
         {
             return new ContentResult { Content = "Wrong Cron API Key", StatusCode = 500 };
         }

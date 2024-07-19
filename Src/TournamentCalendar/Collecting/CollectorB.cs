@@ -14,7 +14,6 @@ public class CollectorB : CollectorBase
     public override string StartPath { get; set; } = "/turniere/volleyball-turniere-gesamtliste.php";
     protected internal override async Task<IElement?> GetTournamentSection(string page)
     {
-        //return (await ToHtmlDocument(page)).QuerySelector("div.row:nth-child(2) > div:nth-child(1)");
         var doc = await ToHtmlDocument(page);
         return doc.QuerySelector("div.row > div.eight.columns");
     }

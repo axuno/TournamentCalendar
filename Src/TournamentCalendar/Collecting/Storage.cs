@@ -70,7 +70,7 @@ internal static class Storage
 
     internal static DateTime ExtractDateFromFileName(string filename)
     {
-        return DateTime.Parse(filename.Substring(FileBaseName.Length, "yyyy-MM-dd".Length));
+        return DateTime.Parse(filename.AsSpan(FileBaseName.Length, "yyyy-MM-dd".Length), CultureInfo.InvariantCulture);
     }
 
     internal static void RemoveOldImportFiles(int filesToKeep)
@@ -111,7 +111,7 @@ internal static class Storage
         var latestStoredTourneys = fileIndex != -1 ? Storage.ReadTourneysFromFile(fileNames[fileIndex]).Tourneys : new CollectedTourneys().Tourneys;
 
         // The lists in the tuple are not sorted
-        var (sameTourneys, newTourneys, deletedTourneys)
+        var (sameTourneys, newTourneys, _)
             = Collectors.CompareTourneysByUrl(currentTourneys, latestStoredTourneys);
 
         var tourneysToSave = new List<TourneyInfo>(latestStoredTourneys.Count * 2);

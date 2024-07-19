@@ -46,7 +46,7 @@ public class InfoService : ControllerBase
     public IActionResult Entry(string guid)
     {
         ViewBag.TitleTagText = "Volley-News abonnieren";
-        if (string.IsNullOrEmpty(guid))
+        if (!ModelState.IsValid || string.IsNullOrEmpty(guid))
         {
             return RedirectToAction(nameof(InfoService.Index), nameof(Controllers.InfoService));
         }
@@ -128,6 +128,11 @@ public class InfoService : ControllerBase
     [HttpPost(nameof(Unsubscribe))]
     public async Task<IActionResult> Unsubscribe([FromForm] EditModel model, CancellationToken cancellationToken)
     {
+        if(!ModelState.IsValid)
+        {
+            return View(ViewName.InfoService.Edit, model);
+        }
+
         ViewBag.TitleTagText = "Volley-News abbestellen";
         var unsubscribeModel = new Models.InfoService.UnsubscribeModel(_appDb, model.Guid);
         return View(ViewName.InfoService.Unsubscribe, await unsubscribeModel.Save(cancellationToken));
@@ -136,6 +141,9 @@ public class InfoService : ControllerBase
     [HttpGet("approve/{guid}")]
     public async Task<IActionResult> Approve(string guid, CancellationToken cancellationToken)
     {
+        if(!ModelState.IsValid)
+            return View(ViewName.InfoService.Approve, false);
+
         ViewBag.TitleTagText = "Volley-News bestätigen";
         var approveModel = new Models.Shared.ApproveModelTournamentCalendar<InfoServiceEntity>(_appDb,InfoServiceFields.Guid == guid, InfoServiceFields.ConfirmedOn, InfoServiceFields.UnSubscribedOn);
         return View(ViewName.InfoService.Approve, await approveModel.Save(cancellationToken));

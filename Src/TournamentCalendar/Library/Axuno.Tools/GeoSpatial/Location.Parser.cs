@@ -279,13 +279,13 @@ public partial class Location
                     break;
                 case 3: // sign + MM : value is degrees and minutes
                     angle = Angle.FromDegrees(
-                        int.Parse(value.Substring(1, degreeDigits), CultureInfo.InvariantCulture),
+                        int.Parse(value.AsSpan(1, degreeDigits), CultureInfo.InvariantCulture),
                         double.Parse(value[(degreeDigits + 1)..], CultureInfo.InvariantCulture));
                     break;
                 case 5: // sign + MM + SS : value is degrees, minutes and seconds
                     angle = Angle.FromDegrees(
-                        int.Parse(value.Substring(1, degreeDigits), CultureInfo.InvariantCulture),
-                        int.Parse(value.Substring(degreeDigits + 1, 2), CultureInfo.InvariantCulture),
+                        int.Parse(value.AsSpan(1, degreeDigits), CultureInfo.InvariantCulture),
+                        int.Parse(value.AsSpan(degreeDigits + 1, 2), CultureInfo.InvariantCulture),
                         double.Parse(value[(degreeDigits + 3)..], CultureInfo.InvariantCulture));
                     break;
                 default:
