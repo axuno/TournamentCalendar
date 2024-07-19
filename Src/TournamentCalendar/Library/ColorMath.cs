@@ -216,6 +216,9 @@ public struct HslColor
 // https://richnewman.wordpress.com/about/code-listings-and-diagrams/hslcolor-class/
 public class HSLColor
 {
+    // The tolerance for floating point comparisons
+    private static readonly double Tolerance = .01d;
+
     // Private data members below are on scale 0-1
     // They are scaled for use externally based on scale
     private double _hue = 1.0;
@@ -281,9 +284,9 @@ public class HSLColor
     public static implicit operator Color(HSLColor hslColor)
     {
         double r = 0, g = 0, b = 0;
-        if (hslColor._luminosity != 0)
+        if (Math.Abs(hslColor._luminosity) < Tolerance)
         {
-            if (hslColor._saturation == 0)
+            if (Math.Abs(hslColor._saturation) < Tolerance)
                 r = g = b = hslColor._luminosity;
             else
             {
