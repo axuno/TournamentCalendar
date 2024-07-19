@@ -14,7 +14,7 @@ public class ContactModel : ContactBaseModel
 
     public string? Subject { get; set; }
     public string? Message { get; set; }
-    public bool? CarbonCopyToSender { get; set; }
+    public bool CarbonCopyToSender { get; set; } //NOSONAR
 
 
     public new void Normalize(ModelStateDictionary modelState)

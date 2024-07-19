@@ -739,7 +739,7 @@ public static class StringHelper
             foreach (Match rowMatch in rowMatches)
             {
                 // Only loop through the row if it isn't a header row
-                if (!(currRow == 0 & headerExists))
+                if (!(currRow == 0 && headerExists))
                 {
                     // Create a new row and reset the current column counter
                     var dr = dt.NewRow();

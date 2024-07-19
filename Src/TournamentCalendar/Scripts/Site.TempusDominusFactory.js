@@ -1,8 +1,10 @@
 // All Site scripts go into the same namespace
-if (Site === undefined) {
+if (typeof Site === 'undefined') {
     var Site = {};
 }
-if (tempusDominus === undefined) { tempusDominus = window.tempusDominus; }
+if (typeof tempusDominus === 'undefined') {
+    var tempusDominus = window.tempusDominus;
+}
 
 Site.TempusDominusFactory = class {
     'use strict';
@@ -18,7 +20,7 @@ Site.TempusDominusFactory = class {
         this.tdLocale = tempusDominus.locales[locale] || tempusDominus.locales[fallbackLocale];
         // .NET always uses ante meridiem designator for hours 0:00:00 (midnight) to 11:59:59.999,
         // and post meridiem designator for later hours (after noon).
-        this.tdHourCycle = hourCycle == 12 ? 'h11' : 'h23';
+        this.tdHourCycle = hourCycle === 12 ? 'h11' : 'h23';
         this.useBiIcons = useBiIcons;
 
         this._setTdDefaults();

@@ -59,8 +59,9 @@ public class NewsletterModel
 
     public ICollection<SentNewsletterEntity> Newsletters { get; private set; } = new HashSet<SentNewsletterEntity>();
 
-    public ICollection<CalendarEntityDisplayModel> CalendarDisplayModel => _tournaments
-        .Select(t => new CalendarEntityDisplayModel(t, _surfaces, _playingAbilities)).ToList();
+    public ICollection<CalendarEntityDisplayModel> GetCalendarDisplayModel() =>
+        _tournaments
+            .Select(t => new CalendarEntityDisplayModel(t, _surfaces, _playingAbilities)).ToList();
 
     public DateTime LastSendDate { get; private set; }
 

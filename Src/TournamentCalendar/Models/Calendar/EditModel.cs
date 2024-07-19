@@ -241,7 +241,7 @@ public class EditModel : CalendarEntity, IValidatableObject
     /// means to toggle the approval status:
     /// if (ShowTournament) { "Click to hide the tournament" } else { "Click to show the tournament" }
     /// </summary>
-    public bool? ShowTournament
+    public bool ShowTournament
     {
         get
         {
@@ -260,7 +260,7 @@ public class EditModel : CalendarEntity, IValidatableObject
             else
             {
                 // Set deletion date, if tournament shall not be displayed
-                base.DeletedOn = value is true ? DateTime.Now : null;
+                base.DeletedOn = value ? DateTime.Now : null;
             }
         }
     }

@@ -6,7 +6,7 @@ Click here to learn more. https://go.microsoft.com/fwlink/?LinkID=513275&clcid=0
 console.log(`Node ${process.version}`); // node version
 module.exports = function (grunt) {
     'use strict';
-    var sass = require('node-sass'); // used in grunt-sass options, must be included in package.json
+    const sass = require('node-sass'); // used in grunt-sass options, must be included in package.json
     
     grunt.loadNpmTasks('grunt-sass'); // Bootstrap 5 uses https://sass-lang.com/dart-sass; they also maintain the node-sass package
     grunt.loadNpmTasks('@lodder/grunt-postcss'); // grunt-postcss is retired, use @lodder/grunt-postcss
