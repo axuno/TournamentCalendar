@@ -397,7 +397,7 @@ public static class StringHelper
         {
             replacement = " ";
         }
-        return Regex.Replace(input, "&[^;]*;", replacement);
+        return Regex.Replace(input, "&[^;]*;", replacement, RegexOptions.None, TimeSpan.FromMilliseconds(_timeout));
     }
 
 
@@ -414,7 +414,7 @@ public static class StringHelper
         {
             replacement = " ";
         }
-        return Regex.Replace(input, @"\s+", replacement);
+        return Regex.Replace(input, @"\s+", replacement, RegexOptions.None, TimeSpan.FromMilliseconds(_timeout));
     }
 
 
@@ -610,7 +610,7 @@ public static class StringHelper
             return string.Empty;
         if (text.Length > maxLength)
             text = text.Substring(0, maxLength);
-        text = Regex.Replace(text, "[\\s]{2,}", " ");	// two or more spaces
+        text = Regex.Replace(text, "[\\s]{2,}", " ", RegexOptions.None, TimeSpan.FromMilliseconds(_timeout));	// two or more spaces
         text = String.StringHelper.StripTags(text);     // HTML tages
         text = String.StringHelper.StripEntities(text, false);  // HTML entities
         return text;
@@ -633,7 +633,7 @@ public static class StringHelper
 
     public static bool IsTime(string timeval)
     {
-        return Regex.IsMatch(timeval, "^((([0-1]?[0-9])|(2[0-3])):([0-5]?[0-9])(:[0-5]?[0-9])?)$");
+        return Regex.IsMatch(timeval, "^((([0-1]?[0-9])|(2[0-3])):([0-5]?[0-9])(:[0-5]?[0-9])?)$", RegexOptions.None, TimeSpan.FromMilliseconds(_timeout));
     }
 
     public static bool IsDate (string dateval)
@@ -651,7 +651,7 @@ public static class StringHelper
 
     public static bool IsValidEmail(string input)
     {
-        return Regex.IsMatch(input, @"^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$");
+        return Regex.IsMatch(input, @"^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$", RegexOptions.None, TimeSpan.FromMilliseconds(_timeout));
     }
 
     public static float StrToFloat(object? strValue, float defValue)
@@ -707,7 +707,7 @@ public static class StringHelper
                 // Set the HeadersExist flag
                 headerExists = true;
                 // Get a match for all the rows in the table
-                var headerMatches = Regex.Matches(tableMatch.Value, headerExpression, RegexOptions.Multiline | RegexOptions.Singleline | RegexOptions.IgnoreCase);
+                var headerMatches = Regex.Matches(tableMatch.Value, headerExpression, RegexOptions.Multiline | RegexOptions.Singleline | RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(_timeout));
                 // Loop through each header element
                 foreach (Match headerMatch in headerMatches)
                 {
@@ -716,13 +716,25 @@ public static class StringHelper
             }
             else
             {
-                for (var cols = 1; cols <= Regex.Matches(Regex.Matches(Regex.Matches(tableMatch.Value, tableExpression, RegexOptions.Multiline | RegexOptions.Singleline | RegexOptions.IgnoreCase)[0].ToString(), rowExpression, RegexOptions.Multiline | RegexOptions.Singleline | RegexOptions.IgnoreCase)[0].ToString(), columnExpression, RegexOptions.Multiline | RegexOptions.Singleline | RegexOptions.IgnoreCase).Count; cols++)
+                for (var cols = 1;
+                     cols <= Regex
+                         .Matches(
+                             Regex.Matches(
+                                     Regex.Matches(tableMatch.Value, tableExpression,
+                                             RegexOptions.Multiline | RegexOptions.Singleline |
+                                             RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(_timeout))[0]
+                                         .ToString(), rowExpression,
+                                     RegexOptions.Multiline | RegexOptions.Singleline | RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(_timeout))[0]
+                                 .ToString(), columnExpression,
+                             RegexOptions.Multiline | RegexOptions.Singleline | RegexOptions.IgnoreCase,
+                             TimeSpan.FromMilliseconds(_timeout)).Count;
+                     cols++)
                 {
                     dt.Columns.Add("Column " + cols);
                 }
             }
             // Get a match for all the rows in the table
-            var rowMatches = Regex.Matches(tableMatch.Value, rowExpression, RegexOptions.Multiline | RegexOptions.Singleline | RegexOptions.IgnoreCase);
+            var rowMatches = Regex.Matches(tableMatch.Value, rowExpression, RegexOptions.Multiline | RegexOptions.Singleline | RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(_timeout));
             // Loop through each row element
             foreach (Match rowMatch in rowMatches)
             {
@@ -733,7 +745,7 @@ public static class StringHelper
                     var dr = dt.NewRow();
                     var currCol = 0;
                     // Get a match for all the columns in the row
-                    var colMatches = Regex.Matches(rowMatch.Value, columnExpression, RegexOptions.Multiline | RegexOptions.Singleline | RegexOptions.IgnoreCase);
+                    var colMatches = Regex.Matches(rowMatch.Value, columnExpression, RegexOptions.Multiline | RegexOptions.Singleline | RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(_timeout));
                     // Loop through each column element
                     foreach (Match colMatch in colMatches)
                     {
