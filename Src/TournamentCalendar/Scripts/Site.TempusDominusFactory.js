@@ -209,16 +209,6 @@ Site.TempusDominusFactory = class {
     * @param {tempusDominus.TempusDominus} widget - The widget instance to be fixed.
     */
     _fixUncaughtExceptions(widget) {
-        return; // fix with v6.9.4
-        widget.dates.origParseInput = widget.dates.parseInput;
-        widget.dates.parseInput = (input) => {
-            try {
-                return widget.dates.origParseInput(input);
-            }
-            catch (err) {
-                widget.dates.clear();
-            }
-            return null;
-        };
+        return; // no fix since v6.9.4
     }
 }

@@ -2,7 +2,7 @@
 // Variables used locally
 // **************************************
 @import '../bootstrap/custom';
-@import 'node_modules/bootstrap-icons/font/bootstrap-icons.scss';
+@import '../../../TournamentCalendar/node_modules/bootstrap-icons/font/bootstrap-icons.scss';
 
 $label-color: $success;
 $label-bgcolor: transparent;
@@ -71,12 +71,11 @@ label {
 
 .msg-info, .msg-success, .msg-warning, .msg-question, .msg-error, .msg-validation {
     border: 2px solid;
-    // margin: 13px 0 13px 0;
     padding: 10px 10px 10px 50px;
     position: relative;
 
     &:before {
-        font-family: "bootstrap-icons";
+        font-family: $bootstrap-icons-font;
         font-display: block;
         font-size: 2.25rem; // 36px
         content: '';
