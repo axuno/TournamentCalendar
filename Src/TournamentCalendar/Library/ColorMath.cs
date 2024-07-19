@@ -20,7 +20,7 @@ namespace Axuno.ColorTools
     {
         public static Color? FromHtmlColor(string htmlColor)
         {
-            if (htmlColor.StartsWith("#") & (htmlColor.Length == 7 | htmlColor.Length == 4) &
+            if (htmlColor.StartsWith("#") && (htmlColor.Length == 7 || htmlColor.Length == 4) &&
                 htmlColor.Substring(1).All(c => "ABCDEF0123456789".IndexOf(char.ToUpper(c)) != -1))
             {
                 return (Color?) new ColorConverter().ConvertFromString(htmlColor);

@@ -8,7 +8,7 @@
         <div class="mb-4">
             <h4 class="h4">Turniere seit letztem Newsletter</h4>
             <span class="btn btn-primary me-2 mb-3">
-                @Model.CalendarDisplayModel.Count
+                @Model.GetCalendarDisplayModel().Count
             </span>
             <span>@((await Model.GetRecipients()).Count) aktive Abonnenten</span>
         </div>

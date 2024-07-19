@@ -1,5 +1,5 @@
 // All Site scripts go into the same namespace
-if (Site === undefined) {
+if (typeof Site === 'undefined') {
     var Site = {};
 }
 
@@ -94,7 +94,7 @@ Site.Location = class {
         // requires https://maps.googleapis.com/maps/api/js
         // Example for async/await: https://gabrieleromanato.name/javascript-how-to-use-the-google-maps-api-with-promises-and-async-await
         const address = this.getAddress(true);
-        var response = await this.geocoder.geocode({ 'address': address })
+        const response = await this.geocoder.geocode({ 'address': address });
         const results = response.results;
         if (Array.isArray(results)) {
             const latitude = results[0].geometry.location.lat();
@@ -116,10 +116,10 @@ Site.Location = class {
             mapTypeId: google.maps.MapTypeId.ROADMAP
         };
 
-        //create the map, and place it in the HTML map div
+        // create the map, and place it in the HTML map div
         const map = new google.maps.Map(this.mapPlaceholderEle, mapOptions);
 
-        //place the initial marker
+        // place the initial marker
         const marker = new google.maps.Marker({
             position: coords,
             map: map,
@@ -130,7 +130,7 @@ Site.Location = class {
     /**
      * Initializes the Google Maps canvas element
      * @param {string} mapPlaceholderId - The Id of the map placeholder
-     * @param {any} coords - Optional: the LatLng coodinates to center the map initially. Default location is Kassel/Germany.
+     * @param {any} coords - Optional: the LatLng coordinates to center the map initially. Default location is Kassel/Germany.
      */
     static initMap(mapPlaceholderId, coords) {
         const mapPlaceholderEle = document.getElementById(mapPlaceholderId);
@@ -140,6 +140,6 @@ Site.Location = class {
             mapTypeControl: true,
             mapTypeId: google.maps.MapTypeId.ROADMAP
         };
-        new google.maps.Map(mapPlaceholderEle, mapOptions);
+        const map = new google.maps.Map(mapPlaceholderEle, mapOptions);
     }
 }
