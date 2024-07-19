@@ -1,6 +1,7 @@
 // All Site scripts go into the same namespace
-if (typeof Site === 'undefined') {
-    var Site = {};
+var Site;
+if (Site === undefined) {
+    Site = {};
 }
 
 Site.Location = class {
