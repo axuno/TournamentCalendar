@@ -62,9 +62,9 @@ public class CollectionModelFactory
                 var tournamentWords = calendarEntry.TournamentName.Split(new[] { ' ', '.', '-' },
                     StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
 
-                var matches = tournamentWords.Intersect(tourneyWords, StringComparer.InvariantCultureIgnoreCase).ToList();
-                // text matches currently switch off:
-                if (matches.Count >= 0) model.ExistInCalendar.Add(tourney.Link!);
+                var wordMatches = tournamentWords.Intersect(tourneyWords, StringComparer.InvariantCultureIgnoreCase).ToList();
+                // matches currently switched off
+                if (wordMatches.Count >= 0) model.ExistInCalendar.Add(tourney.Link!);
             }
         }
     }
