@@ -17,11 +17,11 @@ public class ContentSynd : ControllerBase
     }
 
     [HttpGet("calendar.html")]
-    public async Task<IActionResult> CalendarList(CancellationToken cancellationToken)
+    public async Task<IActionResult> CalendarList([FromHeader(Name = "Referrer")] string referrer, [FromHeader(Name = "X-Forwarded-For")] string[] xForwardedFor, [FromHeader(Name = "REMOTE_ADDR")] string[] remoteAddr, CancellationToken cancellationToken)
     {
         // Cross Origin Request Sharing (CORS) - allow request from any domain:
         Response.Headers.Append("Access-Control-Allow-Origin", "*");
-        _logger.LogInformation("Host: {RemoteIp}, Referrer: {Referrer}", GetRemoteIpAddress(), string.IsNullOrEmpty(Request.Headers.Referer) ? Request.Headers["Referrer"] : Request.Headers.Referer);
+        _logger.LogInformation("Host: {RemoteIp}, Referrer: {Referrer}", GetRemoteIpAddress(xForwardedFor, remoteAddr), referrer);
         var model = new Models.Calendar.BrowseModel(_appDb);
         await model.Load(cancellationToken);
         return PartialView(ViewName.ContentSynd.CalendarListPartial, model);
@@ -36,11 +36,11 @@ public class ContentSynd : ControllerBase
     }
 
     [HttpGet("calendar.js")]
-    public IActionResult CalendarListJs()
+    public IActionResult CalendarListJs([FromHeader(Name = "Referrer")] string referrer, [FromHeader(Name = "X-Forwarded-For")] string[] xForwardedFor, [FromHeader(Name = "REMOTE_ADDR")] string[] remoteAddr)
     {
         Response.Headers.Append("Access-Control-Allow-Origin", "*");
         Response.ContentType = "text/javascript"; // IE < 9 does not support application/javascript
-        _logger.LogInformation("Host: {Host}, Referrer: {Referrer}", GetRemoteIpAddress(), string.IsNullOrEmpty(Request.Headers.Referer) ? Request.Headers["Referrer"] : Request.Headers.Referer);
+        _logger.LogInformation("Host: {Host}, Referrer: {Referrer}", GetRemoteIpAddress(xForwardedFor, remoteAddr), referrer);
         return PartialView(ViewName.ContentSynd.CalendarListPartialJs);
     }
 
@@ -62,15 +62,12 @@ public class ContentSynd : ControllerBase
         return View("Test");*/
     }
 
-    private string GetRemoteIpAddress()
+    private string GetRemoteIpAddress(string[] xForwardedFor, string[] remoteAddr)
     {
         //For this, app.UseForwardedHeaders(...) must be set in Startup
-        if (HttpContext.Request.Headers.TryGetValue("X-Forwarded-For", out var ipList))
+        if (!StringValues.IsNullOrEmpty(xForwardedFor))
         {
-            if (!StringValues.IsNullOrEmpty(ipList))
-            {
-                return string.Join(',', ipList!);
-            }
+            return string.Join(',', xForwardedFor!);
         }
 
         var ip = HttpContext.Connection.RemoteIpAddress?.MapToIPv4().ToString();
@@ -79,10 +76,9 @@ public class ContentSynd : ControllerBase
             return ip;
         }
 
-        if (HttpContext.Request.Headers.TryGetValue("REMOTE_ADDR", out var remoteHeaderAddrList))
+        if (!StringValues.IsNullOrEmpty(remoteAddr))
         {
-            if (!StringValues.IsNullOrEmpty(remoteHeaderAddrList))
-                return string.Join(',', remoteHeaderAddrList!);
+            return string.Join(',', remoteAddr!);
         }
 
         return "Remote IP unknown";
