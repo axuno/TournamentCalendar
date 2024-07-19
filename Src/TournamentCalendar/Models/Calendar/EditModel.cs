@@ -184,8 +184,7 @@ public class EditModel : CalendarEntity, IValidatableObject
         }
     }
 
-    [Required]
-    public int MinMaxFemale
+    public int? MinMaxFemale
     {
         get
         {
@@ -211,8 +210,7 @@ public class EditModel : CalendarEntity, IValidatableObject
         }
     }
 
-    [Required]
-    public int MinMaxMale
+    public int? MinMaxMale
     {
         get
         {
