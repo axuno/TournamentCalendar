@@ -1,1 +1,0 @@
-Collected tourney files go into this folder
