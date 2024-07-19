@@ -81,7 +81,7 @@ public class EditModel : CalendarEntity, IValidatableObject
         return true;
     }
 
-    public EditMode EditMode
+    public EditMode? EditMode
     { get; set; }
 
 
@@ -184,6 +184,7 @@ public class EditModel : CalendarEntity, IValidatableObject
         }
     }
 
+    [Required]
     public int MinMaxFemale
     {
         get
@@ -210,6 +211,7 @@ public class EditModel : CalendarEntity, IValidatableObject
         }
     }
 
+    [Required]
     public int MinMaxMale
     {
         get
@@ -241,7 +243,7 @@ public class EditModel : CalendarEntity, IValidatableObject
     /// means to toggle the approval status:
     /// if (ShowTournament) { "Click to hide the tournament" } else { "Click to show the tournament" }
     /// </summary>
-    public bool ShowTournament
+    public bool? ShowTournament
     {
         get
         {
@@ -260,7 +262,7 @@ public class EditModel : CalendarEntity, IValidatableObject
             else
             {
                 // Set deletion date, if tournament shall not be displayed
-                base.DeletedOn = value ? null : DateTime.Now;
+                base.DeletedOn = value is true ? DateTime.Now : null;
             }
         }
     }

@@ -17,8 +17,6 @@ public class ContactBaseModel : IValidatableObject
     {
     }
 
-    public ContactType ContactType { get; set; }
-
     public string? Gender { get; set; }
     public string? Title { get; set; }
     public string? FirstName { get; set; }
@@ -31,7 +29,10 @@ public class ContactBaseModel : IValidatableObject
 
     public string? Captcha { get; set; }
 
+    [BindNever]
     public bool EmailSuccessFul { get; set; }
+
+    [BindNever]
     public Exception? Exception { get; set; }
 
     public IEnumerable<SelectListItem> GetGenderList()

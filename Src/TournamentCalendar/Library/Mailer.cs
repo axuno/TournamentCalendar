@@ -36,7 +36,7 @@ public class Mailer
         model.EmailSuccessFul = false;
         try
         {
-            if (!model.CarbonCopyToSender)
+            if (!model.CarbonCopyToSender is true)
             {
                 mmm.MailMergeAddresses.Remove(mmm.MailMergeAddresses.Get(MailAddressType.CC).First());
             }
