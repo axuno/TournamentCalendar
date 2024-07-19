@@ -360,7 +360,7 @@ public class EditModel : CalendarEntity, IValidatableObject
         {
             if (Fields[i].DataType != typeof(string) || Fields[i].CurrentValue == null) continue;
 
-            Fields[i].CurrentValue = NB.Tools.String.StringHelper.StripTags(Fields[i].CurrentValue as string ?? string.Empty).Trim(); // strip HTML tags
+            Fields[i].CurrentValue = Axuno.Tools.String.StringHelper.StripTags(Fields[i].CurrentValue as string ?? string.Empty).Trim(); // strip HTML tags
         }
     }
 

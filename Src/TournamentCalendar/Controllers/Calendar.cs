@@ -42,6 +42,10 @@ public class Calendar : ControllerBase
     public async Task<IActionResult> Id(long id, CancellationToken cancellationToken)
     {
         ViewBag.TitleTagText = "Volleyball-Turnierkalender";
+
+        if (!ModelState.IsValid)
+            return new StatusCodeResult(404);
+
         var model = new BrowseModel(_appDb);
         try
         {
@@ -71,7 +75,7 @@ public class Calendar : ControllerBase
     {
         ViewBag.TitleTagText = "Volleyballturnier in den Kalender eintragen";
 
-        if (!string.IsNullOrEmpty(guid) && !Guid.TryParse(guid, out _))
+        if (!ModelState.IsValid || (!string.IsNullOrEmpty(guid) && !Guid.TryParse(guid, out _)))
         {
             return NotFound();
         }
@@ -171,6 +175,9 @@ public class Calendar : ControllerBase
     [HttpGet("approve/{guid?}")]
     public async Task<IActionResult> Approve(string? guid, CancellationToken cancellationToken)
     {
+        if(!ModelState.IsValid)
+            return View(ViewName.Calendar.Approve, false);
+
         guid ??= string.Empty;
         ViewBag.TitleTagText = "Volleyball-Turniereintrag bestätigen";
         var approveModel = new Models.Shared.ApproveModelTournamentCalendar<CalendarEntity>(_appDb,CalendarFields.Guid == guid, CalendarFields.ApprovedOn, CalendarFields.DeletedOn);

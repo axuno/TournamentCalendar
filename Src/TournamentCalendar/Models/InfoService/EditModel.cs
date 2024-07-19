@@ -175,7 +175,7 @@ public class EditModel : InfoServiceEntity, IValidatableObject
         {
             if (Fields[i].DataType != typeof(string) || Fields[i].CurrentValue == null) continue;
 
-            Fields[i].CurrentValue = NB.Tools.String.StringHelper.StripTags(Fields[i].CurrentValue as string ?? string.Empty).Trim();
+            Fields[i].CurrentValue = Axuno.Tools.String.StringHelper.StripTags(Fields[i].CurrentValue as string ?? string.Empty).Trim();
         }
 
         if (string.IsNullOrEmpty(Nickname))

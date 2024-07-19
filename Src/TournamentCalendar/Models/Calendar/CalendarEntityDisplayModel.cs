@@ -179,7 +179,7 @@ public class CalendarEntityDisplayModel : CalendarEntity
     public string GetContactAddr()
     {
         if (ContactAddress.Length > 0)
-            return NB.Tools.String.StringHelper.NewLineToBreak(HttpUtility.HtmlEncode(ContactAddress));
+            return Axuno.Tools.String.StringHelper.NewLineToBreak(HttpUtility.HtmlEncode(ContactAddress));
 
         return string.Empty;
     }
@@ -196,7 +196,7 @@ public class CalendarEntityDisplayModel : CalendarEntity
 
     public string GetInfo()
     {
-        return NB.Tools.String.StringHelper.NewLineToBreak(HttpUtility.HtmlEncode(Info));
+        return Axuno.Tools.String.StringHelper.NewLineToBreak(HttpUtility.HtmlEncode(Info));
     }
 
  

@@ -18,8 +18,11 @@ public class Collect : ControllerBase
     }
 
     [HttpGet("show/{id?}")]
-    public async Task<IActionResult> Show(string id)
+    public async Task<IActionResult> Show(string? id)
     {
+        if (!ModelState.IsValid)
+            id = null;
+
         ViewBag.TitleTagText = "Andere Volleyball-Turnierkalender";
 
         Storage.StorageFolder = Path.Combine(HostingEnvironment.WebRootPath, Storage.StorageFolderName);

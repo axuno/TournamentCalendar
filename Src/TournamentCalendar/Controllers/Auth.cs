@@ -19,6 +19,9 @@ public class Auth : ControllerBase
     [HttpGet("/sign-in")]
     public IActionResult SignIn([FromQuery] string? returnUrl)
     {
+        if (!ModelState.IsValid)
+            return View(ViewName.Auth.SignIn);
+        
         if (returnUrl != null) ViewData["ReturnUrl"] = returnUrl;
         return View(ViewName.Auth.SignIn);
     }
@@ -26,6 +29,12 @@ public class Auth : ControllerBase
     [HttpPost("/sign-in"), ValidateAntiForgeryToken]
     public async Task<IActionResult> SignIn([FromForm] SignInViewModel model, [FromQuery] string? returnUrl)
     {
+        if(!ModelState.IsValid)
+        {
+            ViewData["ReturnUrl"] = returnUrl;
+            return View(ViewName.Auth.SignIn);
+        }
+
         Library.Authentication.User? foundUser = null;
         var hashedPassword =
             Convert.ToBase64String(

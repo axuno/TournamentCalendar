@@ -36,7 +36,7 @@ public class Organization : ControllerBase
     [HttpGet("download/{file}")]
     public IActionResult Download(string file)
     {
-        if (GetFile(file, out var fileName) && System.IO.File.Exists(Path.Combine(HostingEnvironment.WebRootPath, fileName!.Name)))
+        if (ModelState.IsValid && GetFile(file, out var fileName) && System.IO.File.Exists(Path.Combine(HostingEnvironment.WebRootPath, fileName!.Name)))
         {
             var stream = new FileStream(Path.Combine(HostingEnvironment.WebRootPath, fileName.Name), FileMode.Open);
             return new FileStreamResult(stream, fileName.ContentType);
@@ -44,7 +44,6 @@ public class Organization : ControllerBase
 
         return NotFound();
     }
-
 
     [NonAction]
     private bool GetFile(string file, out DownloadFile? download)

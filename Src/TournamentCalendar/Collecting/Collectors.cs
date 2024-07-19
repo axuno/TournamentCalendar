@@ -4,6 +4,10 @@ public class Collectors
 {
     private static readonly IList<ICollector> CollectorList = new List<ICollector> { new CollectorA(), new CollectorB() };
 
+    private Collectors()
+    {
+    }
+
     public static IList<ICollector> GetAll()
     {
         return CollectorList;

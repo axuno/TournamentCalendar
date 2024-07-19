@@ -20,6 +20,9 @@ public class Error : ControllerBase
     [HttpGet("{id?}")]
     public IActionResult Index(string? id)
     {
+        if (!ModelState.IsValid)
+            id = string.Empty;
+
         ViewBag.TitleTagText = ViewBag.TitleTagText = "Volleyball-Turnierkalender - Fehler";
         id ??= string.Empty;
         id = id.Trim();
