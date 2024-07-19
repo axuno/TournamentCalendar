@@ -1,9 +1,9 @@
 // All Site scripts go into the same namespace
-var Site;
+var Site;  // NOSONAR
 if (Site === undefined) {
     Site = {};
 }
-var tempusDominus;
+var tempusDominus;  // NOSONAR
 if (tempusDominus === undefined) { tempusDominus = window.tempusDominus; }
 
 Site.TempusDominusFactory = class {

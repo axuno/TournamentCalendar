@@ -1,5 +1,5 @@
 // All Site scripts go into the same namespace
-var Site;
+var Site;  // NOSONAR
 if (Site === undefined) {
     Site = {};
 }
@@ -141,6 +141,6 @@ Site.Location = class {
             mapTypeControl: true,
             mapTypeId: google.maps.MapTypeId.ROADMAP
         };
-        const map = new google.maps.Map(mapPlaceholderEle, mapOptions);
+        new google.maps.Map(mapPlaceholderEle, mapOptions);  // NOSONAR
     }
 }
