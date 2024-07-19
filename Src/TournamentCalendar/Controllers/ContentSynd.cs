@@ -19,6 +19,12 @@ public class ContentSynd : ControllerBase
     [HttpGet("calendar.html")]
     public async Task<IActionResult> CalendarList([FromHeader(Name = "Referrer")] string referrer, [FromHeader(Name = "X-Forwarded-For")] string[] xForwardedFor, [FromHeader(Name = "REMOTE_ADDR")] string[] remoteAddr, CancellationToken cancellationToken)
     {
+        if (!ModelState.IsValid)
+        {
+            referrer = string.Empty;
+            xForwardedFor = Array.Empty<string>();
+            remoteAddr = Array.Empty<string>();
+        }
         // Cross Origin Request Sharing (CORS) - allow request from any domain:
         Response.Headers.Append("Access-Control-Allow-Origin", "*");
         _logger.LogInformation("Host: {RemoteIp}, Referrer: {Referrer}", GetRemoteIpAddress(xForwardedFor, remoteAddr), referrer);
@@ -38,6 +44,13 @@ public class ContentSynd : ControllerBase
     [HttpGet("calendar.js")]
     public IActionResult CalendarListJs([FromHeader(Name = "Referrer")] string referrer, [FromHeader(Name = "X-Forwarded-For")] string[] xForwardedFor, [FromHeader(Name = "REMOTE_ADDR")] string[] remoteAddr)
     {
+        if (!ModelState.IsValid)
+        {
+            referrer = string.Empty;
+            xForwardedFor = Array.Empty<string>();
+            remoteAddr = Array.Empty<string>();
+        }
+
         Response.Headers.Append("Access-Control-Allow-Origin", "*");
         Response.ContentType = "text/javascript"; // IE < 9 does not support application/javascript
         _logger.LogInformation("Host: {Host}, Referrer: {Referrer}", GetRemoteIpAddress(xForwardedFor, remoteAddr), referrer);
@@ -48,18 +61,6 @@ public class ContentSynd : ControllerBase
     public IActionResult Test()
     {
         return View("Test");
-        /*var colOrig = ColorMath.FromHtmlColor("#006600"); // = darkgreen
-        //colOrig = System.Drawing.Color.FromName("darkgreen");
-        var foreCol = ColorMath.IsDarkColor(colOrig) ? "white" : "black";
-        var colOrigString = "#" + colOrig.R.ToString("X2") + colOrig.G.ToString("X2") + colOrig.B.ToString("X2");
-        var col1 = ColorMath.Lighten(colOrig, 0.35f);
-        var colString1 = "#" + col1.R.ToString("X2") + col1.G.ToString("X2") + col1.B.ToString("X2");
-        var foreCol1 = ColorMath.IsDarkColor(col1) ? "white" : "black";
-        var col2 = ColorMath.Lighten(colOrig, 0.65f);
-        var colString2 = "#" + col2.R.ToString("X2") + col2.G.ToString("X2") + col2.B.ToString("X2");
-        var foreCol2 = ColorMath.IsDarkColor(col2) ? "white" : "black";
-        return Content($"<html><body>{col2.GetBrightness()}<div style=\"background-color: {colOrigString};color:{foreCol}\">Orig</div><div style=\"background-color: {colString1};color:{foreCol1}\">abc</div><div style=\"background-color: {colString2};  color:{foreCol2}\">def</div></body></html>", "text/html");
-        return View("Test");*/
     }
 
     private string GetRemoteIpAddress(string[] xForwardedFor, string[] remoteAddr)

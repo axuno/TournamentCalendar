@@ -108,11 +108,11 @@ public class EditModel : InfoServiceEntity, IValidatableObject
         };
     }
 
-
+    [BindNever]
     public EditMode EditMode
     { get; set; }
 
-
+    [BindNever]
     public bool IsAddressEntered
     {
         get { return _isAddressEntered; }

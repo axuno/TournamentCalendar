@@ -17,5 +17,5 @@ public class SignInViewModel
     public string? Password { get; set; }
 
     [Display(Name = "Angemeldet bleiben?")]
-    public bool RememberMe { get; set; }
+    public bool? RememberMe { get; set; }
 }
