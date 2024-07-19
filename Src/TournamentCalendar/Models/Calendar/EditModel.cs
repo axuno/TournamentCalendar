@@ -241,6 +241,7 @@ public class EditModel : CalendarEntity, IValidatableObject
     /// means to toggle the approval status:
     /// if (ShowTournament) { "Click to hide the tournament" } else { "Click to show the tournament" }
     /// </summary>
+#pragma warning disable S6964
     public bool ShowTournament
     {
         get
@@ -264,6 +265,7 @@ public class EditModel : CalendarEntity, IValidatableObject
             }
         }
     }
+#pragma warning restore S6964
 
     public string Captcha { get; set; } = string.Empty;
 

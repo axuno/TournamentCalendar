@@ -1,10 +1,10 @@
 // All Site scripts go into the same namespace
-if (typeof Site === 'undefined') {
-    var Site = {};
+var Site;
+if (Site === undefined) {
+    Site = {};
 }
-if (typeof tempusDominus === 'undefined') {
-    var tempusDominus = window.tempusDominus;
-}
+var tempusDominus;
+if (tempusDominus === undefined) { tempusDominus = window.tempusDominus; }
 
 Site.TempusDominusFactory = class {
     'use strict';
