@@ -59,7 +59,7 @@ public class Cron : ControllerBase
         }
         catch (Exception e)
         {
-            _logger.LogError("Error while collecting tourneys {Exception}", e);
+            _logger.LogError(e, "Error while collecting tourneys");
             return new ContentResult { Content = "Failure", StatusCode = 500 };
         }
     }

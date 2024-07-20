@@ -1,7 +1,7 @@
 ﻿@model NavigationViewModel
 @if (await Model.HasVisibleChildren(Model.CurrentNode))
 {
-    <ul class="sitemap-menu" role="menu">
+    <ul class="sitemap-menu">
         <li class="@Model.GetClass(Model.CurrentNode.Value)"><a href="@Url.Content(Model.AdjustUrl(Model.CurrentNode))">@Html.Raw(Model.GetIcon(Model.CurrentNode.Value))@Model.AdjustText(Model.CurrentNode)</a></li>
         @foreach (var node in Model.CurrentNode.Children)
         {
