@@ -1,7 +1,7 @@
 ﻿@model NavigationViewModel
 @functions {
 }
-<ul class="nav navbar-nav" role="menubar">
+<ul class="nav navbar-nav">
     <li class="nav-item @Model.GetClass(Model.RootNode.Value)"><a class="nav-link" href="@Url.Content(Model.AdjustUrl(Model.RootNode))">@Html.Raw(Model.GetIcon(Model.RootNode.Value))@Model.AdjustText(Model.RootNode)</a></li>
     @if (await Model.HasVisibleChildren(Model.RootNode))
     {

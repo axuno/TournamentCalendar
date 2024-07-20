@@ -1,7 +1,7 @@
 ﻿@model NavigationViewModel
 @if (await Model.HasVisibleChildren(Model.CurrentNode))
 {
-    <ul class="childtree" role="menu">
+    <ul class="childtree">
         @foreach (var node in Model.CurrentNode.Children)
         {
             if (!await Model.ShouldAllowView(node))
