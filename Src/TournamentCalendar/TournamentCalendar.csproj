@@ -58,7 +58,7 @@
   <ItemGroup>
     <PackageReference Include="cloudscribe.Web.Navigation" Version="6.0.4" />
     <PackageReference Include="JSNLog" Version="3.0.3" />
-    <PackageReference Include="MailMergeLib" Version="5.12.1" />
+    <PackageReference Include="MailMergeLib" Version="5.12.3" />
     <PackageReference Include="Microsoft.DotNet.PlatformAbstractions" Version="3.1.6" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0">
       <PrivateAssets>all</PrivateAssets>
