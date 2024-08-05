@@ -59,7 +59,10 @@
     <div class="small text-primary">Insgesamt @Model.DisplayModel.Count() Turniere im Kalender</div>
     </div>
 </div>
-@section MetaSection {<meta name="robots" content="index, follow">}
+@section MetaSection {
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="@Url.Action(nameof(Calendar.All), nameof(Calendar))" />
+}
 @section CssSection {
     <link href="@Url.Content(CssName.Lib.SimpleDataTablesCss)" rel="stylesheet" />
     @* Styles used in wrappers inserted by simpleDatatables javaScript *@
