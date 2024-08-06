@@ -11,9 +11,9 @@ This is the 3rd generation of the software developed over the last 20 years and 
 
 ## Technology
  
-  * ASP.NET 6.0 web-development framework
+  * ASP.NET 8.0 web development framework
   * C# programming language
-  * Microsoft SQL-Server 2017+ database is currently implemented. [See supported databases](https://www.llblgen.com/Pages/specifications.aspx)
+  * Microsoft SQL-Server 2019+ database is currently implemented. [See supported databases](https://www.llblgen.com/Pages/specifications.aspx)
   * Bootstrap 5 HTML, CSS, and JavaScript frameworks. No jQuery dependencies.
 
 ## License
