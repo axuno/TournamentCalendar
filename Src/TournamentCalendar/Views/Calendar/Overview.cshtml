@@ -44,7 +44,7 @@
         <tbody>
             @foreach (var m in Model.DisplayModel)
             {
-                <tr title="Details zu &quot;@m.TournamentName&quot; - @m.Organizer">
+                <tr id="@m.Id" title="Details zu &quot;@m.TournamentName&quot; - @m.Organizer">
                     <td>@m.DateFrom.ToString("dd.MM.yy")</td>
                     <td>@m.GetTournamentNameShort(60)</td>
                     @*<td>@m.GetOrganizerShort(20)</td>*@
@@ -145,6 +145,7 @@
         tournamentsTable.columns.sort(0, 'asc');
         makeRowsClickable();
         tournamentsTable.on('datatable.update', makeRowsClickable);
+        calcDistance();
         
         function makeRowsClickable()
         {
@@ -159,7 +160,59 @@
                 });
             });
         }
+
+        function calcDistance() {
+                const locList = @Html.Raw(Json.Serialize(Model.DisplayModel.Select(m => new { m.Id, lat = m.Latitude, lon = m.Longitude })));
+
+                // Augsburg
+                const lat1 = 48.37153888888889;
+                const lon1 = 10.898511111111112;
+
+                const idDistList = locList.map(loc => {
+                    const d = haversineDistance(lat1, lon1, loc.lat, loc.lon);
+                    return { id: loc.id, distance: Math.round(d) };
+                });
+
+                for (const idDist of idDistList) {
+                    const element = document.getElementById(idDist.id).lastElementChild;
+                    if (element) {
+                        element.innerText = idDist.distance;
+                    }
+                }
+                
+
+                
+        }
     }
+
+    
+
+
+
+    function haversineDistance(lat1, lon1, lat2, lon2, unit = 'K') {
+        const radius = 6371; // Earth's radius in kilometers
+        const dLat = (lat2 - lat1) * (Math.PI / 180);
+        const dLon = (lon2 - lon1) * (Math.PI / 180);
+        const a =
+            Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos((lat1 * Math.PI) / 180) *
+                Math.cos((lat2 * Math.PI) / 180) *
+                Math.sin(dLon / 2) *
+                Math.sin(dLon / 2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        const distance = radius * c;
+
+        if (unit === 'M') {
+            return distance * 0.621371; // Convert to miles
+        } else if (unit === 'N') {
+            return distance * 0.539957; // Convert to nautical miles
+        }
+        return distance; // Kilometers by default
+    }
+
+    // const distanceKm = haversineDistance(40.774102, -73.971734, 40.771209, -73.9673991);
+    // console.log(`Distance: ${distanceKm} km`);
+
 //]]>
 </script>
 }
