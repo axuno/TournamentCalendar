@@ -1,0 +1,148 @@
+﻿@inject UserLocationService LocationService
+@using TournamentCalendar.Controllers
+@using TournamentCalendar.Services
+@using System.Globalization
+@{
+    var userLocation = LocationService.GetLocation();
+}
+<div class="row">
+    <div class="col-12 mb-3">
+        <h3 class="h3">@ViewBag.TitleTagText</h3>
+        <p>
+            Es ist möglich, im Turnierkalender die Entfernungen
+            vom eigenen Standort zu den Turnierstandorten anzuzeigen.
+        </p>
+        <div id="geo-supported" style="display:none">
+            <p>
+                Zuverlässige Standorte erfordern ein Gerät mit eingeschaltetem GPS-Empfänger oder
+                näherungsweise eine Internetverbindung über WLAN.
+            </p>
+            <p>
+                Dafür benötigt der Browser einmalig die Genehmigung, den Standort des Geräts abzufragen.
+            </p>
+            @{
+                if (userLocation.IsSet)
+                {
+                    <p>
+                        Derzeit verwendeten eigenen Standort <a href="@($"https://maps.google.de?q={userLocation.Latitude!.Value.ToString("###.########", CultureInfo.InvariantCulture)},{userLocation.Longitude!.Value.ToString("###.########", CultureInfo.InvariantCulture)}")" class="link" target="_blank">auf Google Maps ansehen</a>.
+                    </p>
+                }
+                else
+                {
+                    <p>
+                        Derzeit ist der eigene Standort nicht festgelegt.
+                    </p>  
+                }
+            }
+            <div>
+                <button id="clear-location" type="button" class="btn btn-secondary">Standort entfernen</button>
+                <button id="set-location" type="button" class="btn btn-primary">Standort abrufen</button>
+            </div>
+            <div id="error-msg" class="alert alert-danger mt-3 mb-3" style="display:none"></div>
+        </div>
+        <div id="geo-not-supported" style="display:none">
+            <p>
+                Schade, leider unterstützt der Browser diese Funktionalität nicht.
+            </p>
+        </div>
+    </div>
+</div>
+@section ScriptStandardSection {
+<script>
+    //<![CDATA[
+    'use strict';
+    
+    document.addEventListener('DOMContentLoaded', OnDOMContentLoaded, false);
+
+    function OnDOMContentLoaded() {
+        if (navigator.geolocation) {
+            document.getElementById('geo-supported').style.display = 'block';
+        } else {
+            document.getElementById('geo-not-supported').style.display = 'block';
+        }
+
+        document.getElementById('set-location').addEventListener('click', function() {
+            try {
+                clearErrorMessage();
+                getGeoLocation();
+            } catch (e) {
+                setErrorMessage('Fehler beim Abruf der Standortposition');
+            }
+        });
+
+        document.getElementById('clear-location').addEventListener('click', function() {
+            try {
+                clearErrorMessage();
+                clearGeoLocation();
+            } catch (e) {
+                setErrorMessage('Fehler beim Entfernen der Standortposition');
+            } 
+        });
+    }
+
+    function getGeoLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(submitLocation, handleError);
+        }
+    }
+
+    function submitLocation(position) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', window.location.origin + `/geolocation/location/${position.coords.latitude}/${position.coords.longitude}`, true);
+        xhr.onreadystatechange = function() {
+            // Request is complete and successful *OR* headers received and no content
+            if ((xhr.readyState === 4 && xhr.status === 200) || (xhr.readyState === 2 && xhr.status === 204)) {
+                window.location.reload();
+            } else {
+                setErrorMessage('Standort konnte nicht gesetzt werden - offline?');
+            }
+
+        };
+        xhr.send();
+    }
+
+    function handleError(error) {
+        switch (error.code) {
+        case error.PERMISSION_DENIED:
+            setErrorMessage('Keine Erlaubnis zum Abruf des Standorts');
+            break;
+        case error.POSITION_UNAVAILABLE:
+            setErrorMessage('Standortposition steht nicht zur Verfügung');
+            break;
+        case error.TIMEOUT:
+            setErrorMessage('Abruf der Standortposition dauert zu lange');
+            break;
+        case error.UNKNOWN_ERROR:
+            setErrorMessage('Fehler beim Abruf der Standortposition');
+            break;
+        }
+    }
+
+    function clearGeoLocation() {
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', window.location.origin + `/geolocation/clear`, true);
+        xhr.onreadystatechange = function() {
+            // Request is complete and successful OR headers received and no content
+            if ((xhr.readyState === 4 && xhr.status === 200) || (xhr.readyState === 2 && xhr.status === 204))  {
+                window.location.reload();
+            } else {
+                setErrorMessage('Standort konnte nicht entfernt werden - offline?');
+            }
+        };
+        xhr.send();
+    }
+
+    function setErrorMessage(message) {
+        const errorMessage = document.getElementById('error-msg');
+        errorMessage.innerHTML = message;
+        errorMessage.style.display = 'block';
+    }
+
+    function clearErrorMessage() {
+        const errorMessage = document.getElementById('error-msg');
+        errorMessage.innerHTML = '';
+        errorMessage.style.display = 'none';
+    }
+//]]>
+</script>
+}

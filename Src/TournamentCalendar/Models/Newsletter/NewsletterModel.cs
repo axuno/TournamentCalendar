@@ -3,6 +3,7 @@ using TournamentCalendar.Models.Calendar;
 using TournamentCalendarDAL.EntityClasses;
 using TournamentCalendarDAL.HelperClasses;
 using MailMergeLib;
+using TournamentCalendar.Services;
 
 namespace TournamentCalendar.Models.Newsletter;
 
@@ -12,10 +13,12 @@ public class NewsletterModel
     private readonly EntityCollection<CalendarEntity> _tournaments = new();
     private readonly EntityCollection<SurfaceEntity> _surfaces = new();
     private readonly EntityCollection<PlayingAbilityEntity> _playingAbilities = new();
+    private readonly UserLocation _userLocation;
 
-    public NewsletterModel(IAppDb appDb)
+    public NewsletterModel(IAppDb appDb, UserLocation userLocation)
     {
         _appDb = appDb;
+        _userLocation = userLocation;
     }
 
     public async Task<NewsletterModel> InitializeAndLoad(CancellationToken cancellationToken)
@@ -61,7 +64,7 @@ public class NewsletterModel
 
     public ICollection<CalendarEntityDisplayModel> GetCalendarDisplayModel() =>
         _tournaments
-            .Select(t => new CalendarEntityDisplayModel(t, _surfaces, _playingAbilities)).ToList();
+            .Select(t => new CalendarEntityDisplayModel(t, _userLocation, _surfaces, _playingAbilities)).ToList();
 
     public DateTime LastSendDate { get; private set; }
 

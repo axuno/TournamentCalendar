@@ -32,7 +32,9 @@ public class InfoService : ControllerBase
     public IActionResult Register()
     {
         ViewBag.TitleTagText = "Volley-News abonnieren";
-        return View(ViewName.InfoService.Edit, new Models.InfoService.EditModel(_appDb) { EditMode = Models.InfoService.EditMode.New });
+        var model = new Models.InfoService.EditModel { EditMode = Models.InfoService.EditMode.New };
+        model.SetAppDb(_appDb);
+        return View(ViewName.InfoService.Edit, model);
     }
 
     [HttpGet(nameof(Entry))]
@@ -50,7 +52,8 @@ public class InfoService : ControllerBase
             return RedirectToAction(nameof(InfoService.Index), nameof(Controllers.InfoService));
         }
 
-        var model = new Models.InfoService.EditModel(_appDb, guid) { EditMode = Models.InfoService.EditMode.Change };
+        var model = new Models.InfoService.EditModel { EditMode = Models.InfoService.EditMode.Change };
+        model.SetAppDb(_appDb, guid);
         return model.IsNew  // id not found
             ? RedirectToAction(nameof(InfoService.Index), nameof(Controllers.InfoService))
             : View(ViewName.InfoService.Edit, model);
@@ -62,23 +65,19 @@ public class InfoService : ControllerBase
     [HttpPost(nameof(InfoService.Entry)), ValidateAntiForgeryToken]
     public async Task<IActionResult> Entry([FromForm] Models.InfoService.EditModel model, CancellationToken cancellationToken)
     {
-        model = new Models.InfoService.EditModel(_appDb);
-        _ = await TryUpdateModelAsync<Models.InfoService.EditModel>(model);
+        model.SetAppDb(_appDb);
+        _ = await TryUpdateModelAsync(model);
 
         ViewBag.TitleTagText = "Volley-News abonnieren";
         model.EditMode = string.IsNullOrWhiteSpace(model.Guid) ? Models.InfoService.EditMode.New : Models.InfoService.EditMode.Change;
 
-        if (!ModelState.IsValid && model.ExistingEntryWithSameEmail != null)
-        {
+        if (!ModelState.IsValid && model.ExistingEntryWithSameEmail is { ConfirmedOn: null })
             // if the entry with this email address was not yet confirmed, just redirect there
-            if (!model.ExistingEntryWithSameEmail.ConfirmedOn.HasValue)
-            {
-                return RedirectToAction(nameof(InfoService.Entry), nameof(Controllers.InfoService), new {guid = model.ExistingEntryWithSameEmail.Guid });
-            }
-
-            // todo: what to do, if the email was already confirmed? Re-send confirmation email without asking?
+        {
+            return RedirectToAction(nameof(InfoService.Entry), nameof(Controllers.InfoService), new {guid = model.ExistingEntryWithSameEmail.Guid });
         }
 
+        // todo: what to do, if the email was already confirmed? Re-send confirmation email without asking?
         if (!ModelState.IsValid)
         {
             model.Normalize(ModelState);
@@ -86,10 +85,12 @@ public class InfoService : ControllerBase
         }
 
         ModelState.Clear();
-        if (model.EditMode == Models.InfoService.EditMode.Change)
-            if (model.TryRefetchEntity())
-                if (!await TryUpdateModelAsync<Models.InfoService.EditModel>(model))
-                    return View(ViewName.InfoService.Edit, model);
+        if (model.EditMode == Models.InfoService.EditMode.Change
+            && (!model.TryFetchEntity()
+                || !await TryUpdateModelAsync<Models.InfoService.EditModel>(model)))
+        {
+            return View(ViewName.InfoService.Edit, model);
+        }
 
         var googleApi = new GoogleConfiguration();
         Configuration.Bind(nameof(GoogleConfiguration), googleApi);
@@ -129,7 +130,7 @@ public class InfoService : ControllerBase
     {
         if (!ModelState.IsValid)
         {
-            // We unregister the subsc
+            // We unregister the subscription
         }
 
         ViewBag.TitleTagText = "Volley-News abbestellen";

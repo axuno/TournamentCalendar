@@ -4,6 +4,7 @@ using TournamentCalendarDAL.HelperClasses;
 using TournamentCalendar.Models.Calendar;
 using TournamentCalendar.Views;
 using TournamentCalendar.Data;
+using TournamentCalendar.Services;
 
 namespace TournamentCalendar.Controllers;
 
@@ -12,13 +13,15 @@ public class Calendar : ControllerBase
 {
     private readonly IMailMergeService _mailMergeService;
     private readonly string _domainName;
+    private readonly UserLocation _userLocation;
     private readonly ILogger<Calendar> _logger;
     private readonly IAppDb _appDb;
 
-    public Calendar(IWebHostEnvironment hostingEnvironment, IConfiguration configuration, IAppDb appDb, ILogger<Calendar> logger, IMailMergeService mailMergeService) : base(hostingEnvironment, configuration)
+    public Calendar(IWebHostEnvironment hostingEnvironment, IConfiguration configuration, IAppDb appDb, ILogger<Calendar> logger, IMailMergeService mailMergeService, UserLocationService locationService) : base(hostingEnvironment, configuration)
     {
         _mailMergeService = mailMergeService;
         _domainName = configuration["DomainName"]!;
+        _userLocation = locationService.GetLocation();
         _appDb = appDb;
         _logger = logger;
     }
@@ -33,8 +36,9 @@ public class Calendar : ControllerBase
     public async Task<IActionResult> All(CancellationToken cancellationToken)
     {
         ViewBag.TitleTagText = "Volleyball-Turnierkalender";
-        var model = new BrowseModel(_appDb);
+        var model = new BrowseModel(_appDb, _userLocation);
         await model.Load(cancellationToken);
+        
         return View(ViewName.Calendar.Overview, model);
     }
 
@@ -46,7 +50,7 @@ public class Calendar : ControllerBase
         if (!ModelState.IsValid)
             return new StatusCodeResult(404);
 
-        var model = new BrowseModel(_appDb);
+        var model = new BrowseModel(_appDb, _userLocation);
         try
         {
             await model.Load(id, cancellationToken);

@@ -1,4 +1,5 @@
 ﻿using TournamentCalendar.Data;
+using TournamentCalendar.Services;
 using TournamentCalendarDAL.EntityClasses;
 using TournamentCalendarDAL.HelperClasses;
 
@@ -10,10 +11,12 @@ public class BrowseModel
     private readonly EntityCollection<CalendarEntity> _tournaments = new();
     private readonly EntityCollection<SurfaceEntity> _surfaces = new();
     private readonly EntityCollection<PlayingAbilityEntity> _playingAbilities = new();
+    private readonly UserLocation _userLocation;
 
-    public BrowseModel(IAppDb appDb)
+    public BrowseModel(IAppDb appDb, UserLocation userLocation)
     {
         _appDb = appDb;
+        _userLocation = userLocation;
     }
 
     public async Task Load(CancellationToken cancellationToken)
@@ -50,5 +53,10 @@ public class BrowseModel
     public int Count => _tournaments.Count;
 
     public IEnumerable<CalendarEntityDisplayModel> DisplayModel =>
-        _tournaments.Select(t => new CalendarEntityDisplayModel(t, _surfaces, _playingAbilities));
+        _tournaments.Select(t => new CalendarEntityDisplayModel(t, _userLocation, _surfaces, _playingAbilities));
+
+    public bool IsGeoSpacial()
+    {
+        return DisplayModel.Any(m => m.IsGeoSpatial());
+    }
 }

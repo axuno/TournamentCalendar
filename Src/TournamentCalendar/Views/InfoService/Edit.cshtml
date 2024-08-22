@@ -54,53 +54,43 @@
                 <label asp-for="@Model.Gender" class="form-label"></label>
                 <select asp-for="@Model.Gender" asp-items="Model.GetGenderList()" class="form-select input-required" style="width: 10rem"></select>
                 <span asp-validation-for="@Model.Gender" class="msg-error-text"></span>
-                <label asp-for="@Model.Title" class="form-label"></label>
-                <input asp-for="@Model.Title" maxlength="@InfoServiceFields.Title.MaxLength" class="form-control" >
-                <span asp-validation-for="@Model.Title" class="msg-error-text"></span>
                 <label asp-for="@Model.FirstName" class="form-label"></label>
                 <input asp-for="@Model.FirstName" maxlength="@InfoServiceFields.FirstName.MaxLength" class="form-control input-required" >
                 <span asp-validation-for="@Model.FirstName" class="msg-error-text"></span>
-                <label asp-for="@Model.Nickname" class="form-label"></label>
-                <input asp-for="@Model.Nickname" maxlength="@InfoServiceFields.Nickname.MaxLength" class="form-control" >
-                <span asp-validation-for="@Model.Nickname" class="msg-error-text"></span>
                 <label asp-for="@Model.LastName" class="form-label"></label>
                 <input asp-for="@Model.LastName" maxlength="@InfoServiceFields.LastName.MaxLength" class="form-control input-required" >
                 <span asp-validation-for="@Model.LastName" class="msg-error-text"></span>
-                <label asp-for="@Model.ClubName" class="form-label"></label>
-                <input asp-for="@Model.ClubName" maxlength="@InfoServiceFields.ClubName.MaxLength" class="form-control" >
-                <span asp-validation-for="@Model.ClubName" class="msg-error-text"></span>
-                <label asp-for="@Model.TeamName" class="form-label"></label>
-                <input asp-for="@Model.TeamName" maxlength="@InfoServiceFields.TeamName.MaxLength" class="form-control" >
-                <span asp-validation-for="@Model.TeamName" class="msg-error-text"></span>
             </div>
         </div>
     </fieldset>
     <fieldset class="rounded">
         <legend class="rounded">
-            Ich möchte nur Turnierinformationen rund um folgenden Standort
+            Angaben zur Entfernungsberechnung vom Standort zum Turnierort
         </legend>
         <div class="row">
             <div class="col">
+                <div>
+                    Für die Entfernungsberechnung kann eine beliebige Adresse verwendet werden.
+                    Ohne Straßenangabe wird die geografische Ortsmitte verwendet.
+                </div>
                 <div class="form-check">
-                    <input asp-for="@Model.IsAddressEntered" type="checkbox" class="form-check-input" />
+                    <input asp-for="@Model.IsAddressEntered" type="checkbox" class="form-check-input"/>
                     <label asp-for="@Model.IsAddressEntered" class="form-check-label"></label>
                 </div>
                 <span asp-validation-for="@Model.IsAddressEntered" class="msg-error-text"></span>
                 <div id="AddressSection" class="@(Model.IsAddressEntered ? "collapse show" : "collapse")">
-                    <label asp-for="@Model.MaxDistance" class="form-label">Maximale Entfernung in Kilometern von nachfolgendem Standort (ab 50 km)</label>
-                    <input asp-for="@Model.MaxDistance" type="text" maxlength="4" class="form-control" style="width: 5rem" >
-                    <span asp-validation-for="@Model.MaxDistance" class="msg-error-text"></span>
+
                     <label asp-for="@Model.CountryId" class="form-label"></label>
                     <select asp-for="@Model.CountryId" asp-items="(await Model.GetCountriesList())" class="form-select" style="width: 12rem"></select>
                     <span asp-validation-for="@Model.CountryId" class="msg-error-text"></span>
                     <label asp-for="@Model.ZipCode" class="form-label"></label>
-                    <input asp-for="@Model.ZipCode" maxlength="@InfoServiceFields.ZipCode.MaxLength" class="form-control" style="width:6rem" >
+                    <input asp-for="@Model.ZipCode" maxlength="@InfoServiceFields.ZipCode.MaxLength" class="form-control" style="width:6rem">
                     <span asp-validation-for="@Model.ZipCode" class="msg-error-text"></span>
                     <label asp-for="@Model.City" class="form-label"></label>
-                    <input asp-for="@Model.City" maxlength="@InfoServiceFields.City.MaxLength" class="form-control" >
+                    <input asp-for="@Model.City" maxlength="@InfoServiceFields.City.MaxLength" class="form-control">
                     <span asp-validation-for="@Model.City" class="msg-error-text"></span>
                     <label asp-for="@Model.Street" class="form-label"></label>
-                    <input asp-for="@Model.Street" maxlength="@InfoServiceFields.Street.MaxLength" class="form-control" >
+                    <input asp-for="@Model.Street" maxlength="@InfoServiceFields.Street.MaxLength" class="form-control">
                     <span asp-validation-for="@Model.Street" class="msg-error-text"></span>
                     <!-- Button trigger modal -->
                     <div class="pt-3">

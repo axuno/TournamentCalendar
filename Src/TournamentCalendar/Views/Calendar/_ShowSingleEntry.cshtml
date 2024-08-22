@@ -84,10 +84,10 @@
             </th>
             <td>
                 @Model.GetVenueAddress()
-                @if (Model.Longitude.HasValue && Model.Latitude.HasValue)
+                @if (Model.IsGeoSpatial())
                 {
                     <div>
-                        <a href="#" class="link" title="zur Karte scrollen" onclick="document.getElementById('mapPlaceholder').scrollIntoView();return false;">zur Karte scrollen</a>
+                        <span>Luftlinie: @Model.GetDistanceToVenue() km</span> <a href="#" class="link" title="zur Karte scrollen" onclick="document.getElementById('mapPlaceholder').scrollIntoView();return false;">zur Karte scrollen</a>
                     </div>
                 }
             </td>
@@ -121,7 +121,7 @@
                 Kontaktadresse:
             </th>
             <td>
-                @Html.Raw(Model.GetContactAddr())
+                @Html.Raw(Model.GetContactAddress())
             </td>
         </tr>
         <tr>
@@ -141,15 +141,15 @@
             </td>
         </tr>
     </table>
-@if (Model.Longitude.HasValue && Model.Latitude.HasValue)
+@if (Model is { Longitude: not null, Latitude: not null })
 {
     <div class="rounded pb-3 col-12 shadow">
         <div class="py-2">
-            <a href="@Model.GetVenueGoogleMapsLink()" class="link" title="Karte auf Google Maps Website anzeigen" target="_blank">Karte auf Google Maps Website anzeigen</a>
+            <a href="@Model.GetVenueGoogleMapsLink()" class="link" title="Route auf Google Maps Website anzeigen" target="_blank">Karte auf Google Maps Website anzeigen</a>
         </div>
         <div id="mapPlaceholder" class="rounded" style="border: 1px solid #979797; background-color: #e5e3df; width: 100%; height: 400px">
             <div style="padding: 1rem; color: gray">
-                Karte wird angezeigt,<br/>wenn der Standort gefunden wurde.
+                Karte wird angezeigt, <br/>wenn der Standort gefunden wurde.
             </div>
         </div>
     </div>

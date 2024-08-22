@@ -1,19 +1,21 @@
 ﻿using System.Web;
 using SD.LLBLGen.Pro.ORMSupportClasses;
+using TournamentCalendar.Services;
 using TournamentCalendarDAL.EntityClasses;
-using TournamentCalendarDAL.HelperClasses;
 
 namespace TournamentCalendar.Models.Calendar;
 
 public class CalendarEntityDisplayModel : CalendarEntity
 {
-    private readonly EntityCollection<SurfaceEntity> _surfaces;
-    private readonly EntityCollection<PlayingAbilityEntity> _playingAbilities;
+    private readonly ICollection<SurfaceEntity> _surfaces;
+    private readonly ICollection<PlayingAbilityEntity> _playingAbilities;
+    private readonly UserLocation _userLocation;
 
-    public CalendarEntityDisplayModel(IEntity2 t, EntityCollection<SurfaceEntity> surfaces, EntityCollection<PlayingAbilityEntity> playingAbilities)
+    public CalendarEntityDisplayModel(IEntity2 t, UserLocation userLocation, ICollection<SurfaceEntity> surfaces, ICollection<PlayingAbilityEntity> playingAbilities)
     {
         // Make a deep copy
         base.Fields = t.Fields.Clone();
+        _userLocation = userLocation;
         _surfaces = surfaces;
         _playingAbilities = playingAbilities;
     }
@@ -59,16 +61,15 @@ public class CalendarEntityDisplayModel : CalendarEntity
         if (NumPlayersMale > 0 && NumPlayersFemale > 0 && NumPlayersMale + NumPlayersFemale == 6)
             return "Mixed";
         if (NumPlayersMale > 0 && NumPlayersFemale > 0 && NumPlayersMale + NumPlayersFemale == 4)
-            return "Quattro-Mixed";
+            return "4er-Mixed";
         if (NumPlayersMale > 0 && NumPlayersFemale > 0 && NumPlayersMale + NumPlayersFemale == 2)
-            return "Duo-Mixed";
+            return "2er-Mixed";
         if (NumPlayersMale > 0 && NumPlayersFemale > 0)
             return "Mixed";
 
         return string.Empty;
     }
-
-
+    
     public string GetTournamentTypeAndPlayers()
     {
         var tournamentType = GetTournamentType();
@@ -82,8 +83,7 @@ public class CalendarEntityDisplayModel : CalendarEntity
         if (NumPlayersMale > 0 && NumPlayersFemale > 0 && IsMinPlayersFemale)
             return $"{tournamentType} - {NumPlayersMale + NumPlayersFemale} Spieler, mind. {NumPlayersMale} Herr{(NumPlayersMale > 1 ? "en" : "")}";
 
-        return String.Format("{0} - {1} Spieler{2}", tournamentType, NumPlayersMale + NumPlayersFemale,
-            NumPlayersFemale > 0 && NumPlayersMale == 0 ? "innen" : "");
+        return $"{tournamentType} - {NumPlayersMale + NumPlayersFemale} Spieler{(NumPlayersFemale > 0 && NumPlayersMale == 0 ? "innen" : "")}";
     }
 
     public string GetPlayingAbility()
@@ -92,7 +92,7 @@ public class CalendarEntityDisplayModel : CalendarEntity
         var from = _playingAbilities.First(pa => pa.Strength == PlayingAbilityFrom).Description;
         var to = _playingAbilities.First(pa => pa.Strength == PlayingAbilityTo).Description;
 
-        if (PlayingAbilityTo == 0) // unbeschränkt
+        if (PlayingAbilityTo == 0) // unlimited
             to = string.Empty;
 
         if (from.Length > 0 && to.Length > 0)
@@ -111,17 +111,17 @@ public class CalendarEntityDisplayModel : CalendarEntity
 
     public string GetVenueAddress(int? maxChar = null)
     {
-        var completeAddr = (CountryId.Length > 0 ? CountryId + " " : string.Empty) +
+        var completeAddress = (CountryId.Length > 0 ? CountryId + " " : string.Empty) +
                            (PostalCode.Length > 0 ? PostalCode + " " : string.Empty) +
                            (City.Length > 0 ? City + ", " : string.Empty) +
                            (Street.Length > 0 ? Street : string.Empty);
 
-        if (maxChar.HasValue && completeAddr.Length > maxChar.Value)
+        if (maxChar.HasValue && completeAddress.Length > maxChar.Value)
         {
-            return completeAddr.Substring(0, maxChar.Value - 3) + "...";
+            return string.Concat(completeAddress.AsSpan(0, maxChar.Value - 3), "...".AsSpan());
         }
 
-        return completeAddr;
+        return completeAddress;
     }
 
     public string GetVenueGoogleMapsLink()
@@ -129,20 +129,29 @@ public class CalendarEntityDisplayModel : CalendarEntity
         if (!(Longitude.HasValue && Latitude.HasValue))
             return string.Empty;
 
-        return string.Format("http://maps.google.de?q={0},{1}",
-            Latitude.Value.ToString("###.########", System.Globalization.CultureInfo.InvariantCulture),
-            Longitude.Value.ToString("###.########", System.Globalization.CultureInfo.InvariantCulture));
+        if (_userLocation.IsSet)
+        {
+            return string.Format("https://maps.google.de/maps?saddr={0},{1}&daddr={2},{3}",
+                _userLocation.Latitude!.Value.ToString("###.########", CultureInfo.InvariantCulture),
+                _userLocation.Longitude!.Value.ToString("###.########", CultureInfo.InvariantCulture),
+                Latitude.Value.ToString("###.########", CultureInfo.InvariantCulture),
+                Longitude.Value.ToString("###.########", CultureInfo.InvariantCulture));
+        }
+
+        return string.Format("https://maps.google.de?q={0},{1}",
+            Latitude.Value.ToString("###.########", CultureInfo.InvariantCulture),
+            Longitude.Value.ToString("###.########", CultureInfo.InvariantCulture));
     }
 
     public bool IsGeoSpatial()
     {
-        return Longitude.HasValue && Latitude.HasValue;
+        return Longitude.HasValue && Latitude.HasValue && _userLocation.IsSet;
     }
 
     public string GetOrganizerShort(int maxChar)
     {
         if (Organizer.Length > maxChar)
-            return Organizer.Substring(0, maxChar - 3) + "...";
+            return string.Concat(Organizer.AsSpan(0, maxChar - 3), "...".AsSpan());
 
         return Organizer;
     }
@@ -150,33 +159,31 @@ public class CalendarEntityDisplayModel : CalendarEntity
     public string GetTournamentNameShort(int maxChar)
     {
         if (TournamentName.Length > maxChar)
-            return TournamentName.Substring(0, maxChar - 3) + "...";
+            return string.Concat(TournamentName.AsSpan(0, maxChar - 3), "...".AsSpan());
 
         return TournamentName;
     }
 
-    public string GetVenueDistanceFromAugsburg()
+    public int? GetDistanceToVenue()
     {
-        if (!(Longitude.HasValue && Latitude.HasValue))
-            return String.Empty;
+        if (!IsGeoSpatial())
+            return null;
 
-        var augsburg =
+        var userLoc =
             new Axuno.Tools.GeoSpatial.Location(
-                new Axuno.Tools.GeoSpatial.Latitude(Axuno.Tools.GeoSpatial.Angle.FromDegrees(48.3666)),
-                new Axuno.Tools.GeoSpatial.Longitude(Axuno.Tools.GeoSpatial.Angle.FromDegrees(10.894103)));
+                new Axuno.Tools.GeoSpatial.Latitude(Axuno.Tools.GeoSpatial.Angle.FromDegrees(_userLocation.Latitude!.Value)),
+                new Axuno.Tools.GeoSpatial.Longitude(Axuno.Tools.GeoSpatial.Angle.FromDegrees(_userLocation.Longitude!.Value)));
 
         var venue =
             new Axuno.Tools.GeoSpatial.Location(
-                new Axuno.Tools.GeoSpatial.Latitude(Axuno.Tools.GeoSpatial.Angle.FromDegrees(Latitude.Value)),
-                new Axuno.Tools.GeoSpatial.Longitude(Axuno.Tools.GeoSpatial.Angle.FromDegrees(Longitude.Value)));
+                new Axuno.Tools.GeoSpatial.Latitude(Axuno.Tools.GeoSpatial.Angle.FromDegrees(Latitude!.Value)),
+                new Axuno.Tools.GeoSpatial.Longitude(Axuno.Tools.GeoSpatial.Angle.FromDegrees(Longitude!.Value)));
 
-        var distance = (int) augsburg.Distance(venue)/1000;
-        return distance < 1
-            ? string.Empty
-            : string.Format("Entfernung nach Augsburg/Königsplatz ca. {0:0} km Luftlinie", distance);
+        var distance = (int) userLoc.Distance(venue)/1000;
+        return distance;
     }
 
-    public string GetContactAddr()
+    public string GetContactAddress()
     {
         if (ContactAddress.Length > 0)
             return Axuno.Tools.String.StringHelper.NewLineToBreak(HttpUtility.HtmlEncode(ContactAddress));
@@ -189,7 +196,7 @@ public class CalendarEntityDisplayModel : CalendarEntity
         var fee = decimal.Compare(EntryFee, (decimal) 0.01) > 0 ? string.Format("{0} Euro", EntryFee) : "keine";
 
         if (decimal.Compare(Bond, 0.01m) > 0)
-            fee += string.Format(" plus {0} Euro Kaution", Bond);
+            fee += $" plus {Bond} Euro Kaution";
 
         return fee;
     }
@@ -198,7 +205,6 @@ public class CalendarEntityDisplayModel : CalendarEntity
     {
         return Axuno.Tools.String.StringHelper.NewLineToBreak(HttpUtility.HtmlEncode(Info));
     }
-
  
     public string GetSurface()
     {

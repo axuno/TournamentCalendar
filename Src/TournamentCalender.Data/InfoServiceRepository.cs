@@ -19,7 +19,19 @@ public class InfoServiceRepository : GenericRepository
 
     public virtual bool GetRegistrationByEmail(InfoServiceEntity entity, string email)
     {
-        return GetRegistration(entity, new PredicateExpression(InfoServiceFields.Email == email));
+        var predicate = new FieldCompareValuePredicate(
+            InfoServiceFields.Email,
+            null,
+            ComparisonOperator.Equal,
+            email
+        )
+        {
+            // If set to true, the UPPER() function is applied
+            CaseSensitiveCollation = true
+        };
+
+        var filter = new PredicateExpression(predicate);
+        return GetRegistration(entity, filter);
     }
 
     public virtual bool GetRegistration(InfoServiceEntity entity, PredicateExpression filter)

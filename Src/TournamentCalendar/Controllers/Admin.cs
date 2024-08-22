@@ -6,9 +6,9 @@ namespace TournamentCalendar.Controllers;
 [Route(nameof(Admin))]
 public class Admin : ControllerBase
 {
-    private readonly Microsoft.Extensions.Hosting.IHostApplicationLifetime _applicationLifetime;
+    private readonly IHostApplicationLifetime _applicationLifetime;
 
-    public Admin(Microsoft.Extensions.Hosting.IHostApplicationLifetime appLifetime)
+    public Admin(IHostApplicationLifetime appLifetime)
     {
         _applicationLifetime = appLifetime;
     }

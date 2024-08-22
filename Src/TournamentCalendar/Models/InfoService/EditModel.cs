@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Primitives;
@@ -19,7 +20,7 @@ public enum EditMode
 public class EditModel : InfoServiceEntity, IValidatableObject
 {
     private bool _isAddressEntered = true;
-    private readonly IAppDb? _appDb;
+    private IAppDb? _appDb;
 
     public EditModel()
     {
@@ -32,13 +33,14 @@ public class EditModel : InfoServiceEntity, IValidatableObject
         IsAddressEntered = true;
     }
 
-    public EditModel(IAppDb appDb) : this()
+    public void SetAppDb(IAppDb appDb)
     {
         _appDb = appDb;
     }
 
-    public EditModel(IAppDb appDb, string guid) : this(appDb)
+    public void SetAppDb(IAppDb appDb, string guid)
     {
+        _appDb = appDb;
         LoadData(guid);
         IsAddressEntered = true;
     }
@@ -48,7 +50,7 @@ public class EditModel : InfoServiceEntity, IValidatableObject
         return _appDb!.InfoServiceRepository.GetRegistrationByGuid(this, guid);
     }
 
-    public bool TryRefetchEntity()
+    public bool TryFetchEntity()
     {
         return string.IsNullOrWhiteSpace(Guid) || LoadData(Guid);
     }
@@ -78,25 +80,6 @@ public class EditModel : InfoServiceEntity, IValidatableObject
         return true;
     }
 
-    public int GetDistanceToAugsburg()
-    {
-        if (Longitude.HasValue && Latitude.HasValue)
-        {
-            // Distance to Augsburg/Königsplatz
-            var augsburg =
-                new Axuno.Tools.GeoSpatial.Location(new Axuno.Tools.GeoSpatial.Latitude(Axuno.Tools.GeoSpatial.Angle.FromDegrees(48.3666)),
-                    new Axuno.Tools.GeoSpatial.Longitude(Axuno.Tools.GeoSpatial.Angle.FromDegrees(10.894103)));
-
-            var userLoc =
-                new Axuno.Tools.GeoSpatial.Location(
-                    new Axuno.Tools.GeoSpatial.Latitude(Axuno.Tools.GeoSpatial.Angle.FromDegrees(Latitude.Value)),
-                    new Axuno.Tools.GeoSpatial.Longitude(Axuno.Tools.GeoSpatial.Angle.FromDegrees(Longitude.Value)));
-
-            return (int) (userLoc.Distance(augsburg) + 500)/1000;
-        }
-        return 0;
-    }
-
     public IEnumerable<SelectListItem> GetGenderList()
     {
         return new List<SelectListItem>(3)
@@ -104,7 +87,8 @@ public class EditModel : InfoServiceEntity, IValidatableObject
             new() {Value = "", Text = "Bitte wählen"},
             // a value of string.Empty will cause a required validation error
             new() {Value = "f", Text = "Frau"},
-            new() {Value = "m", Text = "Herr"}
+            new() {Value = "m", Text = "Herr"},
+            new() {Value = "u", Text = "keine"}
         };
     }
 
@@ -240,8 +224,8 @@ public class EditModel : InfoServiceEntity, IValidatableObject
         return confirmModel;
     }
 
-    [Bind("TeamName, ClubName, Gender, Title, FirstName, LastName, Nickname, CountryId, ZipCode, City, Street, " +
-          "MaxDistance, Email, Guid, IsAddressEntered, Captcha"
+    [Bind("Gender, FirstName, LastName, CountryId, ZipCode, City, Street, " +
+          "Email, Guid, IsAddressEntered, Captcha"
     )]
     public class InfoServiceMetadata
     {
@@ -257,32 +241,17 @@ public class EditModel : InfoServiceEntity, IValidatableObject
         [Display(Name="Anrede")]
         public string Gender { get; set; } = string.Empty;
 
-        [Display(Name="Titel")]
-        public string Title { get; set; } = string.Empty;
-
         [Required(ErrorMessageResourceName = "PropertyValueRequired", ErrorMessageResourceType = typeof(DataAnnotationResource))]
         [Display(Name="Vorname")]
         public string FirstName { get; set; } = string.Empty;
-
-        [Display(Name="Ruf-/Spitzname")]
-        public string Nickname { get; set; } = string.Empty;
 
         [Required(ErrorMessageResourceName = "PropertyValueRequired", ErrorMessageResourceType = typeof(DataAnnotationResource))]
         [Display(Name="Familienname")]
         public string LastName { get; set; } = string.Empty;
 
-        [Display(Name="Mannschaftsname")]
-        public string TeamName { get; set; } = string.Empty;
-
-        [Display(Name="Vereinsname")]
-        public string ClubName { get; set; } = string.Empty;
-
         [ValidateAddressFields("CountryId, ZipCode, City")]
-        [Display(Name="Angaben für die Entfernungsberechnung zum Veranstaltungsort aktivieren")]
+        [Display(Name="Entfernungsberechnung zum Veranstaltungsort aktivieren")]
         public bool IsAddressEntered { get; set; }
-
-        [Display(Name="Max. Entfernung")]
-        public int? MaxDistance { get; set; }
 
         [Display(Name="Land")]
         public string CountryId { get; set; } = string.Empty;
@@ -291,9 +260,11 @@ public class EditModel : InfoServiceEntity, IValidatableObject
         public string ZipCode { get; set; } = string.Empty;
 
         [Display(Name="Ort")]
+        [DisplayFormat(ConvertEmptyStringToNull = false)]
         public string City { get; set; } = string.Empty;
 
-        [Display(Name="Straße")]
+        [Display(Name = "Straße")]
+        [DisplayFormat(ConvertEmptyStringToNull = false)]
         public string Street { get; set; } = string.Empty;
 
         [Display(Name = "Ergebnis der Rechenaufgabe im Bild")]
@@ -322,7 +293,7 @@ public class EditModel : InfoServiceEntity, IValidatableObject
             // email address was found in a different record than the current one
             if (info.Guid != Guid)
             {
-                errors.Add(new ValidationResult(string.Format("E-Mail '{0}' ist bereits registriert", email), new[] { Email }));
+                errors.Add(new ValidationResult($"E-Mail '{email}' ist bereits registriert", new[] { Email }));
 
                 // the controller will decide what to do now
                 ExistingEntryWithSameEmail = info;
@@ -360,17 +331,17 @@ public sealed class ValidateAddressFieldsAttribute : ValidationAttribute
                 var property = validationContext.ObjectType.GetProperty(addressFieldName);
 
                 if (property == null)
-                    return new ValidationResult(string.Format("Unbekannte Eigenschaft: {0}", addressFieldName));
+                    return new ValidationResult($"Unbekannte Eigenschaft: {addressFieldName}");
 
                 // check types
                 if (property.PropertyType != typeof(string))
-                    return new ValidationResult(string.Format("Datentyp von Feld {0} muss 'string' sein", addressFieldName));
+                    return new ValidationResult($"Datentyp von Feld {addressFieldName} muss 'string' sein");
 
                 // get the field value
                 var field = (string?)property.GetValue(validationContext.ObjectInstance, null);
 
                 if (field?.Trim().Length == 0)
-                    return new ValidationResult("Felder für Entfernungsberechnung komplett füllen oder Entfernungs-Kontrollkästchen abwählen");
+                    return new ValidationResult("Land, Postleitzahl und Ort ausfüllen oder Entfernungs-Kontrollkästchen abwählen");
             }
         }
 

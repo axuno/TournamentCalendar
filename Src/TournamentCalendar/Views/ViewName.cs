@@ -83,6 +83,18 @@ public static class ViewName
 
     #endregion
 
+    #region *** GeoLocation views ***
+
+    public static class GeoLocation
+    {
+        /// <summary>
+        /// ~/Views/GeoLocation/Index.cshtml
+        /// </summary>
+        public const string Index = "~/Views/GeoLocation/Index.cshtml";
+    }
+
+    #endregion
+
     #region *** Collect views ***
 
     /// <summary>

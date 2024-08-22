@@ -1,5 +1,6 @@
 ﻿using TournamentCalendar.Data;
 using TournamentCalendar.Models.Newsletter;
+using TournamentCalendar.Services;
 
 namespace TournamentCalendar.Controllers;
 
@@ -7,16 +8,18 @@ namespace TournamentCalendar.Controllers;
 public class Newsletter : ControllerBase
 {
     private readonly IAppDb _appDb;
+    private readonly UserLocation _userLocation;
 
-    public Newsletter(IAppDb appDb)
+    public Newsletter(IAppDb appDb, UserLocationService locationService)
     {
         _appDb = appDb;
+        _userLocation = locationService.GetLocation();
     }
 
     [HttpGet("show")]
     public async Task<IActionResult> Show(CancellationToken cancellationToken)
     {
-        var model = await new NewsletterModel(_appDb).InitializeAndLoad(cancellationToken);
+        var model = await new NewsletterModel(_appDb, _userLocation).InitializeAndLoad(cancellationToken);
 
         return View("Show", model);
     }
