@@ -3,6 +3,7 @@ using TournamentCalendarDAL.HelperClasses;
 using TournamentCalendar.Views;
 using TournamentCalendar.Library;
 using TournamentCalendar.Data;
+using TournamentCalendar.Services;
 
 namespace TournamentCalendar.Controllers;
 
@@ -13,10 +14,12 @@ public class InfoService : ControllerBase
     private readonly IMailMergeService _mailMergeService;
     private readonly ILogger<InfoService> _logger;
     private readonly IAppDb _appDb;
+    private readonly UserLocationService _locationService;
 
-    public InfoService(IAppDb appDb, IWebHostEnvironment hostingEnvironment, IConfiguration configuration, ILogger<InfoService> logger, IMailMergeService mailMergeService) : base(hostingEnvironment, configuration)
+    public InfoService(IAppDb appDb, IWebHostEnvironment hostingEnvironment, IConfiguration configuration, ILogger<InfoService> logger, UserLocationService locationService, IMailMergeService mailMergeService) : base(hostingEnvironment, configuration)
     {
         _appDb = appDb;
+        _locationService = locationService;
         _domainName = configuration["DomainName"]!;
         _mailMergeService = mailMergeService;
         _logger = logger;
@@ -54,6 +57,10 @@ public class InfoService : ControllerBase
 
         var model = new Models.InfoService.EditModel { EditMode = Models.InfoService.EditMode.Change };
         model.SetAppDb(_appDb, guid);
+
+        if (!model.IsNew && !_locationService.GetLocation().IsSet)
+            _locationService.SetGeoLocation(new UserLocation(model.Latitude, model.Longitude));
+
         return model.IsNew  // id not found
             ? RedirectToAction(nameof(InfoService.Index), nameof(Controllers.InfoService))
             : View(ViewName.InfoService.Edit, model);
@@ -103,14 +110,17 @@ public class InfoService : ControllerBase
         {
             HttpContext.Session.Remove(Axuno.Web.CaptchaSvgGenerator.CaptchaSessionKeyName);
 
-            if ((confirmationModel = await model.Save(cancellationToken)).SaveSuccessful)
+            if (!(confirmationModel = await model.Save(cancellationToken)).SaveSuccessful)
+                return View(ViewName.InfoService.Confirm, confirmationModel);
+
+            if (confirmationModel.Entity?.UnSubscribedOn == null)
             {
-                if (confirmationModel.Entity?.UnSubscribedOn == null)
-                {
-                    confirmationModel = await new Mailer(_mailMergeService, _domainName).MailInfoServiceRegistrationForm(confirmationModel,
-                        Url.Action(nameof(Approve), nameof(Controllers.InfoService), new {guid = model.Guid})!,
-                        Url.Action(nameof(Entry), nameof(Controllers.InfoService), new { guid = model.Guid})!);
-                }
+                if (model is { Latitude: not null, Longitude: not null })
+                    _locationService.SetGeoLocation(model.Latitude.Value, model.Longitude.Value);
+
+                confirmationModel = await new Mailer(_mailMergeService, _domainName).MailInfoServiceRegistrationForm(confirmationModel,
+                    Url.Action(nameof(Approve), nameof(Controllers.InfoService), new {guid = model.Guid})!,
+                    Url.Action(nameof(Entry), nameof(Controllers.InfoService), new { guid = model.Guid})!);
             }
 
             return View(ViewName.InfoService.Confirm, confirmationModel);

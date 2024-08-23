@@ -24,13 +24,13 @@
                 if (userLocation.IsSet)
                 {
                     <p>
-                        Derzeit verwendeten eigenen Standort <a href="@($"https://maps.google.de?q={userLocation.Latitude!.Value.ToString("###.########", CultureInfo.InvariantCulture)},{userLocation.Longitude!.Value.ToString("###.########", CultureInfo.InvariantCulture)}")" class="link" target="_blank">auf Google Maps ansehen</a>.
+                        <span class="text-success"><b>Eigener Standort ist bereits festgelegt.</b></span> <a href="@($"https://maps.google.de?q={userLocation.Latitude!.Value.ToString("###.########", CultureInfo.InvariantCulture)},{userLocation.Longitude!.Value.ToString("###.########", CultureInfo.InvariantCulture)}")" class="link" target="_blank">auf Google Maps ansehen</a>.
                     </p>
                 }
                 else
                 {
-                    <p>
-                        Derzeit ist der eigene Standort nicht festgelegt.
+                    <p class="text-danger">
+                        <b>Derzeit ist der eigene Standort nicht festgelegt.</b>
                     </p>  
                 }
             }

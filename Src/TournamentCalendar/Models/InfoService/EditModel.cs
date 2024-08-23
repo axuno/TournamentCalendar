@@ -172,10 +172,7 @@ public class EditModel : InfoServiceEntity, IValidatableObject
         }
         else
         {
-            CountryId = null;
-            ZipCode = City = Street = string.Empty;
-            Longitude = Latitude = null;
-            MaxDistance = null;
+            MaxDistance = 6300;
         }
 
         // if the email address is changed, it must be re-confirmed

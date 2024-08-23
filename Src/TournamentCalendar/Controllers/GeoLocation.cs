@@ -30,6 +30,10 @@ public class GeoLocation : ControllerBase
         return View(ViewName.GeoLocation.Index);
     }
 
+    /// <summary>
+    /// Sets the location from a user's GUID.
+    /// </summary>
+    /// <param name="guid"></param>
     [HttpGet("location/{guid}")]
     public IActionResult Location(Guid guid)
     {
