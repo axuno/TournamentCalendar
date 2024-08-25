@@ -24,8 +24,9 @@
             if (userLocation.IsSet)
             {
                 <div>
-                    <span class="text-success"><b>Eigener Standort ist festgelegt.</b></span> 
-                    <a href="@($"https://maps.google.de?q={userLocation.Latitude!.Value.ToString("###.########", CultureInfo.InvariantCulture)},{userLocation.Longitude!.Value.ToString("###.########", CultureInfo.InvariantCulture)}")" class="link text-nowrap" target="_blank">auf Google Maps anzeigen
+                    <span class="text-success"><b>Eigener Standort ist festgelegt.</b></span>
+                    <a rel="noopener" href="@($"https://maps.google.de?q={userLocation.Latitude!.Value.ToString("###.########", CultureInfo.InvariantCulture)},{userLocation.Longitude!.Value.ToString("###.########", CultureInfo.InvariantCulture)}")" class="link text-nowrap" target="_blank">
+                        auf Google Maps anzeigen
                         <img alt="Festgelegter Standort" class="img-fluid rounded d-block" src="https://maps.googleapis.com/maps/api/staticmap?center=@(userLocation.Latitude.Value.ToString("###.#######", CultureInfo.InvariantCulture)),@(userLocation.Longitude.Value.ToString("###.#######", CultureInfo.InvariantCulture))&zoom=10&size=600x300&maptype=roadmap&key=@(googleConfig.WebApiKey)&markers=color:red%7C@(userLocation.Latitude.Value.ToString("###.#######", CultureInfo.InvariantCulture)),@(userLocation.Longitude.Value.ToString("###.#######", CultureInfo.InvariantCulture))"/>
                     </a>
                 </div>
