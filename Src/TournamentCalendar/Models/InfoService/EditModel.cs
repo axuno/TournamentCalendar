@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Primitives;
@@ -21,6 +20,7 @@ public class EditModel : InfoServiceEntity, IValidatableObject
 {
     private bool _isAddressEntered = true;
     private IAppDb? _appDb;
+    internal readonly string[] CountryIds = new[] { "DE", "AT", "CH", "LI", "IT", "NL", "BE", "LU", "FR", "PL", "DK", "CZ", "SK" };
 
     public EditModel()
     {
@@ -118,13 +118,11 @@ public class EditModel : InfoServiceEntity, IValidatableObject
 
     public async Task<IEnumerable<SelectListItem>> GetCountriesList()
     {
-        var countryIds = new[] { "DE", "AT", "CH", "LI", "IT", "NL", "BE", "LU", "FR", "PL", "DK", "CZ", "SK" };
-
         var countries = new EntityCollection<CountryEntity>();
-        await _appDb!.CountriesRepository.GetCountriesList(countries, countryIds, CancellationToken.None);
+        await _appDb!.CountriesRepository.GetCountriesList(countries, CountryIds, CancellationToken.None);
 
         // add to countries list in the sequence of countryIds array
-        return countryIds.Select(id => countries.First(c => c.Id == id)).Select(
+        return CountryIds.Select(id => countries.First(c => c.Id == id)).Select(
             item => new SelectListItem {Value = item.Id, Text = item.Name}).ToList();
     }
 
@@ -251,14 +249,13 @@ public class EditModel : InfoServiceEntity, IValidatableObject
         public bool IsAddressEntered { get; set; }
 
         [Display(Name="Land")]
-        public string CountryId { get; set; } = string.Empty;
+        public string? CountryId { get; set; }
 
         [Display(Name="Postleitzahl")]
-        public string ZipCode { get; set; } = string.Empty;
+        public string? ZipCode { get; set; }
 
         [Display(Name="Ort")]
-        [DisplayFormat(ConvertEmptyStringToNull = false)]
-        public string City { get; set; } = string.Empty;
+        public string? City { get; set; }
 
         [Display(Name = "Straße")]
         [DisplayFormat(ConvertEmptyStringToNull = false)]
@@ -320,26 +317,14 @@ public sealed class ValidateAddressFieldsAttribute : ValidationAttribute
         if (value == null)
             return new ValidationResult(validationContext + " ist erforderlich");
 
-        if ((bool)value)
+        if (value is true) // null, if IsAddressEntered is not true
         {
-            foreach (var addressFieldName in _addressFieldNames)
-            {
-                // get property of address field
-                var property = validationContext.ObjectType.GetProperty(addressFieldName);
+            var model = (EditModel) validationContext.ObjectInstance;
 
-                if (property == null)
-                    return new ValidationResult($"Unbekannte Eigenschaft: {addressFieldName}");
-
-                // check types
-                if (property.PropertyType != typeof(string))
-                    return new ValidationResult($"Datentyp von Feld {addressFieldName} muss 'string' sein");
-
-                // get the field value
-                var field = (string?)property.GetValue(validationContext.ObjectInstance, null);
-
-                if (field?.Trim().Length == 0)
-                    return new ValidationResult("Land, Postleitzahl und Ort ausfüllen oder Entfernungs-Kontrollkästchen abwählen");
-            }
+            if (model.CountryId == null || !model.CountryIds.ToList().Contains(model.CountryId)
+                                        || (string.IsNullOrWhiteSpace(model.ZipCode) && string.IsNullOrWhiteSpace(model.City)))
+                return new ValidationResult(
+                    "Land, sowie Postleitzahl oder Ort ausfüllen oder Entfernungskontrollkästchen abwählen");
         }
 
         return null;

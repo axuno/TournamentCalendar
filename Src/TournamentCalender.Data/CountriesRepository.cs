@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -23,7 +24,7 @@ public class CountriesRepository : GenericRepository
 
     public CountriesRepository(IDbContext dbContext) : base(dbContext) { }
 
-    public virtual async Task GetCountriesList(EntityCollection<CountryEntity> countries, string[] forIds, CancellationToken cancellationToken)
+    public virtual async Task GetCountriesList(EntityCollection<CountryEntity> countries, ICollection<string> forIds, CancellationToken cancellationToken)
     {
         using var da = _dbContext.GetNewAdapter();
         var metaData = new LinqMetaData(da);

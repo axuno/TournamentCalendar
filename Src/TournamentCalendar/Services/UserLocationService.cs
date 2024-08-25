@@ -10,7 +10,10 @@ namespace TournamentCalendar.Services;
 /// <param name="Longitude"></param>
 public record struct UserLocation(double? Latitude, double? Longitude)
 {
-    public bool IsSet => Latitude.HasValue && Longitude.HasValue;
+    public bool IsSet => Latitude.HasValue
+                         && UserLocationService.IsValidLatitude(Latitude.Value)
+                         && Longitude.HasValue
+                         && UserLocationService.IsValidLongitude(Longitude.Value);
 }
 
 /// <summary>
@@ -48,11 +51,18 @@ public class UserLocationService
     }
 
     /// <summary>
-    /// Sets the user's location.
+    /// Sets the user's location if the <paramref name="userLocation"/> is set,
+    /// otherwise clears the user's location.
     /// </summary>
     /// <param name="userLocation"></param>
     public void SetGeoLocation(UserLocation userLocation)
     {
+        if(!userLocation.IsSet)
+        {
+            ClearGeoLocation();
+            return;
+        }
+
         var loc = Location2String(userLocation);
         _httpContextAccessor.HttpContext?.Session.SetString(UserLocationSessionName, loc);
         _cookieService.SetCookieValue(CookieService.LocationCookieName, loc, null);
@@ -119,10 +129,13 @@ public class UserLocationService
         return new UserLocation(null, null);
     }
 
-    private bool TryString2Location(string location, out UserLocation userLocation)
+    private static bool TryString2Location(string location, out UserLocation userLocation)
     {
         var parts = location.Split('|');
-        if (parts.Length == 2 && double.TryParse(parts[0], NumberStyles.Any, CultureInfo.InvariantCulture, out var latitude) && double.TryParse(parts[1], NumberStyles.Any, CultureInfo.InvariantCulture, out var longitude))
+        if (parts.Length == 2 &&
+            double.TryParse(parts[0], NumberStyles.Any, CultureInfo.InvariantCulture, out var latitude) &&
+            double.TryParse(parts[1], NumberStyles.Any, CultureInfo.InvariantCulture, out var longitude) &&
+            IsValidLatitude(latitude) && IsValidLongitude(longitude))
         {
             userLocation = new UserLocation(latitude, longitude);
             return true;
@@ -134,7 +147,18 @@ public class UserLocationService
 
     private string Location2String(UserLocation userLocation)
     {
-        return
-            $"{userLocation.Latitude?.ToString("###.########", CultureInfo.InvariantCulture)}|{userLocation.Longitude?.ToString("###.########", CultureInfo.InvariantCulture)}";
+        return userLocation.IsSet
+            ? $"{userLocation.Latitude?.ToString("###.########", CultureInfo.InvariantCulture)}|{userLocation.Longitude?.ToString("###.########", CultureInfo.InvariantCulture)}"
+            : string.Empty;
+    }
+
+    public static bool IsValidLatitude(double latDegrees)
+    {
+        return latDegrees is >= -90 and <= 90;
+    }
+
+    public static bool IsValidLongitude(double lonDegrees)
+    {
+        return lonDegrees is >= -180 and <= 180;
     }
 }

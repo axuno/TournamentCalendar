@@ -1,52 +1,95 @@
 ﻿@inject UserLocationService LocationService
+@inject IConfiguration Configuration
+@model TournamentCalendar.Models.GeoLocation.EditModel
 @using TournamentCalendar.Controllers
 @using TournamentCalendar.Services
 @using System.Globalization
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Microsoft.Extensions.Configuration
+@using TournamentCalendar.Library
+@using TournamentCalendarDAL.HelperClasses
 @{
     var userLocation = LocationService.GetLocation();
+    var googleConfig = new GoogleConfiguration();
+    Configuration.Bind(nameof(GoogleConfiguration), googleConfig);
 }
 <div class="row">
     <div class="col-12 mb-3">
         <h3 class="h3">@ViewBag.TitleTagText</h3>
         <p>
             Es ist möglich, im Turnierkalender die Entfernungen
-            vom eigenen Standort zu den Turnierstandorten anzuzeigen.
+            von einem festgelegten, eigenen Standort zu den Turnierstandorten anzuzeigen.
         </p>
-        <div id="geo-supported" style="display:none">
-            <p>
-                Zuverlässige Standorte erfordern ein Gerät mit eingeschaltetem GPS-Empfänger oder
-                näherungsweise eine Internetverbindung über WLAN.
-            </p>
-            <p>
-                Dafür benötigt der Browser einmalig die Genehmigung, den Standort des Geräts abzufragen.
-            </p>
-            @{
-                if (userLocation.IsSet)
-                {
-                    <p>
-                        <span class="text-success"><b>Eigener Standort ist bereits festgelegt.</b></span> <a href="@($"https://maps.google.de?q={userLocation.Latitude!.Value.ToString("###.########", CultureInfo.InvariantCulture)},{userLocation.Longitude!.Value.ToString("###.########", CultureInfo.InvariantCulture)}")" class="link" target="_blank">auf Google Maps ansehen</a>.
-                    </p>
-                }
-                else
-                {
-                    <p class="text-danger">
-                        <b>Derzeit ist der eigene Standort nicht festgelegt.</b>
-                    </p>  
-                }
+        @{
+            if (userLocation.IsSet)
+            {
+                <div>
+                    <span class="text-success"><b>Eigener Standort ist festgelegt.</b></span> 
+                    <a href="@($"https://maps.google.de?q={userLocation.Latitude!.Value.ToString("###.########", CultureInfo.InvariantCulture)},{userLocation.Longitude!.Value.ToString("###.########", CultureInfo.InvariantCulture)}")" class="link text-nowrap" target="_blank">auf Google Maps anzeigen
+                        <img alt="Festgelegter Standort" class="img-fluid rounded d-block" src="https://maps.googleapis.com/maps/api/staticmap?center=@(userLocation.Latitude.Value.ToString("###.#######", CultureInfo.InvariantCulture)),@(userLocation.Longitude.Value.ToString("###.#######", CultureInfo.InvariantCulture))&zoom=10&size=600x300&maptype=roadmap&key=@(googleConfig.WebApiKey)&markers=color:red%7C@(userLocation.Latitude.Value.ToString("###.#######", CultureInfo.InvariantCulture)),@(userLocation.Longitude.Value.ToString("###.#######", CultureInfo.InvariantCulture))"/>
+                    </a>
+                </div>
+                <div class="mt-3 mb-3">
+                    <input type="button" value="Standort entfernen" class="cancel btn btn-secondary" onclick="location.href = '@Url.Action(nameof(GeoLocation.ClearLocation), nameof(GeoLocation))'"/>
+                </div>
             }
-            <div>
-                <button id="clear-location" type="button" class="btn btn-secondary">Standort entfernen</button>
-                <button id="set-location" type="button" class="btn btn-primary">Standort abrufen</button>
+            else
+            {
+                <div class="text-danger">
+                    <b>Der eigene Standort ist nicht festgelegt.</b>
+                </div>  
+            }
+        }
+        <fieldset class="rounded mt-3 mb-3">
+            <h4 class="h4">Position des Geräts verwenden</h4>
+            <div id="geo-supported" style="display:none">
+                <p>
+                    Zuverlässige Standorte erfordern ein Gerät mit eingeschaltetem GPS-Empfänger oder
+                    näherungsweise eine Internetverbindung über WLAN.
+                </p>
+                <p>
+                    Dafür benötigt der Browser einmalig die Genehmigung, den Standort des Geräts abzufragen.
+                </p>
+                <div>
+                    <button id="set-location" type="button" class="btn btn-primary">Standort abrufen</button>
+                </div>
+                <div id="error-msg" class="alert alert-danger mt-3 mb-3" style="display:none"></div>
             </div>
-            <div id="error-msg" class="alert alert-danger mt-3 mb-3" style="display:none"></div>
-        </div>
-        <div id="geo-not-supported" style="display:none">
+            <div id="geo-not-supported" style="display:none">
+                <p>
+                    Schade, leider unterstützt der Browser diese Funktionalität nicht.
+                </p>
+            </div>
+        </fieldset>
+        <fieldset class="rounded">
+            <h4 class="h4">Standort per Adresse festlegen</h4>
             <p>
-                Schade, leider unterstützt der Browser diese Funktionalität nicht.
+                Mehr Details führen zu genaueren Standortpositionen. Wird z.B. nur der Ort angegeben,
+                wird die geografische Ortsmitte verwendet. Das Land muss immer zutreffend angegeben sein.
             </p>
-        </div>
+            <form method="post" class="pb-2" novalidate>
+                <div id="AddressSection">
+                    <label asp-for="@Model.CountryId" class="form-label"></label>
+                    <select asp-for="@Model.CountryId" asp-items="(await Model.GetCountriesList())" class="form-select" style="width: 12rem"></select>
+                    <span asp-validation-for="@Model.CountryId" class="msg-error-text"></span>
+                    <label asp-for="@Model.ZipCode" class="form-label"></label>
+                    <input asp-for="@Model.ZipCode" maxlength="@InfoServiceFields.ZipCode.MaxLength" class="form-control" style="width:6rem">
+                    <span asp-validation-for="@Model.ZipCode" class="msg-error-text"></span>
+                    <label asp-for="@Model.City" class="form-label"></label>
+                    <input asp-for="@Model.City" maxlength="@InfoServiceFields.City.MaxLength" class="form-control">
+                    <span asp-validation-for="@Model.City" class="msg-error-text"></span>
+                    <label asp-for="@Model.Street" class="form-label"></label>
+                    <input asp-for="@Model.Street" maxlength="@InfoServiceFields.Street.MaxLength" class="form-control">
+                    <span asp-validation-for="@Model.Street" class="msg-error-text"></span>
+                </div>
+                <div class="mt-3">
+                    <input type="submit" name="save" formaction="@Url.Action(nameof(GeoLocation.Location), nameof(GeoLocation), new { model = Model })" value="Standort ermitteln" class="btn btn-primary" />
+                </div>
+            </form>
+        </fieldset>
     </div>
 </div>
+
 @section ScriptStandardSection {
 <script>
     //<![CDATA[
@@ -69,15 +112,6 @@
                 setErrorMessage('Fehler beim Abruf der Standortposition');
             }
         });
-
-        document.getElementById('clear-location').addEventListener('click', function() {
-            try {
-                clearErrorMessage();
-                clearGeoLocation();
-            } catch (e) {
-                setErrorMessage('Fehler beim Entfernen der Standortposition');
-            } 
-        });
     }
 
     function getGeoLocation() {
@@ -87,18 +121,19 @@
     }
 
     function submitLocation(position) {
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET', window.location.origin + `/geolocation/location/${position.coords.latitude}/${position.coords.longitude}`, true);
-        xhr.onreadystatechange = function() {
-            // Request is complete and successful *OR* headers received and no content
-            if ((xhr.readyState === 4 && xhr.status === 200) || (xhr.readyState === 2 && xhr.status === 204)) {
-                window.location.reload();
-            } else {
+        fetch(window.location.origin + `/geolocation/location/${position.coords.latitude}/${position.coords.longitude}`, {
+                method: 'GET'
+            })
+            .then(response => {
+                if (response.ok || response.status === 204) {
+                    window.location.reload();
+                } else {
+                    setErrorMessage('Standort konnte nicht gesetzt werden - offline?');
+                }
+            })
+            .catch(error => {
                 setErrorMessage('Standort konnte nicht gesetzt werden - offline?');
-            }
-
-        };
-        xhr.send();
+            });
     }
 
     function handleError(error) {
@@ -116,20 +151,6 @@
             setErrorMessage('Fehler beim Abruf der Standortposition');
             break;
         }
-    }
-
-    function clearGeoLocation() {
-        const xhr = new XMLHttpRequest();
-        xhr.open('GET', window.location.origin + `/geolocation/clear`, true);
-        xhr.onreadystatechange = function() {
-            // Request is complete and successful OR headers received and no content
-            if ((xhr.readyState === 4 && xhr.status === 200) || (xhr.readyState === 2 && xhr.status === 204))  {
-                window.location.reload();
-            } else {
-                setErrorMessage('Standort konnte nicht entfernt werden - offline?');
-            }
-        };
-        xhr.send();
     }
 
     function setErrorMessage(message) {

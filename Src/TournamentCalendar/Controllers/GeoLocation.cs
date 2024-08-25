@@ -1,5 +1,8 @@
-﻿using TournamentCalendar.Services;
+﻿using TournamentCalendar.Data;
+using TournamentCalendar.Services;
 using TournamentCalendar.Views;
+using TournamentCalendar.Models.GeoLocation;
+using TournamentCalendar.Library;
 
 namespace TournamentCalendar.Controllers;
 
@@ -9,25 +12,28 @@ namespace TournamentCalendar.Controllers;
 [Route(nameof(GeoLocation))]
 public class GeoLocation : ControllerBase
 {
-    private readonly IConfiguration _configuration;
     private readonly UserLocationService _locationService;
+    private readonly IAppDb _appDb;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="GeoLocation"/> class.
     /// </summary>
+    /// <param name="appDb"></param>
     /// <param name="locationService"></param>
-    /// <param name="configuration"></param>
-    public GeoLocation(UserLocationService locationService, IConfiguration configuration)
+    public GeoLocation(IAppDb appDb, UserLocationService locationService, IConfiguration configuration)
     {
+        _appDb = appDb;
         _locationService = locationService;
-        _configuration = configuration;
+        Configuration = configuration;
     }
 
     [HttpGet("")]
     public IActionResult Index()
     {
-        ViewBag.TitleTagText = "Entfernung anzeigen";
-        return View(ViewName.GeoLocation.Index);
+        ViewBag.TitleTagText = "Entfernungen anzeigen";
+        var model = new EditModel();
+        model.SetAppDb(_appDb);
+        return View(ViewName.GeoLocation.Index, model);
     }
 
     /// <summary>
@@ -45,9 +51,31 @@ public class GeoLocation : ControllerBase
         return RedirectToAction(nameof(Calendar.All), nameof(Controllers.Calendar));
     }
 
+    [HttpPost("location/{model}")]
+    public async Task<IActionResult> Location([FromForm] EditModel model)
+    {
+        model.SetAppDb(_appDb);
+
+        if (!ModelState.IsValid)
+            return View(ViewName.GeoLocation.Index, model);
+
+        var googleApi = new GoogleConfiguration();
+        Configuration.Bind(nameof(GoogleConfiguration), googleApi);
+        var userLocation = await model.TryGetLongitudeLatitude(googleApi);
+        _locationService.SetGeoLocation(userLocation);
+
+        return RedirectToAction(nameof(GeoLocation.Index), nameof(Controllers.GeoLocation));
+    }
+
     [HttpGet("location/{latitude}/{longitude}")]
     public IActionResult Location(double latitude, double longitude)
     {
+        if(!UserLocationService.IsValidLatitude(latitude))
+            ModelState.AddModelError(nameof(latitude), "Latitude is invalid.");
+
+        if (!UserLocationService.IsValidLongitude(longitude))
+            ModelState.AddModelError(nameof(longitude), "Longitude is invalid.");
+
         if (!ModelState.IsValid)
             _locationService.ClearGeoLocation();
 
@@ -60,16 +88,6 @@ public class GeoLocation : ControllerBase
     public IActionResult ClearLocation()
     {
         _locationService.ClearGeoLocation();
-        return NoContent();
-    }
-
-    private IActionResult RedirectToLocal(string returnUrl)
-    {
-        if (Url.IsLocalUrl(returnUrl))
-        {
-            return Redirect(returnUrl);
-        }
-
-        return RedirectToAction(nameof(Calendar.All), nameof(Controllers.Calendar));
+        return RedirectToAction(nameof(GeoLocation.Index), nameof(Controllers.GeoLocation));
     }
 }

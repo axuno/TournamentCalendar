@@ -72,10 +72,11 @@ public class InfoService : ControllerBase
     [HttpPost(nameof(InfoService.Entry)), ValidateAntiForgeryToken]
     public async Task<IActionResult> Entry([FromForm] Models.InfoService.EditModel model, CancellationToken cancellationToken)
     {
+        ViewBag.TitleTagText = "Volley-News abonnieren";
+
         model.SetAppDb(_appDb);
         _ = await TryUpdateModelAsync(model);
-
-        ViewBag.TitleTagText = "Volley-News abonnieren";
+        
         model.EditMode = string.IsNullOrWhiteSpace(model.Guid) ? Models.InfoService.EditMode.New : Models.InfoService.EditMode.Change;
 
         if (!ModelState.IsValid && model.ExistingEntryWithSameEmail is { ConfirmedOn: null })
