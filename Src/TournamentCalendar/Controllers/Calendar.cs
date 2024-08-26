@@ -142,7 +142,7 @@ public class Calendar : ControllerBase
         Configuration.Bind(nameof(GoogleConfiguration), googleApi);
         await model.TryGetLongitudeLatitude(googleApi);
         model.Normalize();
-        if (model.IsNew && User.Identity != null && User.Identity.IsAuthenticated)
+        if (model.IsNew && User.Identity is { IsAuthenticated: true })
         {
             model.CreatedByUser = User.Identity.Name;
         }

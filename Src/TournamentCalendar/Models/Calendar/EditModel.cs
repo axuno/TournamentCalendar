@@ -60,7 +60,7 @@ public class EditModel : CalendarEntity, IValidatableObject
 
     public async Task<bool> TryGetLongitudeLatitude(GoogleConfiguration googleConfig)
     {
-        if (Fields[CalendarFields.Street.FieldIndex].IsChanged || Fields[CalendarFields.PostalCode.FieldIndex].IsChanged || Fields[CalendarFields.City.FieldIndex].IsChanged)
+        if ((Latitude is null || Longitude is null) || Fields[CalendarFields.Street.FieldIndex].IsChanged || Fields[CalendarFields.PostalCode.FieldIndex].IsChanged || Fields[CalendarFields.City.FieldIndex].IsChanged)
         {
             try
             {
@@ -261,7 +261,7 @@ public class EditModel : CalendarEntity, IValidatableObject
             else
             {
                 // Set deletion date, if tournament shall not be displayed
-                base.DeletedOn = value ? DateTime.Now : null;
+                base.DeletedOn = value ? null : DateTime.Now;
             }
         }
     }
