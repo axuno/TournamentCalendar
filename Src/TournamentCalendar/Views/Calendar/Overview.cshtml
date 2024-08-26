@@ -112,6 +112,10 @@
         .datatable-table > thead > tr > th {
             padding: 8px 5px !important;
         }
+
+        input[type=search]::-webkit-search-cancel-button {
+            -webkit-appearance: searchfield-cancel-button;
+        }
     </style>
 }
 @section ScriptStandardSection {
@@ -196,6 +200,12 @@
                     window.location = link.href;
                 });
             });
+            
+            // Adjust 'datatable-search' container and input
+            const searchElement = document.querySelector('.datatable-search');
+            searchElement.classList.add('col-10', 'col-md-6');
+            const inputElement = searchElement.querySelector('input');
+            inputElement.type = 'search';
         }
     }
 //]]>
