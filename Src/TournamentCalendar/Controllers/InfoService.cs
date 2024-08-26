@@ -111,7 +111,8 @@ public class InfoService : ControllerBase
         {
             HttpContext.Session.Remove(Axuno.Web.CaptchaSvgGenerator.CaptchaSessionKeyName);
 
-            if (!(confirmationModel = await model.Save(cancellationToken)).SaveSuccessful)
+            confirmationModel = await model.Save(cancellationToken);
+            if (!confirmationModel.SaveSuccessful)
                 return View(ViewName.InfoService.Confirm, confirmationModel);
 
             if (confirmationModel.Entity?.UnSubscribedOn == null)

@@ -25,6 +25,7 @@ public class UserLocationService
     private readonly ICookieService _cookieService;
     private readonly IAppDb _appDb;
 
+    private const string LatLonFormat = "###.########";
     public const string UserLocationSessionName = nameof(UserLocationSessionName);
 
     /// <summary>
@@ -84,13 +85,11 @@ public class UserLocationService
     public void SetFromUserGuid(Guid userGuid)
     {
         var infoService = new InfoServiceEntity();
-        if (_appDb.InfoServiceRepository.GetRegistrationByGuid(infoService, userGuid.ToString("N")))
+        if (_appDb.InfoServiceRepository.GetRegistrationByGuid(infoService, userGuid.ToString("N"))
+            && infoService is { ConfirmedOn: not null, UnSubscribedOn: null, Latitude: not null, Longitude: not null })
         {
-            if (infoService is { ConfirmedOn: not null, UnSubscribedOn: null, Latitude: not null, Longitude: not null })
-            {
-                SetGeoLocation(infoService.Latitude.Value, infoService.Longitude.Value);
-                return;
-            }
+            SetGeoLocation(infoService.Latitude.Value, infoService.Longitude.Value);
+            return;
         }
 
         ClearGeoLocation();
@@ -145,10 +144,10 @@ public class UserLocationService
         return false;
     }
 
-    private string Location2String(UserLocation userLocation)
+    private static string Location2String(UserLocation userLocation)
     {
         return userLocation.IsSet
-            ? $"{userLocation.Latitude?.ToString("###.########", CultureInfo.InvariantCulture)}|{userLocation.Longitude?.ToString("###.########", CultureInfo.InvariantCulture)}"
+            ? $"{userLocation.Latitude?.ToString(LatLonFormat, CultureInfo.InvariantCulture)}|{userLocation.Longitude?.ToString(LatLonFormat, CultureInfo.InvariantCulture)}"
             : string.Empty;
     }
 

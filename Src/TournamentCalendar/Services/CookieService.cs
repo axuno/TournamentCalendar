@@ -45,9 +45,9 @@ public class CookieService : ICookieService
     /// </summary>
     /// <param name="cookieName"></param>
     /// <param name="cookieValue"></param>
-    /// <param name="expireTime"></param>
+    /// <param name="expireTime">if <see langword="null"/>, 1 year is used as default</param>
     /// <returns><see langword="true"/> if the cookie could be set.</returns>
-    public bool SetCookieValue(string cookieName, string cookieValue, TimeSpan? expireTime = null)
+    public bool SetCookieValue(string cookieName, string cookieValue, TimeSpan? expireTime)
     {
         if (!EnsureHttpContext())
         {

@@ -7,6 +7,7 @@ namespace TournamentCalendar.Models.Calendar;
 
 public class CalendarEntityDisplayModel : CalendarEntity
 {
+    private const string LatLonFormat = "###.########";
     private readonly ICollection<SurfaceEntity> _surfaces;
     private readonly ICollection<PlayingAbilityEntity> _playingAbilities;
     private readonly UserLocation _userLocation;
@@ -132,15 +133,15 @@ public class CalendarEntityDisplayModel : CalendarEntity
         if (_userLocation.IsSet)
         {
             return string.Format("https://maps.google.de/maps?saddr={0},{1}&daddr={2},{3}",
-                _userLocation.Latitude!.Value.ToString("###.########", CultureInfo.InvariantCulture),
-                _userLocation.Longitude!.Value.ToString("###.########", CultureInfo.InvariantCulture),
-                Latitude.Value.ToString("###.########", CultureInfo.InvariantCulture),
-                Longitude.Value.ToString("###.########", CultureInfo.InvariantCulture));
+                _userLocation.Latitude!.Value.ToString(LatLonFormat, CultureInfo.InvariantCulture),
+                _userLocation.Longitude!.Value.ToString(LatLonFormat, CultureInfo.InvariantCulture),
+                Latitude.Value.ToString(LatLonFormat, CultureInfo.InvariantCulture),
+                Longitude.Value.ToString(LatLonFormat, CultureInfo.InvariantCulture));
         }
 
         return string.Format("https://maps.google.de?q={0},{1}",
-            Latitude.Value.ToString("###.########", CultureInfo.InvariantCulture),
-            Longitude.Value.ToString("###.########", CultureInfo.InvariantCulture));
+            Latitude.Value.ToString(LatLonFormat, CultureInfo.InvariantCulture),
+            Longitude.Value.ToString(LatLonFormat, CultureInfo.InvariantCulture));
     }
 
     public bool IsGeoSpatial()

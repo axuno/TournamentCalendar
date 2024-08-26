@@ -26,9 +26,9 @@
             @if (Model.DisplayModel.Any())
             {
                 var rec = Model.DisplayModel.Last();
-                <label class="m-0">
+                <span class="m-0 text-success">
                     <strong>Filtern der Tabelle</strong> (z.B.: &quot;@string.Join(string.Empty, rec.GetTournamentType().Take(5)).ToLower()&quot; für @rec.GetTournamentType()-Turniere)
-                </label>
+                </span>
             }
         </div>
         <div class="col-4 text-end p-0 text-nowrap">

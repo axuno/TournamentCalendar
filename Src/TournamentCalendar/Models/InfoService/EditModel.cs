@@ -302,14 +302,10 @@ public class EditModel : InfoServiceEntity, IValidatableObject
 [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
 public sealed class ValidateAddressFieldsAttribute : ValidationAttribute
 {
-    private readonly string[] _addressFieldNames;
-
     public ValidateAddressFieldsAttribute(string addressFieldNames)
     {
         if (addressFieldNames == null)
             throw new ArgumentNullException(nameof(addressFieldNames));
-
-        _addressFieldNames = addressFieldNames.Split(new[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
     }
 
     protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
