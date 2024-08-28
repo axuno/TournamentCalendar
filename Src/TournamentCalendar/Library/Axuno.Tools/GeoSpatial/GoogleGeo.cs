@@ -1,8 +1,5 @@
-﻿using System;
-using System.Globalization;
-using System.Net.Http;
+﻿using System.Globalization;
 using System.Net.Http.Headers;
-using System.Threading.Tasks;
 using System.Web;
 using System.Xml;
 
@@ -148,7 +145,7 @@ public class GoogleGeo
         switch (geoResponse.StatusText)
         {
             case null:
-                throw new Exception($"XML node {statusNode} not found");
+                throw new InvalidOperationException($"XML node {statusNode} not found");
             case "OK":
                 geoResponse.Found = true;
                 geoResponse.Success = true;
@@ -182,7 +179,7 @@ public class GoogleGeo
 
         if (latNode == null || lngNode == null || locTypeNode == null)
         {
-            throw new Exception("XML child nodes in /GeocodeResponse/result/geometry not found");
+            throw new InvalidOperationException("XML child nodes in /GeocodeResponse/result/geometry not found");
         }
 
         switch (locTypeNode.InnerText)

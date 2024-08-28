@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Primitives;
 using TournamentCalendar.Data;
+using TournamentCalendar.Services;
 using TournamentCalendar.Views;
 
 namespace TournamentCalendar.Controllers;
@@ -28,7 +29,7 @@ public class ContentSynd : ControllerBase
         // Cross Origin Request Sharing (CORS) - allow request from any domain:
         Response.Headers.Append("Access-Control-Allow-Origin", "*");
         _logger.LogInformation("Host: {RemoteIp}, Referrer: {Referrer}", GetRemoteIpAddress(xForwardedFor, remoteAddr), referrer);
-        var model = new Models.Calendar.BrowseModel(_appDb);
+        var model = new Models.Calendar.BrowseModel(_appDb, new UserLocation(null, null));
         await model.Load(cancellationToken);
         return PartialView(ViewName.ContentSynd.CalendarListPartial, model);
     }

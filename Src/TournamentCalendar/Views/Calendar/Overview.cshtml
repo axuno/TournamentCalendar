@@ -1,9 +1,11 @@
-﻿@model TournamentCalendar.Models.Calendar.BrowseModel
+﻿@inject UserLocationService userLocation
+@model TournamentCalendar.Models.Calendar.BrowseModel
 @using TournamentCalendar.Controllers
+@using TournamentCalendar.Services
 @using TournamentCalendar.Views
 <div class="row">
     <div class="col-md-6">
-        <h3 class="h3">Turnierkalender</h3>
+        <h3 class="h3">@ViewBag.TitleTagText</h3>
         <p>
             Auf dieser Seite erscheinen primär Volleyball-Turniere aus dem deutschsprachigen Raum.
         </p>
@@ -19,18 +21,31 @@
         @* Hide on devices smaller than MD *@
         <img src="@Url.Content("~/images/ball-crown.jpg")" class="rounded text-right" alt="Turniere" style="width: 100%" />
     </div>
-    <div class="col-md-12">
-    @if (Model.DisplayModel.Any())
-    {
-        var rec = Model.DisplayModel.Last();
-        <label style="margin: 0 10px 10px 0; font-size: 1rem; display: inline-block">
-                <strong>Filtern der Tabelle</strong><br />(z.B.: &quot;<b>.@rec.DateFrom.ToString("MM.yy")</b>&quot; für &quot;alle Turniere im @rec.DateFrom.ToString("MMMM")&quot; oder &quot;<b>@string.Join(string.Empty, rec.GetTournamentType().Take(5)).ToLower()</b>&quot; für @rec.GetTournamentType()-Turniere)
-        </label>
-    }
+    <div class="row justify-content-between pe-0">
+        <div class="col-8 pt-0 pe-0 fs-6">
+            @if (Model.DisplayModel.Any())
+            {
+                var rec = Model.DisplayModel.Last();
+                <span class="m-0 text-success">
+                    <strong>Filtern der Tabelle</strong> (z.B.: &quot;@string.Join(string.Empty, rec.GetTournamentType().Take(5)).ToLower()&quot; für @rec.GetTournamentType()-Turniere)
+                </span>
+            }
+        </div>
+        <div class="col-4 text-end p-0 text-nowrap">
+            @if (!userLocation.GetLocation().IsSet)
+            {
+                <span class="d-inline-block d-md-none fs-6">
+                    <a asp-action="@nameof(GeoLocation.Index)" asp-controller="@nameof(GeoLocation)"><b><span class="bi bi-square text-danger"> Entfernungen</span></b></a>
+                </span>
+                <span class="d-none d-md-inline-block fs-5">
+                    <a asp-action="@nameof(GeoLocation.Index)" asp-controller="@nameof(GeoLocation)"><b><span class="bi bi-square text-danger"> Entfernungen anzeigen</span></b></a>
+                </span>
+            }
+        </div>
     </div>
     <div class="pb-2 table-responsive">
         <table id="tournaments-table" class="table table-striped table-bordered border-light table-hover rounded">
-        <thead>
+            <thead>
             <tr>
                 <th>Datum</th>
                 <th>Turniername</th>
@@ -38,25 +53,29 @@
                 <th>Art</th>
                 <th>Belag</th>
                 <th>PLZ</th>
+                <th>km</th>
                 <th class="text-center"><i class="bi bi-info-circle-fill"></i></th>
             </tr>
-        </thead>
-        <tbody>
+            </thead>
+            <tbody>
             @foreach (var m in Model.DisplayModel)
             {
-                <tr title="Details zu &quot;@m.TournamentName&quot; - @m.Organizer">
+                var distance = m.GetDistanceToVenue();
+                var distanceStyle = distance < 150 ? "font-weight:bold" : "";
+                <tr id="@m.Id" title="Details zu &quot;@m.TournamentName&quot; - @m.Organizer">
                     <td>@m.DateFrom.ToString("dd.MM.yy")</td>
                     <td>@m.GetTournamentNameShort(60)</td>
                     @*<td>@m.GetOrganizerShort(20)</td>*@
                     <td>@m.GetTournamentTypeShort()</td>
                     <td>@m.GetSurface()</td>
                     <td>@m.CountryId-@m.PostalCode</td>
-                    <td class="text-center"><a href="@Url.Action(nameof(Calendar.Id), nameof(Calendar), new {id = m.Id})" style="text-decoration: none" aria-label="@(m.TournamentName)"><i class="bi bi-info-circle @((DateTime.Now.Date - m.ModifiedOn.Date).Days < 2 ? "text-primary" : "")"></i></a></td>
+                    <td style="@(distanceStyle)">@distance</td>
+                    <td class="text-center"><a href="@Url.Action(nameof(Calendar.Id), nameof(Calendar), new { id = m.Id })" style="text-decoration: none" aria-label="@(m.TournamentName)"><i class="bi bi-info-circle @((DateTime.Now.Date - m.ModifiedOn.Date).Days < 2 ? "text-primary" : "")"></i></a></td>
                 </tr>
             }
-        </tbody>
-    </table>
-    <div class="small text-primary">Insgesamt @Model.DisplayModel.Count() Turniere im Kalender</div>
+            </tbody>
+        </table>
+        <div class="small text-primary">Insgesamt @Model.DisplayModel.Count() Turniere im Kalender</div>
     </div>
 </div>
 @section MetaSection {
@@ -93,15 +112,22 @@
         .datatable-table > thead > tr > th {
             padding: 8px 5px !important;
         }
+
+        input[type=search]::-webkit-search-cancel-button {
+            -webkit-appearance: searchfield-cancel-button;
+        }
     </style>
 }
 @section ScriptStandardSection {
-<script src="@Url.Content(ScriptName.Lib.SimpleDataTablesJs)" asp-append-version="true"></script>
-<script>
-//<![CDATA[
+    <script src="@Url.Content(ScriptName.Lib.SimpleDataTablesJs)" asp-append-version="true"></script>
+    <script>
+    //<![CDATA[
     'use strict';
+    
     document.addEventListener('DOMContentLoaded', OnDOMContentLoaded, false);
+
     function OnDOMContentLoaded() {
+
         const tournamentsTableElement = document.querySelector("#tournaments-table");
         const labelsEN = {
             placeholder: "Search...",
@@ -112,7 +138,7 @@
             noResults: "No results match your search query"
         };
         const labelsDE = {
-            placeholder: "Tabelle filtern...",
+            placeholder: "Suchen...",
             searchTitle: "Begriff(e) zum Filtern der Tabelle",
             perPage: "Einträge pro Seite",
             noRows: "Keine Einträge gefunden",
@@ -122,6 +148,7 @@
         const options = {
             searchable: true,
             sortable: true,
+            searchQuerySeparator: ' ',
             paging: false,
             fixedColumns: true,
             columns: [
@@ -132,6 +159,11 @@
                 },
                 {
                     select: 5,
+                    searchable: false,
+                    type: 'number'
+                },
+                {
+                    select: 6,
                     sortable: false
                 }
             ],
@@ -145,6 +177,16 @@
         tournamentsTable.columns.sort(0, 'asc');
         makeRowsClickable();
         tournamentsTable.on('datatable.update', makeRowsClickable);
+        @{
+            if (Model.IsGeoSpacial())
+            {
+                <text>tournamentsTable.columns.show(5);</text>
+            }
+            else
+            {
+                <text>tournamentsTable.columns.hide(5);</text>
+            }
+        }
         
         function makeRowsClickable()
         {
@@ -158,6 +200,12 @@
                     window.location = link.href;
                 });
             });
+            
+            // Adjust 'datatable-search' container and input
+            const searchElement = document.querySelector('.datatable-search');
+            searchElement.classList.add('col-10', 'col-md-6');
+            const inputElement = searchElement.querySelector('input');
+            inputElement.type = 'search';
         }
     }
 //]]>

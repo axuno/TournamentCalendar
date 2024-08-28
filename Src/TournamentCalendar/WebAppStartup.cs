@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using SD.LLBLGen.Pro.ORMSupportClasses;
 using TournamentCalendar.Middleware;
+using TournamentCalendar.Services;
 
 namespace TournamentCalendar;
 
@@ -77,6 +78,9 @@ public static class WebAppStartup
             options.Cookie.IsEssential = true;
         });
 
+        services.AddHttpContextAccessor();
+        services.AddScoped<ICookieService, CookieService>();
+
         services.AddLocalization(options => options.ResourcesPath = "App_GlobalResources");
 
         services.AddRazorPages();
@@ -127,6 +131,7 @@ public static class WebAppStartup
         
         services.TryAddSingleton<Data.IDbContext>(dbContext);
         services.AddScoped<Data.IAppDb>(s => s.GetRequiredService<Data.IDbContext>().AppDb);
+        services.AddScoped<UserLocationService>();
 
         services.AddTransient<ClientAbortMiddleware>();
 

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Globalization;
 
 namespace Axuno.Tools.GeoSpatial;
 
@@ -389,7 +388,7 @@ public class Angle : IComparable<Angle>, IEquatable<Angle>, IFormattable
             numberFormat = provider.GetFormat(typeof(NumberFormatInfo)) as NumberFormatInfo;
         }
 
-        return numberFormat ?? CultureInfo.CurrentUICulture.NumberFormat;            
+        return numberFormat ?? CultureInfo.CurrentUICulture.NumberFormat;
     }
 
     /// <summary>

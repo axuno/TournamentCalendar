@@ -3,13 +3,14 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using TournamentCalendar.Models.AccountViewModels;
+using TournamentCalendar.Services;
 using TournamentCalendar.Views;
 
 namespace TournamentCalendar.Controllers;
 
 public class Auth : ControllerBase
 {
-    public readonly IConfiguration _configuration;
+    private readonly IConfiguration _configuration;
 
     public Auth(IConfiguration configuration)
     {
