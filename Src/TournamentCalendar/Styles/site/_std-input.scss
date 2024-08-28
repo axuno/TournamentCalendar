@@ -2,6 +2,7 @@
 // Variables used locally
 // **************************************
 @import '../bootstrap/custom';
+$bootstrap-icons-font-dir: '../lib/bootstrap/fonts';
 @import '../../../TournamentCalendar/node_modules/bootstrap-icons/font/bootstrap-icons.scss';
 
 $label-color: $success;
