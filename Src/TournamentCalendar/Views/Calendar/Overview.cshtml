@@ -112,10 +112,6 @@
         .datatable-table > thead > tr > th {
             padding: 8px 5px !important;
         }
-
-        input[type=search]::-webkit-search-cancel-button {
-            -webkit-appearance: searchfield-cancel-button;
-        }
     </style>
 }
 @section ScriptStandardSection {
@@ -146,8 +142,6 @@
             noResults: "Keine Einträge für die Suchbegriffe gefunden"
         };
         const options = {
-            searchable: true,
-            sortable: true,
             searchQuerySeparator: ' ',
             paging: false,
             fixedColumns: true,
@@ -155,16 +149,26 @@
                 {
                     select: 0,
                     type: 'date',
-                    format: 'DD.MM.YY'
+                    format: 'DD.MM.YY',
+                    searchable: true,
+                    sortable: true
                 },
                 {
+                    select: [1, 4],
+                    type: 'html',
+                    searchable: true,
+                    sortable: true
+                },
+                { 
                     select: 5,
+                    type: 'number',
                     searchable: false,
-                    type: 'number'
+                    sortable: true
                 },
                 {
                     select: 6,
-                    sortable: false
+                    sortable: false,
+                    searchable: true,
                 }
             ],
             labels: labelsDE,
