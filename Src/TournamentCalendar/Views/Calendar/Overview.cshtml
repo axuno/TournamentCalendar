@@ -117,101 +117,158 @@
 @section ScriptStandardSection {
     <script src="@Url.Content(ScriptName.Lib.SimpleDataTablesJs)" asp-append-version="true"></script>
     <script>
-    //<![CDATA[
-    'use strict';
-    
-    document.addEventListener('DOMContentLoaded', OnDOMContentLoaded, false);
+        //<![CDATA[
+        'use strict';
 
-    function OnDOMContentLoaded() {
+        document.addEventListener('DOMContentLoaded', OnDOMContentLoaded, false);
 
-        const tournamentsTableElement = document.querySelector("#tournaments-table");
-        const labelsEN = {
-            placeholder: "Search...",
-            searchTitle: "Search within table",
-            perPage: "entries per page",
-            noRows: "No entries found",
-            info: "Showing {start} to {end} of {rows} entries",
-            noResults: "No results match your search query"
-        };
-        const labelsDE = {
-            placeholder: "Suchen...",
-            searchTitle: "Begriff(e) zum Filtern der Tabelle",
-            perPage: "Einträge pro Seite",
-            noRows: "Keine Einträge gefunden",
-            info: "Anzeige von {start} bis {end} von {rows} Einträgen",
-            noResults: "Keine Einträge für die Suchbegriffe gefunden"
-        };
-        const options = {
-            searchQuerySeparator: ' ',
-            paging: false,
-            fixedColumns: true,
-            columns: [
-                {
-                    select: 0,
-                    type: 'date',
-                    format: 'DD.MM.YY',
-                    searchable: true,
-                    sortable: true
-                },
-                {
-                    select: [1, 4],
-                    type: 'html',
-                    searchable: true,
-                    sortable: true
-                },
-                { 
-                    select: 5,
-                    type: 'number',
-                    searchable: false,
-                    sortable: true
-                },
-                {
-                    select: 6,
-                    sortable: false,
-                    searchable: true,
+        function OnDOMContentLoaded() {
+
+            const tournamentsTableElement = document.querySelector("#tournaments-table");
+            const labelsEN = {
+                placeholder: "Search...",
+                searchTitle: "Search within table",
+                perPage: "entries per page",
+                noRows: "No entries found",
+                info: "Showing {start} to {end} of {rows} entries",
+                noResults: "No results match your search query"
+            };
+            const labelsDE = {
+                placeholder: "Suchen...",
+                searchTitle: "Begriff(e) zum Filtern der Tabelle",
+                perPage: "Einträge pro Seite",
+                noRows: "Keine Einträge gefunden",
+                info: "Anzeige von {start} bis {end} von {rows} Einträgen",
+                noResults: "Keine Einträge für die Suchbegriffe gefunden"
+            };
+            const options = {
+                searchQuerySeparator: ' ',
+                paging: false,
+                fixedColumns: true,
+                columns: [
+                    {
+                        select: 0,
+                        type: 'date',
+                        format: 'DD.MM.YY',
+                        searchable: true,
+                        sortable: true
+                    },
+                    {
+                        select: [1, 4],
+                        type: 'html',
+                        searchable: true,
+                        sortable: true
+                    },
+                    {
+                        select: 5,
+                        type: 'number',
+                        searchable: false,
+                        sortable: true
+                    },
+                    {
+                        select: 6,
+                        sortable: false,
+                        searchable: true
+                    }
+                ],
+                labels: labelsDE,
+                classes: {
+                    input: 'form-control',
+                    sorter: 'datatable-sorter btn btn-link btn-sm p-0 m-0'
                 }
-            ],
-            labels: labelsDE,
-            classes: {
-                input: 'form-control',
-                sorter: 'datatable-sorter btn btn-link btn-sm p-0 m-0'
-            } 
-        }
-        const tournamentsTable = new window.simpleDatatables.DataTable(tournamentsTableElement, options);
-        tournamentsTable.columns.sort(0, 'asc');
-        makeRowsClickable();
-        tournamentsTable.on('datatable.update', makeRowsClickable);
-        @{
-            if (Model.IsGeoSpacial())
-            {
-                <text>tournamentsTable.columns.show(5);</text>
             }
-            else
-            {
-                <text>tournamentsTable.columns.hide(5);</text>
-            }
-        }
-        
-        function makeRowsClickable()
-        {
-            // Make each table row clickable
-            [].forEach.call(document.querySelectorAll('#tournaments-table td a'), function (el) {
-                const row = el.closest('tr');
-                row.style.cursor = 'pointer';
-                row.addEventListener('click', function (event) {
-                    const link = this.querySelector('td a');
-                    if (!link) return;
-                    window.location = link.href;
-                });
-            });
-            
-            // Adjust 'datatable-search' container and input
+
+            const tournamentsTable = new window.simpleDatatables.DataTable(tournamentsTableElement, options);
             const searchElement = document.querySelector('.datatable-search');
-            searchElement.classList.add('col-10', 'col-md-6');
             const inputElement = searchElement.querySelector('input');
+
+            // Adjust 'datatable-search' container and input
+            searchElement.classList.add('col-10', 'col-md-6');
             inputElement.type = 'search';
+
+            setSortOrderFromCookieOrDefault();
+            makeRowsClickable();
+            tournamentsTable.on('datatable.update', makeRowsClickable);
+            tournamentsTable.on('datatable.sort',
+                function(column, direction) {
+                    event.preventDefault();
+                    setSortOrderCookie(column, direction);
+                });
+            getFilterFromCookie();
+            @{
+                if (Model.IsGeoSpacial())
+                {
+                    <text>tournamentsTable.columns.show(5);</text>
+                }
+                else
+                {
+                    <text>tournamentsTable.columns.hide(5);</text>
+                }
+            }
+        
+            function makeRowsClickable() {
+                [].forEach.call(document.querySelectorAll('#tournaments-table td a'),
+                    function(el) {
+                        const row = el.closest('tr');
+                        row.style.cursor = 'pointer';
+                        row.addEventListener('click',
+                            function(event) {
+                                const link = this.querySelector('td a');
+                                if (!link) return;
+                                window.location = link.href;
+                            });
+                    });
+            }
+
+            function setSortOrderFromCookieOrDefault() {
+                const sortCookie = getSessionCookie('tableSortColumn');
+                if (sortCookie) {
+                    const sortValue = sortCookie.split('|');
+                    if (sortValue.length === 2) {
+                        tournamentsTable.columns.sort(sortValue[0], sortValue[1]);
+                        return;
+                    }
+                }
+                tournamentsTable.columns.sort(0, 'asc');
+                document.cookie = 'tableSortColumn=0|asc;path=/';
+            }
+
+            function getFilterFromCookie() {
+                const filterCookieValue = getSessionCookie('search');
+                inputElement.onchange = function() {
+                    setFilterCookie();
+                };
+                if (filterCookieValue) {
+                    inputElement.value = filterCookieValue;
+                    tournamentsTable.search(filterCookieValue);
+                    return;
+                }
+            }
+
+            function setFilterCookie() {
+                document.cookie = `search=${encodeURIComponent(inputElement.value)}`;
+            }
+
+            function setSortOrderCookie(column, direction) {
+                document.cookie = `tableSortColumn=${column}|${direction}`;
+            }
+
+            function getSessionCookie(cookieName) {
+                const name = cookieName + "=";
+                const decodedCookie = decodeURIComponent(document.cookie);
+                const ca = decodedCookie.split(';');
+                for (let i = 0; i < ca.length; i++) {
+                    let c = ca[i];
+                    while (c.charAt(0) === ' ') {
+                        c = c.substring(1);
+                    }
+                    if (c.indexOf(name) === 0) {
+                        return c.substring(name.length, c.length);
+                    }
+                }
+                return null;
+            }
         }
-    }
 //]]>
-</script>
+    </script>
 }

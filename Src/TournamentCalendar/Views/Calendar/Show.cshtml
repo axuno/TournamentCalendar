@@ -11,16 +11,20 @@
 }
 <div class="row">
     <div class="col">
-        @if (Model.IsFiltered && Model.Count == 1)
+        @if (Model is { IsFiltered: true, Count: 1 })
         {
             <h3 class="h3">
                 Informationen<br />zum ausgewählten Turnier
             </h3>
-            <p>@Html.ActionLink("Alle aktuellen Turniere im Kalender anzeigen", nameof(Calendar.All), nameof(Calendar), null, new { @class="link" })</p>}
+            <p>
+                <b>@Html.ActionLink("Alle aktuellen Turniere im Kalender anzeigen", nameof(Calendar.All), nameof(Calendar), null, new { @class = "link" })</b><br />
+                (Sortierung und Filter bleiben erhalten)
+            </p>
+        }
         else
         {
             <p>
-                @(Model.Count > 0 ? string.Format("{0} Turniere sind im Kalender eingetragen (sortiert nach Datum):", Model.Count) : "Leider keine Turniere im Kalender gefunden.")
+                @(Model.Count > 0 ? $"{Model.Count} Turniere sind im Kalender eingetragen (sortiert nach Datum):" : "Leider keine Turniere im Kalender gefunden.")
             </p>
         }
     </div>
