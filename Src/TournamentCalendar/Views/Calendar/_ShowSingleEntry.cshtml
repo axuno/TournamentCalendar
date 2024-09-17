@@ -145,7 +145,14 @@
 {
     <div class="rounded pb-3 col-12 shadow">
         <div class="py-2">
-            <a href="@Model.GetVenueGoogleMapsLink()" class="link" title="Route auf Google Maps Website anzeigen" target="_blank">Karte auf Google Maps Website anzeigen</a>
+            @if (Model.IsGeoSpatial())
+            {
+                <a href="@Model.GetRouteGoogleMapsLink()" title="Route auf Google Maps Website anzeigen" target="_blank" rel="noopener"><i class="bi bi-record2-fill"></i><i class="bi bi-arrow-right"></i><i class="bi bi-record2-fill"></i> <b>Route auf Google Maps Website anzeigen</b></a>
+            }
+            else
+            {
+                <a href="@Model.GetVenueGoogleMapsLink()" title="Karte auf Google Maps Website anzeigen" target="_blank" rel="noopener"><i class="bi bi-record2-fill"></i> Karte auf Google Maps Website anzeigen</a>
+            }
         </div>
         <div id="mapPlaceholder" class="rounded" style="border: 1px solid #979797; background-color: #e5e3df; width: 100%; height: 400px">
             <div style="padding: 1rem; color: gray">

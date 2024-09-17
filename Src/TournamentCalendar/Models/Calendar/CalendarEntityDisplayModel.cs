@@ -130,16 +130,19 @@ public class CalendarEntityDisplayModel : CalendarEntity
         if (!(Longitude.HasValue && Latitude.HasValue))
             return string.Empty;
 
-        if (_userLocation.IsSet)
-        {
-            return string.Format("https://maps.google.de/maps?saddr={0},{1}&daddr={2},{3}",
-                _userLocation.Latitude!.Value.ToString(LatLonFormat, CultureInfo.InvariantCulture),
-                _userLocation.Longitude!.Value.ToString(LatLonFormat, CultureInfo.InvariantCulture),
-                Latitude.Value.ToString(LatLonFormat, CultureInfo.InvariantCulture),
-                Longitude.Value.ToString(LatLonFormat, CultureInfo.InvariantCulture));
-        }
-
         return string.Format("https://maps.google.de?q={0},{1}",
+            Latitude.Value.ToString(LatLonFormat, CultureInfo.InvariantCulture),
+            Longitude.Value.ToString(LatLonFormat, CultureInfo.InvariantCulture));
+    }
+
+    public string GetRouteGoogleMapsLink()
+    {
+        if (!IsGeoSpatial())
+            return string.Empty;
+
+        return string.Format("https://maps.google.de/maps?saddr={0},{1}&daddr={2},{3}",
+            _userLocation.Latitude!.Value.ToString(LatLonFormat, CultureInfo.InvariantCulture),
+            _userLocation.Longitude!.Value.ToString(LatLonFormat, CultureInfo.InvariantCulture),
             Latitude.Value.ToString(LatLonFormat, CultureInfo.InvariantCulture),
             Longitude.Value.ToString(LatLonFormat, CultureInfo.InvariantCulture));
     }
