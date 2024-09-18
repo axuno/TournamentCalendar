@@ -55,6 +55,6 @@ public class InfoServiceRepository : GenericRepository
         using var da = _dbContext.GetNewAdapter();
         var metaData = new LinqMetaData(da);
         return await (from subs in metaData.InfoService
-            where !subs.UnSubscribedOn.HasValue select subs).ExecuteAsync<EntityCollection<InfoServiceEntity>>();
+            where subs.ConfirmedOn.HasValue select subs).ExecuteAsync<EntityCollection<InfoServiceEntity>>();
     }
 }

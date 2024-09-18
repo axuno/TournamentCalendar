@@ -9,14 +9,12 @@ public class ApproveModelTournamentCalendar<T> where T : EntityBase2, new()
     private readonly IAppDb _appDb;
     private readonly IPredicate _filter;
     private readonly EntityField2 _approveDateField;
-    private readonly EntityField2 _deletedOnDateField;
 
-    public ApproveModelTournamentCalendar(IAppDb appDb, IPredicate filter, EntityField2 approveDateField, EntityField2 deletedOnDateField)
+    public ApproveModelTournamentCalendar(IAppDb appDb, IPredicate filter, EntityField2 approveDateField)
     {
         _appDb = appDb;
         _filter = filter;
         _approveDateField = approveDateField;
-        _deletedOnDateField = deletedOnDateField;
         SaveSuccessFul = IsEntityFound = false;
     }
     public bool SaveSuccessFul { get; set; }
@@ -51,11 +49,6 @@ public class ApproveModelTournamentCalendar<T> where T : EntityBase2, new()
                     await _appDb.CalendarRepository.GetPossibleDuplicate(entity, cancellationToken);
                 if (PossibleDuplicateFound != null)
                     return this;
-            }
-
-            if (Entity.Fields[_deletedOnDateField.Name].CurrentValue is DateTime)
-            {
-                Entity.SetNewFieldValue(_deletedOnDateField.Name, null);
             }
 
             // only save date if not already approved

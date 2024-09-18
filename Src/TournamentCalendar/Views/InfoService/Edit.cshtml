@@ -135,10 +135,6 @@
                     {
                         @Model.ModifiedOn.ToString("dd.MM.yyyy - HH:mm:ss")
                     }
-                    @if (Model.UnSubscribedOn.HasValue)
-                    {
-                        <strong> - abgemeldet</strong>
-                    }
                 </div>
                 <div>
                     <img id="CaptchaImage" class="rounded" src="@Url.Action(nameof(Captcha.Index), nameof(Captcha))@("?guid=" + Guid.NewGuid())" alt="Captcha" style="vertical-align: bottom; width: 12rem" />
@@ -152,7 +148,7 @@
                 <input type="submit" name="save" value="Eintrag speichern" class="col-12 btn btn-lg btn-success"/>
             </div>
             <div class="col-md-5 col-sm-5 mt-3">
-                <input type="submit" formaction="@Url.Action(nameof(InfoService.Unsubscribe), nameof(InfoService))" name="unsubscribe" value="Von Volley-News abmelden" @if ((Model.EditMode == EditMode.New) || (Model.ConfirmedOn.HasValue && Model.UnSubscribedOn.HasValue)) { <text> disabled="disabled" </text> } class="cancel col-12 btn btn-lg btn-success" />
+                <input type="submit" formaction="@Url.Action(nameof(InfoService.Unsubscribe), nameof(InfoService))" name="unsubscribe" value="Von Volley-News abmelden" @if (Model.EditMode == EditMode.New || !Model.ConfirmedOn.HasValue) { <text> disabled="disabled" </text> } class="cancel col-12 btn btn-lg btn-success" />
             </div>
         </div>
     </fieldset>

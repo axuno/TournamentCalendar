@@ -115,15 +115,12 @@ public class InfoService : ControllerBase
             if (!confirmationModel.SaveSuccessful)
                 return View(ViewName.InfoService.Confirm, confirmationModel);
 
-            if (confirmationModel.Entity?.UnSubscribedOn == null)
-            {
-                if (model is { Latitude: not null, Longitude: not null })
-                    _locationService.SetGeoLocation(model.Latitude.Value, model.Longitude.Value);
+            if (model is { Latitude: not null, Longitude: not null })
+                _locationService.SetGeoLocation(model.Latitude.Value, model.Longitude.Value);
 
-                confirmationModel = await new Mailer(_mailMergeService, _domainName).MailInfoServiceRegistrationForm(confirmationModel,
-                    Url.Action(nameof(Approve), nameof(Controllers.InfoService), new {guid = model.Guid})!,
-                    Url.Action(nameof(Entry), nameof(Controllers.InfoService), new { guid = model.Guid})!);
-            }
+            confirmationModel = await new Mailer(_mailMergeService, _domainName).MailInfoServiceRegistrationForm(confirmationModel,
+                Url.Action(nameof(Approve), nameof(Controllers.InfoService), new { guid = model.Guid })!,
+                Url.Action(nameof(Entry), nameof(Controllers.InfoService), new { guid = model.Guid })!);
 
             return View(ViewName.InfoService.Confirm, confirmationModel);
         }
@@ -147,7 +144,7 @@ public class InfoService : ControllerBase
 
         ViewBag.TitleTagText = "Volley-News abbestellen";
         var unsubscribeModel = new Models.InfoService.UnsubscribeModel(_appDb, model.Guid);
-        return View(ViewName.InfoService.Unsubscribe, await unsubscribeModel.Save(cancellationToken));
+        return View(ViewName.InfoService.Unsubscribe, await unsubscribeModel.Delete(cancellationToken));
     }
 
     [HttpGet("approve/{guid}")]
@@ -157,7 +154,7 @@ public class InfoService : ControllerBase
             return View(ViewName.InfoService.Approve, false);
 
         ViewBag.TitleTagText = "Volley-News bestätigen";
-        var approveModel = new Models.Shared.ApproveModelTournamentCalendar<InfoServiceEntity>(_appDb,InfoServiceFields.Guid == guid, InfoServiceFields.ConfirmedOn, InfoServiceFields.UnSubscribedOn);
+        var approveModel = new Models.Shared.ApproveModelTournamentCalendar<InfoServiceEntity>(_appDb,InfoServiceFields.Guid == guid, InfoServiceFields.ConfirmedOn);
         return View(ViewName.InfoService.Approve, await approveModel.Save(cancellationToken));
     }
 }

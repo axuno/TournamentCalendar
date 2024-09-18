@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<!--LLBLGen Pro v5.9 project file. Do not manually edit this file. Incorrect references could lead to an unloadable project file.-->
-<Project Version="5.9" TargetFrameworkName="LLBLGen Pro Runtime Framework">
+<!--LLBLGen Pro v5.11 project file. Do not manually edit this file. Incorrect references could lead to an unloadable project file.-->
+<Project Version="5.11" TargetFrameworkName="LLBLGen Pro Runtime Framework">
   <Properties>
     <Abbreviations />
     <Property Name="AdditionalTaskPerformerFolder" Value="" />
@@ -116,13 +116,13 @@
         <DestinationRootFolder Value=".\" />
         <FrameworkName Value="LLBLGen Pro Runtime Framework" />
         <LanguageName Value="C#" />
-        <PlatformName Value=".NET 6" />
+        <PlatformName Value=".NET 8" />
         <PresetName Value="SD.Presets.Adapter.General.Netstandard" />
         <RootNamespace Value="TournamentCalendarDAL" />
         <TemplateGroup Value="Adapter" />
-        <LastGenerationCycleStartedOn Value="2023-02-22T10:10:20.6330639Z" />
+        <LastGenerationCycleStartedOn Value="2024-09-18T20:25:51.5110475Z" />
         <TemplateBindings>
-          <Binding Name="SD.TemplateBindings.SharedTemplates.Net6" />
+          <Binding Name="SD.TemplateBindings.SharedTemplates.Net8" />
           <Binding Name="SD.TemplateBindings.SharedTemplates" />
           <Binding Name="SD.TemplateBindings.SqlServerSpecific" />
           <Binding Name="SD.TemplateBindings.General" />
@@ -243,7 +243,6 @@
       <EntityDefinition Name="InfoService" ObjectID="e1623b1b-783f-43b0-aa43-d78bf85e0146">
         <Fields>
           <Field Name="City" Type="string" MaxLength="50" />
-          <Field Name="ClubName" Type="string" MaxLength="255" />
           <Field Name="Comments" Type="string" MaxLength="255" />
           <Field Name="ConfirmedOn" Type="datetime" IsOptional="true" />
           <Field Name="CountryId" Type="string" IsOptional="true" MaxLength="2" />
@@ -257,14 +256,11 @@
           <Field Name="Longitude" Type="double" IsOptional="true" Precision="38" />
           <Field Name="MaxDistance" Type="int" IsOptional="true" Precision="4" />
           <Field Name="ModifiedOn" Type="datetime" />
-          <Field Name="Nickname" Type="string" MaxLength="50" />
           <Field Name="Street" Type="string" MaxLength="255" />
           <Field Name="SubscribedOn" Type="datetime" />
-          <Field Name="TeamName" Type="string" MaxLength="255" />
           <Field Name="Title" Type="string" MaxLength="30" />
-          <Field Name="UnSubscribedOn" Type="datetime" IsOptional="true" />
           <Field Name="UserName" Type="string" MaxLength="50" />
-          <Field Name="UserPassword" Type="string" MaxLength="10" />
+          <Field Name="UserPassword" Type="string" MaxLength="50" />
           <Field Name="ZipCode" Type="string" MaxLength="6" />
         </Fields>
       </EntityDefinition>
@@ -345,7 +341,7 @@
       <Catalogs>
         <Catalog Name="TournamentCalendar">
           <Schemas>
-            <Schema Name="dbo" SyncSource="2" LastSyncWithDatabase="2022-11-15T21:21:31.2474516Z">
+            <Schema Name="dbo" SyncSource="2" LastSyncWithDatabase="2024-09-18T20:23:52.6701542Z">
               <Tables>
                 <Table Name="Calendar">
                   <PkConstraintName Name="Calendar_pk" />
@@ -410,29 +406,25 @@
                   <PkConstraintName Name="PK_c4d440042eb8dfdd13c5e7200d0" />
                   <Fields>
                     <Field Name="Id" Ordinal="1" IsIdentity="true" IsPrimaryKey="true" DbType="8" Precision="10" />
-                    <Field Name="TeamName" Ordinal="2" HasDefaultValue="true" DefaultValue="''" DbType="12" Length="255" />
-                    <Field Name="ClubName" Ordinal="3" HasDefaultValue="true" DefaultValue="''" DbType="12" Length="255" />
-                    <Field Name="Gender" Ordinal="4" HasDefaultValue="true" DefaultValue="''" DbType="12" Length="50" />
-                    <Field Name="Title" Ordinal="5" HasDefaultValue="true" DefaultValue="''" DbType="12" Length="30" />
-                    <Field Name="FirstName" Ordinal="6" HasDefaultValue="true" DefaultValue="''" DbType="12" Length="50" />
-                    <Field Name="LastName" Ordinal="7" HasDefaultValue="true" DefaultValue="''" DbType="12" Length="50" />
-                    <Field Name="Nickname" Ordinal="8" HasDefaultValue="true" DefaultValue="''" DbType="12" Length="50" />
-                    <Field Name="CountryId" Ordinal="9" IsOptional="true" DbType="12" Length="2" />
-                    <Field Name="ZipCode" Ordinal="10" HasDefaultValue="true" DefaultValue="''" DbType="12" Length="6" />
-                    <Field Name="City" Ordinal="11" HasDefaultValue="true" DefaultValue="''" DbType="12" Length="50" />
-                    <Field Name="Street" Ordinal="12" HasDefaultValue="true" DefaultValue="''" DbType="12" Length="255" />
-                    <Field Name="Longitude" Ordinal="13" IsOptional="true" DbType="6" Precision="38" />
-                    <Field Name="Latitude" Ordinal="14" IsOptional="true" DbType="6" Precision="38" />
-                    <Field Name="MaxDistance" Ordinal="15" IsOptional="true" DbType="8" Precision="10" />
-                    <Field Name="Email" Ordinal="16" HasDefaultValue="true" DefaultValue="''" DbType="12" Length="50" />
-                    <Field Name="UserName" Ordinal="17" HasDefaultValue="true" DefaultValue="''" DbType="12" Length="50" />
-                    <Field Name="UserPassword" Ordinal="18" HasDefaultValue="true" DefaultValue="''" DbType="12" Length="10" />
-                    <Field Name="Guid" Ordinal="19" IsOptional="true" HasDefaultValue="true" DefaultValue="''" DbType="12" Length="64" />
+                    <Field Name="Guid" Ordinal="2" IsOptional="true" HasDefaultValue="true" DefaultValue="''" DbType="12" Length="64" />
+                    <Field Name="Gender" Ordinal="3" HasDefaultValue="true" DefaultValue="''" DbType="12" Length="50" />
+                    <Field Name="Title" Ordinal="4" HasDefaultValue="true" DefaultValue="''" DbType="12" Length="30" />
+                    <Field Name="FirstName" Ordinal="5" HasDefaultValue="true" DefaultValue="''" DbType="12" Length="50" />
+                    <Field Name="LastName" Ordinal="6" HasDefaultValue="true" DefaultValue="''" DbType="12" Length="50" />
+                    <Field Name="CountryId" Ordinal="7" IsOptional="true" DbType="12" Length="2" />
+                    <Field Name="ZipCode" Ordinal="8" HasDefaultValue="true" DefaultValue="''" DbType="12" Length="6" />
+                    <Field Name="City" Ordinal="9" HasDefaultValue="true" DefaultValue="''" DbType="12" Length="50" />
+                    <Field Name="Street" Ordinal="10" HasDefaultValue="true" DefaultValue="''" DbType="12" Length="255" />
+                    <Field Name="Longitude" Ordinal="11" IsOptional="true" DbType="6" Precision="38" />
+                    <Field Name="Latitude" Ordinal="12" IsOptional="true" DbType="6" Precision="38" />
+                    <Field Name="MaxDistance" Ordinal="13" IsOptional="true" DbType="8" Precision="10" />
+                    <Field Name="Email" Ordinal="14" HasDefaultValue="true" DefaultValue="''" DbType="12" Length="50" />
+                    <Field Name="UserName" Ordinal="15" HasDefaultValue="true" DefaultValue="''" DbType="12" Length="50" />
+                    <Field Name="UserPassword" Ordinal="16" HasDefaultValue="true" DefaultValue="''" DbType="12" Length="50" />
+                    <Field Name="SubscribedOn" Ordinal="17" DbType="4" />
+                    <Field Name="ConfirmedOn" Ordinal="18" IsOptional="true" DbType="4" />
+                    <Field Name="ModifiedOn" Ordinal="19" DbType="4" />
                     <Field Name="Comments" Ordinal="20" HasDefaultValue="true" DefaultValue="''" DbType="12" Length="255" />
-                    <Field Name="SubscribedOn" Ordinal="21" DbType="4" />
-                    <Field Name="ModifiedOn" Ordinal="22" DbType="4" />
-                    <Field Name="ConfirmedOn" Ordinal="23" IsOptional="true" DbType="4" />
-                    <Field Name="UnSubscribedOn" Ordinal="24" IsOptional="true" DbType="4" />
                   </Fields>
                 </Table>
                 <Table Name="PlayingAbility">
@@ -561,7 +553,6 @@
         <EntityMapping EntityName=":InfoService" TargetName="TournamentCalendar:dbo:InfoService">
           <FieldMappings>
             <FieldMapping FieldName="City" TargetFieldName="City" />
-            <FieldMapping FieldName="ClubName" TargetFieldName="ClubName" />
             <FieldMapping FieldName="Comments" TargetFieldName="Comments" />
             <FieldMapping FieldName="ConfirmedOn" TargetFieldName="ConfirmedOn" />
             <FieldMapping FieldName="CountryId" TargetFieldName="CountryId" />
@@ -575,12 +566,9 @@
             <FieldMapping FieldName="Longitude" TargetFieldName="Longitude" />
             <FieldMapping FieldName="MaxDistance" TargetFieldName="MaxDistance" />
             <FieldMapping FieldName="ModifiedOn" TargetFieldName="ModifiedOn" />
-            <FieldMapping FieldName="Nickname" TargetFieldName="Nickname" />
             <FieldMapping FieldName="Street" TargetFieldName="Street" />
             <FieldMapping FieldName="SubscribedOn" TargetFieldName="SubscribedOn" />
-            <FieldMapping FieldName="TeamName" TargetFieldName="TeamName" />
             <FieldMapping FieldName="Title" TargetFieldName="Title" />
-            <FieldMapping FieldName="UnSubscribedOn" TargetFieldName="UnSubscribedOn" />
             <FieldMapping FieldName="UserName" TargetFieldName="UserName" />
             <FieldMapping FieldName="UserPassword" TargetFieldName="UserPassword" />
             <FieldMapping FieldName="ZipCode" TargetFieldName="ZipCode" />

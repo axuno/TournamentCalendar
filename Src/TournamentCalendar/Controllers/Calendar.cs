@@ -184,7 +184,7 @@ public class Calendar : ControllerBase
 
         guid ??= string.Empty;
         ViewBag.TitleTagText = "Volleyball-Turniereintrag bestätigen";
-        var approveModel = new Models.Shared.ApproveModelTournamentCalendar<CalendarEntity>(_appDb,CalendarFields.Guid == guid, CalendarFields.ApprovedOn, CalendarFields.DeletedOn);
+        var approveModel = new Models.Shared.ApproveModelTournamentCalendar<CalendarEntity>(_appDb,CalendarFields.Guid == guid, CalendarFields.ApprovedOn);
 			
         return View(ViewName.Calendar.Approve, await approveModel.Save(cancellationToken));
     }

@@ -143,8 +143,8 @@ public class CalendarEntityDisplayModel : CalendarEntity
         return string.Format("https://maps.google.de/maps?saddr={0},{1}&daddr={2},{3}",
             _userLocation.Latitude!.Value.ToString(LatLonFormat, CultureInfo.InvariantCulture),
             _userLocation.Longitude!.Value.ToString(LatLonFormat, CultureInfo.InvariantCulture),
-            Latitude.Value.ToString(LatLonFormat, CultureInfo.InvariantCulture),
-            Longitude.Value.ToString(LatLonFormat, CultureInfo.InvariantCulture));
+            Latitude!.Value.ToString(LatLonFormat, CultureInfo.InvariantCulture),
+            Longitude!.Value.ToString(LatLonFormat, CultureInfo.InvariantCulture));
     }
 
     public bool IsGeoSpatial()

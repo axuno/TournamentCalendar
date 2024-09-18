@@ -26,7 +26,6 @@ public class EditModel : InfoServiceEntity, IValidatableObject
     {
         base.Guid = string.Empty;
         // someone who saves changed data is considered as subscriber
-        base.UnSubscribedOn = null;
         base.Gender = "";
         base.CountryId = "";
         base.IsNew = true;
@@ -160,9 +159,6 @@ public class EditModel : InfoServiceEntity, IValidatableObject
             Fields[i].CurrentValue = Axuno.Tools.String.StringHelper.StripTags(Fields[i].CurrentValue as string ?? string.Empty).Trim();
         }
 
-        if (string.IsNullOrEmpty(Nickname))
-            Nickname = FirstName;
-
         if (MaxDistance.HasValue)
         {
             if (MaxDistance < 50) MaxDistance = 50;
@@ -189,13 +185,12 @@ public class EditModel : InfoServiceEntity, IValidatableObject
             IsNew = true;
             Guid = System.Guid.NewGuid().ToString("N");
             SubscribedOn = ModifiedOn = DateTime.Now;
-            ConfirmedOn = UnSubscribedOn = null;
+            ConfirmedOn = null;
         }
         else
         {
             IsNew = false;
             ConfirmedOn ??= DateTime.Now;
-            UnSubscribedOn = null;
             ModifiedOn = DateTime.Now;
         }
 
