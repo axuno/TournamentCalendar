@@ -25,7 +25,7 @@ public class UnsubscribeModel
         return System.Guid.TryParse(guid, out _);
     }
 
-    public async Task<UnsubscribeModel> Save(CancellationToken cancellationToken)
+    public async Task<UnsubscribeModel> Delete(CancellationToken cancellationToken)
     {
         SaveSuccessFul = false;
         Entity = new InfoServiceEntity();
@@ -35,22 +35,15 @@ public class UnsubscribeModel
             if (!(IsEntityFound = _appDb.InfoServiceRepository.GetRegistrationByGuid(Entity, Guid)))
                 return this;
 
-            // only save dates if not already unsubscribed
-            if (!Entity.UnSubscribedOn.HasValue)
-            {
-                Entity.UnSubscribedOn = Entity.ModifiedOn = DateTime.Now;
-                Entity.ConfirmedOn = null;
-                SaveSuccessFul = await _appDb.GenericRepository.Save(Entity, true, cancellationToken);
-            }
-            else
-            {
-                SaveSuccessFul = true;
-            }
+            Entity.ModifiedOn = DateTime.Now;
+            Entity.ConfirmedOn = null;
+            SaveSuccessFul = await _appDb.GenericRepository.Delete(Entity, cancellationToken);
         }
         catch (Exception ex)
         {
             Exception = ex;
         }
+
         return this;
     }
 }
