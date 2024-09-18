@@ -38,7 +38,7 @@ public class GenericRepository
             return false;
 
         // only save date if not already approved
-        if (!(entity.Fields[field.Name].CurrentValue is DateTime approvedDateValue))
+        if (!(entity.Fields[field.Name].CurrentValue is DateTime))
         {
             entity.SetNewFieldValue(field.Name, date);
             return da.SaveEntity(entity, true);
