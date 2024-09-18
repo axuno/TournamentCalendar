@@ -85,7 +85,8 @@ public class UserLocationService
     public void SetFromUserGuid(Guid userGuid)
     {
         var infoService = new InfoServiceEntity();
-        if (_appDb.InfoServiceRepository.GetRegistrationByGuid(infoService, userGuid.ToString("N")))
+        if (_appDb.InfoServiceRepository.GetRegistrationByGuid(infoService, userGuid.ToString("N")) &&
+            infoService is { Latitude: not null, Longitude: not null })
         {
             SetGeoLocation(infoService.Latitude.Value, infoService.Longitude.Value);
             return;
