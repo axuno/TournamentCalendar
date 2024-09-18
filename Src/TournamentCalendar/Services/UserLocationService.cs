@@ -87,8 +87,11 @@ public class UserLocationService
         var infoService = new InfoServiceEntity();
         if (_appDb.InfoServiceRepository.GetRegistrationByGuid(infoService, userGuid.ToString("N")))
         {
-            SetGeoLocation(infoService.Latitude.Value, infoService.Longitude.Value);
-            return;
+            if (infoService.Latitude.HasValue || infoService.Longitude.HasValue)
+            {
+                SetGeoLocation(infoService.Latitude.Value, infoService.Longitude.Value);
+                return;
+            }
         }
 
         ClearGeoLocation();
