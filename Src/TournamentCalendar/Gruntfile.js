@@ -93,16 +93,6 @@ module.exports = function (grunt) {
                 dest: 'wwwroot/lib/bootstrap/bootstrap.min.css',
                 nonull: true
             },
-            simple_datatables_js: {
-                src: ['node_modules/simple-datatables/dist/umd/simple-datatables.js'],
-                dest: 'wwwroot/lib/simple-datatables/simple-datatables.min.js',
-                nonull: true
-            },
-            simple_datatables_css: {
-                src: ['node_modules/simple-datatables/dist/style.css'],
-                dest: 'wwwroot/lib/simple-datatables/simple-datatables.css',
-                nonull: true
-            },
             tempus_dominus_all_js: {
                 src: ['node_modules/@eonasdan/tempus-dominus/dist/js/tempus-dominus.min.js',
                 'node_modules/@eonasdan/tempus-dominus/dist/locales/de.js',
