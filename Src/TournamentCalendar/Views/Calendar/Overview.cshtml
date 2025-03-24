@@ -3,7 +3,7 @@
 @using TournamentCalendar.Controllers
 @using TournamentCalendar.Services
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-6 mb-2">
         <h3 class="h3">@ViewBag.TitleTagText</h3>
         <p>
             Auf dieser Seite erscheinen primär Volleyball-Turniere aus dem deutschsprachigen Raum.
@@ -11,7 +11,7 @@
         <p>
             Wer möchte, wird mit <b>@Html.ActionLink("Volley-News", nameof(InfoService.Index), nameof(InfoService), null, new { @class = "link" })</b> per E-Mail über neue Einträge im Turnierkalender informiert.
         </p>
-        <p>
+        <p class="mb-0">
             Findet ein Turnier statt, das hier nicht aufgeführt ist?
             <b>@Html.ActionLink("Gleich in den Kalender eintragen.", nameof(Calendar.Entry), nameof(Calendar), null, new { @class = "link" })</b>
         </p>
@@ -20,37 +20,29 @@
         @* Hide on devices smaller than MD *@
         <img src="@Url.Content("~/images/ball-crown.jpg")" class="rounded text-right" alt="Turniere" style="width: 100%" />
     </div>
-    <div class="row justify-content-between pe-0">
-        <div class="col-8 pt-0 pe-0 fs-6">
-            @if (Model.DisplayModel.Any())
-            {
-                var rec = Model.DisplayModel.Last();
-                <span class="m-0 text-success">
-                    <strong>Filtern der Tabelle</strong> (z.B.: &quot;@string.Join(string.Empty, rec.GetTournamentType().Take(5)).ToLower()&quot; für @rec.GetTournamentType()-Turniere)
-                </span>
-            }
-        </div>
-        <div class="col-4 text-end p-0 text-nowrap">
-            @if (!UserLocation.GetLocation().IsSet)
-            {
-                <span class="d-inline-block d-md-none fs-6">
-                    <a asp-action="@nameof(GeoLocation.Index)" asp-controller="@nameof(GeoLocation)"><b><span class="bi bi-square text-danger"> Entfernungen</span></b></a>
-                </span>
-                <span class="d-none d-md-inline-block fs-5">
-                    <a asp-action="@nameof(GeoLocation.Index)" asp-controller="@nameof(GeoLocation)"><b><span class="bi bi-square text-danger"> Entfernungen anzeigen</span></b></a>
-                </span>
-            }
-        </div>
+    <div class="col-12 text-end text-nowrap">
+        @if (!UserLocation.GetLocation().IsSet)
+        {
+            <a asp-action="@nameof(GeoLocation.Index)" asp-controller="@nameof(GeoLocation)" class="d-inline-block mb-2"><b><span class="bi bi-square text-danger"> Entfernungen anzeigen</span></b></a>
+        }
     </div>
+
     <div class="row col-12 col-md-6">
         <div class="input-group mb-2">
-            <input type="text" id="search-input" placeholder="Suchen..." class="form-control border-secondary-subtle" />
+            <input type="text" id="search-input" placeholder="Filterbegriffe" class="form-control border-secondary-subtle" />
             <button class="btn border-secondary-subtle p-0 ps-2 pe-2" type="button" id="clear-search-input">
-                <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-backspace" width="26" height="26" fill="currentColor" viewBox="0 0 16 16">
-                    <path d="M5.83 5.146a.5.5 0 0 0 0 .708L7.975 8l-2.147 2.146a.5.5 0 0 0 .707.708l2.147-2.147 2.146 2.147a.5.5 0 0 0 .707-.708L9.39 8l2.146-2.146a.5.5 0 0 0-.707-.708L8.683 7.293 6.536 5.146a.5.5 0 0 0-.707 0z"></path>
-                    <path d="M13.683 1a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-7.08a2 2 0 0 1-1.519-.698L.241 8.65a1 1 0 0 1 0-1.302L5.084 1.7A2 2 0 0 1 6.603 1zm-7.08 1a1 1 0 0 0-.76.35L1 8l4.844 5.65a1 1 0 0 0 .759.35h7.08a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1z"></path>
-                </svg>
+                <i class=" bi bi-backspace" style="font-size:1.5em"></i>
             </button>
+                <button class="btn border-0 p-0 ps-2 pe-2" type="button" data-bs-toggle="collapse" data-bs-target="#filter-info" aria-expanded="false" aria-controls="filter-info">
+                <i class="bi bi-info-circle text-primary" style="font-size:1.5em"></i>
+            </button>
+        </div>
+    </div>
+    <div class="collapse mb-2" id="filter-info">
+        <div class="card card-body bg-secondary bg-opacity-10 pt-1 pb-2">@{ var now = DateTime.Now.AddMonths(2); }
+            <span class="d-inline-block">Begriffe zum Filtern der Liste, mit Leerzeichen getrennt. Alle Begriffe müssen vorhanden sein. Z.B.:</span>
+            <span class="d-inline-block"><b>mixed</b> = &quot;Mixed&quot;-Turniere<br /></span>
+            <span class="d-inline-block"><b>halle .@now.ToString("MM.yy")</b> = Hallenturniere im @now.ToString("MMMM yyyy")</span>
         </div>
     </div>
     <div class="pb-2 table-responsive">
