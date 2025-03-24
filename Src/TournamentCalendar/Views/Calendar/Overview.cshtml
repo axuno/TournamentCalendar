@@ -247,9 +247,12 @@
                 return;
             }
 
+            const terms = query.toLowerCase().split(' ').filter(term => term.trim() !== '');
+
             rows.forEach(row => {
                 const cells = Array.from(row.children).filter((_, index) => index !== 5);
-                const matches = cells.some(cell => cell.innerText.toLowerCase().includes(query.toLowerCase()));
+                // Apply terms as AND condition
+                const matches = terms.every(term => cells.some(cell => cell.innerText.toLowerCase().includes(term)));
                 row.style.display = matches ? 'table-row' : 'none';
                 if (matches) matchesFound = true;
             });
