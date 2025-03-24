@@ -118,6 +118,7 @@
 
     function getGeoLocation() {
         if (navigator.geolocation) {
+            // Geolocation API requires a secure context (HTTPS)
             navigator.geolocation.getCurrentPosition(submitLocation, handleError);
         }
     }
