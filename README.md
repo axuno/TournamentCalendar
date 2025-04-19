@@ -28,7 +28,8 @@ We're kindly asking not to use the software for publishing volleyball tournament
   
 ## Thanks!
 
-We would like to thank [JetBrains](https://www.jetbrains.com/?from=TournamentCalendar) for supporting the project with free licenses of their fantastic tools ReSharper and DotCover.
+We would like to thank [JetBrains](https://www.jetbrains.com/) for supporting the project with free licenses of their fantastic tools.
 
-<img src="jetbrains.svg" alt="JetBrains" width="100" />
+![JetBrains logo](https://resources.jetbrains.com/storage/products/company/brand/logos/jetbrains.svg)
+
  
