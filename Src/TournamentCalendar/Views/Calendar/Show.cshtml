@@ -40,36 +40,51 @@
 </div>
 @section MetaSection {<meta name="robots" content="noindex, nofollow">}
 @section ScriptStandardSection {
-    @* Note: Google requires an API key for all requests since 11 June 2018 - using account of axuno gGmbH *@
-    <script src="@string.Format("https://maps.googleapis.com/maps/api/js?key={0}&language=de&region=DE", googleConfig.WebApiKey)"></script>
+    <script src="@Url.Content(ScriptName.Js.Location)" asp-append-version="true"></script>
     <script>
         //<![CDATA[
-        document.addEventListener('DOMContentLoaded', function() {
-              @if (partialModel.Latitude.HasValue && partialModel.Longitude.HasValue)
-              {
-                  <text>ShowLocationOnGoogleMaps(@partialModel.Latitude.Value.ToString(CultureInfo.InvariantCulture), @partialModel.Longitude.Value.ToString(CultureInfo.InvariantCulture));</text>
-              }      
-        });
+        (async function() {
+            await loadGoogleMaps({
+                key: '@googleConfig.WebApiKey',
+                language: 'de',
+                region: 'DE'
+            });
+            await initMap();
+        })();
 
-        function ShowLocationOnGoogleMaps(latitude, longitude) {
-            // requires https://maps.googleapis.com/maps/api/js
-            var coords = new google.maps.LatLng(latitude, longitude);
+        async function initMap() {
+            @if (partialModel is { Latitude: not null, Longitude: not null })
+            {
+                <text>await ShowLocationOnGoogleMaps(@partialModel.Latitude.Value.ToString(CultureInfo.InvariantCulture), @partialModel.Longitude.Value.ToString(CultureInfo.InvariantCulture));</text>
+            }
+        }
 
-            var mapOptions = {
+        async function ShowLocationOnGoogleMaps(latitude, longitude) {
+            const { Map: MapsLib } = await google.maps.importLibrary("maps");
+            const { AdvancedMarkerElement: MarkerLib } = await google.maps.importLibrary("marker");
+
+            const coords = new google.maps.LatLng(latitude, longitude);
+            const mapOptions = {
                 zoom: 14,
                 center: coords,
+                mapId: '@(googleConfig.MapId)',
                 mapTypeControl: true,
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
 
             //create the map, and place it in the HTML map div
-            var map = new google.maps.Map(document.getElementById("mapPlaceholder"), mapOptions);
+            const map = new MapsLib(document.getElementById('mapPlaceholder'), mapOptions);
 
             //place the initial marker
-            var marker = new google.maps.Marker({
+            const marker = new MarkerLib({
                 position: coords,
                 map: map,
-                title: "Angegebener Standort"
+                title: 'Angegebener Standort',
+                content: new google.maps.marker.PinElement({
+                    background: '#d32f2f',
+                    borderColor: '#b71c1c',
+                    glyphColor: '#fff'
+                }).element
             });
         }
         //]]>

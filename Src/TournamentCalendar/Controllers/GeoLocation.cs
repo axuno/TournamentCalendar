@@ -44,14 +44,14 @@ public class GeoLocation : ControllerBase
     public IActionResult Location(Guid guid)
     {
         if (!ModelState.IsValid)
-            return RedirectToAction(nameof(Calendar.All), nameof(Controllers.Calendar));
+            return RedirectToAction(nameof(Calendar.All), nameof(Controllers.Calendar), new[]{""});
 
         _locationService.SetFromUserGuid(guid);
 
         return RedirectToAction(nameof(Calendar.All), nameof(Controllers.Calendar));
     }
 
-    [HttpPost("location/{model}")]
+    [HttpPost(nameof(Location))]
     public async Task<IActionResult> Location([FromForm] EditModel model)
     {
         model.SetAppDb(_appDb);

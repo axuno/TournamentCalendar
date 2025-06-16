@@ -4,7 +4,6 @@
 @using TournamentCalendar.Controllers
 @using TournamentCalendar.Services
 @using System.Globalization
-@using Microsoft.AspNetCore.Mvc.TagHelpers
 @using Microsoft.Extensions.Configuration
 @using TournamentCalendar.Library
 @using TournamentCalendarDAL.HelperClasses
@@ -32,7 +31,7 @@
                     </a>
                 </div>
                 <div class="mt-3 mb-3">
-                    <input type="button" value="Standort entfernen" class="cancel btn btn-secondary" onclick="location.href = '@Url.Action(nameof(GeoLocation.ClearLocation), nameof(GeoLocation))'"/>
+                    <input type="button" value="Standort entfernen" class="cancel btn btn-secondary" onclick="location.href='@Url.Action(nameof(GeoLocation.ClearLocation), nameof(GeoLocation))'"/>
                 </div>
             }
             else
@@ -85,7 +84,7 @@
                     <span asp-validation-for="@Model.Street" class="msg-error-text"></span>
                 </div>
                 <div class="mt-3">
-                    <input type="submit" name="save" formaction="@Url.Action(nameof(GeoLocation.Location), nameof(GeoLocation), new { model = Model })" value="Standort ermitteln" class="btn btn-primary" />
+                    <input type="submit" name="save" formaction="@Url.Action(nameof(GeoLocation.Location), nameof(GeoLocation))" value="Standort ermitteln" class="btn btn-primary" />
                 </div>
             </form>
         </fieldset>

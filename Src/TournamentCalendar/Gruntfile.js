@@ -65,7 +65,7 @@ module.exports = function (grunt) {
         uglify: {
             Location: {
                 files: {
-                    'Scripts/Site.Location.min.js': ['Scripts/Site.Location.js']
+                    'Scripts/Site.Location.min.js': ['Scripts/GoogleMapsLoader.js', 'Scripts/Site.Location.js']
                 }
             },
             TempusDominusFactory: {
