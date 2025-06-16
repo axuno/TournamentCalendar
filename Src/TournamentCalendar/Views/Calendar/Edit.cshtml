@@ -374,30 +374,54 @@
 }
 @section ScriptStandardSection
 {
-    <script src="@string.Format("https://maps.googleapis.com/maps/api/js?callback=initMap&key={0}&language=de&region=DE", googleConfig.WebApiKey)" defer></script>
     <script src="@Url.Content(ScriptName.Lib.TempusDominusAllJs)" asp-append-version="true"></script>
     <script src="@Url.Content(ScriptName.Js.Location)" asp-append-version="true"></script>
     <script>
     //<![CDATA[
     'use strict';
-    const mapPlaceholder = 'mapPlaceholder';
-    function initMap() {
-        Site.Location.initMap(mapPlaceholder);
+
+    const googleMapsLoaded = (async function() {
+        await loadGoogleMaps({
+            key: '@googleConfig.WebApiKey',
+            language: 'de',
+            region: 'DE'
+        });
+    })();
+
+    async function initSiteLocation() {
+        await googleMapsLoaded;
+        const { Map: MapLib } = await google.maps.importLibrary('maps');
+        const { AdvancedMarkerElement: MarkerLib } = await google.maps.importLibrary('marker');
+        const { Geocoder: GeoCoderLib } = await google.maps.importLibrary("geocoding");
+        const loc = new Site.Location(
+            '@Html.IdFor(m => m.CountryId)',
+            '@Html.IdFor(m => m.PostalCode)',
+            '@Html.IdFor(m => m.City)',
+            '@Html.IdFor(m => m.Street)',
+            'btnModal',
+            '@(googleConfig.MapId)',
+            'mapPlaceholder',
+            MapLib,
+            MarkerLib,
+            GeoCoderLib);
+        return loc;
     }
+
+    let siteLocation;
     document.addEventListener('DOMContentLoaded', OnDOMContentLoaded, false);
-    function OnDOMContentLoaded() {
-
+    
+    async function OnDOMContentLoaded() {
+        siteLocation = await initSiteLocation();
+        await siteLocation.initMap(null);
+        
         document.getElementById('@Html.IdFor(m => m.TournamentName)').focus();
-
-        const loc = new Site.Location('@Html.IdFor(m => m.CountryId)', '@Html.IdFor(m => m.PostalCode)', '@Html.IdFor(m => m.City)', '@Html.IdFor(m => m.Street)', 'btnModal', mapPlaceholder);
-        loc.update();
         document.getElementById('locationModal').addEventListener('shown.bs.modal', (e) => {
-            loc.update();
+            siteLocation.update();
         });
 
         @if (Model is { Latitude: not null,Longitude: not null })
         {
-            <text>loc.showLocationOnGoogleMaps(@Model.Latitude.Value.ToString(CultureInfo.InvariantCulture), @Model.Longitude.Value.ToString(CultureInfo.InvariantCulture)); </text>
+            <text>siteLocation.showLocationOnGoogleMaps(@Model.Latitude.Value.ToString(CultureInfo.InvariantCulture), @Model.Longitude.Value.ToString(CultureInfo.InvariantCulture));</text>
         }
         
         const reloadCaptcha = document.getElementById('ReloadCaptcha');
@@ -435,7 +459,7 @@
             const from = document.getElementById('@Html.IdFor(m => m.DateFromText)').parentElement._tempusDominus;
             const to = document.getElementById('@Html.IdFor(m => m.DateToText)').parentElement._tempusDominus;
             const closing = document.getElementById('@Html.IdFor(m => m.ClosingDateText)').parentElement._tempusDominus;
-            if (from.dates.picked.length == 0)
+            if (from.dates.picked.length === 0)
             {
                 to.dates.clear();
                 closing.dates.clear();

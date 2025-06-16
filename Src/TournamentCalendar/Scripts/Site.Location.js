@@ -4,8 +4,11 @@ if (Site === undefined) {
     Site = {};
 }
 
+/* global google */
+
 Site.Location = class {
     'use strict';
+
     /**
     * Represents a Location.
     * @constructor
@@ -17,8 +20,11 @@ Site.Location = class {
     * @param {string} enterAddrToggleId - Id of the checkbox to enable/disable the address section (see below).
     * @param {string} addressSectionId - Id of the section element which has input elements as children.
     * @param {string} mapPlaceholderId - Id of the element which will be filled with the map by google.maps
+    * @param {string} mapsLib - The Google Maps library
+    * @param {string} markerLib - The Extended Marker library
+    * @param {string} geocoderLib - The Geocoder library
     */
-    constructor(countryId, zipCodeId, cityId, streetId, btnMapModalId, mapPlaceholderId) {
+    constructor(countryId, zipCodeId, cityId, streetId, btnMapModalId, mapId, mapPlaceholderId, mapsLib, markerLib, geocoderLib) {
         this.countryIdEle = document.getElementById(countryId);
         this.countryIdEle.addEventListener('change', this.update.bind(this), false);
         this.zipCodeEle = document.getElementById(zipCodeId);
@@ -31,8 +37,10 @@ Site.Location = class {
         this.streetEle.addEventListener('change', this.update.bind(this), false);
         this.streetEle.addEventListener('change', function (e) { this.value = this.value.trim(); });
         this.btnMapModalEle = document.getElementById(btnMapModalId);
-        this.mapPlaceholderEle = document.getElementById(mapPlaceholderId);
-        this.geocoder = new google.maps.Geocoder();
+        this.mapId = mapId, this.mapPlaceholderEle = document.getElementById(mapPlaceholderId);
+        this.MapsLib = mapsLib;
+        this.MarkerLib = markerLib;
+        this.GeocoderLib = geocoderLib;
         setInterval(this.enableDisableModalButton.bind(this), 500);
     }
 
@@ -54,7 +62,6 @@ Site.Location = class {
 
     update() {
         this.enableDisableModalButton();
-
         if (this.isAddressEntered) {
             this.showHideLocation();
         }
@@ -95,7 +102,7 @@ Site.Location = class {
         // requires https://maps.googleapis.com/maps/api/js
         // Example for async/await: https://gabrieleromanato.name/javascript-how-to-use-the-google-maps-api-with-promises-and-async-await
         const address = this.getAddress(true);
-        const response = await this.geocoder.geocode({ 'address': address });
+        const response = await new this.GeocoderLib().geocode({ 'address': address });
         const results = response.results;
         if (Array.isArray(results)) {
             const latitude = results[0].geometry.location.lat();
@@ -113,34 +120,51 @@ Site.Location = class {
         const mapOptions = {
             zoom: 14,
             center: coords,
+            mapId: this.mapId,
             mapTypeControl: true,
             mapTypeId: google.maps.MapTypeId.ROADMAP
         };
 
         // create the map, and place it in the HTML map div
-        const map = new google.maps.Map(this.mapPlaceholderEle, mapOptions);
+        const map = new this.MapsLib(this.mapPlaceholderEle, mapOptions);
 
         // place the initial marker
-        const marker = new google.maps.Marker({
+        const marker = new this.MarkerLib({
             position: coords,
             map: map,
-            title: 'Angegebener Standort'
+            title: 'Angegebener Standort',
+            content: new google.maps.marker.PinElement({
+                background: '#d32f2f',
+                borderColor: '#b71c1c',
+                glyphColor: '#fff'
+            }).element
         });
     }
 
     /**
-     * Initializes the Google Maps canvas element
-     * @param {string} mapPlaceholderId - The Id of the map placeholder
+     * Initializes the Google Maps with current coordinates
      * @param {any} coords - Optional: the LatLng coordinates to center the map initially. Default location is Kassel/Germany.
      */
-    static initMap(mapPlaceholderId, coords) {
-        const mapPlaceholderEle = document.getElementById(mapPlaceholderId);
+    async initMap(coords) {
         const mapOptions = {
             zoom: 14,
-            center: coords || new google.maps.LatLng(51.312801,9.481544), // default: Kassel
+            center: coords || new google.maps.LatLng(51.312801, 9.481544), // default: Kassel
+            mapId: this.mapId,
             mapTypeControl: true,
             mapTypeId: google.maps.MapTypeId.ROADMAP
         };
-        new google.maps.Map(mapPlaceholderEle, mapOptions);  // NOSONAR
+        const map = new this.MapsLib(this.mapPlaceholderEle, mapOptions);  // NOSONAR
+        // place the initial marker
+        
+        const marker = new this.MarkerLib({
+            position: coords,
+            map: map,
+            title: 'Angegebener Standort',
+            content: new google.maps.marker.PinElement({
+                background: '#d32f2f',
+                borderColor: '#b71c1c',
+                glyphColor: '#fff'
+            }).element
+        });
     }
 }
