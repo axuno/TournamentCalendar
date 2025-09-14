@@ -102,7 +102,7 @@ Site.Location = class {
         // requires https://maps.googleapis.com/maps/api/js
         // Example for async/await: https://gabrieleromanato.name/javascript-how-to-use-the-google-maps-api-with-promises-and-async-await
         const address = this.getAddress(true);
-        const response = await new this.GeocoderLib().geocode({ 'address': address });
+        const response = await new this.GeocoderLib().geocode({ 'address': address }); //NOSONAR
         const results = response.results;
         if (Array.isArray(results)) {
             const latitude = results[0].geometry.location.lat();
@@ -126,10 +126,10 @@ Site.Location = class {
         };
 
         // create the map, and place it in the HTML map div
-        const map = new this.MapsLib(this.mapPlaceholderEle, mapOptions);
+        const map = new this.MapsLib(this.mapPlaceholderEle, mapOptions);  //NOSONAR
 
         // place the initial marker
-        const marker = new this.MarkerLib({
+        const marker = new this.MarkerLib({   //NOSONAR
             position: coords,
             map: map,
             title: 'Angegebener Standort',
@@ -156,7 +156,7 @@ Site.Location = class {
         const map = new this.MapsLib(this.mapPlaceholderEle, mapOptions);  // NOSONAR
         // place the initial marker
         
-        const marker = new this.MarkerLib({
+        const marker = new this.MarkerLib({   //NOSONAR
             position: coords,
             map: map,
             title: 'Angegebener Standort',

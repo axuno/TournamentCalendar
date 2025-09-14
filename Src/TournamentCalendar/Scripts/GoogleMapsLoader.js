@@ -3,8 +3,8 @@
     var h, a, k, p = "The Google Maps JavaScript API", c = "google", l = "importLibrary", q = "__ib__", m = document, b = window;
     b = b[c] || (b[c] = {});
     var d = b.maps || (b.maps = {}), r = new Set, e = new URLSearchParams,
-        u = () => h || (h = new Promise(async (f, n) => {
-            await (a = m.createElement("script"));
+        u = () => h || (h = new Promise((f, n) => {
+            a = m.createElement("script");
             e.set("libraries", [...r] + "");
             for (k in g) e.set(k.replace(/[A-Z]/g, t => "_" + t[0].toLowerCase()), g[k]);
             e.set("callback", c + ".maps." + q);
