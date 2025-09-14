@@ -86,30 +86,46 @@ Site.Location = class {
             a.length === b.length &&
             a.every((val, index) => val === b[index]);
     }
-
+    
     showHideLocation() {
-        // Default display, in case no location was found
         this.mapPlaceholderEle.innerHTML = '<div style="padding: 1rem; color: gray">Die Karte wird gezeigt,<br />wenn die Adresse gefunden wurde.</div>';
 
         if (this.isAddressEntered) {
             this.getLocation()
-                .then(geoCoderResult => this.showLocationOnGoogleMaps(geoCoderResult[0], geoCoderResult[1]))
-                .catch( /* swallow-up */);
+                .then(geoCoderResult => {
+                    // Check if the promise returned a result.
+                    if (geoCoderResult) {
+                        this.showLocationOnGoogleMaps(geoCoderResult[0], geoCoderResult[1]);
+                    } else {
+                        // This block executes if getLocation() returned null due to an error.
+                        this.mapPlaceholderEle.innerHTML = '<div style="padding: 1rem; color: red">Adresse nicht gefunden.</div>';
+                    }
+                });
         }
     }
-
+    
     async getLocation() {
         // requires https://maps.googleapis.com/maps/api/js
         // Example for async/await: https://gabrieleromanato.name/javascript-how-to-use-the-google-maps-api-with-promises-and-async-await
         const address = this.getAddress(true);
-        const response = await new this.GeocoderLib().geocode({ 'address': address }); //NOSONAR
-        const results = response.results;
-        if (Array.isArray(results)) {
-            const latitude = results[0].geometry.location.lat();
-            const longitude = results[0].geometry.location.lng();
-            return [latitude, longitude];
-        } else {
-            throw new Error('Error getting location from Google');
+        try {
+            const response = await new this.GeocoderLib().geocode({ 'address': address });  //NOSONAR
+            const results = response.results;
+
+            if (Array.isArray(results) && results.length > 0) {
+                const latitude = results[0].geometry.location.lat();
+                const longitude = results[0].geometry.location.lng();
+                return [latitude, longitude];
+            } else {
+                throw new Error('ZERO_RESULTS: No result was found for this GeocoderRequest.');
+            }
+        } catch (error) {
+                if (error.message.includes('ZERO_RESULTS')) {
+                    window.JL('Site.Location.getLocation').warn({'message': error.message, 'name': error.name});
+                } else {
+                    window.JL('Site.Location.getLocation').error({'message': error.message, 'name': error.name, 'stack': error.stack});
+                }
+            return null;
         }
     }
 
