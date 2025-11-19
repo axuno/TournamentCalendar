@@ -22,7 +22,7 @@
     "@lodder/grunt-postcss": "3.1.1",
     "grunt-sass": "3.1.0",
     "jsnlog": "^2.30.0",
-    "node-sass": "9.0.0",
+    "sass": "^1.94.1",
     "@eonasdan/tempus-dominus": "6.9.6",
     "@popperjs/core": "2.11.8"
   },
