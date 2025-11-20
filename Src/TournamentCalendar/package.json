@@ -8,10 +8,10 @@
         "test": "echo \"Error: no test specified\" && exit 1"
     },
   "devDependencies": {
-    "autoprefixer": "10.4.20",
-    "bootstrap": "5.3.3",
-    "bootstrap-icons": "1.11.3",
-    "cssnano": "7.0.5",
+    "autoprefixer": "10.4.22",
+    "bootstrap": "5.3.8",
+    "bootstrap-icons": "1.13.1",
+    "cssnano": "7.1.2",
     "grunt": "^1.6.1",
     "grunt-cli": "1.5.0",
     "grunt-contrib-concat": "2.1.0",
@@ -20,7 +20,7 @@
     "grunt-contrib-uglify": "5.2.2",
     "grunt-contrib-watch": "^1.1.0",
     "@lodder/grunt-postcss": "3.1.1",
-    "grunt-sass": "3.1.0",
+    "grunt-sass-modern": "3.3.0",
     "jsnlog": "^2.30.0",
     "sass": "^1.94.1",
     "@eonasdan/tempus-dominus": "6.9.6",

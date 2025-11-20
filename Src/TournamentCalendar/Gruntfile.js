@@ -8,7 +8,7 @@ module.exports = function (grunt) {
     'use strict';
     const sass = require('sass'); // used in grunt-sass options, must be included in package.json
     
-    grunt.loadNpmTasks('grunt-sass'); // Bootstrap 5 uses https://sass-lang.com/dart-sass; they also maintain the node-sass package
+    grunt.loadNpmTasks('grunt-sass-modern'); // Bootstrap 5 uses https://sass-lang.com/dart-sass
     grunt.loadNpmTasks('@lodder/grunt-postcss'); // grunt-postcss is retired, use @lodder/grunt-postcss
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-concat');
@@ -23,6 +23,7 @@ module.exports = function (grunt) {
         sass: {
             options: {
                 implementation: sass,
+                api: 'modern', // Use modern API, legacy JS API is deprecated
                 sourceMap: false, // Create source map
                 outputStyle: 'expanded' // Minify output with "compressed"
             },
