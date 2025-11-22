@@ -6,7 +6,7 @@ Click here to learn more. https://go.microsoft.com/fwlink/?LinkID=513275&clcid=0
 console.log(`Node ${process.version}`); // node version
 module.exports = function (grunt) {
     'use strict';
-    const sass = require('sass'); // used in grunt-sass options, must be included in package.json
+    const sass = require('sass');
     
     grunt.loadNpmTasks('grunt-sass-modern'); // Bootstrap 5 uses https://sass-lang.com/dart-sass
     grunt.loadNpmTasks('@lodder/grunt-postcss'); // grunt-postcss is retired, use @lodder/grunt-postcss
@@ -23,8 +23,13 @@ module.exports = function (grunt) {
         sass: {
             options: {
                 implementation: sass,
-                api: 'modern', // Use modern API, legacy JS API is deprecated
+                api: 'modern', // Use modern API, 'legacy' JS API is deprecated
                 sourceMap: false, // Create source map
+                // Ensure package names in 'grunt-sass-modern' can be resolved
+                // Note: grunt-sass was using 'includePaths' instead of 'loadPaths'
+                loadPaths: ['node_modules'],
+                // Deprecation warnings from dependencies are suppressed (when loading via loadPaths)
+                quietDeps: true,
                 outputStyle: 'expanded' // Minify output with "compressed"
             },
             dist: {
