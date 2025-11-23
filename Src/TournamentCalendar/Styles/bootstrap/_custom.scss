@@ -1,20 +1,12 @@
-// Bootstrap dependencies - javascript and fonts must be copied manually!!
-// font-awesome is included by site.scss
+// Use sass color helpers for exact color math
+@use 'sass:color' as color;
 
-// Always required for Bootstrap
-@import 'bootstrap/scss/functions';
+//******************************************************************
+// Define custom Bootstrap variables, that differ from the defaults.
+//******************************************************************
 
-// Bootstrap overrides
-//
-// Copy variables from `_variables.scss` to this file to override default values
-// without modifying source files.
-// Variable customizations in Bootstrap have to come after @import "functions",
-// but before @import "variables" and the rest of our import stack. The same applies to Sass maps.
-
-//
 // Color system
 //
-
 // This value is used in color-contrast(...) function
 // and influences the required contrast between background and text color.
 $min-contrast-ratio: 1; // default is 4.5
@@ -47,23 +39,25 @@ $theme-colors: ( primary: $primary, secondary: $secondary, success: $success, in
 //
 // Dropdown menu container and contents.
 
-$dropdown-link-hover-bg: $gray-100 !default; /* unchanged! */
-$dropdown-link-hover-bg: shade-color($dropdown-link-hover-bg, 10%);
+// Compute hover color by reducing lightness by 10% (exact math using sass:color)
+$dropdown-link-hover-bg: color.scale($gray-100, $lightness: -10%); // shade-color($gray-100, 10%)
 
+// Active link color (kept as $black)
 $dropdown-link-active-color: $black;
-$dropdown-link-active-bg: tint-color($primary, 80%);
-$dropdown-bg: $white; /* changed! */
+
+// Compute active background as a tint (80% white + 20% primary)
+$dropdown-link-active-bg: color.mix($white, $primary, $weight: 80%); // tint-color($primary, 80%)
+
+$dropdown-bg: $white; // default: $gray-100
 
 // Body
 //
 // Settings for the `<body>` element.
-$body-bg: #bcbcbc;  // default: white
+$body-bg: #bcbcbc; // default: white
 
 // Fonts
 //
 // Font, line-height, and color for body text, headings, and more.
-//$font-family-sans-serif: Arial, "Helvetica Neue", Helvetica, sans-serif;
-// This is the definition from Bootstrap 4:
 $font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 
 // Borders
@@ -72,19 +66,16 @@ $border-radius: 0.4rem;
 // Links
 //
 // Style anchor elements.
-
 $link-color: $black;
 $link-decoration: none;
 $link-hover-color: $link-color;
 $link-hover-decoration: underline;
 
 // Forms
-
-//$input-color: theme-color("primary");
-//$input-focus-color: theme-color("primary");
-$input-focus-bg: tint-color($success, 90%);
+//
+// Compute input focus background as a tint (90% white + 10% success)
+$input-focus-bg: color.mix($white, $success, $weight: 90%); // tint-color($success, 90%)
 $input-bg: $white;
-
 
 // Navbar
 $navbar-dark-active-color: $white;
@@ -98,8 +89,9 @@ $box-shadow-lg: 0 1rem 3rem rgba($black, .35);
 
 // Tables
 $table-bg: $white;
-$table-hover-bg-factor: .2; /* .075 !default;*/
-$table-hover-bg: rgba(#3299BB, $table-hover-bg-factor);
+$table-hover-bg-factor: .2; // instead of default .075
+// Use color.change to set alpha on primary for hover background (exact math)
+$table-hover-bg: color.change($primary, $alpha: $table-hover-bg-factor); // rgba(#3299BB, $table-hover-bg-factor)
 
 // Cards
 $card-bg: $white;

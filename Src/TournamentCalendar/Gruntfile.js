@@ -35,6 +35,7 @@ module.exports = function (grunt) {
             dist: {
                 files: [
                     {
+                        // bootstrap-custom contains bootstrap and bootstrap-icons
                         'wwwroot/lib/bootstrap/bootstrap.css': 'Styles/bootstrap/bootstrap-custom.scss',  // 'destination': 'source'
                         'wwwroot/css/site.css': 'Styles/site/site.scss'
                     }
@@ -87,16 +88,10 @@ module.exports = function (grunt) {
                 nonull: true
             },
             bootstrap_js_all: {
+                // Include Popper.js first. Popper.js is also required for Tempus Dominus
                 src: ['node_modules/@popperjs/core/dist/umd/popper.min.js',
                       'node_modules/bootstrap/dist/js/bootstrap.min.js'],
                 dest: 'wwwroot/lib/bootstrap/bootstrap-all.min.js',
-                nonull: true
-            },
-            bootstrap_css_all: {
-                src: ['wwwroot/lib/bootstrap/bootstrap.min.css',
-                    'node_modules/bootstrap-icons/font/bootstrap-icons.css'
-                ],
-                dest: 'wwwroot/lib/bootstrap/bootstrap.min.css',
                 nonull: true
             },
             tempus_dominus_all_js: {

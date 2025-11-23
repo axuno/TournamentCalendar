@@ -1,29 +1,28 @@
-// **************************************
-// Variables used locally
-// **************************************
-@import '../bootstrap/custom';
-$bootstrap-icons-font-dir: '../lib/bootstrap/fonts';
-@import 'bootstrap-icons/font/bootstrap-icons.scss';
+@use '../bootstrap/custom' as custom; // customized variable values for Bootstrap
 
-$label-color: $success;
+// ************************************************
+// Variables used locally (not Bootstrap overrides)
+// ************************************************
+
+$label-color: custom.$success;
 $label-bgcolor: transparent;
 
-$error-color: $danger;
+$error-color: custom.$danger;
 $error-bgcolor: tint-color($error-color,90%);
 
-$info-color: $info;
+$info-color: custom.$info;
 $info-bgcolor: tint-color($info-color,90%);
 
-$success-color: $success;
+$success-color: custom.$success;
 $success-bgcolor: tint-color($success-color,90%);
 
-$warning-color: $warning;
+$warning-color: custom.$warning;
 $warning-bgcolor: tint-color($warning-color,90%);
 
-$question-color: $info;
+$question-color: custom.$info;
 $question-bgcolor: tint-color($question-color,90%);
 
-$validation-color: $danger;
+$validation-color: custom.$danger;
 $validation-bgcolor: tint-color($validation-color,90%);
 
 // **************************************
@@ -41,13 +40,12 @@ label {
     display: block;
 }
 
-
 .input-validation-error {
 	border: 2px solid $error-color !important;
 }
 
 .input-required {
-    border-left: .5rem solid $success;
+    border-left: .5rem solid custom.$success;
 }
 
 .field-validation-error {
@@ -76,7 +74,7 @@ label {
     position: relative;
 
     &:before {
-        font-family: $bootstrap-icons-font;
+        font-family: 'bootstrap-icons', sans-serif;
         font-display: block;
         font-size: 2.25rem; // 36px
         content: '';
@@ -158,8 +156,8 @@ label {
 
 // Override Boodstrap-Select
 .bootstrap-select > button.btn {
-    background-color: $white !important;
-    border-color: $gray-400;
-    font-family: $font-family-sans-serif;
+    background-color: custom.$white !important;
+    border-color: custom.$gray-400;
+    font-family: custom.$font-family-sans-serif;
 }
 
