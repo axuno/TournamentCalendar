@@ -1,5 +1,6 @@
-@import '../bootstrap/custom';
-@import 'std-input';
+@use '../bootstrap/custom' as custom; // customized variable values for Bootstrap
+@use 'std-input' as std-input; // include standard input styles
+@use 'sass:color' as color; // Bootstrap mixins cannot be used here
 
 body {
     max-width: 60rem;
@@ -33,7 +34,7 @@ body {
 }
 
 #nav-main {
-    background-color: $primary;
+    background-color: custom.$primary;
     font-size: 1.3rem;
     margin-top: .25rem;
     padding-top: 0;
@@ -41,7 +42,7 @@ body {
 }
 
 #content {
-    background-color: $white;
+    background-color: custom.$white;
     font-size: 1.2rem;
     margin-top: .3rem;
     padding-top: 0.8rem
@@ -52,51 +53,48 @@ a.link:before {
 }
 
 .h1, .h2, .h3 {
-    color: $success;
+    color: custom.$success;
     font-weight: bold;
 }
 
 .h4, .h5 {
-    color: $success;
+    color: custom.$success;
 }
 
 hr {
     height: 0;
     border: 0;
-    border-top: 0.1rem solid $success;
+    border-top: 0.1rem solid custom.$success;
 }
 
 
 fieldset {
     margin: .5rem 0;
     padding: 0 .5rem 1rem .5rem;
-    border: .1rem solid $primary;
-    background-color: $gray-100;
+    border: .1rem solid custom.$primary;
+    background-color: custom.$gray-100;
 }
 
-fieldset legend {
-    font-size: .9rem;
-    color: $white;
-    background-color: $primary;
-    padding: 0 .5rem;
-    float: none !important; /* BS5 default: left */
-}
+    fieldset legend {
+        font-size: .9rem;
+        color: custom.$white;
+        background-color: custom.$primary;
+        padding: 0 .5rem;
+        float: none !important; /* BS5 default: left */
+    }
 
 
 /* Overview.cshtml */
 #tournaments-table {
     width: 100%;
     font-size: 1rem;
-    border: 1px solid $gray-500;
+    border: 1px solid custom.$gray-500;
     margin-bottom: .5rem;
 
     th {
-        color: $black;
-        background-color: tint-color($primary, 85%);
-    }
-
-    tr:hover {
-        background-color: tint-color($primary, 85%);
+        // table-hover uses the same color
+        color: custom.$black;
+        background-color: color.mix(custom.$white, custom.$primary, $weight: 85%); // tint-color($primary, 85%)
     }
 }
 
