@@ -1,3 +1,9 @@
+// Required for using Bootstrap functions and mixins
+@use 'bootstrap/scss/functions' as *;
+@use 'bootstrap/scss/mixins' as *;
+// Instead, we can also use sass color helpers for exact color math
+@use 'sass:color' as color;
+
 @use '../bootstrap/custom' as custom; // customized variable values for Bootstrap
 
 // ************************************************
@@ -74,15 +80,26 @@ label {
     position: relative;
 
     &:before {
+        /* use the bootstrap-icons font (ensure CSS/fonts are available under wwwroot) */
         font-family: 'bootstrap-icons', sans-serif;
-        font-display: block;
+        speak: none;
+        font-style: normal;
+        font-weight: normal;
+        font-variant: normal;
+        text-transform: none;
+        line-height: 1;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
         font-size: 2.25rem; // 36px
-        content: '';
+        content: ''; // set per-variant below
         display: inline-block;
         vertical-align: middle;
         position: absolute;
-        top: -5px;
+        top: 5px;
         left: 5px;
+        width: 2.25rem;
+        height: 2.25rem;
+        text-align: center;
     }
 
     ul, p {
@@ -99,7 +116,7 @@ label {
     background-color: $info-bgcolor;
 
     &:before {
-        content: '\F431';
+        content: '\F431'; // .bi-info-circle codepoint
     }
 }
 
@@ -108,7 +125,7 @@ label {
     background-color: $success-bgcolor;
 
     &:before {
-        content: '\F26B';
+        content: '\F26B'; // .bi-check-circle codepoint
     }
 }
 
@@ -117,7 +134,7 @@ label {
     background-color: $warning-bgcolor;
 
     &:before {
-        content: '\F333';
+        content: '\F333'; // .bi-exclamation-triangle codepoint
     }
 }
 
@@ -126,7 +143,7 @@ label {
     background-color: $question-bgcolor;
 
     &:before {
-        content: '\F505';
+        content: '\F505'; // .bi-question-circle codepoint
     }
 }
 
@@ -135,7 +152,7 @@ label {
     background-color: $error-bgcolor;
 
     &:before {
-        content: '\F623';
+        content: '\F623'; // .bi-x-circle codepoint
     }
 }
 
@@ -144,7 +161,7 @@ label {
     background-color: $validation-bgcolor;
 
     &:before {
-        content: '\F567';
+        content: '\F333'; // .bi-exclamation-circle codepoint
     }
 }
 
