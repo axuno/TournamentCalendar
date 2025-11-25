@@ -1,4 +1,7 @@
-// Use sass color helpers for exact color math
+// Required for using Bootstrap functions and mixins
+@use 'bootstrap/scss/functions' as *;
+@use 'bootstrap/scss/mixins' as *;
+// Instead, we can also use sass color helpers for exact color math
 @use 'sass:color' as color;
 
 //******************************************************************
@@ -40,13 +43,13 @@ $theme-colors: ( primary: $primary, secondary: $secondary, success: $success, in
 // Dropdown menu container and contents.
 
 // Compute hover color by reducing lightness by 10% (exact math using sass:color)
-$dropdown-link-hover-bg: color.scale($gray-100, $lightness: -10%); // shade-color($gray-100, 10%)
+$dropdown-link-hover-bg: shade-color($gray-100, 10%); // same as: color.scale($gray-100, $lightness: -10%)
 
 // Active link color (kept as $black)
 $dropdown-link-active-color: $black;
 
 // Compute active background as a tint (80% white + 20% primary)
-$dropdown-link-active-bg: color.mix($white, $primary, $weight: 80%); // tint-color($primary, 80%)
+$dropdown-link-active-bg: tint-color($primary, 80%); // same as: color.mix($white, $primary, $weight: 80%)
 
 $dropdown-bg: $white; // default: $gray-100
 
@@ -74,7 +77,7 @@ $link-hover-decoration: underline;
 // Forms
 //
 // Compute input focus background as a tint (90% white + 10% success)
-$input-focus-bg: color.mix($white, $success, $weight: 90%); // tint-color($success, 90%)
+$input-focus-bg: tint-color($success, 90%); // same as: color.mix($white, $success, $weight: 90%)
 $input-bg: $white;
 
 // Navbar
@@ -89,9 +92,9 @@ $box-shadow-lg: 0 1rem 3rem rgba($black, .35);
 
 // Tables
 $table-bg: $white;
-$table-hover-bg-factor: .2; // instead of default .075
-// Use color.change to set alpha on primary for hover background (exact math)
-$table-hover-bg: color.change($primary, $alpha: $table-hover-bg-factor); // rgba(#3299BB, $table-hover-bg-factor)
+$table-hover-bg-factor: .075; // default: .075
+// Set alpha on primary for hover background
+$table-hover-bg: rgba($primary, $table-hover-bg-factor); // same as: color.change($primary, $alpha: $table-hover-bg-factor)
 
 // Cards
 $card-bg: $white;

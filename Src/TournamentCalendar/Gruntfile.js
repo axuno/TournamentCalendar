@@ -8,12 +8,12 @@ module.exports = function (grunt) {
     'use strict';
     const sass = require('sass');
     
-    grunt.loadNpmTasks('grunt-sass-modern'); // Bootstrap 5 uses https://sass-lang.com/dart-sass
+    // We're using 'grunt-sass' instead of the fork 'grunt-sass-modern' for better integration
+    grunt.loadNpmTasks('grunt-sass'); // Bootstrap 5 uses https://sass-lang.com/dart-sass
     grunt.loadNpmTasks('@lodder/grunt-postcss'); // grunt-postcss is retired, use @lodder/grunt-postcss
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-copy');
-    grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-uglify');
 
     grunt.initConfig({
@@ -25,8 +25,7 @@ module.exports = function (grunt) {
                 implementation: sass,
                 api: 'modern', // Use modern API, 'legacy' JS API is deprecated
                 sourceMap: false, // Create source map
-                // Ensure package names in 'grunt-sass-modern' can be resolved
-                // Note: grunt-sass was using 'includePaths' instead of 'loadPaths'
+                // Note: grunt-sass <= v3 was using 'includePaths' instead of 'loadPaths'
                 loadPaths: ['node_modules'],
                 // Deprecation warnings from dependencies are suppressed (when loading via loadPaths)
                 quietDeps: true,
