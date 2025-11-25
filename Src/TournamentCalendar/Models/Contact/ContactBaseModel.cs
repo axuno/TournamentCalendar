@@ -42,7 +42,8 @@ public class ContactBaseModel : IValidatableObject
             new() {Value = "", Text = "Bitte wählen"},
             // a value of string.Empty will cause a required validation error
             new() {Value = "f", Text = "Frau"},
-            new() {Value = "m", Text = "Herr"}
+            new() {Value = "m", Text = "Herr"},
+            new() {Value = "u", Text = "keine"}
         };
     }
 
