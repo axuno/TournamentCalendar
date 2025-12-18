@@ -18,10 +18,11 @@ public class Program
         var logConfigFile = Path.Combine(currentDir, ConfigurationFolder, "NLog.Internal.config");
 
         var logger = LogManager.Setup()
+            .SetupExtensions(b => b.AutoLoadExtensions())
             .LoadConfigurationFromFile(logConfigFile)
             .GetCurrentClassLogger();
         // Allows for <target name="file" xsi:type="File" fileName = "${var:logDirectory}logfile.log"... >
-        NLog.LogManager.Configuration.Variables["logDirectory"] = currentDir + Path.DirectorySeparatorChar;
+        LogManager.Configuration?.Variables["logDirectory"] = currentDir + Path.DirectorySeparatorChar;
 
         try
         {
@@ -34,13 +35,16 @@ public class Program
             builder.Logging.ClearProviders();
             // Enable NLog as logging provider for Microsoft.Extension.Logging
             logConfigFile = Path.Combine(currentDir, ConfigurationFolder, $"NLog.{builder.Environment.EnvironmentName}.config");
-            var nLogConfiguration = LogManager.Setup()
-                .LoadConfigurationFromFile(logConfigFile)
-                .LogFactory.Configuration;
-            var nLogOptions = new NLogAspNetCoreOptions { AutoShutdown = true, IncludeScopes = true };
-            builder.Logging.AddNLog(nLogConfiguration, nLogOptions);
-            builder.Host.UseNLog();
 
+            await using var logFactory = LogManager
+                .Setup()
+                .LoadConfigurationFromFile(logConfigFile)
+                .LogFactory;
+
+            var nLogOptions = new NLogAspNetCoreOptions { AutoShutdown = true, IncludeScopes = true };
+            builder.Host.UseNLog();
+            builder.Logging.AddNLogWeb(logFactory.Configuration!, nLogOptions);
+            
             WebAppStartup.ConfigureServices(builder);
             var app = builder.Build();
             WebAppStartup.Configure(app);
@@ -51,11 +55,6 @@ public class Program
         {
             logger.Fatal(e, $"Application stopped after Exception. {e.Message}");
             throw;
-        }
-        finally
-        {
-            // Ensure to flush and stop internal timers/threads before application-exit (Avoid segmentation fault on Linux)
-            NLog.LogManager.Shutdown();
         }
     }
 
