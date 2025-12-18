@@ -32,7 +32,7 @@ public class Collect : ControllerBase
 
         if (!string.IsNullOrEmpty(id))
         {
-            DateTime.TryParseExact(id, new[] {"dd'.'MM'.'yyyy", "dd'.'MM'.'yy", "yyyy'-'MM'-'dd"},
+            DateTime.TryParseExact(id, ["dd'.'MM'.'yyyy", "dd'.'MM'.'yy", "yyyy'-'MM'-'dd"],
                 CultureInfo.InvariantCulture,
                 DateTimeStyles.None,
                 out beforeThisDate);

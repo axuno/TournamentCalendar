@@ -14,17 +14,21 @@ public class GeoLocation : ControllerBase
 {
     private readonly UserLocationService _locationService;
     private readonly IAppDb _appDb;
+    private readonly ILoggerFactory _loggerFactory;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="GeoLocation"/> class.
     /// </summary>
     /// <param name="appDb"></param>
     /// <param name="locationService"></param>
-    public GeoLocation(IAppDb appDb, UserLocationService locationService, IConfiguration configuration)
+    /// <param name="configuration"></param>
+    /// <param name="loggerFactory"></param>
+    public GeoLocation(IAppDb appDb, UserLocationService locationService, IConfiguration configuration, ILoggerFactory loggerFactory)
     {
         _appDb = appDb;
         _locationService = locationService;
         Configuration = configuration;
+        _loggerFactory = loggerFactory;
     }
 
     [HttpGet("")]
@@ -32,7 +36,7 @@ public class GeoLocation : ControllerBase
     {
         ViewBag.TitleTagText = "Entfernungen anzeigen";
         var model = new EditModel();
-        model.SetAppDb(_appDb);
+        model.SetAppDb(_appDb).SetLogger(_loggerFactory.CreateLogger<EditModel>());
         return View(ViewName.GeoLocation.Index, model);
     }
 
@@ -54,7 +58,7 @@ public class GeoLocation : ControllerBase
     [HttpPost(nameof(Location))]
     public async Task<IActionResult> Location([FromForm] EditModel model)
     {
-        model.SetAppDb(_appDb);
+        model.SetAppDb(_appDb).SetLogger(_loggerFactory.CreateLogger<EditModel>());
 
         if (!ModelState.IsValid)
             return View(ViewName.GeoLocation.Index, model);

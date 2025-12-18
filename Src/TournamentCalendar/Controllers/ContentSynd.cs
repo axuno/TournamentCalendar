@@ -23,8 +23,8 @@ public class ContentSynd : ControllerBase
         if (!ModelState.IsValid)
         {
             referrer = string.Empty;
-            xForwardedFor = Array.Empty<string>();
-            remoteAddr = Array.Empty<string>();
+            xForwardedFor = [];
+            remoteAddr = [];
         }
         // Cross Origin Request Sharing (CORS) - allow request from any domain:
         Response.Headers.Append("Access-Control-Allow-Origin", "*");
@@ -48,8 +48,8 @@ public class ContentSynd : ControllerBase
         if (!ModelState.IsValid)
         {
             referrer = string.Empty;
-            xForwardedFor = Array.Empty<string>();
-            remoteAddr = Array.Empty<string>();
+            xForwardedFor = [];
+            remoteAddr = [];
         }
 
         Response.Headers.Append("Access-Control-Allow-Origin", "*");

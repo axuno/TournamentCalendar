@@ -3,6 +3,7 @@ using TournamentCalendarDAL.HelperClasses;
 using TournamentCalendar.Views;
 using TournamentCalendar.Library;
 using TournamentCalendar.Data;
+using TournamentCalendar.Models.InfoService;
 using TournamentCalendar.Services;
 
 namespace TournamentCalendar.Controllers;
@@ -12,17 +13,19 @@ public class InfoService : ControllerBase
 {
     private readonly string _domainName;
     private readonly IMailMergeService _mailMergeService;
+    private readonly ILoggerFactory _loggerFactory;
     private readonly ILogger<InfoService> _logger;
     private readonly IAppDb _appDb;
     private readonly UserLocationService _locationService;
 
-    public InfoService(IAppDb appDb, IWebHostEnvironment hostingEnvironment, IConfiguration configuration, ILogger<InfoService> logger, UserLocationService locationService, IMailMergeService mailMergeService) : base(hostingEnvironment, configuration)
+    public InfoService(IAppDb appDb, IWebHostEnvironment hostingEnvironment, IConfiguration configuration, ILoggerFactory loggerFactory, UserLocationService locationService, IMailMergeService mailMergeService) : base(hostingEnvironment, configuration)
     {
         _appDb = appDb;
         _locationService = locationService;
         _domainName = configuration["DomainName"]!;
         _mailMergeService = mailMergeService;
-        _logger = logger;
+        _loggerFactory = loggerFactory;
+        _logger = loggerFactory.CreateLogger<InfoService>();
     }
 
     [HttpGet("")]
@@ -36,7 +39,7 @@ public class InfoService : ControllerBase
     {
         ViewBag.TitleTagText = "Volley-News abonnieren";
         var model = new Models.InfoService.EditModel { EditMode = Models.InfoService.EditMode.New };
-        model.SetAppDb(_appDb);
+        model.SetAppDb(_appDb).SetLogger(_loggerFactory.CreateLogger<EditModel>());
         return View(ViewName.InfoService.Edit, model);
     }
 
@@ -56,7 +59,7 @@ public class InfoService : ControllerBase
         }
 
         var model = new Models.InfoService.EditModel { EditMode = Models.InfoService.EditMode.Change };
-        model.SetAppDb(_appDb, guid);
+        model.SetAppDb(_appDb, guid).SetLogger(_loggerFactory.CreateLogger<EditModel>());
 
         if (!model.IsNew && !_locationService.GetLocation().IsSet)
             _locationService.SetGeoLocation(new UserLocation(model.Latitude, model.Longitude));
@@ -74,7 +77,7 @@ public class InfoService : ControllerBase
     {
         ViewBag.TitleTagText = "Volley-News abonnieren";
 
-        model.SetAppDb(_appDb);
+        model.SetAppDb(_appDb).SetLogger(_loggerFactory.CreateLogger<EditModel>());
         _ = await TryUpdateModelAsync(model);
         
         model.EditMode = string.IsNullOrWhiteSpace(model.Guid) ? Models.InfoService.EditMode.New : Models.InfoService.EditMode.Change;

@@ -14,9 +14,9 @@ public class ListModel
 
     public IList<Exception> Errors { get; internal set; } = new List<Exception>();
 
-    public DateTime[] CollectionDates { get; internal set; } = Array.Empty<DateTime>();
+    public DateTime[] CollectionDates { get; internal set; } = [];
 
     public DateTime LastCollectionDate { get; internal set; }
 
-    public List<string> ExistInCalendar { get; internal set; } = new();
+    public List<string> ExistInCalendar { get; internal set; } = [];
 }

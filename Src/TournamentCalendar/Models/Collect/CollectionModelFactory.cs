@@ -33,7 +33,7 @@ public class CollectionModelFactory
         }
         catch (Exception e)
         {
-            listModel = new ListModel { Errors = new[] { e }, CollectionDates = new[] { DateTime.MinValue }, LastCollectionDate = DateTime.MinValue };
+            listModel = new ListModel { Errors = [e], CollectionDates = [DateTime.MinValue], LastCollectionDate = DateTime.MinValue };
         }
 
         return listModel;
@@ -45,7 +45,7 @@ public class CollectionModelFactory
 
         var oldestEntryDate = model.NewTourneys.OrderBy(t => t.Date).First(t => t.Date != null).Date!.Value;
 
-        model.ExistInCalendar = new List<string>();
+        model.ExistInCalendar = [];
 
         var calendarEntries = await _appDb.CalendarRepository.GetActiveOrDeletedTournaments(oldestEntryDate, CancellationToken.None);
 
@@ -54,12 +54,12 @@ public class CollectionModelFactory
             var calendarSimilar = calendarEntries.Where(t => t.DateFrom.Date == tourney.Date?.Date && t.PostalCode == tourney.PostalCode).ToList();
             if (!calendarSimilar.Any() || tourney.Name == null) continue;
 
-            var tourneyWords = tourney.Name.Split(new[] { ' ', '.', '-' },
+            var tourneyWords = tourney.Name.Split([' ', '.', '-'],
                 StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
 
             foreach (var calendarEntry in calendarSimilar)
             {
-                var tournamentWords = calendarEntry.TournamentName.Split(new[] { ' ', '.', '-' },
+                var tournamentWords = calendarEntry.TournamentName.Split([' ', '.', '-'],
                     StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
 
                 var wordMatches = tournamentWords.Intersect(tourneyWords, StringComparer.InvariantCultureIgnoreCase).ToList();

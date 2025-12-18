@@ -186,7 +186,7 @@ public class CollectingTests
         
         foreach (var collector in GetAllCollectorClassInstances())
         {
-            yield return new object[] { collector, numOfLinks[collector.GetType().Name] };
+            yield return [collector, numOfLinks[collector.GetType().Name]];
         }
     }
 }

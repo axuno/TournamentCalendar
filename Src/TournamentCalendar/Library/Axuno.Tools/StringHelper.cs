@@ -437,17 +437,17 @@ public static class StringHelper
     /// <returns>A string.</returns>
     public static string TitleCase(string input, bool ignoreShortWords)
     {
-        List<string> ignoreWords = new();
+        List<string> ignoreWords = [];
         if (ignoreShortWords)
         {
             //TODO: Add more ignore words?
-            ignoreWords = new List<string>
-            {
+            ignoreWords =
+            [
                 "a",
                 "is",
                 "was",
                 "the"
-            };
+            ];
         }
 
         var tokens = input.Split(' ');
