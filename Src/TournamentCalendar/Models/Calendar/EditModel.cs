@@ -554,12 +554,12 @@ public class EditModel : CalendarEntity, IValidatableObject
 
         if (NumPlayersMale + NumPlayersFemale > 6)
         {
-            errors.Add(new ValidationResult("Zu viele Spieler", new []{nameof(NumPlayersMale), nameof(NumPlayersFemale)}));
+            errors.Add(new ValidationResult("Zu viele Spieler", [nameof(NumPlayersMale), nameof(NumPlayersFemale)]));
         }
 
         if (NumPlayersMale + NumPlayersFemale < 2)
         {
-            errors.Add(new ValidationResult("Zu wenige Spieler", new[] { nameof(NumPlayersMale), nameof(NumPlayersFemale) }));
+            errors.Add(new ValidationResult("Zu wenige Spieler", [nameof(NumPlayersMale), nameof(NumPlayersFemale)]));
         }
 
         return errors;

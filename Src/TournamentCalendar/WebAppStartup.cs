@@ -270,10 +270,7 @@ public static class WebAppStartup
         var jsNLogConfiguration =
             new JsnlogConfiguration
             {
-                loggers = new List<Logger>
-                {
-                    new() { name = "JsLogger" }
-                }
+                loggers = [new() { name = "JsLogger" }]
             };
         app.UseJSNLog(new LoggingAdapter(loggerFactory), jsNLogConfiguration);
 

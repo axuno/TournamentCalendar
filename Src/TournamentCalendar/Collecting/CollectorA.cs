@@ -33,7 +33,7 @@ public class CollectorA : CollectorBase
         {
             var dateString = tableRow.QuerySelector<IHtmlAnchorElement>("td:nth-child(1) a")?.Text;
             if (string.IsNullOrEmpty(dateString)) continue;
-            DateTime.TryParseExact(dateString, new[] {"dd'.'MM'.'yyyy"},
+            DateTime.TryParseExact(dateString, ["dd'.'MM'.'yyyy"],
                 CultureInfo.InvariantCulture,
                 DateTimeStyles.None,
                 out var date);

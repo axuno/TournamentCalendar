@@ -36,7 +36,7 @@ public class CollectorB : CollectorBase
             var link = BaseAddress.AbsoluteUri.ConcatPath(h3Link?.PathName.Trim() ?? string.Empty);
             var infoBlock = h3Header.NextElementSibling?.QuerySelector("div.seven.column")?.TextContent.Trim();
             var blocks = infoBlock?.Split(" - ", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-            DateTime.TryParseExact((blocks?.FirstOrDefault())?[..10], new[] {"dd'.'MM'.'yyyy"},
+            DateTime.TryParseExact((blocks?.FirstOrDefault())?[..10], ["dd'.'MM'.'yyyy"],
                 CultureInfo.InvariantCulture,
                 DateTimeStyles.None,
                 out var date);

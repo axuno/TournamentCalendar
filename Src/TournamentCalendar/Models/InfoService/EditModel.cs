@@ -1,12 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Axuno.Tools.GeoSpatial;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Primitives;
 using TournamentCalendar.Resources;
 using TournamentCalendar.Data;
+using TournamentCalendar.Library;
 using TournamentCalendarDAL.EntityClasses;
 using TournamentCalendarDAL.HelperClasses;
-using TournamentCalendar.Library;
 
 namespace TournamentCalendar.Models.InfoService;
 
@@ -19,8 +20,9 @@ public enum EditMode
 public class EditModel : InfoServiceEntity, IValidatableObject
 {
     private bool _isAddressEntered = true;
+    private ILogger<EditModel>? _logger;
     private IAppDb? _appDb;
-    internal readonly string[] CountryIds = new[] { "DE", "AT", "CH", "LI", "IT", "NL", "BE", "LU", "FR", "PL", "DK", "CZ", "SK" };
+    internal readonly string[] CountryIds = ["DE", "AT", "CH", "LI", "IT", "NL", "BE", "LU", "FR", "PL", "DK", "CZ", "SK"];
 
     public EditModel()
     {
@@ -32,16 +34,24 @@ public class EditModel : InfoServiceEntity, IValidatableObject
         IsAddressEntered = true;
     }
 
-    public void SetAppDb(IAppDb appDb)
+    public EditModel SetAppDb(IAppDb appDb)
     {
         _appDb = appDb;
+        return this;
     }
 
-    public void SetAppDb(IAppDb appDb, string guid)
+    public EditModel SetAppDb(IAppDb appDb, string guid)
     {
         _appDb = appDb;
         LoadData(guid);
         IsAddressEntered = true;
+        return this;
+    }
+
+    public EditModel SetLogger(ILogger<EditModel> logger)
+    {
+        _logger = logger;
+        return this;
     }
 
     private bool LoadData(string guid)
@@ -64,18 +74,34 @@ public class EditModel : InfoServiceEntity, IValidatableObject
                 // try to get longitude and latitude by Google Maps API
                 var completeAddress = string.Join(", ", ZipCode, City, Street);
 
-                var location = await Axuno.Tools.GeoSpatial.GoogleGeo.GetLocation(CountryId, completeAddress, googleConfig.ServiceApiKey, TimeSpan.FromSeconds(15));
+                var location = await GoogleGeo.GetLocation(CountryId, completeAddress, googleConfig.ServiceApiKey, TimeSpan.FromSeconds(15));
                 if (location.GeoLocation.Latitude != null && location.GeoLocation.Latitude.Degrees > 1 && location.GeoLocation.Longitude?.Degrees > 1)
                 {
+                    if (location.GeoLocation.LocationType != GoogleGeo.LocationType.RoofTop)
+                    {
+                        _logger?.LogWarning(
+                            "Location type is {LocationType} for CountryId='{CountryId}', ZipCode='{ZipCode}', City='{City}', Street='{Street}', GoogleGeo status: {StatusText}",
+                            location.GeoLocation.LocationType, CountryId, ZipCode, City, Street, location.StatusText);
+                    }
+
                     Longitude = location.GeoLocation.Longitude.TotalDegrees;
                     Latitude = location.GeoLocation.Latitude.TotalDegrees;
                 }
+                else
+                {
+                    _logger?.LogWarning(
+                        "Could not get user location for CountryId='{CountryId}', ZipCode='{ZipCode}', City='{City}', Street='{Street}', GoogleGeo status: {StatusText}",
+                        CountryId, ZipCode, City, Street, location.StatusText);
+                    return false;
+                }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _logger?.LogError(ex, "Error while trying to get user location");
                 return false;
             }
         }
+
         return true;
     }
 
@@ -129,7 +155,7 @@ public class EditModel : InfoServiceEntity, IValidatableObject
     {
         /*
          * ASP.NET MVC assumes that if you’re rendering a View in response to an HTTP POST, 
-         * and you’re using the Html Helpers, then you are most likely to be redisplaying a 
+         * and you’re using the Html Helpers, then you are most likely to be re-displaying a 
          * form that has failed validation. Therefore, the Html Helpers actually check in ModelState 
          * for the value to display in a field BEFORE they look in the Model. This enables them to 
          * redisplay erroneous data that was entered by the user, and a matching error message if needed.
@@ -266,7 +292,7 @@ public class EditModel : InfoServiceEntity, IValidatableObject
 
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {
-        if(_appDb == null) return Enumerable.Empty<ValidationResult>();
+        if(_appDb == null) return [];
 
         // Will be called only after individual fields are valid
         var errors = new List<ValidationResult>();
@@ -282,7 +308,7 @@ public class EditModel : InfoServiceEntity, IValidatableObject
             // email address was found in a different record than the current one
             if (info.Guid != Guid)
             {
-                errors.Add(new ValidationResult($"E-Mail '{email}' ist bereits registriert", new[] { Email }));
+                errors.Add(new ValidationResult($"E-Mail '{email}' ist bereits registriert", [Email]));
 
                 // the controller will decide what to do now
                 ExistingEntryWithSameEmail = info;
