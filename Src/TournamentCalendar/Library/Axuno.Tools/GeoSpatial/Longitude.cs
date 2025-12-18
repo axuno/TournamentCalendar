@@ -1,6 +1,4 @@
-﻿using System.Globalization;
-
-namespace Axuno.Tools.GeoSpatial;
+﻿namespace Axuno.Tools.GeoSpatial;
 
 /// <summary>
 /// Represents a longitude ("x" axis) co-ordinate.

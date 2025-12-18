@@ -1,6 +1,4 @@
-﻿using System.Data.SqlClient;
-
-namespace TournamentCalendar.Middleware;
+﻿namespace TournamentCalendar.Middleware;
 
 /// <summary>
 /// The <see cref="TaskCanceledException"/> is commonly thrown when the connection to

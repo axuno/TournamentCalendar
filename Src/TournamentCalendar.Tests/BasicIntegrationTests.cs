@@ -12,26 +12,35 @@ using TournamentCalendarDAL.HelperClasses;
 
 namespace TournamentCalendar.Tests;
 
+//[NonParallelizable]
 [TestFixture]
 public class BasicIntegrationTests
 {
-    private readonly WebApplicationFactory<Program> _factory;
-    private readonly HttpClient _client;
-    private readonly TestServer _server;
+    // OneTimeSetUp to create WebApplicationFactory only once for all tests
+    private WebApplicationFactory<Program> _factory = null!;
+    private HttpClient _client = null!;
+    private TestServer _server = null!;
     
-    private readonly string _credentials = @"{
-    // Password is 'password'
-    ""Authentication"": [
-        {
-            ""UserName"": ""admin"",
-            ""Email"": ""admin@tourney.net"",
-            ""PasswordHash"": ""W6ph5Mm5Pz8GgiULbPgzG37mj9g="",
-            ""Roles"": [ ""Editor"", ""Admin"" ]
-        }
-    ]
-}";
-    public BasicIntegrationTests()
+    private readonly string _credentials =
+           """
+           {
+               // Password is 'password'
+               "Authentication": [
+                   {
+                       "UserName": "admin",
+                       "Email": "admin@tourney.net",
+                       "PasswordHash": "W6ph5Mm5Pz8GgiULbPgzG37mj9g=",
+                       "Roles": [ "Editor", "Admin" ]
+                   }
+               ]
+           }
+           """;
+
+    [OneTimeSetUp]
+    public void GlobalSetup()
     {
+        // Only called once for all tests in this class
+        // to avoid race conditions during parallel test execution
         _factory = new TournamentAppFactory(Environments.Development)
             .WithWebHostBuilder(
                 builder =>

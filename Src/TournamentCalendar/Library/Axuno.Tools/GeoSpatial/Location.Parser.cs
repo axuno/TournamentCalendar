@@ -1,5 +1,4 @@
-﻿using System.Globalization;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
 namespace Axuno.Tools.GeoSpatial;
 
@@ -9,7 +8,7 @@ namespace Axuno.Tools.GeoSpatial;
 public partial class Location
 {
     // Default timeout value for the regular expressions
-    private static int _regExTimeout = 1000;
+    private static readonly int RegExTimeout = 1000;
 
     /// <summary>Parsing latitude and longitude information.</summary>
     /// <example>
@@ -86,15 +85,15 @@ public partial class Location
         private const RegexOptions Options =
             RegexOptions.Compiled | RegexOptions.IgnorePatternWhitespace | RegexOptions.IgnoreCase;
 
-        private static readonly Regex DegreeRegex = new(DegreePattern, Options, TimeSpan.FromMilliseconds(_regExTimeout));
+        private static readonly Regex DegreeRegex = new(DegreePattern, Options, TimeSpan.FromMilliseconds(RegExTimeout));
 
-        private static readonly Regex DegreeMinuteRegex = new(DegreeMinutePattern, Options, TimeSpan.FromMilliseconds(_regExTimeout));
+        private static readonly Regex DegreeMinuteRegex = new(DegreeMinutePattern, Options, TimeSpan.FromMilliseconds(RegExTimeout));
 
-        private static readonly Regex DegreeMinuteSecondRegex = new(DegreeMinuteSecondPattern, Options, TimeSpan.FromMilliseconds(_regExTimeout));
+        private static readonly Regex DegreeMinuteSecondRegex = new(DegreeMinuteSecondPattern, Options, TimeSpan.FromMilliseconds(RegExTimeout));
 
         private static readonly Regex IsoRegex =
             new(IsoPattern,
-                RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.IgnorePatternWhitespace, TimeSpan.FromMilliseconds(_regExTimeout));
+                RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.IgnorePatternWhitespace, TimeSpan.FromMilliseconds(RegExTimeout));
 
         private static Location? CreateLocation(Angle? latitude, Angle? longitude, double? altitude)
         {

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Globalization;
+﻿using System.Collections;
 using System.Text;
 using System.Xml;
 using System.Xml.Schema;
@@ -14,7 +12,7 @@ namespace Axuno.Tools.GeoSpatial;
 /// </summary>
 public sealed class LocationCollection : ICollection<Location>, IXmlSerializable
 {
-    private readonly List<Location> locations = new();
+    private readonly List<Location> locations = [];
 
     /// <summary>
     /// Gets the number of Locations contained in this instance.

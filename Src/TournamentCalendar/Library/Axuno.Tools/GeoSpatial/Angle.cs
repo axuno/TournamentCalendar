@@ -1,6 +1,4 @@
-﻿using System.Globalization;
-
-namespace Axuno.Tools.GeoSpatial;
+﻿namespace Axuno.Tools.GeoSpatial;
 
 /// <summary>
 /// Stores an angle and allows conversion to different formats.
