@@ -3,7 +3,6 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using TournamentCalendar.Models.AccountViewModels;
-using TournamentCalendar.Services;
 using TournamentCalendar.Views;
 
 namespace TournamentCalendar.Controllers;
@@ -43,17 +42,17 @@ public class Auth : ControllerBase
                     new UTF8Encoding().GetBytes(model.Password ?? string.Empty)));
 
         var users = new List<Library.Authentication.User>();
-        _configuration.Bind("Authentication", users);
+        _configuration.Bind("Authentication", users); // Load users from configuration
 
-        foreach (var user in users)
+        foreach (var user in users) // NOSONAR - users not always empty
         {
             if ((user.UserName == model.EmailOrUsername || user.Email == model.EmailOrUsername) && user.PasswordHash== hashedPassword)
             {
-                foundUser = user;
+                foundUser = user; 
             }
         }
 
-        if (foundUser == null)
+        if (foundUser == null) // NOSONAR - not always null
         {
             ViewData["ReturnUrl"] = returnUrl;
             ModelState.AddModelError("", "Benutzer nicht gefunden");
