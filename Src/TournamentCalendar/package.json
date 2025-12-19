@@ -1,5 +1,5 @@
 {
-    "version": "1.0.0",
+    "version": "5.0.0",
     "name": "tournament-calendar",
     "private": true,
     "description": "volleyball-turnier.de",
@@ -8,7 +8,7 @@
         "test": "echo \"Error: no test specified\" && exit 1"
     },
   "devDependencies": {
-    "autoprefixer": "10.4.22",
+    "autoprefixer": "10.4.23",
     "bootstrap": "5.3.8",
     "bootstrap-icons": "1.13.1",
     "cssnano": "7.1.2",
@@ -21,8 +21,8 @@
     "@lodder/grunt-postcss": "3.1.1",
     "grunt-sass": "4.0.1",
     "jsnlog": "^2.30.0",
-    "sass": "1.94.2",
-    "@eonasdan/tempus-dominus": "6.9.6",
+    "sass": "1.97.0",
+    "@eonasdan/tempus-dominus": "6.10.4",
     "@popperjs/core": "2.11.8"
   },
     "dependencies": {
