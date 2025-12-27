@@ -2,8 +2,8 @@
   <PropertyGroup>
     <Product>TournamentCalendar</Product>
     <TargetFramework>net10.0</TargetFramework>
-    <Version>5.0.2</Version>
-    <FileVersion>5.0.2</FileVersion>
+    <Version>5.0.3</Version>
+    <FileVersion>5.0.3</FileVersion>
     <AssemblyVersion>5.0.0.0</AssemblyVersion><!--only update AssemblyVersion with major releases -->
     <EnableDefaultContentItems>true</EnableDefaultContentItems>
     <Authors>axuno gGmbH</Authors>
@@ -68,7 +68,7 @@
     <PackageReference Include="NLog.Web.AspNetCore" Version="6.1.0" />
     <PackageReference Include="StackifyMiddleware" Version="3.3.3.4767" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="10.0.1" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="10.0.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="10.0.1" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Update="Models\Error\StatusCodes.de.resx">
