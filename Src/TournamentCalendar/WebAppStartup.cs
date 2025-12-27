@@ -153,8 +153,8 @@ public static class WebAppStartup
             .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme,
                 options =>
                 {
-                    options.LoginPath = new PathString("/auth/signin");
-                    options.LogoutPath = new PathString("/auth/signoff");
+                    options.LoginPath = new PathString("/sign-in");
+                    options.LogoutPath = new PathString("/sign-out");
                     options.AccessDeniedPath = new PathString("/auth/denied");
                     options.Cookie.Name = ".TournamentsAuth";
                 });
