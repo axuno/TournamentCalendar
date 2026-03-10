@@ -526,7 +526,7 @@ public class EditModel : CalendarEntity, IValidatableObject
         public decimal Bond { get; set; }
 
         [Display(Name = "'Weitere Infos'")]
-        [MaxLength(1024, ErrorMessage = "{0}: Max. {1} Zeichen")]
+        [MaxLength(2048, ErrorMessage = "{0}: Max. {1} Zeichen")]
         public string? Info { get; set; }
 
         [Display(Name="'Gemeldet von' Name")]

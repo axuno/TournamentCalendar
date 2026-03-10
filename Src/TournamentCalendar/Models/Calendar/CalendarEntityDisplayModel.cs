@@ -43,11 +43,18 @@ public class CalendarEntityDisplayModel : CalendarEntity
 
     public string GetTournamentTypeShort()
     {
-        if (NumPlayersFemale == 0)
+        // Male, but not female players, exact (!) number is selected
+        if (NumPlayersMale > 0 && NumPlayersFemale == 0 && !(IsMinPlayersFemale))
             return "Herren";
-        if (NumPlayersMale == 0)
+        // Female, but not male players, exact (!) number is selected
+        if (NumPlayersFemale > 0 && NumPlayersMale == 0 && !(IsMinPlayersMale))
             return "Damen";
-        if (NumPlayersMale > 0 && NumPlayersFemale > 0)
+        // A number of males, any number of females
+        if ((NumPlayersMale > 0 && NumPlayersFemale == 0 && IsMinPlayersFemale) ||
+            // A number of females, any number of males
+            (NumPlayersFemale > 0 && NumPlayersMale == 0 && IsMinPlayersMale))
+            return "Beliebig";
+        if (NumPlayersFemale > 0 && NumPlayersMale > 0)
             return "Mixed";
 
         return string.Empty;
@@ -55,12 +62,19 @@ public class CalendarEntityDisplayModel : CalendarEntity
 
     public string GetTournamentType()
     {
-        if (NumPlayersFemale == 0)
+        // Male, but not female players, exact (!) number is selected
+        if (NumPlayersMale > 0 && NumPlayersFemale == 0 && !(IsMinPlayersFemale))
             return "Herren";
-        if (NumPlayersMale == 0)
+        // Female, but not male players, exact (!) number is selected
+        if (NumPlayersFemale > 0 && NumPlayersMale == 0 && !(IsMinPlayersMale))
             return "Damen";
+        // A number of males, any number of females
+        if ((NumPlayersMale > 0 && NumPlayersFemale == 0 && IsMinPlayersFemale) ||
+            // A number of females, any number of males
+            (NumPlayersFemale > 0 && NumPlayersMale == 0 && IsMinPlayersMale))
+            return "Beliebig";
         if (NumPlayersMale > 0 && NumPlayersFemale > 0 && NumPlayersMale + NumPlayersFemale == 6)
-            return "Mixed";
+            return "6er-Mixed";
         if (NumPlayersMale > 0 && NumPlayersFemale > 0 && NumPlayersMale + NumPlayersFemale == 4)
             return "4er-Mixed";
         if (NumPlayersMale > 0 && NumPlayersFemale > 0 && NumPlayersMale + NumPlayersFemale == 2)
@@ -76,15 +90,19 @@ public class CalendarEntityDisplayModel : CalendarEntity
         var tournamentType = GetTournamentType();
 				
         if (NumPlayersMale > 0 && NumPlayersFemale > 0 && !IsMinPlayersFemale && !IsMinPlayersMale)
-            return $"{tournamentType} - {NumPlayersMale} Herr{(NumPlayersMale > 1 ? "en" : "")} + {NumPlayersFemale} Dame{(NumPlayersFemale > 1 ? "n" : "")}";
+            return $"{tournamentType}{(tournamentType.Length > 0 ? " - " : "")}{NumPlayersMale} Herr{(NumPlayersMale > 1 ? "en" : "")} + {NumPlayersFemale} Dame{(NumPlayersFemale > 1 ? "n" : "")}";
+
+        if ((NumPlayersMale > 0 && NumPlayersFemale == 0 && IsMinPlayersFemale) ||
+            (NumPlayersFemale > 0 && NumPlayersMale == 0 && IsMinPlayersMale))
+            return $"{tournamentType}{(tournamentType.Length > 0 ? " - " : "")}{NumPlayersMale + NumPlayersFemale} Spielerinnen oder Spieler";
 
         if (NumPlayersMale > 0 && NumPlayersFemale > 0 && IsMinPlayersFemale)
-            return $"{tournamentType} - {NumPlayersMale + NumPlayersFemale} Spieler, mind. {NumPlayersFemale} Dame{(NumPlayersFemale > 1 ? "n" : "")}";
+            return $"{tournamentType}{(tournamentType.Length > 0 ? " - " : "")}{NumPlayersMale + NumPlayersFemale} Spieler, mind. {NumPlayersFemale} Dame{(NumPlayersFemale > 1 ? "n" : "")}";
 
-        if (NumPlayersMale > 0 && NumPlayersFemale > 0 && IsMinPlayersFemale)
-            return $"{tournamentType} - {NumPlayersMale + NumPlayersFemale} Spieler, mind. {NumPlayersMale} Herr{(NumPlayersMale > 1 ? "en" : "")}";
+        if (NumPlayersMale > 0 && NumPlayersFemale > 0 && IsMinPlayersMale)
+            return $"{tournamentType}{(tournamentType.Length > 0 ? " - " : "")}{NumPlayersMale + NumPlayersFemale} Spielerinnen, mind. {NumPlayersMale} Herr{(NumPlayersMale > 1 ? "en" : "")}";
 
-        return $"{tournamentType} - {NumPlayersMale + NumPlayersFemale} Spieler{(NumPlayersFemale > 0 && NumPlayersMale == 0 ? "innen" : "")}";
+        return $"{tournamentType}{(tournamentType.Length > 0 ? " - " : "")}{NumPlayersMale + NumPlayersFemale} Spieler{(NumPlayersFemale > 0 && NumPlayersMale == 0 ? "innen" : "")}";
     }
 
     public string GetPlayingAbility()

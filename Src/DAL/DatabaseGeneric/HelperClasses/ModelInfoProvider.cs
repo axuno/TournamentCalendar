@@ -70,7 +70,7 @@ namespace TournamentCalendarDAL.HelperClasses
 			this.AddElementFieldInfo("CalendarEntity", "EntryFee", typeof(System.Decimal), false, false, false, false,  (int)CalendarFieldIndex.EntryFee, 0, 2, 5);
 			this.AddElementFieldInfo("CalendarEntity", "Guid", typeof(System.String), false, false, false, true,  (int)CalendarFieldIndex.Guid, 50, 0, 0);
 			this.AddElementFieldInfo("CalendarEntity", "Id", typeof(System.Int64), true, false, true, false,  (int)CalendarFieldIndex.Id, 0, 0, 19);
-			this.AddElementFieldInfo("CalendarEntity", "Info", typeof(System.String), false, false, false, true,  (int)CalendarFieldIndex.Info, 1024, 0, 0);
+			this.AddElementFieldInfo("CalendarEntity", "Info", typeof(System.String), false, false, false, true,  (int)CalendarFieldIndex.Info, 2048, 0, 0);
 			this.AddElementFieldInfo("CalendarEntity", "IsMinPlayersFemale", typeof(System.Boolean), false, false, false, false,  (int)CalendarFieldIndex.IsMinPlayersFemale, 0, 0, 0);
 			this.AddElementFieldInfo("CalendarEntity", "IsMinPlayersMale", typeof(System.Boolean), false, false, false, false,  (int)CalendarFieldIndex.IsMinPlayersMale, 0, 0, 0);
 			this.AddElementFieldInfo("CalendarEntity", "Latitude", typeof(Nullable<System.Double>), false, false, false, true,  (int)CalendarFieldIndex.Latitude, 0, 0, 38);
