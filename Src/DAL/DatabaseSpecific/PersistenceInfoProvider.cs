@@ -64,7 +64,7 @@ namespace TournamentCalendarDAL.DatabaseSpecific
 			this.AddElementFieldMapping("CalendarEntity", "EntryFee", "EntryFee", false, "Decimal", 0, 5, 2, false, "", null, typeof(System.Decimal), 13);
 			this.AddElementFieldMapping("CalendarEntity", "Guid", "Guid", true, "NVarChar", 50, 0, 0, false, "", null, typeof(System.String), 14);
 			this.AddElementFieldMapping("CalendarEntity", "Id", "Id", false, "BigInt", 0, 19, 0, true, "SCOPE_IDENTITY()", null, typeof(System.Int64), 15);
-			this.AddElementFieldMapping("CalendarEntity", "Info", "Info", true, "NVarChar", 1024, 0, 0, false, "", null, typeof(System.String), 16);
+			this.AddElementFieldMapping("CalendarEntity", "Info", "Info", true, "NVarChar", 2048, 0, 0, false, "", null, typeof(System.String), 16);
 			this.AddElementFieldMapping("CalendarEntity", "IsMinPlayersFemale", "IsMinPlayersFemale", false, "Bit", 0, 0, 0, false, "", null, typeof(System.Boolean), 17);
 			this.AddElementFieldMapping("CalendarEntity", "IsMinPlayersMale", "IsMinPlayersMale", false, "Bit", 0, 0, 0, false, "", null, typeof(System.Boolean), 18);
 			this.AddElementFieldMapping("CalendarEntity", "Latitude", "Latitude", true, "Float", 0, 38, 0, false, "", null, typeof(System.Double), 19);

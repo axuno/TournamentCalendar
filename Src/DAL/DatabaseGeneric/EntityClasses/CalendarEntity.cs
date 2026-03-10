@@ -302,7 +302,7 @@ namespace TournamentCalendarDAL.EntityClasses
 		}
 
 		/// <summary>The Info property of the Entity Calendar<br/><br/></summary>
-		/// <remarks>Mapped on  table field: "Calendar"."Info".<br/>Table field type characteristics (type, precision, scale, length): NVarChar, 0, 0, 1024.<br/>Table field behavior characteristics (is nullable, is PK, is identity): true, false, false</remarks>
+		/// <remarks>Mapped on  table field: "Calendar"."Info".<br/>Table field type characteristics (type, precision, scale, length): NVarChar, 0, 0, 2048.<br/>Table field behavior characteristics (is nullable, is PK, is identity): true, false, false</remarks>
 		public virtual System.String Info
 		{
 			get { return (System.String)GetValue((int)CalendarFieldIndex.Info, true); }

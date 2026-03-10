@@ -120,7 +120,7 @@
         <PresetName Value="SD.Presets.Adapter.General.Netstandard" />
         <RootNamespace Value="TournamentCalendarDAL" />
         <TemplateGroup Value="Adapter" />
-        <LastGenerationCycleStartedOn Value="2024-09-18T20:25:51.5110475Z" />
+        <LastGenerationCycleStartedOn Value="2026-03-10T12:34:50.992625Z" />
         <TemplateBindings>
           <Binding Name="SD.TemplateBindings.SharedTemplates.Net8" />
           <Binding Name="SD.TemplateBindings.SharedTemplates" />
@@ -201,7 +201,7 @@
           <Field Name="EntryFee" Type="decimal" Precision="5" Scale="2" />
           <Field Name="Guid" Type="string" IsOptional="true" MaxLength="50" />
           <Field Name="Id" Type="long" IsReadOnly="true" Precision="11" IsPrimaryKey="true" />
-          <Field Name="Info" Type="string" IsOptional="true" MaxLength="1024" />
+          <Field Name="Info" Type="string" IsOptional="true" MaxLength="2048" />
           <Field Name="IsMinPlayersFemale" Type="bool" Precision="1" />
           <Field Name="IsMinPlayersMale" Type="bool" Precision="1" />
           <Field Name="Latitude" Type="double" IsOptional="true" Precision="38" />
@@ -341,7 +341,7 @@
       <Catalogs>
         <Catalog Name="TournamentCalendar">
           <Schemas>
-            <Schema Name="dbo" SyncSource="2" LastSyncWithDatabase="2024-09-18T20:23:52.6701542Z">
+            <Schema Name="dbo" SyncSource="2" LastSyncWithDatabase="2026-03-10T12:33:30.8301076Z">
               <Tables>
                 <Table Name="Calendar">
                   <PkConstraintName Name="Calendar_pk" />
@@ -369,7 +369,7 @@
                     <Field Name="PlayingAbilityTo" Ordinal="21" DbType="0" Precision="19" />
                     <Field Name="EntryFee" Ordinal="22" DbType="5" Precision="5" Scale="2" />
                     <Field Name="Bond" Ordinal="23" DbType="5" Precision="5" Scale="2" />
-                    <Field Name="Info" Ordinal="24" IsOptional="true" HasDefaultValue="true" DefaultValue="''" DbType="12" Length="1024" />
+                    <Field Name="Info" Ordinal="24" IsOptional="true" HasDefaultValue="true" DefaultValue="''" DbType="12" Length="2048" />
                     <Field Name="Organizer" Ordinal="25" IsOptional="true" HasDefaultValue="true" DefaultValue="''" DbType="12" Length="255" />
                     <Field Name="ContactAddress" Ordinal="26" IsOptional="true" HasDefaultValue="true" DefaultValue="''" DbType="12" Length="1024" />
                     <Field Name="Email" Ordinal="27" IsOptional="true" HasDefaultValue="true" DefaultValue="''" DbType="12" Length="255" />
