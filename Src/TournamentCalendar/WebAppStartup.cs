@@ -147,6 +147,29 @@ public static class WebAppStartup
 
         #endregion
 
+        #region *** Response compression for non-SDK static files (e.g. /lib/*) ***
+
+        // MapStaticAssets() serves pre-compressed .br/.gz for SDK-managed assets (e.g. css/site.min.css).
+        // UseResponseCompression handles on-the-fly compression for all other files (e.g. /lib/bootstrap/).
+        services.AddResponseCompression(options =>
+        {
+            options.EnableForHttps = true;
+            options.Providers.Add<Microsoft.AspNetCore.ResponseCompression.BrotliCompressionProvider>();
+            options.Providers.Add<Microsoft.AspNetCore.ResponseCompression.GzipCompressionProvider>();
+            options.MimeTypes = Microsoft.AspNetCore.ResponseCompression.ResponseCompressionDefaults.MimeTypes.Concat(
+            [
+                "application/javascript",
+                "text/css",
+                "image/svg+xml"
+            ]);
+        });
+        services.Configure<Microsoft.AspNetCore.ResponseCompression.BrotliCompressionProviderOptions>(o =>
+            o.Level = System.IO.Compression.CompressionLevel.Fastest);
+        services.Configure<Microsoft.AspNetCore.ResponseCompression.GzipCompressionProviderOptions>(o =>
+            o.Level = System.IO.Compression.CompressionLevel.Fastest);
+
+        #endregion
+
         #region *** Cookie Authentication ***
 
         services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -158,10 +181,8 @@ public static class WebAppStartup
                     options.AccessDeniedPath = new PathString("/auth/denied");
                     options.Cookie.Name = ".TournamentsAuth";
                 });
-        
-        #endregion
 
-        #region *** MailMergeLib as a service ***
+        #endregion
 
         services.AddMailMergeService(
             options =>
@@ -179,8 +200,6 @@ public static class WebAppStartup
                 }
                 options.MessageStore = fms;
             });
-
-        #endregion
     }
 
     private static void ConfigureLlblgenPro(Data.IDbContext dbContext, IWebHostEnvironment environment)
@@ -214,6 +233,9 @@ public static class WebAppStartup
         Data.AppLogging.Configure(loggerFactory);
 
         app.UseHttpsRedirection();
+
+        // Must be before UseStaticFiles and MapStaticAssets to compress non-SDK static files
+        app.UseResponseCompression();
 
         var cultureInfo = CultureInfo.GetCultureInfo("de-DE");
         CultureInfo.DefaultThreadCurrentCulture =
@@ -278,24 +300,14 @@ public static class WebAppStartup
 
         #region *** Static files ***
 
-        // For static files in the wwwroot folder
+        // For static files in the wwwroot folder.
+        // UseDefaultFiles must come before MapStaticAssets/UseStaticFiles.
         app.UseDefaultFiles();
 
-        app.UseStaticFiles(new StaticFileOptions
-        {
-            OnPrepareResponse = ctx =>
-            {
-                var headers = ctx.Context.Response.GetTypedHeaders();
-                headers.CacheControl = new CacheControlHeaderValue
-                {
-                    Public = true,
-                    MaxAge = TimeSpan.FromDays(30)
-                };
-            }
-        });
-        // For static files using a content type provider:
+        // Serves all standard static files (including /lib/*) with cache headers.
+        // .webmanifest is added so it doesn't cause a 404.
+        // MapStaticAssets() below handles SDK-managed assets with pre-compressed .br/.gz variants.
         var provider = new Microsoft.AspNetCore.StaticFiles.FileExtensionContentTypeProvider();
-        // Make sure .webmanifest files don't cause a 404
         provider.Mappings[".webmanifest"] = "application/manifest+json";
         app.UseStaticFiles(new StaticFileOptions
         {
@@ -322,8 +334,11 @@ public static class WebAppStartup
         app.UseAuthentication().UseAuthorization();
         // The net6.0+ top level replacement for app.UseEndpoints(...)
         // (WebApplication implements IEndpointRouteBuilder)
+        // Serves pre-compressed (.br/.gz) static web assets generated at publish time.
+        // Cache headers are handled automatically via asset fingerprinting.
+        app.MapStaticAssets();
         app.MapControllers();
-        app.MapRazorPages();
+        app.MapRazorPages().WithStaticAssets();
 
         // Suppress exceptions when the connection is closed by the client
         app.UseMiddleware<ClientAbortMiddleware>();
