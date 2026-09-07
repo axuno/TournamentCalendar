@@ -44,6 +44,7 @@ public class CollectorA : CollectorBase
             list.Add(new TourneyInfo {
                 ProviderId = ProviderId, Date = date, Name = name,
                 PostalCode = postalCode, Link = link, CollectedOn = now
+                // Note: City is not available in the table, so it remains null
             });
         }
 

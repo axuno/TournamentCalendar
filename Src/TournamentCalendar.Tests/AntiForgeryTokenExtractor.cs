@@ -14,10 +14,8 @@ public static class AntiForgeryTokenExtractor
     private static string ExtractAntiForgeryCookieValueFrom(HttpResponseMessage response)
     {
         var antiForgeryCookie = response.Headers.GetValues("Set-Cookie")
-            .FirstOrDefault(x => x.Contains(AntiForgeryCookieName));
-
-        if (antiForgeryCookie is null)
-            throw new ArgumentException($"Cookie '{AntiForgeryCookieName}' not found in HTTP response", nameof(response));
+            .FirstOrDefault(x => x.Contains(AntiForgeryCookieName))
+            ?? throw new ArgumentException(@$"Cookie '{AntiForgeryCookieName}' not found in HTTP response", nameof(response));
 
         var antiForgeryCookieValue = SetCookieHeaderValue.Parse(antiForgeryCookie).Value.ToString();
 
@@ -32,7 +30,7 @@ public static class AntiForgeryTokenExtractor
         if (requestVerificationTokenMatch.Success)
             return requestVerificationTokenMatch.Groups[1].Captures[0].Value;
 
-        throw new ArgumentException($"Anti forgery token '{AntiForgeryFieldName}' not found in HTML", nameof(htmlBody));
+        throw new ArgumentException(@$"Anti forgery token '{AntiForgeryFieldName}' not found in HTML", nameof(htmlBody));
     }
 
     public static async Task<(string fieldValue, string cookieValue)> ExtractAntiForgeryValues(HttpResponseMessage response)

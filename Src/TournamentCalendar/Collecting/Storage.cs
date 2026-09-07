@@ -103,12 +103,12 @@ internal static class Storage
     /// <param name="filesToKeep">The number of latest files to keep. Other will be deleted.</param>
     public static Task SaveTourneysToFile(List<TourneyInfo> currentTourneys, DateTime dateForFileName, DateTime deltaToThisDate, bool overwriteExisting, int filesToKeep)
     {
-        var fileNames = Storage.GetFileNamesDescending().ToList();
+        var fileNames = GetFileNamesDescending().ToList();
         // Find the current latest file
-        var fileIndex = fileNames.FindIndex(0, f => Storage.ExtractDateFromFileName(f).Date <= deltaToThisDate);
+        var fileIndex = fileNames.FindIndex(0, f => ExtractDateFromFileName(f).Date <= deltaToThisDate);
 
         // Read the file, if found
-        var latestStoredTourneys = fileIndex != -1 ? Storage.ReadTourneysFromFile(fileNames[fileIndex]).Tourneys : new CollectedTourneys().Tourneys;
+        var latestStoredTourneys = fileIndex != -1 ? ReadTourneysFromFile(fileNames[fileIndex]).Tourneys : new CollectedTourneys().Tourneys;
 
         // The lists in the tuple are not sorted
         var (sameTourneys, newTourneys, _)
@@ -121,10 +121,13 @@ internal static class Storage
 
         SaveTourneysToFile(
             new CollectedTourneys
-            { Tourneys = tourneysToSave
-                .OrderBy(t => t.ProviderId)
-                .ThenByDescending(t => t.CollectedOn) // new tourneys come first
-                .ToList() }, dateForFileName,
+            { Tourneys =
+                [
+                    .. tourneysToSave
+                        .OrderBy(t => t.ProviderId)
+                        .ThenByDescending(t => t.CollectedOn) // new tourneys come first
+                ]
+            }, dateForFileName,
             overwriteExisting);
 
         RemoveOldImportFiles(filesToKeep);

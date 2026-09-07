@@ -1,10 +1,10 @@
 ﻿namespace TournamentCalendar.Collecting;
 
-public class Collectors
+public static class Collectors
 {
-    private static readonly IList<ICollector> CollectorList = new List<ICollector> { new CollectorA(), new CollectorB() };
+    private static readonly IList<ICollector> CollectorList = [new CollectorA(), new CollectorB()];
 
-    private Collectors()
+    static Collectors()
     {
     }
 

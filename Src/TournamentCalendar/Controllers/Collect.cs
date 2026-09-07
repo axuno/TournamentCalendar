@@ -18,7 +18,7 @@ public class Collect : ControllerBase
     }
 
     [HttpGet("show/{id?}")]
-    public async Task<IActionResult> Show(string? id)
+    public async Task<IActionResult> Show(string? id, CancellationToken cancellationToken)
     {
         if (!ModelState.IsValid)
             id = null;
@@ -38,7 +38,7 @@ public class Collect : ControllerBase
                 out beforeThisDate);
         }
             
-        var listModel = await CollectionModelFactory.CreateListModel(beforeThisDate, _appDb);
+        var listModel = await CollectionModelFactory.CreateListModel(beforeThisDate, _appDb, cancellationToken);
         return View(ViewName.Collect.Show, listModel);
     }
 }
