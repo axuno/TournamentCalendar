@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path=".gitignore" />
+  </Folder>
+  <Project Path="DAL/DatabaseGeneric/TournamentCalendarDAL.DbGeneric.csproj" />
+  <Project Path="DAL/DatabaseSpecific/TournamentCalendarDAL.DbSpecific.csproj" />
+  <Project Path="TournamentCalendar.Tests/TournamentCalendar.Tests.csproj" />
+  <Project Path="TournamentCalendar/TournamentCalendar.csproj" />
+  <Project Path="TournamentCalender.Data/TournamentCalender.Data.csproj" />
+</Solution>

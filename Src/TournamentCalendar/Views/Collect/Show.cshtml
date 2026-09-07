@@ -35,7 +35,7 @@
         {
             <div class="mb-4">
                 @{
-                    var newTourneys = Model.NewTourneys!.Where(p => p.ProviderId == provider.ProviderId).ToArray();
+                    var newTourneys = Model.NewTourneys!.Where(p => p.ProviderId == provider.ProviderId).OrderBy(t => t.Date).ToArray();
                 }
                 <h4 class="h4">@provider.ProviderName</h4>
                 <h5>Insgesamt @newTourneys.Length neue Einträge</h5>

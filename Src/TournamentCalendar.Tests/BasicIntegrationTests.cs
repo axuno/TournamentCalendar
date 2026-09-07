@@ -139,13 +139,13 @@ public class BasicIntegrationTests
 
         var client = _factory.CreateClient();
         var initResponse = await client.GetAsync(requestUri);
-        var antiForgeryValues = await AntiForgeryTokenExtractor.ExtractAntiForgeryValues(initResponse);
+        var (fieldValue, cookieValue) = await AntiForgeryTokenExtractor.ExtractAntiForgeryValues(initResponse);
 
         var postRequest = new HttpRequestMessage(HttpMethod.Post, requestUri);
-        postRequest.Headers.Add("Cookie", new CookieHeaderValue(AntiForgeryTokenExtractor.AntiForgeryCookieName, antiForgeryValues.cookieValue).ToString());
+        postRequest.Headers.Add("Cookie", new CookieHeaderValue(AntiForgeryTokenExtractor.AntiForgeryCookieName, cookieValue).ToString());
         var formModel = new Dictionary<string, string>
         {
-            { AntiForgeryTokenExtractor.AntiForgeryFieldName, antiForgeryValues.fieldValue },
+            { AntiForgeryTokenExtractor.AntiForgeryFieldName, fieldValue },
             { "EmailOrUsername", user },
             { "Password", password }
         };
