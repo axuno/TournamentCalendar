@@ -2,7 +2,7 @@
 
 public static class Collectors
 {
-    private static readonly IList<ICollector> CollectorList = [new CollectorA(), new CollectorB()];
+    private static readonly IList<ICollector> CollectorList = [new CollectorA(), new CollectorB(), new CollectorC()];
 
     static Collectors()
     {
