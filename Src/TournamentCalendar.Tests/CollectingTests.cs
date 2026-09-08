@@ -44,7 +44,8 @@ public class CollectingTests
     [TestCaseSource(nameof(GetAllCollectorExpectedResults))]
     public async Task Provider_ExtractAllInfos(CollectorBase collector, int numOfLinks)
     {
-        collector.StartPath = $"{collector.GetType().Name}_Page1.html";
+        var extension = collector is CollectorC ? "json" : "html";
+        collector.StartPath = $"{collector.GetType().Name}_Page1.{extension}";
         collector.GetDocumentAsync = path =>
             File.ReadAllTextAsync(Path.Combine(_testCollectorDirectory, path.TrimStart('/')), Encoding.UTF8)!;
 
@@ -183,7 +184,7 @@ public class CollectingTests
 
     public static IEnumerable<object[]> GetAllCollectorExpectedResults()
     {
-        var numOfLinks = new Dictionary<string, int> { { nameof(CollectorA), 18 }, {nameof(CollectorB), 11} };
+        var numOfLinks = new Dictionary<string, int> { { nameof(CollectorA), 18 }, {nameof(CollectorB), 11}, { nameof(CollectorC), 56 } };
         
         foreach (var collector in GetAllCollectorClassInstances())
         {
